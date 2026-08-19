@@ -2,6 +2,12 @@
 %  literature_review.tex  --  Chapter 2
 %  Citation keys match references_partial.bib (delivered alongside).
 %  Entries marked  %% VERIFY  in the .bib need completion before print.
+%
+%  REVISION NOTE (this version):
+%   - Kennedy-O'Hagan model displayed as eq:kennedy_ohagan with a
+%     term-by-term list. Its rho is the autoregressive scale factor,
+%     explicitly distinguished from reactivity (eq:reactivity).
+%   - Enumerations set as lists. No semicolons, no em dashes.
 % =====================================================================
 \providecommand{\openpoint}[1]{\par\noindent\fbox{\parbox{0.97\linewidth}{%
   \textbf{Open point:} #1}}\par}
@@ -13,53 +19,69 @@
 \label{sec:lit-smr}
 
 The pressurised-water SMR family provides the reference frame for a
-LABGENE-class core. The NuScale design is the most completely documented:
-its NuFuel-HTP2 assembly is a reduced-height $17\times17$ lattice with
-UO$_2$ enriched up to 4.95\,wt\% and gadolinia homogeneously mixed into
-selected pellets, analysed in the licensing basis up to 8\,wt\%
-Gd$_2$O$_3$~\cite{nuscale_htp2_2017}; open academic reconstructions of a
-NuScale-like core --- 264 fuel rods, 24 guide tubes and one
-instrumentation tube at 1.26\,cm pitch --- provide a benchmark geometry
+LABGENE-class core.
+
+The NuScale design is the most completely documented. Its NuFuel-HTP2
+assembly is a reduced-height $17\times17$ lattice with UO$_2$ enriched
+up to 4.95\,wt\% and gadolinia homogeneously mixed into selected
+pellets, analysed in the licensing basis up to 8\,wt\%
+Gd$_2$O$_3$~\cite{nuscale_htp2_2017}. Open academic reconstructions of
+a NuScale-like core, with 264 fuel rods, 24 guide tubes and one
+instrumentation tube at 1.26\,cm pitch, provide a benchmark geometry
 directly comparable to the present model~\cite{nuscale_like_core_2024,
-ez_aldeen_2025}. Boron-free operation, the natural regime for a compact
-naval plant, sharpens the burnable-absorber problem: the Korean
-innovative-SMR programme designs soluble-boron-free assemblies with
-twenty gadolinia rods, exploiting isotopically enriched gadolinium to
-extend suppression across long cycles~\cite{ismr_sbf_2024,higa_2024},
-while the Chinese ACP100 documents a boron-free variant in which control
-rods and burnable poison provide the whole of reactivity
-compensation~\cite{acp100_physor2020}. A Rolls-Royce-like SMR study of
-advanced-technology fuels is of particular methodological relevance: it
-fixes the gadolinia concentration at 8.0\,wt\% and treats the \emph{number}
-of poisoned rods per assembly --- 20 to 40 --- as the design
-variable~\cite{rr_smr_atf_2025}. High-burnup PWR core studies extend the
-same fuel platform to a 75\,MWd/kgU peak-pin target with up to 9\,wt\%
-gadolinia~\cite{highburnup_core_2024}, the discharge limit adopted in
-this thesis.
+ez_aldeen_2025}.
+
+Boron-free operation, the natural regime for a compact naval plant,
+sharpens the burnable-absorber problem. The Korean innovative-SMR
+programme designs soluble-boron-free assemblies with twenty gadolinia
+rods, exploiting isotopically enriched gadolinium to extend suppression
+across long cycles~\cite{ismr_sbf_2024,higa_2024}. The Chinese ACP100
+documents a boron-free variant in which control rods and burnable
+poison provide the whole of reactivity
+compensation~\cite{acp100_physor2020}.
+
+A Rolls-Royce-like SMR study of advanced-technology fuels is of
+particular methodological relevance. It fixes the gadolinia
+concentration at 8.0\,wt\% and treats the \emph{number} of poisoned
+rods per assembly, from 20 to 40, as the design
+variable~\cite{rr_smr_atf_2025}. High-burnup PWR core studies extend
+the same fuel platform to a 75\,MWd/kgU peak-pin target with up to
+9\,wt\% gadolinia~\cite{highburnup_core_2024}, the discharge limit
+adopted in this thesis.
 
 \section{Gadolinia burnable absorbers}
 \label{sec:lit-gd}
 
 Gadolinia owes its role to the extreme thermal absorption of $^{155}$Gd
-and $^{157}$Gd, which renders poisoned pellets optically black and makes
-the absorber strongly self-shielding; suppression duration is therefore
-governed by surface burn-off rather than bulk content, and industrial
-practice concentrates the poison in a limited number of rods precisely to
-exploit this effect~\cite{gd_enriched_2021}. Operating experience is
-extensive --- of the order of 45\,000 gadolinia rods across 29 light-water
-reactors by the late 1980s~\cite{anf_gd_1987} --- and includes
-concentrations up to 10\,wt\% in commercial reloads with reduced uranium
-enrichment in the poisoned rods~\cite{robinson_gd10}. Two systematic
-effects recur across the literature and matter to the present work:
-gadolinia rods tend to \emph{raise} the local peaking factor by
-depressing their own power and loading their
-neighbours~\cite{ap1000_gd_2022}, and the end-of-life residual penalty of
-natural gadolinia is small, below $0.2\%\,\Delta k$ near
-45\,GWd/MTU~\cite{ba_snf_2001}. Parametric studies quantify the
-count--concentration equivalence --- in an APR1400-type lattice, four rods
-at $\sim$3.3\,wt\% match eight rods at $\sim$7.2\,wt\% for the same BOL
-reactivity~\cite{apr1400_gd_2020} --- and enriched-gadolinium variants
-extend the design space further~\cite{gd_enriched_2021,ap1000_gd_2022}. A
+and $^{157}$Gd, which renders poisoned pellets optically black and
+makes the absorber strongly self-shielding. Suppression duration is
+therefore governed by surface burn-off rather than bulk content, and
+industrial practice concentrates the poison in a limited number of rods
+precisely to exploit this effect~\cite{gd_enriched_2021}.
+
+Operating experience is extensive, of the order of 45\,000 gadolinia
+rods across 29 light-water reactors by the late
+1980s~\cite{anf_gd_1987}, and includes concentrations up to 10\,wt\% in
+commercial reloads with reduced uranium enrichment in the poisoned
+rods~\cite{robinson_gd10}.
+
+Two systematic effects recur across the literature and matter to the
+present work.
+
+\begin{enumerate}
+  \item Gadolinia rods tend to \emph{raise} the local peaking factor by
+        depressing their own power and loading their
+        neighbours~\cite{ap1000_gd_2022}.
+
+  \item The end-of-life residual penalty of natural gadolinia is small,
+        below $0.2\%\,\Delta k$ near 45\,GWd/MTU~\cite{ba_snf_2001}.
+\end{enumerate}
+
+Parametric studies quantify the count--concentration equivalence. In an
+APR1400-type lattice, four rods at $\sim$3.3\,wt\% match eight rods at
+$\sim$7.2\,wt\% for the same BOL
+reactivity~\cite{apr1400_gd_2020}. Enriched-gadolinium variants extend
+the design space further~\cite{gd_enriched_2021,ap1000_gd_2022}. A
 parametric study of enriched gadolinium exists specifically for the
 Angra-2 assembly~\cite{angra2_gd_2018}, the domestic heritage plant of
 the present design basis.
@@ -67,20 +89,32 @@ the present design basis.
 \section{Surrogate-assisted multi-objective core optimisation}
 \label{sec:lit-moo}
 
-Direct coupling of a depletion solver to a population-based optimiser is
-computationally prohibitive, which motivates the surrogate-assisted
-pattern adopted here: a cheap statistical model is trained on a design of
-experiments, an evolutionary algorithm searches the surrogate, and a
-small number of proposed designs are evaluated with the expensive code in
-an active-learning loop. NSGA-II~\cite{deb_nsga2_2002} remains the
-standard multi-objective engine; Gaussian-process regression provides the
-surrogate together with a principled predictive
-uncertainty~\cite{rasmussen_gp_2006}; Latin hypercube sampling supplies
-the space-filling initial design~\cite{mckay_lhs_1979}. In reactor
-applications, Whyte and Parks demonstrated NSGA-II with neural-network
-surrogates for PWR loading design~\cite{whyte_parks_2021}, and the
-dual-stage active-learning architecture that seeded the present pipeline
-was formulated in a Karlsruhe Institute of Technology work
+Direct coupling of a depletion solver to a population-based optimiser
+is computationally prohibitive, which motivates the surrogate-assisted
+pattern adopted here: a cheap statistical model is trained on a design
+of experiments, an evolutionary algorithm searches the surrogate, and a
+small number of proposed designs are evaluated with the expensive code
+in an active-learning loop.
+
+The components of that pattern are standard.
+
+\begin{enumerate}
+  \item NSGA-II~\cite{deb_nsga2_2002} remains the standard
+        multi-objective engine.
+
+  \item Gaussian-process regression provides the surrogate together
+        with a principled predictive
+        uncertainty~\cite{rasmussen_gp_2006}.
+
+  \item Latin hypercube sampling supplies the space-filling initial
+        design~\cite{mckay_lhs_1979}.
+\end{enumerate}
+
+In reactor applications, Whyte and Parks demonstrated NSGA-II with
+neural-network surrogates for PWR loading
+design~\cite{whyte_parks_2021}, and the dual-stage active-learning
+architecture that seeded the present pipeline was formulated in a
+Karlsruhe Institute of Technology work
 proposal~\cite{kit_inr_proposal}. OpenMC supplies the transport and
 depletion engine as a fully open-source Monte Carlo
 code~\cite{romano_openmc_2015}.
@@ -88,25 +122,33 @@ code~\cite{romano_openmc_2015}.
 \section{Noisy objectives and selection under uncertainty}
 \label{sec:lit-noise}
 
-Monte Carlo objectives place the optimisation in the
-noisy-evaluation regime, for which two bodies of theory are relevant and,
-in the reactor-design literature, rarely applied together. First, an
-objective defined as the \emph{maximum} of many noisy estimates is an
-order statistic and inherits the well-known upward bias of extreme
-values: the winning cell is preferentially one that fluctuated high, the
-bias grows as the underlying field flattens, and it shrinks only with the
-per-cell variance. Second, identifying the best of several noisy
-alternatives is the classical ranking-and-selection problem; Gupta-style
-subset selection retains every candidate whose confidence interval
-overlaps the incumbent's and discards the rest with controlled
-error~\cite{gupta_1965}, and common random numbers are the standard
-variance-reduction device for paired comparison --- though their benefit
-vanishes when the compared systems decorrelate, as the present work
-finds for designs of different lattice pitch. The gap this thesis
-addresses sits at the intersection: surrogate-assisted MOO studies of
-reactor cores generally treat the Monte Carlo objective as deterministic
-at fixed seed, leaving both the estimator bias and the ranking
-reliability of the resulting Pareto front unexamined.
+Monte Carlo objectives place the optimisation in the noisy-evaluation
+regime, for which two bodies of theory are relevant and, in the
+reactor-design literature, rarely applied together.
+
+\begin{enumerate}
+  \item An objective defined as the \emph{maximum} of many noisy
+        estimates is an order statistic and inherits the well-known
+        upward bias of extreme values. The winning cell is
+        preferentially one that fluctuated high, the bias grows as the
+        underlying field flattens, and it shrinks only with the
+        per-cell variance.
+
+  \item Identifying the best of several noisy alternatives is the
+        classical ranking-and-selection problem. Gupta-style subset
+        selection retains every candidate whose confidence interval
+        overlaps the incumbent's and discards the rest with controlled
+        error~\cite{gupta_1965}. Common random numbers are the standard
+        variance-reduction device for paired comparison, though their
+        benefit vanishes when the compared systems decorrelate, as the
+        present work finds for designs of different lattice pitch.
+\end{enumerate}
+
+The gap this thesis addresses sits at the intersection.
+Surrogate-assisted MOO studies of reactor cores generally treat the
+Monte Carlo objective as deterministic at fixed seed, leaving both the
+estimator bias and the ranking reliability of the resulting Pareto
+front unexamined.
 %% AUTHOR: 2-3 sentences positioning this gap in your own reading of the
 %% field; examiners expect the gap statement in the candidate's voice.
 
@@ -115,39 +157,72 @@ reliability of the resulting Pareto front unexamined.
 
 When the objective is evaluated by models of different fidelity, the
 canonical statistical fusion is the Kennedy--O'Hagan autoregressive
-model, $Z_\mathrm{hi}(x)=\rho\,Z_\mathrm{lo}(x)+\delta(x)$, with the
-discrepancy $\delta$ a Gaussian process~\cite{kennedy_ohagan_2000};
+model~\cite{kennedy_ohagan_2000}.
+
+\begin{equation}
+Z_\mathrm{hi}(x) = \rho\, Z_\mathrm{lo}(x) + \delta(x)
+\label{eq:kennedy_ohagan}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $Z_\mathrm{hi}(x)$ is the high-fidelity response at design $x$,
+        in the units of the modelled quantity.
+
+  \item $Z_\mathrm{lo}(x)$ is the low-fidelity response at the same
+        design, in the same units.
+
+  \item $\rho$ is the autoregressive scale factor of the model,
+        dimensionless. It is not the reactivity of
+        Equation~\eqref{eq:reactivity}, with which it shares the
+        symbol in the source literature.
+
+  \item $\delta(x)$ is the discrepancy term, modelled as a Gaussian
+        process, in the same units as the responses.
+
+  \item $x$ is the design vector.
+\end{itemize}
+
 Forrester et al.\ give the engineering recipe and demonstrate
 optimisation on few high-fidelity samples~\cite{forrester_2007}.
 Trust-region model management optimises a corrected low-fidelity model
 with provable convergence to the high-fidelity
-optimum~\cite{alexandrov_2001}; multi-fidelity Bayesian optimisation
+optimum~\cite{alexandrov_2001}. Multi-fidelity Bayesian optimisation
 selects design \emph{and} fidelity jointly per unit
 cost~\cite{poloczek_miso_2017,kandasamy_boca_2017}. Nuclear
 applications include machine-learning correction of low-fidelity nodal
-solutions against Monte Carlo benchmarks~\cite{vver_ml_2026}. A
-recurring caution motivates the present work's route: low/high-fidelity
-correlation weakens near the optimum --- exactly where an optimiser
-converges --- so this thesis measures the high-fidelity quantity
-in-loop where its cost permits, rather than correcting the proxy.
+solutions against Monte Carlo benchmarks~\cite{vver_ml_2026}.
+
+A recurring caution motivates the present work's route. Low-fidelity to
+high-fidelity correlation weakens near the optimum, exactly where an
+optimiser converges. This thesis therefore measures the high-fidelity
+quantity in-loop where its cost permits, rather than correcting the
+proxy.
 
 \section{Loading patterns and power peaking}
 \label{sec:lit-lp}
 
 Commercial cores reach their $F_{\Delta H}$ targets largely through
-reload design: simulated-annealing loading-pattern optimisation with
+reload design. Simulated-annealing loading-pattern optimisation with
 peaking as an explicit objective reduced maximum radial peaking by
-6.1\% at fixed fuel inventory~\cite{kropaczek_turinsky_1991}; even
+6.1\% at fixed fuel inventory~\cite{kropaczek_turinsky_1991}. Even
 first cores obtain flatness from heterogeneous batch placement,
 optimised to minimise radial peaking under cycle-length
-constraints~\cite{aga_firstcore_2021,chasnupp_lpo_2013}. A uniform
-single-batch core --- the configuration of this thesis --- forgoes that
-instrument entirely, which frames the peaking levels measured in
+constraints~\cite{aga_firstcore_2021,chasnupp_lpo_2013}.
+
+A uniform single-batch core, the configuration of this thesis, forgoes
+that instrument entirely, which frames the peaking levels measured in
 Chapter~\ref{ch:results}.
 
 \openpoint{The review is functional but thin on three fronts and should
-be expanded before submission: (i) textbook grounding for reactor physics
-quantities ($F_{\Delta H}$, reactivity coefficients) --- e.g.\ Duderstadt
-\& Hamilton --- ; (ii) the naval/SMR heritage literature beyond NuScale
-(KLT-40S, CAREM, SMART); (iii) primary sources to replace the two
-lower-grade citations flagged in the bibliography file.}
+be expanded before submission:
+\begin{enumerate}
+  \item textbook grounding for reactor physics quantities
+        ($F_{\Delta H}$, reactivity coefficients), for example
+        Duderstadt and Hamilton,
+  \item the naval and SMR heritage literature beyond NuScale (KLT-40S,
+        CAREM, SMART),
+  \item primary sources to replace the two lower-grade citations
+        flagged in the bibliography file.
+\end{enumerate}}

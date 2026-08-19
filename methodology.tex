@@ -2,9 +2,24 @@
 %  methodology.tex  --  Chapter 4 (single file; the design-basis text of
 %  methodology_design_basis_01JUL.tex is MERGED in Section 4.1 -- no
 %  \input needed, retire that file from Overleaf).
+%
+%  REVISION NOTE (this version):
+%   1. Formal definitions of quantities shared across chapters now live
+%      in the background chapter: F_dH is eq:fdh_definition and the
+%      burnup-to-EFPD conversion is eq:efpd. This chapter defines only
+%      its own constructs: the optimisation problem, the constraints,
+%      the end-of-cycle criterion (eq:eoc, eq:eoc-k), the Monte Carlo
+%      estimator (eq:fdh_estimator) and the k-target (eq:ktarget).
+%   2. The duplicated \label{sec:meth-core-objective} is removed; the
+%      label belongs only to the proxy-validation section.
+%   3. The undefined references sec:peaking_statistics,
+%      sec:selection_methodology and sec:stopping_rules are replaced by
+%      sec:meth-stats and sec:meth-loop.
+%   4. Every displayed formula is followed by a term-by-term list with
+%      units. Enumerations set as lists. No semicolons, no em dashes.
+%
 %  Requires: booktabs, amsmath, graphicx.
 %  Figures: figs_thesis/th_model_geometry.pdf (generator committed).
-%  Style: short paragraphs, displayed formulas, tables for dense data.
 % =====================================================================
 \providecommand{\openpoint}[1]{\par\noindent\fbox{\parbox{0.97\linewidth}{%
   \textbf{Open point:} #1}}\par}
@@ -19,32 +34,39 @@ The reference small modular reactor is conceived under a deliberate
 constraint of \emph{technological conservatism}: the core must rest on
 nuclear-fuel technology already industrialised in Brazil. The work then
 characterises a plausibly deployable naval core, not a green-field
-concept, and departures from established domestic practice are admitted
-only where physically necessary to meet the mission objective --- a long
-refuelling interval under low-enriched uranium (LEU).
+concept. Departures from established domestic practice are admitted
+only where physically necessary to meet the mission objective, namely a
+long refuelling interval under low-enriched uranium (LEU).
 
 The element carried over unchanged from national production is the fuel
-rod. UO$_2$ ceramic pellets, Zircaloy-4 cladding, and the rod-fabrication
-route operated by Ind\'ustrias Nucleares do Brasil (INB) at the
-F\'abrica de Combust\'iveis Nucleares in Resende --- which supplies
-reload fuel for Angra~1 and~2~\cite{inb_fcn_resende} --- are adopted
-without modification.
+rod. UO$_2$ ceramic pellets, Zircaloy-4 cladding, and the
+rod-fabrication route operated by Ind\'ustrias Nucleares do Brasil
+(INB) at the F\'abrica de Combust\'iveis Nucleares in Resende, which
+supplies reload fuel for Angra~1 and~2~\cite{inb_fcn_resende}, are
+adopted without modification.
 
 The reference core departs from the $16\times16$ lattice of the Angra
 units~\cite{angra_fuel_1_2} by adopting the $17\times17$
-Westinghouse-type assembly: 264 fuel rods, 24 guide tubes and one
-instrumentation tube. This changes the assembly \emph{skeleton}, not the
-rod technology. The $17\times17$ lattice is the most widely fabricated
-and best-benchmarked PWR geometry in service, so its adoption is an
-incremental industrialisation step --- and it provides the validated
-basis for benchmarking this model against the open
+Westinghouse-type assembly, with 264 fuel rods, 24 guide tubes and one
+instrumentation tube. This changes the assembly \emph{skeleton}, not
+the rod technology. The $17\times17$ lattice is the most widely
+fabricated and best-benchmarked PWR geometry in service, so its
+adoption is an incremental industrialisation step. It also provides the
+validated basis for benchmarking this model against the open
 literature~\cite{nuscale_htp2_2017,nuscale_like_core_2024}.
 
 Exactly two departures from strict Angra heritage are therefore
-admitted: enrichment raised toward the LEU ceiling, and the
-$17\times17$ lattice. Radial enrichment zoning and gadolinia burnable
-absorbers, exercised by the optimiser, are standard PWR reload practice
-consistent with the same basis.
+admitted.
+
+\begin{enumerate}
+  \item Enrichment raised toward the LEU ceiling.
+
+  \item The $17\times17$ lattice.
+\end{enumerate}
+
+Radial enrichment zoning and gadolinia burnable absorbers, exercised by
+the optimiser, are standard PWR reload practice consistent with the
+same basis.
 
 \section{Reactor model}
 \label{sec:reactor-model}
@@ -52,7 +74,7 @@ consistent with the same basis.
 The model is built in OpenMC~0.15.3~\cite{romano_openmc_2015} with
 ENDF/B-VII.1 data, from one parametric design dictionary driving three
 fidelities: pin cell, $17\times17$ assembly, and the 32-assembly core.
-Figure~\ref{fig:model-geometry} defines the geometry; the numerical
+Figure~\ref{fig:model-geometry} defines the geometry. The numerical
 basis is concentrated in Tables~\ref{tab:model-geometry}
 and~\ref{tab:model-operating}.
 
@@ -84,7 +106,7 @@ and~\ref{tab:model-operating}.
     Inner enrichment zone & centred $9\times9$: 81 pins (28\%) & -- \\
     Outer enrichment zone & 208 pins (72\%) & -- \\
     Gd$_2$O$_3$ pins & 12, fixed octant-symmetric pattern & -- \\
-    Active fuel height & 120 (2D transport; mass bookkeeping) & cm \\
+    Active fuel height & 120 (2D transport, mass bookkeeping) & cm \\
     Core map & $6\times6$ minus corners = 32 assemblies & -- \\
     Reflector & stainless steel annulus, thickness $t_\mathrm{refl}$ & -- \\
     Vessel internal radius & 90 & cm \\
@@ -103,16 +125,17 @@ and~\ref{tab:model-operating}.
     Core thermal power & 48 & MW \\
     Specific power $P_\mathrm{spec}$ & 9.9834 & W/gHM \\
     Fuel / clad / moderator temperature & 900 / 600 / 580 & K \\
-    Soluble boron (fixed; Sec.~\ref{sec:meth-boron}) & 1000 & ppm \\
+    Soluble boron (fixed, Sec.~\ref{sec:meth-boron}) & 1000 & ppm \\
     Nuclear data & ENDF/B-VII.1 + PWR chain & -- \\
     \bottomrule
   \end{tabular}
 \end{table}
 
 Verification at reference conditions reproduces the expected
-multiplication hierarchy --- pin $k_\infty=1.296$, assembly $1.288$,
-core $k_\mathrm{eff}=1.221$ --- with assembly-internal
-$F_{\Delta H}=1.137$, consistent with open NuScale-like
+multiplication hierarchy of Section~\ref{sec:bg-k}, with pin
+$k_\infty = 1.296$, assembly $k_\infty = 1.288$ and core
+$k_\mathrm{eff} = 1.221$. The assembly-internal peaking at reference
+conditions is $F_{\Delta H} = 1.137$, consistent with open NuScale-like
 benchmarks~\cite{nuscale_like_core_2024,ez_aldeen_2025}.
 
 \section{Optimisation problem}
@@ -120,22 +143,22 @@ benchmarks~\cite{nuscale_like_core_2024,ez_aldeen_2025}.
 
 \subsection{Problem statement}
 
-The core design task is posed as a constrained two-objective problem over
-a five-dimensional design space. The design space is summarised in
+The core design task is posed as a constrained two-objective problem
+over a five-dimensional design space. The design space is summarised in
 Table~\ref{tab:design-space} and the constraints in
 Table~\ref{tab:constraints}.
 
 The first objective maximises the cycle length.
 
 \begin{equation}
-\max_{\mathbf{x}\,\in\,\mathcal{X}} \; \mathrm{EFPD}(\mathbf{x})
+\max_{\mathbf{x}\,\in\,\mathcal{X}} \, \mathrm{EFPD}(\mathbf{x})
 \label{eq:obj_efpd}
 \end{equation}
 
 The second objective minimises the radial peaking factor.
 
 \begin{equation}
-\min_{\mathbf{x}\,\in\,\mathcal{X}} \; F_{\Delta H}(\mathbf{x})
+\min_{\mathbf{x}\,\in\,\mathcal{X}} \, F_{\Delta H}(\mathbf{x})
 \label{eq:obj_fdh}
 \end{equation}
 
@@ -150,17 +173,20 @@ g_j(\mathbf{x}) \le 0,
 \noindent where the symbols have the following meaning.
 
 \begin{itemize}
-  \item $\mathbf{x}$ is the design vector, whose five components and their
-        units are listed in Table~\ref{tab:design-space}.
+  \item $\mathbf{x}$ is the design vector, whose five components and
+        their units are listed in Table~\ref{tab:design-space}.
 
   \item $\mathcal{X}$ is the box-bounded design space defined by those
         same bounds.
 
   \item $\mathrm{EFPD}(\mathbf{x})$ is the cycle length of design
-        $\mathbf{x}$ in effective full-power days, in d.
+        $\mathbf{x}$ in effective full-power days, in d, obtained from
+        Equation~\eqref{eq:efpd} with the end-of-cycle criterion of
+        Section~\ref{sec:objective_functions}.
 
-  \item $F_{\Delta H}(\mathbf{x})$ is the radial peaking factor of design
-        $\mathbf{x}$, dimensionless.
+  \item $F_{\Delta H}(\mathbf{x})$ is the radial peaking factor of
+        design $\mathbf{x}$, dimensionless, defined in
+        Equation~\eqref{eq:fdh_definition}.
 
   \item $g_j(\mathbf{x})$ is the $j$-th inequality constraint in
         normalised violation form, dimensionless, feasible when
@@ -168,7 +194,8 @@ g_j(\mathbf{x}) \le 0,
 \end{itemize}
 
 The evaluation level of $F_{\Delta H}$ changes between campaigns and is
-defined in Section~\ref{sec:meth-core-objective}.
+fixed in Section~\ref{sec:objective_functions}, with the validation
+that motivated the change in Section~\ref{sec:meth-core-objective}.
 
 \begin{table}[htbp]
   \centering
@@ -180,7 +207,7 @@ defined in Section~\ref{sec:meth-core-objective}.
     \midrule
     $e_\mathrm{in}$   & inner-zone enrichment        & 2.0 -- 19.75 & wt\% $^{235}$U \\
     $e_\mathrm{out}$  & outer-zone enrichment        & 2.0 -- 19.75 & wt\% $^{235}$U \\
-    $c_\mathrm{gd}$   & Gd$_2$O$_3$ in poisoned pins & 0 -- 8.0     & wt\% \\
+    $\mathrm{gd}$     & Gd$_2$O$_3$ in poisoned pins & 0 -- 8.0     & wt\% \\
     $p$               & pin pitch                    & 1.15 -- 1.43 & cm \\
     $t_\mathrm{refl}$ & reflector thickness          & 2.0 -- 19.5  & cm \\
     \bottomrule
@@ -189,18 +216,18 @@ defined in Section~\ref{sec:meth-core-objective}.
 
 \begin{table}[htbp]
   \centering
-  \caption{Constraints. The evaluation level of $g_\mathrm{peak}$ is the
-  central methodological change of Campaign 4.}
+  \caption{Constraints. The evaluation level of $g_\mathrm{peak}$ is
+  the central methodological change of Campaign 4.}
   \label{tab:constraints}
   \begin{tabular}{lll}
     \toprule
     Constraint & Definition & Evaluation level \\
     \midrule
-    $g_{k\min}$       & $1.02 - k_\mathrm{BOL} \le 0$                          & assembly \\
-    $g_{k\max}$       & $k_\mathrm{BOL} - 1.35 \le 0$                          & assembly, core in C5 proposal \\
-    $g_\mathrm{enr}$  & $\max(e_\mathrm{in},e_\mathrm{out}) - 19.75 \le 0$     & algebraic \\
-    $g_\mathrm{peak}$ & $F_{\Delta H} - 2.0 \le 0$                             & assembly in C1 to C3, \textbf{core} from C4 \\
-    $g_\mathrm{geom}$ & $R_\mathrm{env}(p) + t_\mathrm{refl} - 90 \le 0$       & core, analytic \\
+    $g_{k\min}$       & $1.02 - k_\mathrm{BOL} \le 0$                      & assembly \\
+    $g_{k\max}$       & $k_\mathrm{BOL} - 1.35 \le 0$                      & assembly, core in C5 proposal \\
+    $g_\mathrm{enr}$  & $\max(e_\mathrm{in},e_\mathrm{out}) - 19.75 \le 0$ & algebraic \\
+    $g_\mathrm{peak}$ & $F_{\Delta H} - 2.0 \le 0$                         & assembly in C1 to C3, \textbf{core} from C4 \\
+    $g_\mathrm{geom}$ & $R_\mathrm{env}(p) + t_\mathrm{refl} - 90 \le 0$   & core, analytic \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -218,17 +245,19 @@ R_\mathrm{env}(p) = \sqrt{13}\,\cdot\,17\,p
 \noindent where the symbols have the following meaning.
 
 \begin{itemize}
-  \item $R_\mathrm{env}$ is the circumscribed radius of the fuel region,
-        in cm.
+  \item $R_\mathrm{env}$ is the circumscribed radius of the fuel
+        region, in cm.
 
   \item $p$ is the pin pitch, in cm.
 
-  \item $17$ is the number of pin cells per assembly side, dimensionless,
-        so that $17p$ is the assembly pitch in cm.
+  \item $17$ is the number of pin cells per assembly side,
+        dimensionless, so that $17p$ is the assembly pitch in cm.
 
-  \item $\sqrt{13} \approx 3.606$ is the dimensionless distance from the
-        core centre to the outermost assembly corner of the 32-assembly
-        footprint, expressed in assembly pitches.
+  \item $\sqrt{13} \approx 3.606$ is the dimensionless distance from
+        the core centre to the outermost fuel corner of the
+        $6\times6$-minus-corners map, in assembly pitches. The extreme
+        corner lies three assembly pitches along one axis and two along
+        the other, so its distance is $\sqrt{3^2 + 2^2} = \sqrt{13}$.
 \end{itemize}
 
 The sensitivity of the envelope to the pitch follows directly.
@@ -240,99 +269,92 @@ The sensitivity of the envelope to the pitch follows directly.
 
 A pitch increase of one millimetre therefore consumes about six
 millimetres of radial budget. Pitch and reflector thickness compete
-directly for the fixed 90\,cm allowance, which makes the two variables
+directly for the fixed allowance of the 90\,cm vessel internal radius
+of Table~\ref{tab:model-geometry}, which makes the two variables
 strongly coupled rather than independent.
 
-The constraint is enforced analytically inside the optimiser rather than
-during model construction. Campaign 1 showed that omitting it lets the
-genetic algorithm converge on designs that cannot be built, because the
-fuel region and the reflector together exceed the vessel envelope.
-
-%% AUTHOR: confirm the geometric origin of the $\sqrt{13}$ factor against
-%% the core map figure, and state whether the 90 cm allowance is an inner
-%% barrel radius or a vessel inner radius.
+The constraint is enforced analytically inside the optimiser rather
+than during model construction. Campaign 1 showed that omitting it lets
+the genetic algorithm converge on designs that cannot be built, because
+the fuel region and the reflector together exceed the vessel envelope.
 
 \subsection{Objective functions}
 \label{sec:objective_functions}
 
 \subsubsection{Cycle length}
 
-The cycle length is the depletion time at which the core loses
-criticality, evaluated from the depletion history of the multiplication
-factor.
+The cycle-length objective of Equation~\eqref{eq:obj_efpd} is computed
+from the end-of-cycle burnup through the general conversion of
+Equation~\eqref{eq:efpd}, with the specific power of
+Table~\ref{tab:model-operating}. What remains to be fixed here is the
+criterion that defines the end of cycle on the depletion workhorse, the
+reflective single assembly.
 
 \begin{equation}
-\mathrm{EFPD} = \min \left\{\, t > 0 \;:\; k_\mathrm{eff}(t) \le 1 \,\right\}
-\label{eq:efpd_definition}
+B_\mathrm{EOC} = \min\!\left( B_k,\, B_\mathrm{ATF} \right)
+\label{eq:eoc}
+\end{equation}
+
+\begin{equation}
+B_k = \min\left\{\, B > 0 \,:\, k_\infty(B) \le k_\mathrm{target} \,\right\}
+\label{eq:eoc-k}
 \end{equation}
 
 \noindent where the symbols have the following meaning.
 
 \begin{itemize}
-  \item $\mathrm{EFPD}$ is the cycle length in effective full-power days,
-        in d.
+  \item $B_\mathrm{EOC}$ is the end-of-cycle burnup entering
+        Equation~\eqref{eq:efpd}, in MWd/kgHM.
 
-  \item $t$ is the depletion time at nominal full power, in d.
+  \item $B_k$ is the reactivity-defined end-of-cycle burnup, in
+        MWd/kgHM.
 
-  \item $k_\mathrm{eff}(t)$ is the multiplication factor at depletion time
-        $t$, dimensionless.
+  \item $B_\mathrm{ATF}$ is the accident-tolerant-fuel discharge-burnup
+        limit, equal to 75\,MWd/kgHM, treated in
+        Section~\ref{sec:meth-atf}.
+
+  \item $B$ is the burnup along the depletion history, in MWd/kgHM.
+
+  \item $k_\infty(B)$ is the infinite multiplication factor of the
+        reflective assembly at burnup $B$, dimensionless.
+
+  \item $k_\mathrm{target}$ is the leakage-corrected end-of-cycle
+        target, dimensionless, defined in
+        Section~\ref{sec:meth-ktarget}.
 \end{itemize}
 
-The crossing time is obtained by interpolation between the two depletion
-steps that bracket unity. Designs that remain critical at the end of the
-prescribed depletion horizon are right-censored and are recorded at the
-horizon value rather than extrapolated. The stopping rules of
-Section~\ref{sec:stopping_rules} require that no censored design remains
-on the Pareto front at convergence.
+The crossing $B_k$ is obtained by interpolation between the two
+depletion steps that bracket the target.
 
-%% AUTHOR: insert the depletion horizon and the step structure used in
-%% Campaigns 1 to 4, and state the soluble boron condition assumed in the
-%% depletion calculation.
+The discharge limit entered the objective in Campaign 2,
+retrospectively, through the exact post-processing transform of
+Section~\ref{sec:meth-atf}. Designs still critical at the depletion
+horizon in the early campaigns were right-censored and recorded at the
+horizon value rather than extrapolated. From Campaign 3 onward the
+depletion terminates at $B_\mathrm{ATF}$ inside the loop, so
+Equation~\eqref{eq:eoc} holds by construction and censoring is
+eliminated. The stopping rule of Section~\ref{sec:meth-loop}
+additionally requires that no censored design remains on the Pareto
+front at convergence.
+
+%% AUTHOR: confirm the wording of the end-of-cycle criterion above
+%% (Route-B crossing capped by the ATF limit) against the campaign
+%% code, and state the depletion step structure if the examiners are
+%% likely to ask for it.
 
 \subsubsection{Radial peaking factor}
 
-The radial peaking factor is the ratio between the axially integrated
-linear power of the most heavily loaded fuel rod and the average axially
-integrated linear power of all fuel rods in the tally domain.
-
-\begin{equation}
-F_{\Delta H}
-=
-\frac{\displaystyle \max_{i \in \{1,\dots,N\}} \int_{0}^{H} q'_i(z)\,\mathrm{d}z}
-     {\displaystyle \frac{1}{N} \sum_{j=1}^{N} \int_{0}^{H} q'_j(z)\,\mathrm{d}z}
-\label{eq:fdh_definition}
-\end{equation}
-
-\noindent where the symbols have the following meaning.
-
-\begin{itemize}
-  \item $F_{\Delta H}$ is the radial peaking factor, dimensionless, equal
-        to unity for a perfectly flat radial power distribution.
-
-  \item $q'_i(z)$ is the linear power density of fuel rod $i$ at axial
-        elevation $z$, in W\,cm$^{-1}$.
-
-  \item $z$ is the axial coordinate measured from the bottom of the active
-        fuel region, in cm.
-
-  \item $H$ is the active fuel height, in cm.
-
-  \item $N$ is the number of fuel rods in the tally domain,
-        dimensionless.
-
-  \item $i$ and $j$ are fuel rod indices, dimensionless.
-\end{itemize}
-
-The name of the factor follows from the coolant enthalpy rise along the
-hot channel, which is proportional to the axially integrated power of the
-adjacent rod. The factor is therefore a thermal-hydraulic margin
-indicator expressed in purely neutronic terms.
+The peaking objective of Equation~\eqref{eq:obj_fdh} uses the radial
+peaking factor of Equation~\eqref{eq:fdh_definition}, formally defined
+in Section~\ref{sec:bg-peaking}. That definition leaves two
+methodological choices open, and both are fixed here: the numerical
+estimator and the evaluation domain.
 
 \paragraph{Numerical estimator.}
-The integrals of Equation~\eqref{eq:fdh_definition} are replaced by their
-Monte Carlo counterparts. A pin-wise fission energy deposition tally is
-accumulated over the active fuel region, so each rod contributes one
-volume-integrated score.
+The integrals of Equation~\eqref{eq:fdh_definition} are replaced by
+their Monte Carlo counterparts. A pin-wise fission energy deposition
+tally is accumulated over the active fuel region, so each rod
+contributes one volume-integrated score.
 
 \begin{equation}
 \widehat{F}_{\Delta H}
@@ -345,86 +367,143 @@ volume-integrated score.
 \noindent where the symbols have the following meaning.
 
 \begin{itemize}
-  \item $\widehat{F}_{\Delta H}$ is the Monte Carlo estimate of the radial
-        peaking factor, dimensionless.
+  \item $\widehat{F}_{\Delta H}$ is the Monte Carlo estimate of the
+        radial peaking factor, dimensionless.
 
-  \item $\widehat{P}_i$ is the tallied fission energy deposition rate of
-        fuel rod $i$ over the full active height, in W.
+  \item $\widehat{P}_i$ is the tallied fission energy deposition rate
+        of fuel rod $i$ over the full active height, in W.
+
+  \item $N$ is the number of fuel rods in the evaluation domain,
+        dimensionless.
+
+  \item $i$ and $j$ are fuel rod indices, dimensionless.
 \end{itemize}
 
 Two properties of this estimator govern the selection methodology.
 
 \begin{enumerate}
-  \item The estimate carries a statistical uncertainty inherited from the
-        finite number of simulated histories. Differences between
-        candidate designs smaller than that uncertainty cannot be resolved
-        by a single evaluation.
+  \item The estimate carries a statistical uncertainty inherited from
+        the finite number of simulated histories. Differences between
+        candidate designs smaller than that uncertainty cannot be
+        resolved by a single evaluation.
 
-  \item The estimate is positively biased. The numerator is a maximum over
-        $N$ noisy scores, so fluctuation alone raises the sampled maximum
-        above the true maximum, and the bias grows with $N$ and with the
-        tally variance.
+  \item The estimate is positively biased. The numerator is a maximum
+        over $N$ noisy scores, so fluctuation alone raises the sampled
+        maximum above the true maximum, and the bias grows with $N$ and
+        with the tally variance.
 \end{enumerate}
 
-Both properties are quantified in Section~\ref{sec:peaking_statistics}, and the procedure that separates true optima from noise-driven apparent optima is developed in Section~\ref{sec:selection_methodology}.
+Both properties are quantified in Section~\ref{sec:meth-stats}, which
+also develops the two-stage subset-selection procedure that separates
+true optima from noise-driven apparent optima.
 
-\paragraph{Evaluation fidelity.}
-\label{sec:meth-core-objective}
-The tally domain of Equation~\eqref{eq:fdh_estimator} determines what the
-objective represents. Two levels are used in this work.
+\paragraph{Evaluation domain.}
+The tally domain of Equation~\eqref{eq:fdh_estimator} determines what
+the objective represents. Two levels are used in this work.
 
 \begin{enumerate}
-  \item Assembly level, in which $N$ covers the fuel rods of a single
-        reflected assembly. This level is inexpensive and served as the
-        screening objective in Campaigns 1 to 3.
+  \item Assembly level, in which $N$ covers the 264 fuel rods of a
+        single reflected assembly. This level is inexpensive and served
+        as the screening objective in Campaigns 1 to 3.
 
   \item Core level, in which $N$ covers the fuel rods of the full
         32-assembly core at beginning of life. This level supplies both
-        the objective and the peaking constraint from Campaign 4 onward.
+        the objective and the peaking constraint from Campaign 4
+        onward.
 \end{enumerate}
 
-%% AUTHOR: physics justification for abandoning the assembly-level proxy,
-%% namely reflector coupling and the ranking inversion observed in the
-%% near-optimal set.
-
-\openpoint{Confirm whether the assembly-to-core transition is argued here
-or deferred to the results chapter, since the supporting evidence is the
-36-design rescoring exercise.}
+The validation programme that motivated the move to core level is
+presented in Section~\ref{sec:meth-core-objective}, and its
+measurements in Section~\ref{sec:res-corevalidation}.
 
 \section{Leakage-corrected reactivity target (Route B)}
 \label{sec:meth-ktarget}
 
 End of cycle on the reflective assembly is defined at the
-leakage-corrected target
+leakage-corrected target introduced qualitatively in
+Section~\ref{sec:bg-k}.
+
 \begin{equation}
-  k_\mathrm{target}(p, t_\mathrm{refl})
-  \;=\; \frac{k_\infty^\mathrm{assembly}}{k_\mathrm{eff}^\mathrm{core}},
+k_\mathrm{target}(p, t_\mathrm{refl})
+= \frac{k_\infty^\mathrm{assembly}}{k_\mathrm{eff}^\mathrm{core}}
+\label{eq:ktarget}
 \end{equation}
-pre-computed on a $3\times7$ grid over (pitch, reflector thickness) and
-bilinearly interpolated. Route~B and a reflected-assembly sleeve model
-(Route~A) are mutually exclusive --- using both would double-count
-reflector leakage; Route~B is adopted. The construction is validated
-a~posteriori on the finalists (Sec.~\ref{sec:res-corevalidation}).
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $k_\mathrm{target}$ is the leakage-corrected end-of-cycle
+        target entering Equation~\eqref{eq:eoc-k}, dimensionless.
+
+  \item $k_\infty^\mathrm{assembly}$ is the infinite multiplication
+        factor of the reflective single assembly, dimensionless.
+
+  \item $k_\mathrm{eff}^\mathrm{core}$ is the effective multiplication
+        factor of the 32-assembly core built with the same pitch and
+        reflector thickness, dimensionless.
+
+  \item $p$ is the pin pitch, in cm.
+
+  \item $t_\mathrm{refl}$ is the reflector thickness, in cm.
+\end{itemize}
+
+The ratio is pre-computed on a $3\times7$ grid over pitch and reflector
+thickness and bilinearly interpolated inside the loop.
+
+Two constructions could carry the leakage correction, and they are
+mutually exclusive because using both would double-count the reflector
+leakage.
+
+\begin{enumerate}
+  \item Route A, a reflected-assembly sleeve model.
+
+  \item Route B, the pre-computed target of
+        Equation~\eqref{eq:ktarget}.
+\end{enumerate}
+
+Route B is adopted. The construction is validated a posteriori on the
+finalists in Section~\ref{sec:res-corevalidation}.
 
 \section{Surrogate-assisted active-learning loop}
 \label{sec:meth-loop}
 
 The campaign follows the dual-stage
-pattern~\cite{kit_inr_proposal,whyte_parks_2021}: Latin-hypercube design
-of experiments~\cite{mckay_lhs_1979}; Gaussian-process surrogate with
-automatic relevance determination~\cite{rasmussen_gp_2006} trained on
-the whole archive; NSGA-II~\cite{deb_nsga2_2002} search on the
-surrogate; small infill batches evaluated with OpenMC. Blocks of three
-iterations are separated by analysis, and the stopping rule requires
-hypervolume gain below 1\% for three consecutive iterations with the
-front fully resolved.
+pattern~\cite{kit_inr_proposal,whyte_parks_2021}, whose four steps
+repeat until the stopping rule is met.
+
+\begin{enumerate}
+  \item A Latin-hypercube design of
+        experiments~\cite{mckay_lhs_1979} seeds the archive, and each
+        subsequent iteration adds a small infill batch evaluated with
+        OpenMC.
+
+  \item A Gaussian-process surrogate with automatic relevance
+        determination~\cite{rasmussen_gp_2006} is trained on the whole
+        cumulative archive.
+
+  \item NSGA-II~\cite{deb_nsga2_2002} searches the surrogate in place
+        of the expensive code.
+
+  \item The most informative proposals form the next infill batch.
+\end{enumerate}
+
+Blocks of three iterations are separated by analysis. The empirical
+stopping rule has two conditions, both required.
+
+\begin{enumerate}
+  \item The hypervolume gain stays below 1\% for three consecutive
+        iterations.
+
+  \item No censored design remains on the Pareto front, so the front is
+        fully resolved.
+\end{enumerate}
 
 \section{Transport fidelity and seeding}
 \label{sec:meth-fidelity}
 
 \begin{table}[htbp]
   \centering
-  \caption{Transport settings per campaign (frozen per checkpoint; only
+  \caption{Transport settings per campaign (frozen per checkpoint, only
   the thread count adapts to the host).}
   \label{tab:fidelity}
   \begin{tabular}{lccc}
@@ -440,43 +519,59 @@ front fully resolved.
   \end{tabular}
 \end{table}
 
-The Campaign-3 fidelity was chosen from a measured ladder: it removes
+The Campaign-3 fidelity was chosen from a measured ladder. It removes
 $\approx$87\% of the peaking-estimator bias and two thirds of its noise
-at $\approx$7$\times$ cost. Per-design deterministic seeds (a CRC32 hash
-of the design vector; the core solve adds a salt) keep every evaluation
-reproducible while making the noise independent across designs --- the
-i.i.d.\ assumption of the Gaussian-process noise model.
+at $\approx$7$\times$ cost.
+
+Seeds are deterministic per design, generated as a CRC32 hash of the
+design vector, and the core solve adds a salt. This keeps every
+evaluation reproducible while making the noise independent across
+designs, which is the assumption of independent and identically
+distributed noise made by the Gaussian-process noise model of
+Section~\ref{sec:bg-gp}.
 
 \section{ATF discharge-burnup limit}
 \label{sec:meth-atf}
 
+The discharge limit adopted is $B_\mathrm{ATF} = 75$\,MWd/kgHM.
+
 Cycle length and burnup are linearly related through the constant
-specific power,
-\begin{equation}
-  \mathrm{EFPD} = \frac{1000\,B_\mathrm{EOC}}{P_\mathrm{spec}},
-  \qquad P_\mathrm{spec} = 9.9834~\mathrm{W/gHM}.
-\end{equation}
-Campaign 2 imposed the accident-tolerant-fuel limit retrospectively as
-an exact transform; Campaigns 3--4 terminate depletion at
-75\,MWd/kgHM inside the loop, so censoring is eliminated by
-construction. Hypervolume histories reset whenever the objective
-definition changes.
+specific power, Equation~\eqref{eq:efpd}, with $P_\mathrm{spec}$ given
+in Table~\ref{tab:model-operating}. The burnup limit therefore maps
+one-to-one onto a cycle-length cap.
+
+Campaign 2 imposed the limit retrospectively, as an exact
+post-processing transform of the completed campaign. Campaigns 3 and 4
+terminate depletion at $B_\mathrm{ATF}$ inside the loop, so censoring
+is eliminated by construction. Hypervolume histories reset whenever the
+objective definition changes.
 
 \section{Statistical treatment of the peaking estimator}
 \label{sec:meth-stats}
 
-$F_{\Delta H}$ is the maximum over $\sim$264 noisy mesh cells: an
-extreme order statistic, noisy \emph{and} biased upward, with the bias
-largest for flat power distributions --- exactly the designs a
-peaking-minimising optimiser prefers.
+$F_{\Delta H}$ is the maximum over $N$ noisy mesh cells, with $N = 264$
+at assembly level. It is therefore an extreme order statistic, noisy
+\emph{and} biased upward, as anticipated in Section~\ref{sec:bg-mc}.
+The bias is largest for flat power distributions, which are exactly the
+designs a peaking-minimising optimiser prefers.
 
-Final selection therefore uses two-stage subset selection over a
-\emph{noise-margin} candidate set (every feasible design within
-$k\sigma_\mathrm{seed}$ of the observed minimum, $k=4$--$6$): Gupta-style
-screening~\cite{gupta_1965}, then Welch tests with Bonferroni correction
-at confirmation fidelity. Values adjusted across fidelities carry the
-measured inter-fidelity shift with its spread propagated, and are
-flagged as adjusted wherever reported.
+Final selection therefore uses a two-stage subset selection over a
+\emph{noise-margin} candidate set. The candidate set contains every
+feasible design within $k\,\sigma_\mathrm{seed}$ of the observed
+minimum, where $\sigma_\mathrm{seed}$ is the seed-to-seed standard
+deviation of the estimator and $k = 4$--$6$ is the margin multiplier.
+
+\begin{enumerate}
+  \item Gupta-style screening~\cite{gupta_1965} retains every candidate
+        whose confidence interval overlaps the incumbent's.
+
+  \item Welch tests with Bonferroni correction, at confirmation
+        fidelity, resolve the retained candidates pairwise.
+\end{enumerate}
+
+Values adjusted across fidelities carry the measured inter-fidelity
+shift with its spread propagated. They are flagged as adjusted wherever
+reported.
 
 \section{Proxy validation and the core-level objective (Campaign 4)}
 \label{sec:meth-core-objective}
@@ -485,42 +580,80 @@ Optimising a reduced-order proxy requires validating the proxy's
 \emph{rank fidelity} to the true objective, not only its statistical
 convergence. Three instruments implement this.
 
-\textbf{Finalist validation.} Each Pareto finalist is rebuilt as the
-full 32-assembly core and solved at BOL with a pin-resolved mesh over
-the whole footprint, seed-replicated; the ratio
-$F_{\Delta H}^\mathrm{core}/F_{\Delta H}^\mathrm{asm}$ is the proxy gap.
-The same run yields $k_\mathrm{eff}^\mathrm{core}$, closing Route~B on
-the finalists for free.
+\paragraph{Finalist validation.}
+Each Pareto finalist is rebuilt as the full 32-assembly core and solved
+at BOL with a pin-resolved mesh over the whole footprint,
+seed-replicated. The ratio
+$F_{\Delta H}^\mathrm{core}/F_{\Delta H}^\mathrm{asm}$ is the proxy
+gap. The same run yields $k_\mathrm{eff}^\mathrm{core}$, closing
+Route~B on the finalists at no additional cost.
 
-\textbf{Archive rescoring.} Every feasible archive design is rescored at
-core level (two-stage: 3-seed screen, 8-seed resolution of the
-noise-margin top), giving the Spearman rank correlation between proxy
-and truth and a direct answer to whether the proxy discarded superior
-designs.
+\paragraph{Archive rescoring.}
+Every feasible archive design is rescored at core level in two stages,
+a 3-seed screen followed by an 8-seed resolution of the noise-margin
+top. This gives the Spearman rank correlation between proxy and truth
+and a direct answer to whether the proxy discarded superior designs.
 
-\textbf{Bridge model.} The multiplicative discrepancy is fitted in the
-Kennedy--O'Hagan spirit~\cite{kennedy_ohagan_2000,forrester_2007},
+\paragraph{Bridge model.}
+The multiplicative discrepancy is fitted in the Kennedy--O'Hagan
+spirit~\cite{kennedy_ohagan_2000,forrester_2007}.
+
 \begin{equation}
-  \frac{F_{\Delta H}^\mathrm{core}}{F_{\Delta H}^\mathrm{asm}}
-  \;\approx\; a + b\,t_\mathrm{refl} + c\,p ,
-  \label{eq:bridge}
+\frac{F_{\Delta H}^\mathrm{core}}{F_{\Delta H}^\mathrm{asm}}
+\approx a + b\,t_\mathrm{refl} + c\,p
+\label{eq:bridge}
 \end{equation}
-to quantify how much of the gap a low-dimensional correction could
-carry.
 
-The Campaign-4 decision follows from cost: the core BOL solve costs
-$\sim$104\,s against a $\sim$110\,min evaluation,
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $F_{\Delta H}^\mathrm{core}$ and $F_{\Delta H}^\mathrm{asm}$
+        are the peaking factors of the same design at core and assembly
+        level, dimensionless.
+
+  \item $a$ is the fitted intercept, dimensionless.
+
+  \item $b$ is the fitted coefficient of the reflector thickness, in
+        cm$^{-1}$.
+
+  \item $c$ is the fitted coefficient of the pin pitch, in cm$^{-1}$.
+
+  \item $t_\mathrm{refl}$ is the reflector thickness, in cm.
+
+  \item $p$ is the pin pitch, in cm.
+\end{itemize}
+
+The purpose of the fit is to quantify how much of the gap a
+low-dimensional correction could carry. The fitted values on the
+Campaign-3 archive are given in Equation~\eqref{eq:bridge-fit}.
+
+The Campaign-4 decision follows from cost. The core BOL solve costs
+$\sim$104\,s against a $\sim$110\,min evaluation.
+
 \begin{equation}
-  \frac{\Delta t}{t} \;\approx\; \frac{113 - 110}{110}
-  \;\approx\; 3\%,
-  \label{eq:corecost}
+\frac{\Delta t}{t} \approx \frac{113 - 110}{110} \approx 3\%
+\label{eq:corecost}
 \end{equation}
-(measured wall times), so the true quantity is measured
-\emph{inside the loop} rather than corrected: $F_{\Delta H}$ and
-$g_\mathrm{peak}$ are evaluated on the core, the assembly value is
-retained as a diagnostic, and EFPD keeps the validated assembly +
-Route-B evaluation. This is the deletion of the proxy where deletion is
-affordable, preferred over co-kriging or trust-region model
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $\Delta t$ is the measured wall-time increment of one
+        evaluation when the core BOL solve is added, in min.
+
+  \item $t$ is the measured wall time of one evaluation without the
+        core solve, in min.
+
+  \item $113$ and $110$ are the measured wall times with and without
+        the core solve, in min.
+\end{itemize}
+
+At this cost the true quantity is measured \emph{inside the loop}
+rather than corrected. $F_{\Delta H}$ and $g_\mathrm{peak}$ are
+evaluated on the core, the assembly value is retained as a diagnostic,
+and EFPD keeps the validated assembly plus Route-B evaluation. This is
+the deletion of the proxy where deletion is affordable, preferred over
+co-kriging or trust-region model
 management~\cite{alexandrov_2001,poloczek_miso_2017,kandasamy_boca_2017}
 on simplicity grounds.
 
@@ -540,9 +673,9 @@ every observed difference is attributable
     \toprule
     & Evals & The one change & Outcome / role \\
     \midrule
-    C1 & 72 & --- (shakedown) & geometry defect found; $g_\mathrm{geom}$ born \\
-    C2 & 84 & analytic $g_\mathrm{geom}$ & estimator bias found; ranking inverted \\
-    C3 & 72 & fidelity + per-design seeds + in-loop ATF & converged; proxy gap found \\
+    C1 & 72 & none (shakedown) & geometry defect found, $g_\mathrm{geom}$ born \\
+    C2 & 84 & analytic $g_\mathrm{geom}$ & estimator bias found, ranking inverted \\
+    C3 & 72 & fidelity + per-design seeds + in-loop ATF & converged, proxy gap found \\
     C4 & running & $F_{\Delta H}$, $g_\mathrm{peak}$ $\to$ core level & constraint conflict mapped \\
     C5 & proposal & Gd pin count as variable & absorber-inventory lever \\
     \bottomrule
@@ -554,37 +687,45 @@ every observed difference is attributable
 
 The coolant carries a \textbf{constant 1000\,ppm} of natural boron in
 all campaigns, matching the NuScale-like benchmark
-conditions~\cite{nuscale_like_core_2024}. Real operation instead
-\emph{lets boron down} continuously toward $\sim$0\,ppm at end of
-cycle; and naval practice avoids soluble boron altogether, controlling
-with burnable absorbers and rods
-(soluble-boron-free SMR practice~\cite{ismr_sbf_2024,acp100_physor2020}).
+conditions~\cite{nuscale_like_core_2024}.
 
-Two consequences are recorded rather than fixed here. Removing the
-boron \emph{raises} beginning-of-life reactivity by
-$\Delta k \approx +0.08$ to $+0.10$, tightening $g_{k\max}$ and shifting
-the entire feasibility envelope --- boron-free is more realistic for the
-naval mission but makes the reactivity problem harder, not easier.
-Second, the constant-boron end-of-cycle criterion is conservative for
-below-cap designs (a real core dilutes and runs longer), with a bias
-that is enrichment-dependent. Under the one-change rule the treatment is
-kept fixed through Campaign~4; the planned Campaign-5 decision is
-preceded by a direct measurement (two finalists re-depleted at 0\,ppm)
-so the design-basis choice rests on numbers, not estimates.
+Real operation differs in two ways. An operating PWR \emph{lets boron
+down} continuously toward $\sim$0\,ppm at end of cycle. Naval practice
+avoids soluble boron altogether and controls with burnable absorbers
+and rods~\cite{ismr_sbf_2024,acp100_physor2020}.
+
+Two consequences are recorded rather than fixed here.
+
+\begin{enumerate}
+  \item Removing the boron \emph{raises} beginning-of-life reactivity
+        by $\Delta k \approx +0.08$ to $+0.10$, tightening $g_{k\max}$
+        and shifting the entire feasibility envelope. Boron-free is
+        more realistic for the naval mission but makes the reactivity
+        problem harder, not easier.
+
+  \item The constant-boron end-of-cycle criterion is conservative for
+        below-cap designs, because a real core dilutes and runs longer,
+        with a bias that is enrichment-dependent.
+\end{enumerate}
+
+Under the one-change rule the treatment is kept fixed through
+Campaign~4. The planned Campaign-5 decision is preceded by a direct
+measurement, with two finalists re-depleted at 0\,ppm, so the
+design-basis choice rests on numbers, not estimates.
 
 \section{Diagnostics, environments, reproducibility}
 \label{sec:meth-diagnostics}
 
 Shannon-entropy source-convergence monitoring is attached to every
-model; the reflective single assembly is source-converged from batch~1,
-while the finite core has a real transient --- one core case converged
-only at batch~94, hence the generous 60--120 inactive batches of the
-core solves, with a per-run sentinel recorded in the archive.
+model. The reflective single assembly is source-converged from
+batch~1. The finite core has a real transient, and one core case
+converged only at batch~94, hence the generous 60--120 inactive batches
+of the core solves, with a per-run sentinel recorded in the archive.
 
 All work runs on a 64-core workstation without administrative
 privileges. The reproducibility unit is the build-pinned Conda
-environment (bit-identical OpenMC binaries, verified by smoke execution
-and $k_\infty$ agreement); checkpoints, the $k$-target table, every
-analysis script and every figure generator are version-controlled, so
-each reported number and figure is reproducible from the repository
-alone.
+environment, with bit-identical OpenMC binaries verified by smoke
+execution and $k_\infty$ agreement. Checkpoints, the $k$-target table,
+every analysis script and every figure generator are
+version-controlled, so each reported number and figure is reproducible
+from the repository alone.
