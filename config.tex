@@ -1,0 +1,54 @@
+\setlength\parindent{0pt} % to set no indentation
+\raggedbottom  
+
+% Define the foooter for the title page
+\pagestyle{fancy}
+\fancyhf{}
+% Outer header: chapter title; inner header: section title.
+% Truncate both to avoid them colliding/overprinting when titles are long.
+\fancyhead[RO,LE]{\truncate{.48\headwidth}{\textsc{\nouppercase{\leftmark}}}}
+\fancyhead[RE,LO]{\truncate{.48\headwidth}{\textsc{\nouppercase{\rightmark}}}}
+\fancyfoot[C]{\thepage}
+	\renewcommand{\chaptermark}[1]{%
+  		\markboth{\textsc{%
+    		\ifnum\value{chapter}>0
+      	Ch.\thechapter : % with a space!
+    		\fi
+    		#1%
+  		}}{}%
+		}
+\fancypagestyle{specialfooter}{%
+  \fancyhf{}
+  \renewcommand\headrulewidth{0.5pt}
+  \renewcommand\footrulewidth{0.5pt}
+  \fancyfoot[C]{\textcolor{blueunipi}{\textsc{Academic Year 20XX/20XX}}}
+}
+\fancypagestyle{specialheader}{%
+  \fancyhf{}
+  \renewcommand\headrulewidth{0pt}
+  \fancyhead[C]{}
+  \fancyfoot[C]{\thepage}
+}
+% Define Abstract environment
+\newenvironment{abstract}
+               {\cleardoublepage\null\vfill\begin{center}%
+                \bfseries\abstractname\end{center}}%
+               {\vfill\null}
+% University of Pisa official color "Blu pantone 541"
+\definecolor{blueunipi}{cmyk}{1.0,0.57,0,0.38}
+%
+% Define the Chapter Title format
+\titleformat{\chapter}[hang]{\fontsize{40}{0}\selectfont\bfseries\filright}
+                            {\textcolor{blueunipi} \thechapter\hspace{5pt}\textcolor{blueunipi}{$\vert$}\hspace{10pt}}
+                            {0pt}
+                            {\huge\bfseries\textcolor{blueunipi}}
+%
+% Section and subsection color
+\sectionfont{\color{blueunipi}}
+\subsectionfont{\color{blueunipi}}
+\subsubsectionfont{\color{blueunipi}}
+%
+% Define the global line spacing (default is one-half line spacing)
+%\singlespacing
+\onehalfspacing
+%\doublespacing

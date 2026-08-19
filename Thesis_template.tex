@@ -1,0 +1,223 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LaTeX template for the preparation of the thesis to be submitted in %
+% partial fulfilment of the requirements for the Master of Science    %
+% Degree in Nuclear Engineering of the Pisa University.               %
+%                                                                     %
+% Written by V. Giusti                                                %
+% e-mail: valerio.giusti@unipi.it                                     %
+%                                                                     %
+% Last Revision: May 2025                                           %
+% Released under the CC-NC-BY license.                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt,twoside,openright]{book}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsfonts,lmodern}
+\usepackage{mathtools}     % an extension package to amsmath
+\usepackage{bm}            % to allow bold math
+\usepackage{booktabs} 
+\usepackage[squaren]{SIunits}
+\usepackage[fit]{truncate} % to shorten running titles
+\usepackage{fancyhdr}      % to define headers and footers
+\usepackage{tikz}          % to elaborate complex graphics
+\usepackage{ctable}        % to handle complex tables
+\usepackage{multirow}      % to allow multirows and multicolumns
+\usepackage{enumitem}      % to customize list environments
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=3.0cm,right=2.5cm]{geometry} % flexible and easy interface to page dimensions
+\usepackage[font=singlespacing,font=footnotesize]{caption} % allow for a smaller font size for figure and table captions
+\usepackage[title]{appendix}
+\usepackage{microtype}     % to enhance appearance and readability
+\usepackage{natbib}
+\usepackage{lipsum}
+\usepackage{sectsty}           % to change style of sectional  headers
+\usepackage{titlesec}          % to select alternative section titles
+\usepackage[overload]{empheq}  % for braced-style systems of equations (to treat a set of equations as boxed)
+\usepackage{parskip}           % to handle the paragraph layout
+\usepackage{setspace}          % to set spacing between lines in a document
+\usepackage{./xreview/xreview} % to allow document review
+\authoredcomments[color=cyan]{author}
+\authoredcomments[color=orange]{reviewer}
+\usepackage{hyperref}      % to hanlde hyperlinks
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=.,
+    filecolor=magenta,      
+    urlcolor=blue,
+    }
+\usepackage{url}
+\graphicspath{{images/}{images/figs_thesis/}{images/figs_bg/}}
+%
+%%% The default font is Computer Modern.                      %%%
+%%% A list of LaTeX fonts and informationon how to use them   %%%
+%%% is available at this link: https://tug.org/FontCatalogue/ %%%
+%%% Here below a couple of example                            %%%
+%%%            !!!CHANGE FONT AT YOUR OWN RISK!!!             %%%
+%%%     - Computer Modern Sans Serif with Sansmathfonts -     %%%
+%\usepackage{sansmathfonts}
+%\usepackage[T1]{fontenc}
+%\renewcommand*\familydefault{\sfdefault} %% Only if the base font of the document is to be sans serif
+%%%                  - URW Nimbus Roman -                     %%%
+%\usepackage{mathptmx}
+%\usepackage[T1]{fontenc}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Definition of useful command can be added here below:
+\newcommand{\ud}{\mathop{}\mathrm{d}} % use \ud in formulae for the total derivative symbol 'd'
+\newcommand{\func}[2]{{#1}\negthinspace\left({#2}\right)} % use \func{#1}{#2} to write funtions: e.g. \func{f}{x} -> f(x)
+
+\input{config.tex}
+
+\begin{document}
+\frontmatter
+
+\begin{titlepage}
+% Double line spacing is used only for the Title Page
+\doublespacing
+\begin{center}
+% Include the University of Pisa logo
+\includegraphics[width=0.6\textwidth]{./images/marchio_unipi_pant541}
+\\[3.5cm]
+% Add here below the thesis title and eventually the thesis subtitle
+% If subtitle is not needed comment the corresponding line
+{\Large \textsc{Parametric Neutronic Analysis of a Compact $UO_2$-Fueled SMR Core With LEU Using OpenMC}}\\
+{\large \textsc{Thesis subtitle (if needed)}}\\[1.5cm]
+Submitted in partial fulfilment of the requirements for the\\
+\textsc{\Large Master of Science Degree in}\\
+\textsc{\Large Nuclear Engineering}\\[5.0cm]
+% Add the name of candidate
+\begin{minipage}[t]{0.45\textwidth}
+	\flushleft {\large
+	\textsc{Candidate}}\\
+	Diôgo Cavalcante Rodrigues Lopes\\
+\end{minipage}
+% Add the names of supervisors (adjust the number of lines as needed)
+\begin{minipage}[t]{0.45\textwidth}
+	\flushright 
+	{\large\textsc{Supervisors}}\\
+	{Prof. Valerio Giusti\\
+	 Prof. Riccardo Ciolini\\}
+\end{minipage}
+\end{center}
+\thispagestyle{specialfooter}
+\end{titlepage}
+
+\setlength{\abovedisplayskip}{5pt}
+\setlength{\belowdisplayskip}{10pt}
+\setlength{\abovedisplayshortskip}{5pt}
+\setlength{\belowdisplayshortskip}{10pt}
+
+% Dedication page (if not needed comment the next 5 lines)
+\begin{flushright}
+\null\vspace{\stretch{0.5}}
+\textit{Dedication}
+\vspace{\stretch{2}}\null
+\end{flushright}
+
+\chapter*{Abstract}
+\thispagestyle{specialheader}
+\markboth{}{}
+\addcontentsline{toc}{chapter}{Abstract}
+\lipsum[1]
+
+\chapter*{Acknowledgments}
+\thispagestyle{specialheader}
+\markboth{}{}
+\addcontentsline{toc}{chapter}{Acknowledgments}
+\lipsum[1]
+
+\tableofcontents
+\thispagestyle{specialheader}
+\markboth{}{}
+\addcontentsline{toc}{chapter}{Table of Contents}
+
+\listoffigures
+\thispagestyle{specialheader}
+\markboth{}{}
+\addcontentsline{toc}{chapter}{List of figures}
+
+\listoftables
+\thispagestyle{specialheader}
+\markboth{}{}
+\addcontentsline{toc}{chapter}{List of tables}
+
+\mainmatter
+
+\chapter*{Introduction}\label{s.intro}
+% Do not change the following three lines
+\thispagestyle{specialheader}
+\markboth{}{}
+\addcontentsline{toc}{chapter}{Introduction}
+% Start writing the Introduction from below
+\lipsum[1]
+
+%Aqui
+
+\input{introduction}
+
+\input{literature_review}
+
+\input{background}
+
+\input{methodology}
+
+\input{results}
+
+\chapter{Conclusion}\label{ch.concl}
+\lipsum[1]
+
+\begin{appendices}
+\chapter{Appendix A title}\label{s.appA}
+\lipsum[1]
+\newpage
+
+% Add more appendices if needed, or comment the above one if no Appendices are necessary.
+%\chapter{Appendix Title}\label{s.appB}
+%\lipsum[1]
+%\newpage
+
+\end{appendices}
+
+\backmatter
+\addcontentsline{toc}{chapter}{\bibname}
+\bibliographystyle{apalike}
+% The bibliographic references are stored in a separate file: biblio.bib
+\bibliography{references_partial}
+
+\chapter*{List of acronyms (optional)}
+% If you need a long list of acronyms, using the glossaries package can be of great advantage:
+% e.g. \usepackage[toc,acronyms,nonumberlist]{glossaries}
+% Otherwise you can do it by yourself filling the following table.
+\addcontentsline{toc}{chapter}{List of acronyms}
+\thispagestyle{specialheader}
+\markboth{}{}
+\begin{table}[!htb]
+\begin{tabular}{lll}
+\textbf{Acronym} &   & \textbf{Definition} \\
+\hline\\[-2mm]
+BOC  &  & Beginning of cycle \\[1mm]
+EOC  &  & End of cycle       \\[1mm]
+HZP  &  & Hot zero power     \\[1mm]
+$\ldots$ &  & $\ldots$       \\[1mm]
+\end{tabular}
+\end{table}
+
+\chapter*{List of symbols (optional)}
+% The glossaries package can also be useful to create a list of symbols. If necessary, you can have a look at the following webpage:
+% https://tex.stackexchange.com/questions/348640/how-to-effectively-use-list-of-symbols-for-a-thesis
+% Otherwise you can do it by yourself filling the following table.
+\addcontentsline{toc}{chapter}{List of symbols}
+\thispagestyle{specialheader}
+\markboth{}{}
+\begin{table}[!htb]
+\begin{tabular}{lll}
+\textbf{Symbol}   & \textbf{Definition} & \textbf{Units (SI)} \\
+\hline\\[-2mm]
+$\Phi$   & neutron flux & $cm^{-2}s^{-1}$ \\[1mm]
+$\ldots$ & $\ldots$     & $\ldots$        \\[1mm]
+\end{tabular}
+\end{table}
+
+\end{document}
