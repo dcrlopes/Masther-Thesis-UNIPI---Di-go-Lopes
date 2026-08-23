@@ -729,8 +729,10 @@ this work.
 The Non-dominated Sorting Genetic Algorithm II
 (NSGA-II)~\cite{deb_nsga2_2002} is the engine that produces candidate
 Pareto sets. It belongs to the family of genetic algorithms, which
-mimic selection and inheritance on a population of candidate
-solutions~\cite{goldberg_1989}.
+mimic natural selection on a population of candidate
+solutions~\cite{goldberg_1989}. Each design is an individual, its
+design vector plays the role of its genes, and better individuals are
+given more descendants.
 
 A genetic algorithm iterates four operations.
 
@@ -749,13 +751,70 @@ A genetic algorithm iterates four operations.
 \end{enumerate}
 
 The step that does not survive the move to two objectives is the first
-one, because "better" is no longer a single number. NSGA-II replaces
-scalar fitness with two rankings computed on the current
-population~\cite{deb_nsga2_2002,deb_2001}.
+one, because "better" is no longer a single number. A design with a
+longer cycle and a design with a lower peaking factor are both better
+than each other in one respect. NSGA-II resolves this with two rankings
+computed on the current population, one that measures quality and one
+that measures diversity~\cite{deb_nsga2_2002,deb_2001}.
 
-The first ranking is \emph{non-dominated sorting}. All designs
-dominated by nobody form rank 1. Removing them, the non-dominated
-remainder forms rank 2, and so on. A lower rank is always preferred.
+\subsubsection*{Comparing two designs}
+
+The basic comparison is the dominance of Section~\ref{sec:bg-moo}, and
+Figure~\ref{fig:bg-nsga2-sorting}(a) shows everything it can say. Any
+design $X$ splits the objective plane into four quadrants.
+
+\begin{enumerate}
+  \item Designs that are at least as good in both objectives and
+        strictly better in at least one \emph{dominate} $X$.
+
+  \item Designs that are at least as bad in both, one strictly, are
+        \emph{dominated by} $X$.
+
+  \item Designs in the two remaining quadrants trade one objective
+        against the other. They are \emph{incomparable} with $X$, and
+        dominance is silent about them.
+\end{enumerate}
+
+Incomparability is not a defect of the definition. It is the honest
+statement that, between a longer cycle and a flatter power
+distribution, no preference has been imposed yet. Near a Pareto front
+almost every pair of designs is incomparable, which is exactly why a
+second ranking is needed.
+
+\subsubsection*{Non-dominated sorting}
+
+The first ranking turns dominance into an integer grade for every
+design, by peeling the population like an onion.
+
+\begin{enumerate}
+  \item Find every design that no other design dominates. These form
+        \emph{rank 1}, the current best front.
+
+  \item Set rank 1 aside and repeat the test on the remainder. The
+        designs now dominated by nobody form \emph{rank 2}.
+
+  \item Continue until every design has been assigned to a rank.
+\end{enumerate}
+
+The rank of a design therefore counts how many fronts must be removed
+before that design becomes non-dominated. Every design receives exactly
+one rank, a lower rank is always preferred, and designs of the same
+rank are mutually incomparable.
+Figure~\ref{fig:bg-nsga2-sorting}(b) shows a population peeled into
+four ranks.
+
+\begin{figure}[!tbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/bg_nsga2_sorting.pdf}
+  \caption{Dominance and non-dominated sorting.
+  (a)~The four quadrants of one design $X$: dominated by $A$,
+  dominating $B$, incomparable with the rest.
+  (b)~Sorting peels the population into ranks, each rank the
+  non-dominated front of what remains.}
+  \label{fig:bg-nsga2-sorting}
+\end{figure}
+
+\subsubsection*{Crowding distance}
 
 The second ranking breaks ties inside a rank and protects diversity.
 The \emph{crowding distance} of a design measures how isolated it is
@@ -787,25 +846,125 @@ d_i = \sum_{m=1}^{M}
         discarded.
 \end{itemize}
 
-A design with a large crowding distance sits in a sparsely populated
-stretch of the front, and keeping it preserves the spread of
-trade-offs. Selection then follows one rule with one tie-breaker: lower
-rank wins, and at equal rank the larger crowding distance wins.
+Geometrically, $d_i$ is the normalised perimeter of the box spanned by
+the two neighbours of design $i$, shown in
+Figure~\ref{fig:bg-nsga2-crowding}. A design in a sparsely populated
+stretch of the front has distant neighbours, a large box and a large
+$d_i$, and keeping it preserves a trade-off option that no other design
+represents. A design inside a tight cluster is nearly redundant and is
+the first to be discarded.
 
-Constraints enter through \emph{constrained
-domination}~\cite{deb_nsga2_2002}, which extends the comparison to
-infeasible designs.
+Selection then follows one rule with one tie-breaker: lower rank wins,
+and at equal rank the larger crowding distance wins.
+
+\begin{figure}[!tbp]
+  \centering
+  \includegraphics[width=0.8\linewidth]{images/bg_nsga2_crowding.pdf}
+  \caption{The crowding distance of Equation~\eqref{eq:crowding} is the
+  normalised perimeter of the box spanned by a design's two neighbours
+  along the front. Isolated designs score high, clustered designs score
+  low, boundary designs are always kept.}
+  \label{fig:bg-nsga2-crowding}
+\end{figure}
+
+\subsubsection*{Constrained domination}
+
+A constrained problem adds a difficulty: most designs the search
+generates violate at least one constraint, and simply discarding them
+would leave selection with nothing to act on. In the extreme case of a
+population with no feasible member at all, the algorithm would halt for
+lack of a comparison. NSGA-II instead extends dominance so that any two
+designs can always be compared, using the total constraint
+violation~\cite{deb_nsga2_2002}.
+
+\begin{equation}
+V(\mathbf{x}) = \sum_{j=1}^{5} \max\bigl( 0,\, g_j(\mathbf{x}) \bigr)
+\label{eq:violation}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $V(\mathbf{x})$ is the total constraint violation of design
+        $\mathbf{x}$, dimensionless, equal to zero exactly when the
+        design is feasible.
+
+  \item $g_j(\mathbf{x})$ is the $j$-th constraint of
+        Table~\ref{tab:constraints} in normalised form, dimensionless,
+        feasible when non-positive.
+
+  \item $\max(0, \cdot)$ keeps only the violated part, so satisfied
+        constraints contribute nothing and cannot compensate for
+        violated ones.
+\end{itemize}
+
+\emph{Constrained domination} compares any pair of designs by three
+rules, applied in order, restating Definition~1 of
+Deb et al.~\cite{deb_nsga2_2002}.
 
 \begin{enumerate}
   \item A feasible design always beats an infeasible one.
 
-  \item Between two infeasible designs, the smaller total constraint
-        violation wins.
+  \item Between two infeasible designs, the smaller total violation
+        $V$ wins. Objective values are ignored.
 
-  \item Between two feasible designs, ordinary dominance decides.
+  \item Between two feasible designs, Pareto dominance decides,
+        %
+        \begin{equation}
+        \begin{split}
+          \mathbf{x}^{(a)} \prec \mathbf{x}^{(b)}
+          \iff
+          & \forall i \in \{1,2\} :
+            f_i\bigl(\mathbf{x}^{(a)}\bigr) \le f_i\bigl(\mathbf{x}^{(b)}\bigr) \\
+          & \wedge\
+            \exists j \in \{1,2\} :
+            f_j\bigl(\mathbf{x}^{(a)}\bigr) < f_j\bigl(\mathbf{x}^{(b)}\bigr) 
+        \end{split}
+        \label{eq:pareto-dominance-feasible}
+        \end{equation}
+        %
+        The symbols carry the following meaning.
+        \begin{itemize}
+          \item $\mathbf{x}^{(a)}, \mathbf{x}^{(b)}$: two feasible
+                design vectors, dimensionless.
+          \item $\prec$: the dominance relation, read as
+                \emph{dominates}, dimensionless.
+          \item $f_1$: the cycle length in Effective Full Power Days
+                (EFPD), negated so that maximisation becomes
+                minimisation, in days.
+          \item $f_2$: the radial enthalpy-rise hot-channel factor
+                $F_{\Delta H}$, dimensionless.
+          \item $i, j$: objective indices, dimensionless.
+        \end{itemize}
+        If neither design dominates, both receive the same rank and
+        the crowding distance of Equation~\eqref{eq:crowding} breaks
+        the tie.
 \end{enumerate}
 
-One full generation of NSGA-II therefore reads as follows.
+Figure~\ref{fig:bg-nsga2-thesis}(a) shows the three rules acting on a
+mixed population. Rule 2 keeps a fully infeasible population
+completely ordered, so selection still moves toward the feasible
+region instead of stalling.
+
+\begin{figure}[!tbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/bg_nsga2_thesis.pdf}
+  \caption{Constrained domination, illustrative data.
+  (a)~With a mixed population, feasible designs compete by ordinary
+  dominance and collectively outrank every infeasible design.
+  (b)~With no feasible design, the situation of the Campaign-4 design
+  of experiments, rule 2 orders the population by total violation
+  $V$ of Equation~\eqref{eq:violation}. The design below the boundary
+  violates a constraint that these axes cannot show, which is why $V$
+  is computed over all five constraints and not read off the objective
+  plane.}
+  \label{fig:bg-nsga2-thesis}
+\end{figure}
+
+\subsubsection*{One generation}
+
+With the comparisons in place, one full elitist generation of NSGA-II
+reads as follows, and Figure~\ref{fig:bg-nsga2-generation} traces it.
 
 \begin{enumerate}
   \item Generate offspring from the current population of size $N$ by
@@ -826,28 +985,42 @@ One full generation of NSGA-II therefore reads as follows.
         final population is the candidate Pareto set.
 \end{enumerate}
 
+\begin{figure}[!tbp]
+  \centering
+  \includegraphics[width=0.95\linewidth]{images/bg_nsga2_generation.pdf}
+  \caption{One elitist generation. Parents and offspring are pooled,
+  sorted into ranks, and the next population is refilled rank by rank,
+  with the crowding distance splitting the last rank that fits.}
+  \label{fig:bg-nsga2-generation}
+\end{figure}
+
 \paragraph{In this thesis.}
 The population lives in the five-dimensional design space of
 Table~\ref{tab:design-space}, handled internally on the unit hypercube,
 and is judged on the two objectives of
 Section~\ref{sec:objective_functions}, with EFPD negated, under the
 five constraints of Table~\ref{tab:constraints} in the
-$g \le 0$ convention. The decisive point is that NSGA-II never calls
-OpenMC. It searches the Gaussian-process surrogate of
-Section~\ref{sec:bg-gp}, in the production configuration with a
-population of 60 evolved for 80 generations per active-learning
-iteration, initialised by Latin hypercube sampling with a fresh random
-seed each iteration, so that one complete search costs seconds instead
-of months. Constrained domination is also what keeps the search alive
-when the surrogate predicts no feasible region at all, the situation of
-the Campaign-4 design of experiments in Section~\ref{sec:res-c4}. In
-that case the final population is ranked by total constraint violation
-and its least-infeasible members are handed to the infill step, which
-is the constraint-violation-driven mode noted there.
+$g \le 0$ convention that Equation~\eqref{eq:violation} consumes. The
+decisive point is that NSGA-II never calls OpenMC. It searches the
+Gaussian-process surrogate of Section~\ref{sec:bg-gp}, in the
+production configuration with a population of 60 evolved for 80
+generations per active-learning iteration, initialised by Latin
+hypercube sampling with a fresh random seed each iteration, so that one
+complete search costs seconds instead of months. Constrained domination
+is also what kept the search alive at the Campaign-4 design of
+experiments, where all 36 designs were infeasible and selection was
+governed entirely by rule 2. In that case the final population is
+ranked by total violation and its least-infeasible members are handed
+to the infill step, which is the constraint-violation-driven mode of
+Section~\ref{sec:res-c4}, and the situation drawn in
+Figure~\ref{fig:bg-nsga2-thesis}(b).
 %% AUTHOR: confirm population 60 and 80 generations against the
 %% campaign checkpoints. These are the full-run defaults of
 %% run_optimization.py, but a command-line override at launch would not
 %% appear in the repository defaults.
+
+\FloatBarrier
+
 
 \subsection{Gaussian-process surrogates}
 \label{sec:bg-gp}
