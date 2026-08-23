@@ -324,6 +324,16 @@ distribution and are visible in Figure~\ref{fig:bg-pin}.
         transfer that power to the pins around them.
 \end{enumerate}
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.72\linewidth]{images/bg_pin_power.pdf}
+  \caption{Synthetic pin-power map on the thesis lattice, illustrating
+  the origin of $F_{\Delta H}$. Grey positions are guide tubes. Ringed
+  pins carry gadolinia and depress their own power, which is the reason
+  a maximum-based estimator is structurally blind to the absorber.}
+  \label{fig:bg-pin}
+\end{figure}
+
 Two properties of the figure of merit matter for the chapters that
 follow.
 
@@ -338,15 +348,7 @@ follow.
         Section~\ref{sec:bg-mc}.
 \end{enumerate}
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.72\linewidth]{images/bg_pin_power.pdf}
-  \caption{Synthetic pin-power map on the thesis lattice, illustrating
-  the origin of $F_{\Delta H}$. Grey positions are guide tubes. Ringed
-  pins carry gadolinia and depress their own power, which is the reason
-  a maximum-based estimator is structurally blind to the absorber.}
-  \label{fig:bg-pin}
-\end{figure}
+
 
 \section{Gadolinia burnable absorbers}
 \label{sec:bg-gd}
@@ -514,11 +516,22 @@ Section~\ref{sec:res-corevalidation}.
 \section{The dual optimisation process}
 \label{sec:bg-moo}
 
-The optimisation of this thesis is built around a tension between two
+The optimisation of this thesis is built around a trade-off between two
 costs. One evaluation of the truth, a coupled OpenMC transport and
-depletion calculation, takes of the order of hours. A population-based
-search needs of the order of $10^{4}$ evaluations to converge. Coupling
-the two directly is therefore computationally prohibitive.
+depletion calculation, takes of the order of hours.
+
+A population-based search is one that carries many candidate designs at
+once and improves them collectively rather than following a single
+trajectory. The search used here, NSGA-II, is of that kind. It evolves
+a population of 60 designs over 80 generations, which is 4800 objective
+evaluations for one search, and one such search is performed at every
+iteration of the loop.
+
+At the measured cost of a single evaluation, roughly 110 minutes, one
+search alone would require about one year of continuous computation,
+and a campaign of eight iterations would require close to a decade.
+Coupling the search directly to the transport code is therefore
+computationally prohibitive.
 
 The resolution is a \emph{dual} process with two stages of very
 different cost~\cite{forrester_book_2008,kit_inr_proposal}.
@@ -547,6 +560,17 @@ objectives and strictly better in at least one of them. The
 non-dominated subset of a design archive is its Pareto set, and the
 corresponding attainment staircase in objective space is the Pareto
 front, illustrated in Figure~\ref{fig:bg-pareto}.
+
+\begin{figure}[!tbp]
+  \centering
+  \includegraphics[width=0.82\linewidth]{images/bg_pareto_hv.pdf}
+   \caption{Dominance, the Pareto front and hypervolume in the objective
+  orientation of this thesis. Cycle length is maximised and
+  $F_{\Delta H}$ is minimised, so the non-dominated set forms the
+  lower-right attainment staircase and the reference point lies at the
+  worst value of both objectives.}
+  \label{fig:bg-pareto}
+\end{figure}
 
 One sign convention simplifies everything that follows. Optimisation
 libraries minimise by default, so the maximised objective of this
@@ -594,8 +618,9 @@ scalar~\cite{zitzler_thiele_1999,coello_2007}.
         reference.
 \end{itemize}
 
-The construction can be followed step by step on
-Figure~\ref{fig:bg-pareto}.
+The construction can be followed panel by panel in
+Figure~\ref{fig:bg-hv-construction}, whose four panels correspond to
+the four steps below.
 
 \begin{enumerate}
   \item Fix the reference point once, at a value worse than any design
@@ -610,48 +635,93 @@ Figure~\ref{fig:bg-pareto}.
   \item The area of the union is the hypervolume.
 \end{enumerate}
 
+\begin{figure}[!tbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/bg_hv_construction.pdf}
+  \caption{The hypervolume construction of Equation~\eqref{eq:hv}, step
+by step. (a)~The reference point is fixed. (b)~One member spans its
+rectangle. (c)~All rectangles, overlaps counted once. (d)~The area of
+the union is the hypervolume.}
+  \label{fig:bg-hv-construction}
+\end{figure}
+
 Two properties make the indicator the right convergence diagnostic.
 First, it is strictly Pareto-compliant: the hypervolume increases if
 and only if the front moves outward or fills a gap, so it cannot be
 inflated by shuffling designs along an unchanged
 front~\cite{zitzler_thiele_1999}. Second, it rewards both convergence
 and spread simultaneously, because a front that covers a wider range of
-trade-offs dominates a larger region.
-
-Its one obligation is discipline about the reference point. The
-numerical value of the hypervolume depends on $\mathbf{r}$ and on the
-objective scaling, so only its \emph{evolution} under a fixed reference
-is meaningful. Comparing hypervolumes computed against different
-reference points compares nothing.
+trade-offs dominates a larger region. Figure~\ref{fig:bg-hv-gain} shows the only two mechanisms by which the
+indicator can grow.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.82\linewidth]{images/bg_pareto_hv.pdf}
-   \caption{Dominance, the Pareto front and hypervolume in the objective
-  orientation of this thesis. Cycle length is maximised and
-  $F_{\Delta H}$ is minimised, so the non-dominated set forms the
-  lower-right attainment staircase and the reference point lies at the
-  worst value of both objectives.}
-  \label{fig:bg-pareto}
+  \includegraphics[width=0.9\linewidth]{images/bg_hv_gain.pdf}
+  \caption{Growth of the hypervolume between two iterations. The two
+designs added at iteration $k+1$ enlarge the dominated region in the
+only two ways possible, an outward push and a filled gap.}
+  \label{fig:bg-hv-gain}
 \end{figure}
 
-\paragraph{In this thesis.}
-After every iteration the feasible archive is filtered to its
-non-dominated front in the $(-\mathrm{EFPD},\, F_{\Delta H})$ plane and
-Equation~\eqref{eq:hv} is evaluated on it. The reference point is
-frozen the first time a feasible front exists, at a 25\% margin beyond
-its worst values, precisely because a moving reference would invalidate
-the diagnostic. The resulting history is the quantity behind the first
-condition of the stopping rule of Section~\ref{sec:meth-loop},
-hypervolume gain below 1\% for three consecutive iterations, and behind
-the Campaign-3 convergence evidence of Section~\ref{sec:res-c3front},
-where Block 2 returned three consecutive exact zeros. Two boundary
-cases matter. When no feasible design exists, the front is undefined
-and the indicator is recorded as zero, which is the situation of the
-Campaign-4 design of experiments in Section~\ref{sec:res-c4}. And when
-the objective definition itself changes, as with the in-loop
-discharge-burnup cap of Section~\ref{sec:meth-atf}, the history is
-reset, because values across the change are not comparable.
+The indicator carries one obligation in exchange for its convenience.
+Its numerical value is not a property of the Pareto front alone. It is
+a property of the front \emph{together with} the reference point and
+the units in which the objectives are expressed.
+
+The point is best made by measuring one unchanged front from three
+different corners. The front used below is the five-member front of
+Figure~\ref{fig:bg-hv-construction}, and the first reference point is
+the one drawn in that figure. The other two are alternatives that could
+equally have been chosen, and are not shown.
+
+\begin{itemize}
+  \item $\mathbf{r} = (3000~\mathrm{EFPD},\, 1.60)$, the value used in
+        Figure~\ref{fig:bg-hv-construction}, gives
+        $\mathrm{HV} = 2886$.
+
+  \item $\mathbf{r} = (2500~\mathrm{EFPD},\, 1.80)$, a more permissive
+        corner, gives $\mathrm{HV} = 4638$.
+
+  \item $\mathbf{r} = (3000~\mathrm{EFPD},\, 1.45)$, a stricter corner,
+        gives $\mathrm{HV} = 1843$.
+\end{itemize}
+
+No design has moved between the three cases. The front is identical in
+all of them, and the reported value still varies by a factor of two and
+a half.
+
+The choice of units has the same effect. The hypervolume of a
+two-objective problem has the units of the product of its objectives,
+here effective full-power days multiplied by a dimensionless factor.
+Reporting cycle length in years rather than days divides every value by
+365.25 without changing a single design.
+
+An isolated hypervolume therefore states nothing about the quality of a
+front. It is closer in character to an altitude reading, which is
+meaningless until the datum is named, than to a physical property of
+the design set.
+
+What does carry meaning is the change in hypervolume between two
+iterations measured against one fixed reference point. The datum
+cancels, and the increase reports that the front has moved outward or
+filled a gap. This is the reason the stopping rule of
+Section~\ref{sec:meth-loop} is expressed as a relative gain over
+successive iterations rather than as an absolute threshold, because a
+percentage of a fixed datum survives the arbitrariness of that datum
+while a threshold value does not.
+
+Two rules of comparability follow, and both are respected throughout
+this work.
+
+\begin{enumerate}
+  \item Within one campaign the reference point is fixed once and never
+        revised, so every value in the history is comparable to every
+        other.
+
+  \item Across campaigns the values are not comparable whenever the
+        reference point or the definition of an objective has changed,
+        and no such comparison is drawn in Chapter~\ref{ch:results}.
+\end{enumerate}
 
 \subsection{The NSGA-II search}
 \label{sec:bg-nsga2}
