@@ -1,13 +1,5 @@
 % =====================================================================
 %  results.tex  --  Chapter 5 (Results and Discussion, to date)
-%
-%  REVISION NOTE (this version):
-%   1. Every displayed formula is followed by a term-by-term list with
-%      units. Enumerations set as lists. No semicolons, no em dashes.
-%   2. Spearman's coefficient written rho_S (matches eq:spearman in the
-%      background chapter and avoids the collision with reactivity).
-%   3. All numbers, tables and figures preserved verbatim.
-%
 %  Requires: booktabs, amsmath, graphicx.
 %  Figures: figs_thesis/th_*.pdf (generator committed) plus the
 %  campaign-generated figs/envelope_b2.pdf, gd_patterns.pdf,
@@ -30,9 +22,9 @@ optimiser ever since (Eq.~\ref{eq:renv}).
 
 Campaign 2 (84 evaluations, 44 feasible, $4\,000\times60$ fidelity)
 located the optimal region and exposed the estimator pathology
-(Table~\ref{tab:c2-summary}). The stored single-seed peaking values
-carried a bias \emph{larger than the front spread they ranked}.
-Resolving the candidates at high fidelity inverted the ranking: the
+(Table~\ref{tab:c2-summary}): the stored single-seed peaking values
+carried a bias \emph{larger than the front spread they ranked}, and
+resolving the candidates at high fidelity inverted the ranking --- the
 stored 4th became the true 1st, and the apparent winner fell to 7th,
 separated at $|t|=12.8$.
 
@@ -55,71 +47,28 @@ separated at $|t|=12.8$.
 \label{sec:res-c3doe}
 
 Campaign 3 (72 evaluations at $16\,000\times120$, per-design seeds, ATF
-limit in-loop) opens with a 36-point Latin hypercube. Of these, 11 are
-feasible (31\%), with the upper reactivity bound responsible for 21 of
-25 rejections.
-
-Regression over the archive gives the feasibility envelope, with
-$R^2 = 0.92$--$0.94$, stable from $n=36$ to $n=72$.
-
+limit in-loop) opens with a 36-point Latin hypercube: 11 feasible
+(31\%), with the upper reactivity bound responsible for 21 of 25
+rejections. Regression over the archive gives the feasibility envelope
+($R^2 = 0.92$--$0.94$, stable from $n=36$ to $n=72$):
 \begin{equation}
-k_\mathrm{BOL} = 0.894 + 0.215\,\ln e_\mathrm{vw} - 0.0066\,\mathrm{gd}
-\label{eq:envelope}
+  k_\mathrm{BOL} \;=\; 0.894 \;+\; 0.215\,\ln e_\mathrm{vw}
+  \;-\; 0.0066\,\mathrm{gd},
+  \qquad
+  e_\mathrm{vw} = 0.72\,e_\mathrm{out} + 0.28\,e_\mathrm{in}.
+  \label{eq:envelope}
 \end{equation}
 
-\begin{equation}
-e_\mathrm{vw} = 0.72\,e_\mathrm{out} + 0.28\,e_\mathrm{in}
-\label{eq:evw}
-\end{equation}
-
-\noindent where the symbols have the following meaning.
-
-\begin{itemize}
-  \item $k_\mathrm{BOL}$ is the beginning-of-life multiplication factor
-        of the reflective assembly at the fixed 1000\,ppm boron
-        concentration, dimensionless.
-
-  \item $e_\mathrm{vw}$ is the volume-weighted enrichment, in wt\%
-        $^{235}$U, entering the logarithm as a pure number in wt\%.
-
-  \item $e_\mathrm{out}$ and $e_\mathrm{in}$ are the outer-zone and
-        inner-zone enrichments, in wt\% $^{235}$U.
-
-  \item $\mathrm{gd}$ is the Gd$_2$O$_3$ concentration in the poisoned
-        pins, in wt\%.
-
-  \item $0.894$ is the fitted intercept, dimensionless.
-
-  \item $0.215$ is the fitted coefficient of the logarithmic enrichment
-        term, dimensionless.
-
-  \item $0.0066$ is the fitted absorber coefficient, in units of
-        $\Delta k$ per wt\% Gd$_2$O$_3$.
-
-  \item $0.72$ and $0.28$ are the pin-count fractions of the outer and
-        inner enrichment zones, dimensionless.
-\end{itemize}
-
-Three readings of Equation~\eqref{eq:envelope} organise the design
-space.
-
-\begin{enumerate}
-  \item Volume-weighted enrichment governs. The 72/28 zone split makes
-        $e_\mathrm{out}$ dominant by construction.
-
-  \item Gadolinium at the fixed twelve-pin pattern buys only
-        $\Delta k \approx 0.05$--$0.06$ over its full range, equivalent
-        to 2.7\,wt\% of enrichment headroom, against a literature
-        practice of 20--40 poisoned
-        pins~\cite{rr_smr_atf_2025,ismr_sbf_2024}.
-
-  \item Pitch emerges as the second feasibility lever, with a logistic
-        coefficient of $+1.67$ at $n=72$, behind only
-        $e_\mathrm{out}$. Over-moderation reaches criticality at low
-        enrichment.
-\end{enumerate}
-
-The envelope figure generated from the archive
+Three readings of Eq.~\eqref{eq:envelope} organise the design space.
+Volume-weighted enrichment governs: the 72/28 zone split makes
+$e_\mathrm{out}$ dominant by construction. Gadolinium at the fixed
+twelve-pin pattern buys only $\Delta k \approx 0.05$--$0.06$ over its
+full range --- 2.7\,wt\% of enrichment headroom --- against a
+literature practice of 20--40 poisoned
+pins~\cite{rr_smr_atf_2025,ismr_sbf_2024}. And pitch emerges as the
+second feasibility lever (logistic coefficient $+1.67$ at $n=72$,
+behind only $e_\mathrm{out}$): over-moderation reaches criticality at
+low enrichment. The envelope figure generated from the archive
 (\texttt{figs/envelope\_b2}) belongs here.
 
 \section{Campaign 3: convergence and the resolved front}
@@ -127,35 +76,28 @@ The envelope figure generated from the archive
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.86\linewidth]{th_hv_history}
-  \caption{Campaign-3 hypervolume. Block 1 delivers the gains. Block 2
-  returns three consecutive exact zeros, meeting the stopping rule with
+  \includegraphics[width=0.86\linewidth]{images/th_hv_history}
+  \caption{Campaign-3 hypervolume. Block 1 delivers the gains; Block 2
+  returns three consecutive exact zeros --- the stopping rule met with
   margin.}
   \label{fig:hv}
 \end{figure}
 
 Block behaviour carries information beyond the trajectory
-(Fig.~\ref{fig:hv}).
-
-\begin{enumerate}
-  \item Block-1 infill was \textbf{18/18 feasible} against the DOE's
-        31\%, showing that the surrogate learned the reactivity
-        boundary. Only 6/18 sat at the burnup cap, so the block walked
-        into the below-cap region where a trade-off exists.
-
-  \item Block 2 (7/18 feasible, 18/18 at the cap) probed the constraint
-        boundary of an already-stable front, the signature of
-        convergence seen from inside.
-\end{enumerate}
+(Fig.~\ref{fig:hv}): Block-1 infill was \textbf{18/18 feasible} against
+the DOE's 31\% --- the surrogate learned the reactivity boundary ---
+and only 6/18 at the burnup cap, walking into the below-cap region where
+a trade-off exists. Block 2 (7/18 feasible, 18/18 at the cap) probed
+the constraint boundary of an already-stable front: the signature of
+convergence seen from inside.
 
 High-fidelity resolution ($256\,000\times8$ seeds,
-Fig.~\ref{fig:plateau}) then reshapes the stored front
-(Table~\ref{tab:c3-resolved}).
+Fig.~\ref{fig:plateau}) then reshapes the stored front:
 
 \begin{table}[htbp]
   \centering
   \caption{Campaign-3 finalists after resolution. Shifts are
-  design-dependent ($-0.003$ to $-0.020$). The four plateau members are
+  design-dependent ($-0.003$ to $-0.020$); the four plateau members are
   pairwise unresolved.}
   \label{tab:c3-resolved}
   \begin{tabular}{lcccc}
@@ -168,41 +110,33 @@ Fig.~\ref{fig:plateau}) then reshapes the stored front
     cand1 & 1.1270 & $1.1244\pm0.0010$ & $-0.0026$ & 2\,904 \\
     \midrule
     cand6 & 1.1483 & $1.1291\pm0.0023$ & $-0.0192$ & 5\,358 \\
-    cand7 (capped) & 1.1522 & $1.1319\pm0.0038^{\dagger}$ & -- & 7\,513 \\
-    cand3 (capped) & 1.1397 & $1.1381\pm0.0037^{\dagger}$ & -- & 7\,513 \\
+    cand7 (capped) & 1.1522 & $1.1319\pm0.0038^{\dagger}$ & --- & 7\,513 \\
+    cand3 (capped) & 1.1397 & $1.1381\pm0.0037^{\dagger}$ & --- & 7\,513 \\
     \bottomrule
     \multicolumn{5}{l}{\footnotesize $^{\dagger}$64k measurement,
-    bias-adjusted to 256k. Cand7 beats cand3 at $|t|=3.38$ (measured).}
+    bias-adjusted to 256k; cand7 beats cand3 at $|t|=3.38$ (measured).}
   \end{tabular}
 \end{table}
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.9\linewidth]{th_c3_plateau}
+  \includegraphics[width=0.9\linewidth]{images/th_c3_plateau}
   \caption{Stored versus resolved peaking. The design-dependent bias
   re-orders the set a second time (after Campaign 2), and four designs
-  collapse into a peaking-equivalent plateau spanning a factor of two
-  in cycle length.}
+  collapse into a peaking-equivalent plateau spanning a factor of two in
+  cycle length.}
   \label{fig:plateau}
 \end{figure}
 
 The assembly-level result is therefore \textbf{a plateau, not a
-winner}. Four designs are statistically identical in $F_{\Delta H}$
-(1.1212--1.1244) while spanning 2\,904--5\,902\,EFPD. Above them sits
-the capped strategy at 7\,513\,EFPD, led by cand7, itself not separated
-from the plateau once bias-adjusted ($|t|=2.6$).
-
-Two engineering strategies emerge.
-
-\begin{enumerate}
-  \item A thick-reflector, high-enrichment capped design pressed
-        against the vessel ($g_\mathrm{geom}=-0.4$\,cm).
-
-  \item An over-moderated cluster, with pitch 1.41, enrichment
-        $\sim$5.3\,wt\% and a thin reflector.
-\end{enumerate}
-
-Both are shaped by the same scarce resource, the 90\,cm vessel radius
+winner}: four designs statistically identical in $F_{\Delta H}$
+(1.1212--1.1244) spanning 2\,904--5\,902\,EFPD, plus the capped
+strategy at 7\,513\,EFPD led by cand7 --- itself not separated from the
+plateau once bias-adjusted ($|t|=2.6$). Two engineering strategies
+emerge: a thick-reflector, high-enrichment capped design pressed
+against the vessel ($g_\mathrm{geom}=-0.4$\,cm), and an over-moderated
+cluster (pitch 1.41, enrichment $\sim$5.3\,wt\%, thin reflector) ---
+both shaped by the same scarce resource, the 90\,cm vessel radius
 (Eq.~\ref{eq:renv}).
 %% AUTHOR: 2-3 sentences of physics on the two strategies (reflector
 %% leakage vs over-moderation; MTC risk of the wide-pitch cluster).
@@ -216,7 +150,7 @@ reflective assembly cannot see (Table~\ref{tab:core-finalists}).
 \begin{table}[htbp]
   \centering
   \caption{Finalists at core level ($100\,000\times$ up to 230 batches,
-  8 seeds). The capped pair ties and dominates. \emph{No design meets
+  8 seeds). The capped pair ties and dominates; \emph{no design meets
   the 2.0 limit}.}
   \label{tab:core-finalists}
   \begin{tabular}{lcccc}
@@ -231,33 +165,25 @@ reflective assembly cannot see (Table~\ref{tab:core-finalists}).
   \end{tabular}
 \end{table}
 
-Three facts summarise the measurement.
-
-\begin{enumerate}
-  \item The proxy gap is a factor \textbf{1.75--1.91}, anti-correlated
-        with reflector thickness ($r=-0.96$ over the six finalists).
-        Thin reflectors leak, depress the periphery and drive core-wide
-        peaking, all of which is invisible to an infinite lattice.
-
-  \item The ranking \emph{inverts}. The assembly-best design is
-        core-worst, and the capped pair (idx46/idx45, tied at
-        $|t|=0.54$) beats the plateau at $|t|\approx7$--$8$, collapsing
-        the front to the capped strategy.
-
-  \item The peaking constraint, inactive everywhere at assembly level,
-        is now \textbf{violated by every design}. The best sits at
-        $2.013\pm0.018$ against the 2.0 limit.
-\end{enumerate}
+Three facts. The proxy gap is a factor \textbf{1.75--1.91},
+anti-correlated with reflector thickness ($r=-0.96$ over the six
+finalists): thin reflectors leak, depress the periphery, and drive
+core-wide peaking --- invisible to an infinite lattice. The ranking
+\emph{inverts}: the assembly-best design is core-worst, and the capped
+pair (idx46/idx45, tied at $|t|=0.54$) beats the plateau at
+$|t|\approx7$--$8$, collapsing the front to the capped strategy. And the
+peaking constraint, inactive everywhere at assembly level, is now
+\textbf{violated by every design}: the best sits at
+$2.013\pm0.018$ against the 2.0 limit.
 
 Rescoring the \emph{entire} feasible archive (36 designs,
-Fig.~\ref{fig:asmcore}) generalises the finding
-(Table~\ref{tab:proxy-numbers}).
+Fig.~\ref{fig:asmcore}) generalises the finding:
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.9\linewidth]{th_asm_vs_core}
+  \includegraphics[width=0.9\linewidth]{images/th_asm_vs_core}
   \caption{Every feasible Campaign-3 design rescored at core level. The
-  proxy is globally informative ($\rho_S=+0.890$) but scrambles the
+  proxy is globally informative ($\rho=+0.890$) but scrambles the
   ordering exactly where the optimiser operates.}
   \label{fig:asmcore}
 \end{figure}
@@ -268,10 +194,10 @@ Fig.~\ref{fig:asmcore}) generalises the finding
   \label{tab:proxy-numbers}
   \begin{tabular}{ll}
     \toprule
-    Spearman $\rho_S$ (assembly vs core, $n=36$) & $+0.890$ \\
+    Spearman $\rho$ (assembly vs core, $n=36$) & $+0.890$ \\
     Assembly ranks 1 / 2 / 3 at core level & 11 / 9 / 12 \\
-    Largest gains (``discarded gems'') & d47: \#14$\to$\#4,
-      d43: \#9$\to$\#2, d42: \#11$\to$\#5 \\
+    Largest gains (``discarded gems'') & d47: \#14$\to$\#4;
+      d43: \#9$\to$\#2; d42: \#11$\to$\#5 \\
     Core-level Pareto front & single design (d46), violating
       $F\le2.0$ \\
     Designs meeting $F_{\Delta H}^\mathrm{core}\le2.0$ & 0 of 36 \\
@@ -279,62 +205,44 @@ Fig.~\ref{fig:asmcore}) generalises the finding
   \end{tabular}
 \end{table}
 
-The bridge model of Equation~\eqref{eq:bridge}, fitted on all 36
-designs, confirms reflector and pitch as the corrupting variables.
-
+The bridge model (Eq.~\ref{eq:bridge}) fitted on all 36 designs,
 \begin{equation}
-\frac{F^\mathrm{core}}{F^\mathrm{asm}}
-= 1.400 - 0.0045\,t_\mathrm{refl} + 0.343\,p
-\label{eq:bridge-fit}
+  \frac{F^\mathrm{core}}{F^\mathrm{asm}}
+  = 1.400 \;-\; 0.0045\,t_\mathrm{refl} \;+\; 0.343\,p,
+  \qquad R^2 = 0.746,
+  \label{eq:bridge-fit}
 \end{equation}
-
-\noindent where the symbols have the following meaning.
-
-\begin{itemize}
-  \item $F^\mathrm{core}$ and $F^\mathrm{asm}$ are the peaking factors
-        of the same design at core and assembly level, dimensionless.
-
-  \item $1.400$ is the fitted intercept, dimensionless.
-
-  \item $0.0045$ is the fitted reflector coefficient, in cm$^{-1}$.
-
-  \item $0.343$ is the fitted pitch coefficient, in cm$^{-1}$.
-
-  \item $t_\mathrm{refl}$ is the reflector thickness, in cm.
-
-  \item $p$ is the pin pitch, in cm.
-\end{itemize}
-
-The coefficient of determination is $R^2 = 0.746$. The residual quarter
-of the variance is the argument for measuring the core quantity rather
-than correcting the proxy.
-
+confirms reflector and pitch as the corrupting variables --- and its
+residual quarter is the argument for measuring rather than correcting.
 Route-B closure on the finalists gives residuals of $-91$ to
-$-429$\,pcm, most negative for thick reflectors, validating the
-cycle-length proxy at the $\sim$2\% level. The core-scale entropy
+$-429$\,pcm (most negative for thick reflectors), validating the
+cycle-length proxy at the $\sim$2\% level, and the core-scale entropy
 sentinel caught one case converging at batch 94 against a 40-batch
-cutoff, the reason the production core solves carry 60--120 inactive
+cutoff --- the reason the production core solves carry 60--120 inactive
 batches.
 
-\textbf{The methodological statement of the thesis follows.} A
+\textbf{The methodological statement of the thesis follows:} a
 surrogate-assisted optimisation on a reduced-order proxy must validate
 the proxy's \emph{rank fidelity} near the optimum, not merely its
-statistical convergence. Correlation weakens exactly where the
-optimiser converges, and it did so here twice, through the estimator
-bias in Campaign 2 and through the geometric proxy in Campaign 3.
+statistical convergence --- correlation weakens exactly where the
+optimiser converges, and it did so here twice (estimator bias in
+Campaign 2, geometric proxy in Campaign 3).
 
 \section{Campaign 4: the core-level objective}
 \label{sec:res-c4}
 
 Campaign 4 moves $F_{\Delta H}$ and $g_\mathrm{peak}$ to core level at
-$\approx3\%$ evaluation cost (Eq.~\ref{eq:corecost}). Its 36-point DOE
-is complete (Table~\ref{tab:c4-doe}, Fig.~\ref{fig:c4conflict}).
+$\approx3\%$ evaluation cost (Eq.~\ref{eq:corecost}) and is complete:
+a 36-point DOE plus three infill iterations of six evaluations each,
+54 designs in total, \textbf{zero feasible}
+(Table~\ref{tab:c4-doe}, Fig.~\ref{fig:c4traj}).
 
 \begin{table}[htbp]
   \centering
   \caption{Campaign-4 DOE against Campaign-3's, same limits and design
-  space. With zero feasible designs the hypervolume is undefined at the
-  DOE. The archive best is reported instead.}
+  space. With an empty feasible set the hypervolume is undefined
+  (reported 0), so convergence is judged on constraint-violation
+  reduction.}
   \label{tab:c4-doe}
   \begin{tabular}{lcc}
     \toprule
@@ -345,118 +253,218 @@ is complete (Table~\ref{tab:c4-doe}, Fig.~\ref{fig:c4conflict}).
     $g_\mathrm{peak}$ violations & 4       & \textbf{35} \\
     $g_{k\max}$ violations       & 21      & 24 \\
     best $F_{\Delta H}$ (its level) & 1.127 & 1.9215 \\
-    hypervolume                  & 1\,615  & undefined (no feasible set) \\
     \bottomrule
   \end{tabular}
 \end{table}
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=\linewidth]{th_c4_conflict}
-  \caption{Campaign 4. (a) The binding constraint flips when the same
-  limit is evaluated at the right level. (b) The structural conflict:
-  low core peaking demands the high enrichment that the reactivity
-  limit forbids.}
-  \label{fig:c4conflict}
+  \includegraphics[width=\linewidth]{images/c4_trajectory}
+  \caption{Campaign 4 on the constraint plane. (a) All 54 designs; the
+  feasible corner is empty. (b) The three-iteration walk along the
+  boundary: iteration 2 is the closest approach ever achieved
+  ($F_{\Delta H}=1.947$ at $k_\mathrm{BOL}$ only $+0.0055$ over);
+  iteration 3 crosses $k_\mathrm{BOL}\leq1.35$ but peaking rises past
+  2.0 in exchange.}
+  \label{fig:c4traj}
 \end{figure}
 
-The best design (core $F_{\Delta H}=1.9215$, the only value below 2.0
-in the DOE) fails only $g_{k\max}$, by $+0.0455$. Closing that gap by
-concentration alone is impossible.
+\subsection{The infill trajectory: a tangency, not an overlap}
+\label{sec:res-c4-trajectory}
 
-\begin{equation}
-\Delta\mathrm{gd} = \frac{0.0455}{0.0066} \approx 6.9~\mathrm{wt\%}
-\label{eq:gd-gap}
-\end{equation}
+The infill ran under constraint-violation ranking throughout, since no
+design was ever feasible. Its trajectory
+(Table~\ref{tab:c4-trajectory}) is the campaign's central measurement.
 
-\noindent where the symbols have the following meaning.
+\begin{table}[htbp]
+  \centering
+  \caption{The three infill iterations (six designs each; ranges over
+  the six). The search collapses onto the reactivity boundary and walks
+  along it; total violation reaches a minimum at iteration 2 and rises
+  again when $k_\mathrm{BOL}\leq1.35$ is finally satisfied.}
+  \label{tab:c4-trajectory}
+  \begin{tabular}{ccccc}
+    \toprule
+    iteration & $k_\mathrm{BOL}$ & core $F_{\Delta H}$ &
+      mean total violation \\
+    \midrule
+    DOE  & 1.145 -- 1.516 & 1.921 -- 4.129 & 0.084 \\
+    1    & 1.3664 -- 1.3689 & 2.046 -- 2.131 & 0.1131 \\
+    2    & 1.3555 -- 1.3567 & \textbf{1.947} -- 2.010 & \textbf{0.0077} \\
+    3    & \textbf{1.3494} -- 1.3507 & 1.977 -- 2.047 & 0.0204 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
-\begin{itemize}
-  \item $\Delta\mathrm{gd}$ is the additional Gd$_2$O$_3$ concentration
-        the best design would need to close its reactivity excess, in
-        wt\%.
+Three facts define the outcome. The optimizer collapsed the reactivity
+spread by a factor of 200 (DOE $k_\mathrm{BOL}$ standard deviation
+0.081; iteration-1 spread 0.0025) and then walked $k_\mathrm{BOL}$
+down through the limit across iterations. Iteration 2 achieved
+designs feasible on peaking ($F_{\Delta H}=1.947$--$2.010$) missing
+only the reactivity limit, by $+0.0055$ to $+0.0067$. Iteration 3
+satisfied the reactivity limit ($k_\mathrm{BOL}=1.3494$--$1.3507$) and
+lost peaking feasibility in exchange.
 
-  \item $0.0455$ is the $k_\mathrm{BOL}$ excess of that design over the
-        1.35 limit, dimensionless.
+The two constraints are therefore \textbf{tangent, not overlapping},
+within this five-variable space: each is satisfiable alone, their
+intersection was never reached, and the converged residual gap is
+$\Delta k \approx 0.006$ measured at the point of closest approach.
 
-  \item $0.0066$ is the fitted absorber coefficient of
-        Equation~\eqref{eq:envelope}, in $\Delta k$ per wt\%
-        Gd$_2$O$_3$.
-\end{itemize}
+\subsection{The design space is exhausted at a vertex}
+\label{sec:res-c4-vertex}
 
-The resulting required concentration is 8.7\,wt\%, which exceeds the
-8.0\,wt\% upper bound of Table~\ref{tab:design-space}.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.92\linewidth]{images/c4_parallel}
+  \caption{Parallel coordinates by phase. The DOE (grey) fills the box;
+  iterations 2--3 collapse onto single lines with gadolinium at its
+  8\,wt\% bound, pitch at its 1.15\,cm bound, and the reflector at the
+  geometric ceiling. Enrichment is the only variable still moving.}
+  \label{fig:c4parallel}
+\end{figure}
 
-The structure of the conflict is simple to state. Low core peaking
-requires high enrichment, because enrichment flattens the radial
-gradient. The reactivity limit forbids that enrichment. The twelve-pin
-absorber cannot bridge the two. The missing lever is absorber
-\emph{inventory}.
+Every iteration-2 and iteration-3 design pins \textbf{three of the five
+variables at their bounds} (Fig.~\ref{fig:c4parallel}): gadolinium
+concentration at 8.0\,wt\% (to four decimals), pitch at 1.150\,cm, and
+reflector thickness at the vessel-budget ceiling
+(Eq.~\ref{eq:renv}). The sole remaining degree of freedom, enrichment,
+is what the optimizer walks: $e_\mathrm{vw}=11.82$\,wt\% at iteration 2
+to $11.50$\,wt\% at iteration 3 --- that slide \emph{is} the
+$k_\mathrm{BOL}$ descent of Table~\ref{tab:c4-trajectory}.
 
-\openpoint{Campaign-4 Block 1 (18 infill evaluations,
-constraint-violation-driven since no design is feasible) is executing.
-To report: whether the surrogate finds the intersection of
-$F^\mathrm{core}\le2.0$ and $k_\mathrm{BOL}\le1.35$, or demonstrates it
-empty within the five-variable space.}
+The constrained optimum of Campaign 4 therefore sits at a vertex of the
+design box, and the optimizer is, in effect, requesting more absorber
+than the concentration bound permits. The identified resolution ---
+absorber \emph{inventory} as a variable --- follows in
+Sec.~\ref{sec:res-campaign5}.
+
+\subsection{Variable influence and the champion designs}
+\label{sec:res-c4-champions}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/c4_influence}
+  \caption{Each design variable against core $F_{\Delta H}$ over all 54
+  designs. Volume-weighted enrichment dominates
+  ($r=-0.59$; $e_\mathrm{out}$ alone $-0.63$); gadolinium is
+  peaking-neutral ($r=-0.16$) --- it buys reactivity, not flatness,
+  which is why the conflict is structural.}
+  \label{fig:c4influence}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth]{images/c4_objectives}
+  \caption{The objective plane. With 46 of 54 designs at the
+  75\,MWd/kgHM cap, the trade-off degenerates: the unconstrained
+  non-dominated set is a single (infeasible) capped design, and the
+  campaign is effectively single-objective constrained minimisation of
+  core peaking.}
+  \label{fig:c4objectives}
+\end{figure}
+
+\begin{table}[htbp]
+  \centering
+  \caption{The champion designs of Campaign 4. Bold marks values at a
+  design-space bound.}
+  \label{tab:c4-champions}
+  \begin{tabular}{lccc}
+    \toprule
+    & idx 6 (DOE) & idx 44 (iter.\ 2) & iter.\ 3 (typical) \\
+    \midrule
+    $e_\mathrm{in}$ / $e_\mathrm{out}$ [wt\%] & 12.28 / 11.50
+      & 11.54 / 11.93 & $e_\mathrm{vw}=11.50$ \\
+    gd [wt\%]            & 1.81  & \textbf{8.00} & 7.98 \\
+    pitch [cm]           & 1.181 & \textbf{1.150} & \textbf{1.150} \\
+    $t_\mathrm{refl}$ [cm] & 15.39 & \textbf{19.49} & 19.35--19.48 \\
+    core $F_{\Delta H}$  & \textbf{1.9215} & 1.9472 & 1.977--2.047 \\
+    $k_\mathrm{BOL}$     & 1.3955 & 1.3564 & 1.3494--1.3507 \\
+    status & peaking OK, $k$ $+0.046$ over & closest approach,
+      $k$ $+0.0055$ over & $k$ OK, peaking over \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Design idx 44 deserves one further remark: its reflector sits at
+19.4914\,cm at pitch 1.150\,cm --- exactly the corrected geometric
+ceiling. The optimizer found the vessel-budget corner twice: once
+illegally, through a 0.02\,cm inconsistency between the analytic
+constraint and the geometry builder (crashing the first infill
+attempt; the fix made the builder's fuel-envelope pad part of
+$g_\mathrm{geom}$), and once legally, after the fix. Both episodes,
+together with a mid-loop failure of the optimiser on an empty feasible
+set (repaired by a least-infeasible infill fallback and per-iteration
+checkpointing), are recorded in the methodology diagnostics: an
+optimizer pressing on constraint boundaries is an adversarial
+verification tool, and it found two real defects this way.
+%% AUTHOR: 1-2 sentences of physics on WHY high enrichment flattens the
+%% core radial profile (periphery-to-centre gradient, migration).
 
 \section{Campaign 5: proposal}
 \label{sec:res-campaign5}
 
+Campaign 4's converged residual is small and precisely located:
+$\Delta k \approx 0.006$ at the iteration-2 champion, with the
+concentration route closed by its own bound. Scaling the fitted 12-pin
+authority (0.0525 in $\Delta k$ at 8\,wt\%) by inventory,
+\begin{equation}
+  \Delta k_\mathrm{pins}(n) \;=\; 0.0525\,\frac{n-12}{12}
+  \;\;\Rightarrow\;\;
+  n \;\approx\; 13.5 ,
+  \label{eq:pins-needed}
+\end{equation}
+so \textbf{approximately two additional gadolinia pins} close the gap
+--- a far smaller departure from the twelve-pin heritage pattern than
+the DOE-based estimate ($\approx$23 pins) suggested before the infill
+located the true point of closest approach.
+
 \begin{table}[htbp]
   \centering
   \caption{Campaign-5 proposal, in decreasing certainty. One structural
-  change. The rest are constraint relocations and measurements.}
+  change; the rest are constraint relocations, measurements and
+  advisor decisions.}
   \label{tab:c5}
   \begin{tabular}{p{0.30\linewidth}p{0.62\linewidth}}
     \toprule
     Change & Rationale \\
     \midrule
-    Gd \textbf{pin count} as 6th variable (12--40, octant-symmetric
-    patterns) & the literature's primary lever at fixed
-    $\sim$8\,wt\%~\cite{rr_smr_atf_2025,apr1400_gd_2020}. Closing
-    Eq.~\eqref{eq:gd-gap} needs $\approx$23 pins
-    (Table~\ref{tab:pincount}) \\
+    Gd \textbf{pin count} as 6th variable (12--40,
+    octant-symmetric patterns) & the optimizer exhausted the
+    concentration bound (Fig.~\ref{fig:c4parallel}); inventory scales
+    authority without the self-shielding penalty and is the
+    literature's primary lever at fixed
+    $\sim$8\,wt\%~\cite{rr_smr_atf_2025,apr1400_gd_2020};
+    Eq.~\eqref{eq:pins-needed} \\
+    Immediate single-design test & idx 44 re-evaluated at 14, 16 and 20
+    pins (assembly $k_\mathrm{BOL}$ + core BOL peaking,
+    seed-replicated): decides within hours whether the tangency opens
+    \\
     $g_{k\max}$ moved to core $k_\mathrm{eff}$ & excess reactivity is a
-    core quantity, and $k_\mathrm{eff}^\mathrm{core}$ is already
-    recorded per evaluation at no cost \\
+    core quantity; $k_\mathrm{eff}^\mathrm{core}$ already recorded per
+    evaluation at no cost \\
     Soluble-boron decision & naval practice is
-    boron-free~\cite{ismr_sbf_2024,acp100_physor2020}. Removing boron
-    raises $k_\mathrm{BOL}$ by $\approx$0.08--0.10 (harder, not
-    easier). The decision follows the planned two-finalist measurement
-    at 0\,ppm \\
+    boron-free~\cite{ismr_sbf_2024,acp100_physor2020}; 0\,ppm raises
+    $k_\mathrm{BOL}$ by $\approx$0.08--0.10 (harder, not easier);
+    decide from the planned two-finalist measurement at 0\,ppm \\
     Review of the 1.35 bound & the limit proxies controllable excess
-    reactivity without a rod model. Advisor judgement \\
+    reactivity without a rod model; at 1.40 both champions of
+    Table~\ref{tab:c4-champions} are already feasible --- an advisor
+    judgement that could dissolve the conflict without any new
+    campaign \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-\begin{table}[htbp]
-  \centering
-  \caption{Reactivity authority of the absorber inventory (linear
-  scaling from the fitted 12-pin coefficient. Self-shielding makes the
-  count route conservative).}
-  \label{tab:pincount}
-  \begin{tabular}{cccc}
-    \toprule
-    Gd pins & 12 & $\approx$23 & 32 \\
-    $\Delta k$ authority (0$\to$8\,wt\%) & 0.052 & 0.097 & 0.138 \\
-    \bottomrule
-  \end{tabular}
-\end{table}
-
-\openpoint{Advisor decisions pending:
-\begin{enumerate}
-  \item Gd pin count as variable vs heritage constraint.
-  \item The $k_\mathrm{BOL}$ limit.
-  \item The boron design basis.
-  \item MTC assessment of the wide-pitch strategies (outside the 2D BOL
-        scope).
-\end{enumerate}}
+\openpoint{Pin-count test executing (idx 44 at 12/14/16/20 pins). To
+report: measured $\Delta k$ per pin against Eq.~\eqref{eq:pins-needed},
+core peaking response, and the feasibility verdict.}
+\openpoint{Advisor decisions pending: pin count as variable vs
+heritage; the $k_\mathrm{BOL}$ limit; the boron design basis; MTC
+assessment of wide-pitch strategies (outside the 2D BOL scope).}
 \openpoint{The remaining $\sim$0.4--0.5 of peaking between this
 single-batch uniform core and licensed practice ($F_{\Delta H}$
 limits of 1.50--1.65~\cite{robinson_gd10,nuscale_htp2_2017}) is the
-domain of multi-batch loading patterns, zoned absorber placement and
-rod
-programmes~\cite{kropaczek_turinsky_1991,aga_firstcore_2021,chasnupp_lpo_2013},
-outside this design space by construction, and the natural continuation
-of the work.}
+domain of multi-batch loading patterns, zoned absorber placement and rod
+programmes~\cite{kropaczek_turinsky_1991,aga_firstcore_2021,chasnupp_lpo_2013}
+--- outside this design space by construction, and the natural
+continuation of the work.}
