@@ -1,12 +1,18 @@
 % =====================================================================
 %  literature_review.tex  --  Chapter 2
-%  Citation keys match references_partial.bib (delivered alongside).
-%  Entries marked  %% VERIFY  in the .bib need completion before print.
+%  Citation keys match references_partial.bib and
+%  references_additions.bib. Entries marked VERIFY in the .bib files
+%  need completion before print.
 %
 %  REVISION NOTE (this version):
-%   - Kennedy-O'Hagan model displayed as eq:kennedy_ohagan with a
-%     term-by-term list. Its rho is the autoregressive scale factor,
-%     explicitly distinguished from reactivity (eq:reactivity).
+%   - Chapter restructured to three sections: SMR heritage (2.1),
+%     optimisation development and state of the art (2.2, new), and
+%     gadolinia burnable absorbers (2.3, moved to close the chapter).
+%   - The former sections on surrogate-assisted MOO, noisy objectives,
+%     multi-fidelity optimisation and loading patterns are superseded
+%     by Section 2.2, which absorbs their citations that remain
+%     relevant.
+%   - Bateman equations displayed with term-by-term unit lists.
 %   - Enumerations set as lists. No semicolons, no em dashes.
 % =====================================================================
 \providecommand{\openpoint}[1]{\par\noindent\fbox{\parbox{0.97\linewidth}{%
@@ -16,38 +22,829 @@
 \label{ch:litreview}
 
 \section{Small modular PWRs and naval-heritage cores}
-\label{sec:lit-smr}
+\label{sec:smr-naval}
 
-The pressurised-water SMR family provides the reference frame for a
-LABGENE-class core.
+\subsection{The contemporary small modular reactor landscape}
+\label{subsec:smr-landscape}
 
-The NuScale design is the most completely documented. Its NuFuel-HTP2
-assembly is a reduced-height $17\times17$ lattice with UO$_2$ enriched
-up to 4.95\,wt\% and gadolinia homogeneously mixed into selected
-pellets, analysed in the licensing basis up to 8\,wt\%
-Gd$_2$O$_3$~\cite{nuscale_htp2_2017}. Open academic reconstructions of
-a NuScale-like core, with 264 fuel rods, 24 guide tubes and one
-instrumentation tube at 1.26\,cm pitch, provide a benchmark geometry
-directly comparable to the present model~\cite{nuscale_like_core_2024,
-ez_aldeen_2025}.
+Small modular reactors have moved from concept to early deployment over the
+period 2024 to 2026. The International Atomic Energy Agency lists 68 active
+designs in the 2024 edition of its reference booklet, drawing on the September
+2024 update of the Advanced Reactors Information System~\cite{iaea_smr_2024}.
+The Nuclear Energy Agency identified 127 technologies worldwide in the third
+edition of its dashboard and assessed 74 of them across six readiness
+dimensions~\cite{nea_dashboard_2025}. Pressurised water reactors dominate the
+most advanced cohort, and most are integral pressurised water reactors in which
+the steam generators, core and pressuriser are enclosed within a single
+pressure vessel.
 
-Boron-free operation, the natural regime for a compact naval plant,
-sharpens the burnable-absorber problem. The Korean innovative-SMR
-programme designs soluble-boron-free assemblies with twenty gadolinia
-rods, exploiting isotopically enriched gadolinium to extend suppression
-across long cycles~\cite{ismr_sbf_2024,higa_2024}. The Chinese ACP100
-documents a boron-free variant in which control rods and burnable
-poison provide the whole of reactivity
-compensation~\cite{acp100_physor2020}.
+The leading integral and compact PWR-type designs, with their design and
+licensing status, are the following.
 
-A Rolls-Royce-like SMR study of advanced-technology fuels is of
-particular methodological relevance. It fixes the gadolinia
-concentration at 8.0\,wt\% and treats the \emph{number} of poisoned
-rods per assembly, from 20 to 40, as the design
-variable~\cite{rr_smr_atf_2025}. High-burnup PWR core studies extend
-the same fuel platform to a 75\,MWd/kgU peak-pin target with up to
-9\,wt\% gadolinia~\cite{highburnup_core_2024}, the discharge limit
-adopted in this thesis.
+\begin{itemize}
+  \item NuScale US460, for which the United States Nuclear Regulatory
+    Commission issued a Standard Design Approval on 29 May 2025 for a
+    six-module plant of approximately 462~MWe, each module rated
+    250~MWth~\cite{nrc_us460_2025,fedreg_us460_2025}.
+  \item Westinghouse AP300, a 300~MWe single-loop PWR derived from the AP1000,
+    in pre-application review with the Nuclear Regulatory Commission and in the
+    United Kingdom Generic Design Assessment~\cite{nrc_ap300}.
+  \item Holtec SMR-300, a 300~MWe PWR whose construction permit application was
+    accepted by the Nuclear Regulatory Commission on 13 February
+    2026~\cite{holtec_smr300_2026}.
+  \item Rolls-Royce SMR, a 470~MWe PWR selected in the United Kingdom
+    small modular reactor competition in June 2025~\cite{rr_smr_2025}.
+  \item The Korean innovative small modular reactor, which targets
+    soluble-boron-free operation using gadolinia burnable absorbers, including
+    isotopically enriched gadolinium~\cite{ismr_epjn_2026}.
+  \item The Chinese ACP100, also called Linglong One, under construction at
+    Changjiang, which completed primary-circuit cold functional tests on
+    16 October 2025 and targets commercial operation in the first half of
+    2026~\cite{acp100_wnn_2025}.
+  \item The Argentine CAREM-25, an indigenous integral PWR under construction
+    since 2014~\cite{carem_wnn}.
+  \item The Russian KLT-40S, operating in the Akademik Lomonosov floating plant
+    since 2020, and the RITM-200 family operating in the LK-60 nuclear
+    icebreakers~\cite{wna_ships,ritm200n_nei_2024}.
+  \item The French NUWARD programme, which reset its design toward proven
+    technology in 2024~\cite{nuward_wnn_2019}.
+\end{itemize}
+
+\subsection{Why small modular reactors matter now}
+\label{subsec:why-now}
+
+The macro-scale rationale is quantified by the Agency's annual capacity
+projections. Relative to a global operational capacity of 377~GW(e) at the end
+of 2024, the high-case projection reaches 992~GW(e) by 2050 and the low-case
+projection reaches 561~GW(e)~\cite{iaea_rds1_2025}. Small modular reactors are
+estimated to contribute 24\% of new capacity in the high case and 5\% in the
+low case~\cite{iaea_rds1_2025}. The growth in installed capacity between two
+reference years can be written as
+%
+\begin{equation}
+  \Delta C = C_{2050} - C_{2024},
+  \label{eq:capacity-growth}
+\end{equation}
+%
+where
+\begin{itemize}
+  \item $\Delta C$ is the net change in installed nuclear electrical capacity,
+    in gigawatts electric (GW(e)),
+  \item $C_{2050}$ is the projected installed capacity in the year 2050, in
+    GW(e),
+  \item $C_{2024}$ is the installed capacity at the end of 2024, equal to
+    377~GW(e).
+\end{itemize}
+
+At COP28 on 2 December 2023, 25 countries launched the Declaration to Triple
+Nuclear Energy, an aspirational goal to triple global capacity by 2050 relative
+to a 2020 base, with endorsements rising to 33 countries by
+COP30~\cite{cop28_doe_2023,wnn_triple_2025}.
+
+\subsection{Naval-heritage cores in the open literature}
+\label{subsec:naval-heritage}
+
+Detailed military naval reactor core data are classified. This review therefore
+restricts itself to open, official, and peer-reviewed sources, and it builds
+the naval-heritage argument on the documented transition of naval reactor
+technology to civilian marine and land-based applications.
+
+The Russian lineage developed by OKBM Afrikantov proceeds from the OK-150 and
+OK-900 icebreaker reactors to the KLT-40 series and then to the integral
+RITM-200 family~\cite{wna_ships,ritm200n_nei_2024}. The KLT-40S uses uranium
+dioxide dispersed in a silumin matrix at 18.6~wt\% U-235, a core of 121 fuel
+assemblies, and a refuelling cycle of 30 to 36
+months~\cite{worldnuclearreport_smr,klt40s_aris}. The RITM-200N land-based unit
+is rated 190~MWth and 55~MWe, uses uranium enriched below 20~wt\%, and has a
+six-year refuelling interval~\cite{ritm200n_nei_2024}.
+
+The Brazilian LABGENE prototype, developed by the Centro Tecnol\'ogico da
+Marinha em S\~ao Paulo at the Aramar Experimental Center, is a 48~MWth
+pressurised water reactor that reached first controlled criticality in December
+2023 and serves as the land-based prototype for the reactor of the
+\'Alvaro Alberto submarine~\cite{wna_brazil,fapesp_labgene}. Its detailed core
+neutronics are not published in the open literature. The IPEN/MB-01 zero-power
+critical facility, which uses 4.3~wt\% enriched uranium dioxide rods with
+stainless-steel cladding, was built to validate the neutronic parameters of the
+Navy core programme and is the closest open, citable surrogate~\cite{ipen_mb01}.
+
+The French K15 reactor, rated approximately 150~MWth with a core life of about
+ten years, powers French submarines and the aircraft carrier Charles de Gaulle
+and uses low-enriched uranium~\cite{wna_ships}. 
+
+United States and United Kingdom naval reactors use weapon-grade highly enriched uranium at about 93.5~wt\% U-235, and the feasibility of a conversion to low-enriched uranium at 19.75~wt\%
+was examined by the Office of Naval Reactors and by the JASON advisory
+panel~\cite{jason_2016,onr_leu_2016}. Open academic analyses of naval core
+design principles include the Ippolito thesis, which compared cores at 7~wt\%,
+20~wt\% and 97.3~wt\% enrichment~\cite{ippolito_1990}, and the Cambridge
+civil-marine small modular reactor series, which analysed soluble-boron-free
+high-power-density cores~\cite{alam_2019_hotchannel}.
+
+\subsection{Comparison of naval-heritage and commercial small modular PWR cores}
+\label{subsec:comparison}
+
+Table~\ref{tab:naval-vs-commercial} contrasts the two design families on the
+characteristics most relevant to core and fuel design. Every entry is traceable
+to a named open source. Characteristics that cannot be sourced from open
+literature are flagged explicitly.
+
+\begin{table}[htbp]
+  \centering
+  \footnotesize
+  \caption{Comparison of naval-heritage and commercial small modular PWR
+  cores. The design implications of each difference are discussed in the
+  text.}
+  \label{tab:naval-vs-commercial}
+  \begin{threeparttable}
+    \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.8cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+      \toprule
+      \textbf{Characteristic} & \textbf{Naval-heritage core} &
+      \textbf{Commercial SMR core} \\
+      \midrule
+      Fuel enrichment &
+      HEU near 93.5~wt\% in US and UK practice. LEU below 20~wt\% in Russian
+      and French cores\tnote{a} &
+      LEU below 5~wt\%, with NuScale licensed up to 4.95~wt\%\tnote{b} \\
+      \addlinespace
+      Refuelling interval &
+      30 to 36 months for the KLT-40S. Six years for the RITM-200N. About ten
+      years for the K15\tnote{c} &
+      18 to 24 months\tnote{d} \\
+      \addlinespace
+      Soluble boron &
+      Reduced boron or boron free\tnote{e} &
+      Borated coolant, with boron-free variants such as the ACP100 and the
+      i-SMR\tnote{f} \\
+      \addlinespace
+      Burnable poison &
+      Heavy gadolinia inventory for long-life reactivity hold-down\tnote{g} &
+      Gd$_2$O$_3$ up to 8~wt\% in the NuScale licensing basis\tnote{b} \\
+      \addlinespace
+      Power density\tnote{e} &
+      Up to about 100~MW/m$^3$ &
+      60 to 65~MW/m$^3$ \\
+      \addlinespace
+      Motion and shock &
+      Qualified for inclination, motion and shock\tnote{h} &
+      Static land siting\tnote{d} \\
+      \addlinespace
+      Reactivity control &
+      Control rods with compensating groups\tnote{i} &
+      Control rods plus soluble boron, or rods plus burnable poison in
+      boron-free designs\tnote{f} \\
+      \bottomrule
+    \end{tabularx}
+    \begin{tablenotes}[flushleft]
+      \footnotesize
+      \item[] Note: detailed criteria of classified naval programmes are not
+        verifiable in open sources.
+      \item[a] \cite{wna_ships} and \cite{jason_2016}.
+      \item[b] \cite{nrc_us460_2025}.
+      \item[c] \cite{worldnuclearreport_smr}, \cite{ritm200n_nei_2024} and
+        \cite{wna_ships}.
+      \item[d] \cite{iaea_smr_2024}.
+      \item[e] \cite{alam_2019_hotchannel}.
+      \item[f] \cite{acp100_wnn_2025} and \cite{ismr_epjn_2026}.
+      \item[g] \cite{alam_2019_hotchannel} and \cite{ippolito_1990}.
+      \item[h] \cite{ritm200n_nei_2024}.
+      \item[i] \cite{klt40s_aris}.
+    \end{tablenotes}
+  \end{threeparttable}
+\end{table}
+
+% ------------------------------------------------------------------
+% The fourth column of the previous version is preserved as body text.
+% Place this immediately after the table in the source file.
+% ------------------------------------------------------------------
+
+The differences collected in Table~\ref{tab:naval-vs-commercial} follow from a
+small set of naval operational requirements. Their implications for core and
+fuel design are the following.
+
+\begin{itemize}
+  \item Higher enrichment permits a compact core with a large energy reserve.
+    The naval rationale is energy autonomy without frequent
+    refuelling~\cite{ippolito_1990}.
+  \item A long refuelling interval demands a large beginning-of-life excess
+    reactivity and therefore a heavy burnable poison inventory. The naval
+    rationale is operational availability at sea~\cite{alam_2019_hotchannel}.
+  \item Reduced-boron or boron-free operation shifts the reactivity hold-down
+    burden to gadolinia and to the control rods. The naval rationale is fast
+    manoeuvring and simplified coolant chemistry~\cite{ismr_epjn_2026}.
+  \item A heavy and self-shielded gadolinia loading flattens the reactivity
+    swing over the long cycle. The naval rationale is criticality control over
+    the whole core life~\cite{ismr_epjn_2026}.
+  \item A high volumetric power density tightens the margin to the hot channel
+    limit expressed by $F_{\Delta H}$. The naval rationale is compactness
+    within the hull~\cite{alam_2019_hotchannel}.
+  \item Qualification for inclination, motion and shock increases structural
+    and thermal-hydraulic margins. The naval rationale is safe operation under
+    sea states~\cite{ritm200n_nei_2024}.
+  \item Fine reactivity control by control rods alone supports rapid load
+    following, which is the central naval manoeuvring
+    requirement~\cite{ismr_epjn_2026}.
+\end{itemize}
+
+
+\subsection{Positioning of the LABGENE-class 48\,MWth core}
+\label{subsec:positioning}
+
+The core studied in this thesis is a LABGENE-class 48~MWth pressurised water
+reactor of naval heritage. Among designs with open documentation, the closest
+operating analogues are the KLT-40S and the RITM-200 family, which share the
+naval logic of a compact low-enriched-uranium core with a long refuelling
+interval~\cite{worldnuclearreport_smr,ritm200n_nei_2024}. The optimisation
+objectives of cycle length and the radial enthalpy-rise hot channel factor
+$F_{\Delta H}$ map directly onto the naval requirements of long core life and
+compact high-power-density operation. The design variables of enrichment,
+gadolinia concentration and poisoned-pin count, pin pitch, and reflector
+thickness, together with the constraint on beginning-of-life $k_{\mathrm{eff}}$
+at 1000~ppm soluble boron, express the reduced-boron and heavy-burnable-poison
+strategy characteristic of long-life naval-heritage cores.
+
+\section{Optimisation of nuclear reactor cores: development and state
+of the art}
+\label{sec:lit-opt}
+
+The heritage designs of Section~\ref{sec:lit-smr} fix the physical
+frame of the present work. This section reviews how such cores are
+optimised. In-core fuel management and core design optimisation select
+enrichments, burnable absorber loadings, geometric parameters and fuel
+placement so that energy extraction is maximised while safety limits
+are respected. The centrality of this activity to safe and economic
+operation is reflected in dedicated validation programmes of the
+International Atomic Energy Agency (IAEA) for the associated code
+packages~\cite{iaea_tecdoc_815}.
+
+The field has six decades of history and its methods track the wider
+history of engineering optimisation. The review proceeds in three
+parts.
+
+\begin{enumerate}
+  \item The chronological development of the methods, from mathematical
+        programming to machine learning
+        (Sections~\ref{sec:lit-opt-early} to
+        \ref{sec:lit-opt-surrogate}).
+
+  \item The structural difficulties of the field, above all the
+        difficulty introduced by burnup
+        (Sections~\ref{sec:lit-opt-difficulties}
+        and \ref{sec:lit-opt-burnup}).
+
+  \item The current state of the art, with the strengths and
+        limitations of each family of methods and the positioning of
+        the present work (Section~\ref{sec:lit-opt-sota}).
+\end{enumerate}
+
+\subsection{Mathematical programming and the Haling principle}
+\label{sec:lit-opt-early}
+
+The first formal optimisation of nuclear fuel management is generally
+credited to Wall and Fenech, who cast the multi-cycle refuelling of a
+PWR as a dynamic programming problem~\cite{wall_fenech_1965}.
+Mathematical programming formulations followed within a few years.
+
+\begin{enumerate}
+  \item Linear and quadratic programming for fuel recycle
+        scheduling~\cite{tabak_1968}.
+
+  \item Linear programming for the refuelling of light water
+        reactors~\cite{suzuki_kiyose_1971}.
+
+  \item Accelerated exhaustive search for boiling water reactor fuel
+        management~\cite{stover_sesonske_1969}.
+
+  \item Optimal control formulations of the depletion problem
+        itself~\cite{wade_terney_1971}.
+\end{enumerate}
+
+The most influential idea of the era is the Haling
+principle~\cite{haling_1964}. Haling observed that if the power
+distribution keeps a constant shape throughout the cycle, that shape
+minimises the peak power over the cycle, and the end-of-cycle state can
+be computed in a single depletion pass. The principle became the
+standard shortcut of the period precisely because it removed the need
+to march every candidate design through time. Its limitation is equally
+well documented. Constant-shape operation is not consistent with
+realistic control strategies and the principle can misjudge the thermal
+margin~\cite{sun_1993}.
+
+The deterministic era carried a structural weakness. Linearisation and
+convexity assumptions sit uneasily with a design space that is
+discrete, nonconvex and rich in local optima, a mismatch the field
+recognised over the following decades.
+
+\subsection{Heuristics, knowledge-based systems and perturbation
+theory}
+\label{sec:lit-opt-heuristic}
+
+The 1980s produced two complementary responses to that mismatch. The
+first was direct search steered by engineering rules, exemplified by
+the automated generation of loading patterns that maximise
+beginning-of-cycle reactivity under power peaking and burnup
+constraints~\cite{hobson_turinsky_1986}. Knowledge-based and expert
+systems later formalised the same designer heuristics symbolically, a
+line of work reviewed by its own authors in~\cite{nissan_1997}.
+
+The second response was generalised perturbation theory (GPT). GPT
+estimates how the core eigenvalue and the power distribution respond to
+a fuel shuffle without a full re-solution of the transport problem, and
+it was demonstrated for three-dimensional design optimisation of Canada
+Deuterium Uranium (CANDU) reactors~\cite{rozon_beaudet_1992}. GPT then
+became the neutronics engine of the FORMOSA-P code, where a nodal GPT
+model evaluates objectives and constraints cheaply enough to sit inside
+a stochastic search, extended even to the feed enrichment as a decision
+variable~\cite{maldonado_1995}.
+
+\subsection{Stochastic global search}
+\label{sec:lit-opt-stochastic}
+
+The decisive methodological shift arrived at the turn of the 1990s,
+when the field accepted nonconvexity and moved to stochastic global
+search. Kropaczek and Turinsky introduced simulated annealing for PWR
+in-core fuel management through FORMOSA-P (Fuel Optimization for
+Reloads Multiple Objectives by Simulated Annealing,
+PWR)~\cite{kropaczek_turinsky_1991}. The code minimises power peaking,
+maximises end-of-cycle reactivity or maximises discharge burnup, with
+design limits enforced by penalty functions or by rejection of
+violating patterns~\cite{maldonado_1995}.
+
+Genetic algorithms entered the field shortly after, building on the
+general framework of~\cite{goldberg_1989}. The Cambridge school applied
+them to PWR reload design~\cite{poon_parks_1992,poon_parks_1993}, and
+parallel work in the United States combined genetic search with expert
+knowledge~\cite{dechaine_feltus_1995,dechaine_feltus_1996}. Tabu search
+followed~\cite{lin_1998}, and a quantitative comparison of the
+competing heuristics closed the decade~\cite{yamamoto_1997}.
+
+The landmark result of the era for the present work is the first
+nondominated genetic search for PWR reload design~\cite{parks_1996}.
+Instead of collapsing competing objectives into one weighted scalar,
+the algorithm returns an entire Pareto front in a single run. It
+anticipates the Pareto-based formulation that the Non-dominated Sorting
+Genetic Algorithm II (NSGA-II) later standardised~\cite{deb_nsga2_2002}
+and that this thesis adopts.
+
+\subsection{Population-based metaheuristics and multi-objective
+evolutionary algorithms}
+\label{sec:lit-opt-population}
+
+The 2000s diversified the metaheuristic toolbox, with a sustained
+Brazilian contribution from the COPPE/UFRJ school. Representative
+results include the following.
+
+\begin{enumerate}
+  \item Systematic investigations of genetic algorithms in core
+        design~\cite{pereira_1999}.
+
+  \item Coarse-grained parallel genetic algorithms for core design
+        optimisation~\cite{pereira_lapa_2003}.
+
+  \item The Ant-Q ant colony algorithm applied to the reload
+        problem~\cite{machado_schirru_2002} and its extension to
+        artificial ant colony connective networks~\cite{delima_2008}.
+\end{enumerate}
+
+Particle swarm optimisation, differential evolution, harmony search and
+further population-based variants followed through the 2010s. A
+comprehensive survey of multi-objective optimisation methods and their
+nuclear applications covers this diversification~\cite{stewart_2021}.
+
+On the multi-objective side, NSGA-II~\cite{deb_nsga2_2002} became the
+workhorse of the field, supported by the broader theory of
+multi-objective evolutionary algorithms
+(MOEAs)~\cite{deb_2001,coello_2007}. The family remains active at the
+frontier. A recent application optimises the core of a small modular
+dual fluid reactor with NSGA-III under reactor physics
+constraints~\cite{chen_2022}.
+
+\subsection{Surrogate-assisted optimisation and machine learning}
+\label{sec:lit-opt-surrogate}
+
+The binding constraint of every method above is the number of calls to
+the expensive simulator. Surrogate-assisted evolutionary computation
+addresses it directly. A cheap statistical model is trained on
+evaluated designs, the optimiser searches the model, and the simulator
+is reserved for the most informative candidates~\cite{jin_2011}.
+Gaussian process regression is the canonical surrogate because it
+supplies a calibrated predictive uncertainty~\cite{rasmussen_gp_2006}.
+The loop is initialised by space-filling designs such as Latin
+hypercube sampling~\cite{mckay_lhs_1979} and driven by infill criteria
+that balance exploration against
+exploitation~\cite{forrester_book_2008,garnett_2023}. For
+multi-objective problems the hypervolume indicator supplies both a
+convergence measure and an acquisition
+target~\cite{zitzler_thiele_1999}.
+
+Nuclear applications of this pattern are recent and growing.
+
+\begin{enumerate}
+  \item Neural network surrogates coupled to NSGA-II for PWR reload
+        design~\cite{whyte_parks_2021}.
+
+  \item A convolutional neural network surrogate combined with a
+        genetic algorithm for reload pattern
+        optimisation~\cite{wan_2022}.
+
+  \item Neural network acceleration of a genetic algorithm for a
+        coupled fast and thermal experiment whose design space exceeds
+        $3\times10^{71}$ configurations~\cite{pevey_2022}.
+\end{enumerate}
+
+Deep reinforcement learning is the second frontier. Physics-informed
+reinforcement learning for assembly design is reported by its authors
+to find several times more feasible patterns than stochastic
+optimisation at a markedly lower computational
+cost~\cite{radaideh_2021_rl}, and neuroevolution has been applied to
+large-scale boiling water reactor bundle
+design~\cite{radaideh_2021_bwr}. The NEORL framework packages these
+algorithms for energy applications~\cite{radaideh_2023_neorl}.
+Systematic assessments followed~\cite{seurin_2024_rl}, and the Pareto
+Envelope Augmented with Reinforcement Learning (PEARL) approach is
+reported to reach a larger hypervolume than NSGA-III, multi-objective
+simulated annealing and multi-objective tabu search on a full-size PWR
+reload problem~\cite{seurin_2024_pearl}. These are results reported by
+the developing groups and independent replication remains limited.
+
+The open-source ecosystem completes the picture. OpenMC provides
+community-developed Monte Carlo transport~\cite{romano_openmc_2015}
+with an in-memory Python-coupled depletion
+capability~\cite{romano_2021_depletion}, and pymoo provides NSGA-II and
+its relatives in the same language~\cite{blank_deb_2020}. Together they
+make reproducible surrogate-assisted core optimisation feasible on
+modest computing budgets, the route taken by this thesis.
+
+Table~\ref{tab:lit-opt-timeline} condenses the six decades into a
+timeline.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Timeline of optimisation methods in core design and in-core
+           fuel management. Each row gives the dominant method family
+           of the period, landmark works, the key contribution and the
+           main limitation that motivated the next era.}
+  \label{tab:lit-opt-timeline}
+  \footnotesize
+  \begin{tabular}{@{}p{0.105\textwidth}p{0.155\textwidth}%
+                  p{0.215\textwidth}p{0.21\textwidth}p{0.20\textwidth}@{}}
+    \toprule
+    Period & Method family & Landmark works & Key contribution &
+    Main limitation \\
+    \midrule
+    1960s and 1970s &
+    Mathematical programming and the Haling principle &
+    \cite{wall_fenech_1965,haling_1964,wade_terney_1971} &
+    First formal problem statements and a single-pass depletion
+    shortcut &
+    Convexity assumptions and the constant-shape approximation \\
+    \addlinespace
+    1980s &
+    Heuristic rules, expert systems and GPT &
+    \cite{hobson_turinsky_1986,nissan_1997,rozon_beaudet_1992} &
+    Fast response estimation inside search loops &
+    Accuracy limited to small perturbations \\
+    \addlinespace
+    Late 1980s and 1990s &
+    Simulated annealing, genetic algorithms and tabu search &
+    \cite{kropaczek_turinsky_1991,poon_parks_1992,parks_1996,lin_1998} &
+    Robust global search and the first Pareto reload design &
+    Very high evaluation counts \\
+    \addlinespace
+    2000s and 2010s &
+    Population-based metaheuristics and MOEAs &
+    \cite{machado_schirru_2002,pereira_lapa_2003,deb_nsga2_2002} &
+    Full Pareto fronts in a single run &
+    Cost prohibitive with high-fidelity physics \\
+    \addlinespace
+    2019 to today &
+    Surrogate-assisted search and deep reinforcement learning &
+    \cite{jin_2011,whyte_parks_2021,radaideh_2021_rl,seurin_2024_pearl} &
+    Sample efficiency and learned placement policies &
+    Surrogate accuracy in high dimension and heavy training cost \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Specific difficulties of the field}
+\label{sec:lit-opt-difficulties}
+
+Six structural features distinguish core optimisation from generic
+engineering optimisation. Each one shaped the history above and each
+one acts on the pipeline of this thesis.
+
+\begin{enumerate}
+  \item \emph{Combinatorial size.} The number of candidate
+        configurations grows factorially with the number of positions,
+        and discrete choices coexist with continuous variables such as
+        enrichment and dimensions. A recent design study reports more
+        than $3\times10^{71}$ configurations for 150 positions and
+        three candidate materials~\cite{pevey_2022}, and the survey
+        literature treats the loading pattern problem as a canonical
+        hard combinatorial problem~\cite{stewart_2021}.
+
+  \item \emph{Expensive black-box evaluations.} Each candidate is
+        scored by a reactor physics code, and a Monte Carlo depletion
+        evaluation takes of the order of hours
+        (Chapter~\ref{ch:results}). The affordable number of
+        evaluations is therefore capped, which is the motivating
+        premise of surrogate-assisted search~\cite{jin_2011}.
+
+  \item \emph{Nonconvex and multimodal landscapes.} Objectives respond
+        discontinuously to discrete changes and the landscape is rich
+        in local optima, the mismatch that ended the deterministic era
+        and justified stochastic
+        search~\cite{kropaczek_turinsky_1991,parks_1996}.
+
+  \item \emph{Competing objectives under licensing constraints.} Cycle
+        length, peaking factors, discharge burnup and cost compete, and
+        safety limits enter as hard constraints rather than as
+        preferences~\cite{parks_1996,stewart_2021}.
+
+  \item \emph{Stochastic objectives.} Monte Carlo simulators return
+        objectives with statistical uncertainty. The noise perturbs the
+        ranking of nearby designs and propagates through depletion
+        steps, as developed in Section~\ref{sec:lit-opt-burnup}.
+
+  \item \emph{The fidelity gap.} Cheap screening models rank designs
+        differently from high-fidelity evaluation. The canonical
+        statistical fusion of two fidelities is the autoregressive
+        model of~\cite{kennedy_ohagan_2000}, with engineering practice
+        in~\cite{forrester_2007} and provably convergent model
+        management in~\cite{alexandrov_2001}. A recurring caution is
+        that the cross-fidelity correlation weakens near the optimum,
+        exactly where an optimiser converges. This thesis measures the
+        corresponding rank inversion between assembly-level and
+        core-level evaluation in Chapter~\ref{ch:results}.
+\end{enumerate}
+
+\subsection{The burnup difficulty}
+\label{sec:lit-opt-burnup}
+
+Among these features, depletion is the one that defines the cost
+structure of the problem, and it deserves a dedicated treatment because
+it is the central methodological concern of this work.
+
+A static figure of merit, such as the beginning-of-life (BOL) power
+peaking, requires one transport solution per candidate. Cycle length,
+end-of-cycle reactivity and discharge burnup are different in kind.
+They depend on the whole time history of the core, so each candidate
+requires a full depletion simulation and the cost of one evaluation is
+multiplied by the number of burnup steps.
+
+The object solved inside each such evaluation is the coupled transport
+and depletion problem. The transport eigenvalue problem yields the
+neutron flux for the current composition. The composition then evolves
+according to the Bateman equations, written below in their standard
+one-group form~\cite{duderstadt_hamilton_1976,stacey_2018}.
+
+\begin{equation}
+\frac{\mathrm{d}N_i}{\mathrm{d}t} =
+\sum_{j \neq i} \left( b_{j \rightarrow i}\,\lambda_j
+  + \sigma_{j \rightarrow i}\,\phi \right) N_j
+- \left( \lambda_i + \sigma_i^{\mathrm{a}}\,\phi \right) N_i
+\label{eq:bateman}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $N_i$ and $N_j$ are the atom densities of nuclides $i$ and
+        $j$, in atoms\,cm$^{-3}$.
+
+  \item $t$ is the time, in s.
+
+  \item $\lambda_i$ and $\lambda_j$ are the radioactive decay constants
+        of nuclides $i$ and $j$, in s$^{-1}$.
+
+  \item $b_{j \rightarrow i}$ is the branching fraction of the decay of
+        nuclide $j$ into nuclide $i$, dimensionless.
+
+  \item $\phi$ is the one-group scalar neutron flux, in
+        neutrons\,cm$^{-2}$\,s$^{-1}$.
+
+  \item $\sigma_{j \rightarrow i}$ is the effective one-group cross
+        section for neutron-induced transmutation of nuclide $j$ into
+        nuclide $i$, in cm$^{2}$, customarily quoted in barns.
+
+  \item $\sigma_i^{\mathrm{a}}$ is the effective one-group removal
+        cross section of nuclide $i$, covering absorption and the other
+        loss reactions, in cm$^{2}$, customarily quoted in barns.
+\end{itemize}
+
+Collecting all nuclides into a vector gives the matrix form used by
+modern depletion solvers~\cite{romano_2021_depletion}.
+
+\begin{equation}
+\frac{\mathrm{d}\mathbf{n}}{\mathrm{d}t} =
+\mathbf{A}(\phi)\,\mathbf{n}
+\label{eq:bateman-matrix}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $\mathbf{n}$ is the vector of nuclide atom densities, with
+        components in atoms\,cm$^{-3}$.
+
+  \item $\mathbf{A}(\phi)$ is the burnup matrix, assembled from the
+        decay constants and the flux-weighted reaction rates, in
+        s$^{-1}$.
+\end{itemize}
+
+The matrix depends on the flux and the flux depends on the composition
+through the transport solution, so the coupled system is nonlinear even
+though each substep is linear. Within a step the solution is a matrix
+exponential, evaluated in practice by the Chebyshev Rational
+Approximation Method (CRAM)~\cite{pusa_2011,pusa_2016}, the solver
+implemented in the OpenMC depletion module used in this
+work~\cite{romano_2021_depletion}.
+
+Three consequences make burnup-aware optimisation qualitatively harder
+than static optimisation.
+
+\begin{enumerate}
+  \item \emph{Path dependence.} Two designs indistinguishable at BOL
+        diverge along the cycle through spectral history, power history
+        and the burn-off of the burnable absorber. Ranking designs on a
+        BOL proxy therefore carries an intrinsic risk of misordering
+        the end-of-cycle outcome.
+
+  \item \emph{Time-dependent controls.} Soluble boron letdown and
+        control rod sequencing change during the cycle, so realistic
+        in-cycle operation is an optimal control problem in time rather
+        than a static placement problem, as recognised from the
+        earliest formulations~\cite{wade_terney_1971}.
+
+  \item \emph{Cost multiplication.} Every burnup step of every
+        candidate carries the full cost of a transport solution, so the
+        evaluation time grows linearly with the number of burnup steps.
+\end{enumerate}
+
+The literature offers four strategies to keep this cost tractable.
+
+\begin{enumerate}
+  \item The Haling single pass~\cite{haling_1964}, cheap but
+        approximate, with the thermal margin caveat noted
+        above~\cite{sun_1993}.
+
+  \item The linear reactivity model~\cite{driscoll_1990}, which
+        exploits the near-linear decline of assembly reactivity with
+        burnup to estimate cycle length and reload enrichment at
+        negligible cost, without resolving the power distribution.
+
+  \item BOL proxies and reduced-order depletion, which score designs on
+        beginning-of-life quantities or on coarse burnup ladders. They
+        are cheap, but the design ranking made at BOL need not survive
+        to the end of cycle, the risk this thesis measures directly in
+        Chapter~\ref{ch:results}.
+
+  \item Direct depletion inside the loop, with the full simulation per
+        candidate~\cite{romano_2021_depletion}. This is the
+        highest-fidelity route and the most expensive one, and it is
+        the route that surrogate assistance makes affordable in the
+        present work.
+\end{enumerate}
+
+Monte Carlo transport adds two problems of its own to the depletion
+coupling. The statistical noise of the transport solution enters the
+reaction rates and propagates from step to step. And the coupling
+scheme itself can be numerically unstable. Explicit coupling schemes
+develop spatial oscillations of the flux in cycle
+calculations~\cite{dufek_hoogenboom_2009}, the predictor-corrector
+schemes implemented in established codes can be unstable in large
+systems~\cite{dufek_2013_pc}, and stable alternatives such as the
+stochastic implicit Euler scheme~\cite{dufek_2013_sie} and higher-order
+integrators~\cite{josey_2017} were developed in response. These results
+ground the fixed transport fidelity and the burnup schedule adopted in
+Chapter~\ref{ch:methodology}.
+
+\subsection{State of the art and positioning of the present work}
+\label{sec:lit-opt-sota}
+
+Table~\ref{tab:lit-opt-sota} summarises the strengths and limitations
+of the method families that define the current state of the art. Four
+short assessments follow, one per family.
+
+\begin{table}[htbp]
+  \centering
+  \caption{State of the art of core design optimisation by method
+           family, with strengths, limitations and representative
+           works.}
+  \label{tab:lit-opt-sota}
+  \footnotesize
+  \begin{tabular}{@{}p{0.16\textwidth}p{0.26\textwidth}%
+                  p{0.26\textwidth}p{0.20\textwidth}@{}}
+    \toprule
+    Method family & Strengths & Limitations & Representative works \\
+    \midrule
+    Metaheuristics &
+    Global search on discrete nonconvex spaces, natural constraint
+    handling, full Pareto fronts in one run &
+    Hundreds to thousands of full evaluations, no convergence
+    guarantee, tuning sensitivity &
+    \cite{kropaczek_turinsky_1991,parks_1996,deb_nsga2_2002} \\
+    \addlinespace
+    Surrogate-assisted and Bayesian optimisation &
+    Order-of-magnitude reduction in simulator calls, calibrated
+    uncertainty, principled infill criteria &
+    Surrogate accuracy degrades with dimension, model management
+    required, noisy objectives complicate fitting &
+    \cite{jin_2011,rasmussen_gp_2006,whyte_parks_2021} \\
+    \addlinespace
+    Deep reinforcement learning &
+    Learned placement policies, strong reported benchmarks against
+    metaheuristics &
+    Sample-hungry training, implementation complexity, limited
+    independent replication &
+    \cite{radaideh_2021_rl,seurin_2024_pearl} \\
+    \addlinespace
+    Multi-fidelity frameworks &
+    Cheap screening plus selective high-fidelity confirmation &
+    Gains hinge on cross-fidelity correlation, rank inversion near the
+    optimum &
+    \cite{kennedy_ohagan_2000,forrester_2007,alexandrov_2001} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\emph{Metaheuristics.} Genetic algorithms, NSGA-II, simulated annealing
+and tabu search remain the reference engines because they search
+discrete nonconvex spaces globally, handle constraints naturally and
+return whole Pareto
+fronts~\cite{deb_nsga2_2002,kropaczek_turinsky_1991}. Their cost is the
+evaluation count. Hundreds to thousands of full simulations are
+typical, which is prohibitive when every evaluation is a Monte Carlo
+depletion, and no convergence guarantee exists~\cite{stewart_2021}.
+
+\emph{Surrogate-assisted and Bayesian optimisation.} Surrogates can cut
+the number of simulator calls by an order of magnitude, and Gaussian
+processes add a calibrated uncertainty that supports active
+learning~\cite{jin_2011,rasmussen_gp_2006,garnett_2023}. The price is
+model risk. Accuracy degrades with dimension, the model must be managed
+and retrained as the search advances, and noisy Monte Carlo objectives
+complicate the fitting~\cite{jin_2011}. Published nuclear applications
+rely mostly on neural network
+surrogates~\cite{whyte_parks_2021,wan_2022,pevey_2022}, and a Gaussian
+process pipeline for a core design problem of the present kind remains
+comparatively unexplored, which is part of the opportunity this thesis
+takes.
+
+\emph{Deep reinforcement learning.} Reported results are strong,
+including several times more feasible patterns than stochastic
+optimisation~\cite{radaideh_2021_rl} and a larger hypervolume than
+NSGA-III and multi-objective simulated annealing and tabu search on a
+full-size PWR problem~\cite{seurin_2024_pearl}. The approach is
+sample-hungry in training, complex to implement and tune, and its
+advantages still rest on the reports of the developing
+groups~\cite{seurin_2024_rl}.
+
+\emph{Multi-fidelity frameworks.} Combining cheap screening with
+selective high-fidelity confirmation is attractive whenever two model
+levels exist~\cite{kennedy_ohagan_2000,forrester_2007,alexandrov_2001}.
+The gains hinge on the correlation between the levels, and that
+correlation weakens near the optimum. The present work therefore
+measures the high-fidelity quantity in the loop where its cost permits,
+rather than correcting a proxy.
+
+The pipeline of this thesis sits in the surrogate-assisted family and
+is assembled from the components above.
+NSGA-II~\cite{deb_nsga2_2002}, implemented in
+pymoo~\cite{blank_deb_2020}, searches a Gaussian process surrogate
+ensemble~\cite{rasmussen_gp_2006} initialised by Latin hypercube
+sampling~\cite{mckay_lhs_1979} and refined by hypervolume-guided active
+learning~\cite{zitzler_thiele_1999}, following the dual-stage
+active-learning architecture formulated in a Karlsruhe Institute of
+Technology work proposal~\cite{kit_inr_proposal}. Every retained design
+is scored by full OpenMC
+depletion~\cite{romano_openmc_2015,romano_2021_depletion}, so the cycle
+length objective is measured in effective full-power days rather than
+proxied, and candidate designs are re-scored at core level to confront
+the fidelity gap of Section~\ref{sec:lit-opt-difficulties} directly,
+with the measured rank inversion reported in
+Chapter~\ref{ch:results}.
+%% AUTHOR: add 2-3 sentences in your own voice placing the gap this
+%% thesis fills relative to the state of the art above. Examiners
+%% expect the gap statement in the candidate's words.
+
+The decisive design lever that emerged from the campaigns of this work
+is the burnable absorber inventory. Section~\ref{sec:lit-gd} therefore
+closes the review with the gadolinia literature.
+
+\openpoint{Bibliography items introduced by this section that carry a
+VERIFY flag and must be checked against the publisher record before
+submission:
+\begin{enumerate}
+  \item final pages of the early works \cite{suzuki_kiyose_1971,
+        stover_sesonske_1969,wade_terney_1971,hobson_turinsky_1986,
+        poon_parks_1993,pereira_lapa_2003},
+  \item the page range of \cite{maldonado_1995}, listed as 301 to 311
+        in the volume index and as 312 to 325 on the article page of
+        the publisher,
+  \item the full author lists of \cite{lin_1998,chen_2022,pevey_2022}
+        and the author initials of \cite{wan_2022},
+  \item the page ranges of \cite{seurin_2024_rl,pusa_2016} and the
+        final page of \cite{dufek_hoogenboom_2009}.
+\end{enumerate}}
 
 \section{Gadolinia burnable absorbers}
 \label{sec:lit-gd}
@@ -86,143 +883,11 @@ parametric study of enriched gadolinium exists specifically for the
 Angra-2 assembly~\cite{angra2_gd_2018}, the domestic heritage plant of
 the present design basis.
 
-\section{Surrogate-assisted multi-objective core optimisation}
-\label{sec:lit-moo}
-
-Direct coupling of a depletion solver to a population-based optimiser
-is computationally prohibitive, which motivates the surrogate-assisted
-pattern adopted here: a cheap statistical model is trained on a design
-of experiments, an evolutionary algorithm searches the surrogate, and a
-small number of proposed designs are evaluated with the expensive code
-in an active-learning loop.
-
-The components of that pattern are standard.
-
+\openpoint{Two fronts of this chapter should still be expanded before
+submission:
 \begin{enumerate}
-  \item NSGA-II~\cite{deb_nsga2_2002} remains the standard
-        multi-objective engine.
-
-  \item Gaussian-process regression provides the surrogate together
-        with a principled predictive
-        uncertainty~\cite{rasmussen_gp_2006}.
-
-  \item Latin hypercube sampling supplies the space-filling initial
-        design~\cite{mckay_lhs_1979}.
-\end{enumerate}
-
-In reactor applications, Whyte and Parks demonstrated NSGA-II with
-neural-network surrogates for PWR loading
-design~\cite{whyte_parks_2021}, and the dual-stage active-learning
-architecture that seeded the present pipeline was formulated in a
-Karlsruhe Institute of Technology work
-proposal~\cite{kit_inr_proposal}. OpenMC supplies the transport and
-depletion engine as a fully open-source Monte Carlo
-code~\cite{romano_openmc_2015}.
-
-\section{Noisy objectives and selection under uncertainty}
-\label{sec:lit-noise}
-
-Monte Carlo objectives place the optimisation in the noisy-evaluation
-regime, for which two bodies of theory are relevant and, in the
-reactor-design literature, rarely applied together.
-
-\begin{enumerate}
-  \item An objective defined as the \emph{maximum} of many noisy
-        estimates is an order statistic and inherits the well-known
-        upward bias of extreme values. The winning cell is
-        preferentially one that fluctuated high, the bias grows as the
-        underlying field flattens, and it shrinks only with the
-        per-cell variance.
-
-  \item Identifying the best of several noisy alternatives is the
-        classical ranking-and-selection problem. Gupta-style subset
-        selection retains every candidate whose confidence interval
-        overlaps the incumbent's and discards the rest with controlled
-        error~\cite{gupta_1965}. Common random numbers are the standard
-        variance-reduction device for paired comparison, though their
-        benefit vanishes when the compared systems decorrelate, as the
-        present work finds for designs of different lattice pitch.
-\end{enumerate}
-
-The gap this thesis addresses sits at the intersection.
-Surrogate-assisted MOO studies of reactor cores generally treat the
-Monte Carlo objective as deterministic at fixed seed, leaving both the
-estimator bias and the ranking reliability of the resulting Pareto
-front unexamined.
-%% AUTHOR: 2-3 sentences positioning this gap in your own reading of the
-%% field; examiners expect the gap statement in the candidate's voice.
-
-\section{Multi-fidelity optimisation}
-\label{sec:lit-mf}
-
-When the objective is evaluated by models of different fidelity, the
-canonical statistical fusion is the Kennedy--O'Hagan autoregressive
-model~\cite{kennedy_ohagan_2000}.
-
-\begin{equation}
-Z_\mathrm{hi}(x) = \rho\, Z_\mathrm{lo}(x) + \delta(x)
-\label{eq:kennedy_ohagan}
-\end{equation}
-
-\noindent where the symbols have the following meaning.
-
-\begin{itemize}
-  \item $Z_\mathrm{hi}(x)$ is the high-fidelity response at design $x$,
-        in the units of the modelled quantity.
-
-  \item $Z_\mathrm{lo}(x)$ is the low-fidelity response at the same
-        design, in the same units.
-
-  \item $\rho$ is the autoregressive scale factor of the model,
-        dimensionless. It is not the reactivity of
-        Equation~\eqref{eq:reactivity}, with which it shares the
-        symbol in the source literature.
-
-  \item $\delta(x)$ is the discrepancy term, modelled as a Gaussian
-        process, in the same units as the responses.
-
-  \item $x$ is the design vector.
-\end{itemize}
-
-Forrester et al.\ give the engineering recipe and demonstrate
-optimisation on few high-fidelity samples~\cite{forrester_2007}.
-Trust-region model management optimises a corrected low-fidelity model
-with provable convergence to the high-fidelity
-optimum~\cite{alexandrov_2001}. Multi-fidelity Bayesian optimisation
-selects design \emph{and} fidelity jointly per unit
-cost~\cite{poloczek_miso_2017,kandasamy_boca_2017}. Nuclear
-applications include machine-learning correction of low-fidelity nodal
-solutions against Monte Carlo benchmarks~\cite{vver_ml_2026}.
-
-A recurring caution motivates the present work's route. Low-fidelity to
-high-fidelity correlation weakens near the optimum, exactly where an
-optimiser converges. This thesis therefore measures the high-fidelity
-quantity in-loop where its cost permits, rather than correcting the
-proxy.
-
-\section{Loading patterns and power peaking}
-\label{sec:lit-lp}
-
-Commercial cores reach their $F_{\Delta H}$ targets largely through
-reload design. Simulated-annealing loading-pattern optimisation with
-peaking as an explicit objective reduced maximum radial peaking by
-6.1\% at fixed fuel inventory~\cite{kropaczek_turinsky_1991}. Even
-first cores obtain flatness from heterogeneous batch placement,
-optimised to minimise radial peaking under cycle-length
-constraints~\cite{aga_firstcore_2021,chasnupp_lpo_2013}.
-
-A uniform single-batch core, the configuration of this thesis, forgoes
-that instrument entirely, which frames the peaking levels measured in
-Chapter~\ref{ch:results}.
-
-\openpoint{The review is functional but thin on three fronts and should
-be expanded before submission:
-\begin{enumerate}
-  \item textbook grounding for reactor physics quantities
-        ($F_{\Delta H}$, reactivity coefficients), for example
-        Duderstadt and Hamilton,
   \item the naval and SMR heritage literature beyond NuScale (KLT-40S,
-        CAREM, SMART),
-  \item primary sources to replace the two lower-grade citations
-        flagged in the bibliography file.
+        CAREM, SMART) in Section~\ref{sec:lit-smr},
+  \item primary sources to replace the lower-grade citations flagged
+        in the bibliography files.
 \end{enumerate}}

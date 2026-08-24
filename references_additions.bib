@@ -1,9 +1,12 @@
 % =====================================================================
 %  references_additions.bib
-%  New entries cited by the revised background.tex (Chapter 3).
-%  PASTE the block below into references_partial.bib.
-%  Entries marked %% VERIFY need a check of edition or publisher detail
-%  before print, following the existing convention of the file.
+%  Entries beyond references_partial.bib, loaded together with it by
+%  the ibliography command of Thesis_template.tex.
+%  Part 1: reactor physics and optimisation background (Chapter 3).
+%  Part 2: the optimisation review of Chapter 2, Section 2.2 (merged
+%          from references_additions_optimisation.bib on 23 Aug 2026,
+%          that standalone file is now retired).
+%  Entries marked VERIFY need a check of one detail before print.
 % =====================================================================
 
 % ---------- reactor physics (Sections 3.1 to 3.4) --------------------
@@ -157,4 +160,490 @@
   publisher = {Cambridge University Press},
   address   = {Cambridge, UK},
   year      = {2023}
+}
+
+
+% =====================================================================
+%  Part 2 -- optimisation review of Chapter 2, Section 2.2
+% =====================================================================
+
+% ---------- deterministic era (1960s and 1970s) ----------------------
+
+@article{wall_fenech_1965,
+  author  = {Wall, I. and Fenech, H.},
+  title   = {The Application of Dynamic Programming to Fuel Management
+             Optimization},
+  journal = {Nuclear Science and Engineering},
+  volume  = {22},
+  pages   = {285--297},
+  year    = {1965}
+}
+
+@inproceedings{haling_1964,
+  author       = {Haling, R. K.},
+  title        = {Operating Strategy for Maintaining an Optimum Power
+                  Distribution Throughout Life},
+  booktitle    = {Nuclear Performance of Power Reactor Cores},
+  organization = {United States Atomic Energy Commission},
+  year         = {1964},
+  note         = {Report TID-7672}
+}
+
+@article{tabak_1968,
+  author  = {Tabak, D.},
+  title   = {Optimization of Nuclear Reactor Fuel Recycle via Linear and
+             Quadratic Programming},
+  journal = {IEEE Transactions on Nuclear Science},
+  volume  = {NS-15},
+  number  = {1},
+  pages   = {60--64},
+  year    = {1968}
+}
+
+@article{suzuki_kiyose_1971,
+  author  = {Suzuki, A. and Kiyose, R.},
+  title   = {Application of Linear Programming to Refueling Optimization
+             for Light Water Moderated Power Reactors},
+  journal = {Nuclear Science and Engineering},
+  volume  = {46},
+  pages   = {112},
+  year    = {1971},
+  note    = {VERIFY final page}
+}
+
+@article{stover_sesonske_1969,
+  author  = {Stover, R. L. and Sesonske, A.},
+  title   = {Optimization of Boiling Water Reactor Fuel Management Using
+             an Accelerated Exhaustive Search Technique},
+  journal = {Journal of Nuclear Energy},
+  volume  = {23},
+  pages   = {673},
+  year    = {1969},
+  note    = {VERIFY final page}
+}
+
+@article{wade_terney_1971,
+  author  = {Wade, D. and Terney, W.},
+  title   = {Optimal Control of Nuclear Reactor Depletion},
+  journal = {Nuclear Science and Engineering},
+  volume  = {45},
+  pages   = {199},
+  year    = {1971},
+  note    = {VERIFY final page}
+}
+
+@article{sun_1993,
+  author  = {Sun, S. and Kropaczek, D. J. and Turinsky, P. J.},
+  title   = {Haling Principle: True or False?},
+  journal = {Transactions of the American Nuclear Society},
+  volume  = {68},
+  pages   = {482},
+  year    = {1993}
+}
+
+% ---------- heuristics and perturbation theory (1980s) ----------------
+
+@article{hobson_turinsky_1986,
+  author  = {Hobson, G. H. and Turinsky, P. J.},
+  title   = {Automatic Determination of Pressurized Water Reactor Core
+             Loading Patterns That Maximize Beginning-of-Cycle
+             Reactivity Within Power-Peaking and Burnup Constraints},
+  journal = {Nuclear Technology},
+  volume  = {74},
+  pages   = {5},
+  year    = {1986},
+  note    = {VERIFY final page and exact title wording}
+}
+
+@article{nissan_1997,
+  author  = {Nissan, E. and Siegelmann, H. and Galperin, A. and
+             Kimhi, S.},
+  title   = {Upgrading Automation for Nuclear Fuel In-Core Management:
+             From the Symbolic Generation of Configurations, to the
+             Neural Adaptations of Heuristics},
+  journal = {Engineering with Computers},
+  volume  = {13},
+  pages   = {1--19},
+  year    = {1997}
+}
+
+@article{rozon_beaudet_1992,
+  author  = {Rozon, D. and Beaudet, M.},
+  title   = {Canada Deuterium Uranium Reactor Design Optimization Using
+             Three-Dimensional Generalized Perturbation Theory},
+  journal = {Nuclear Science and Engineering},
+  volume  = {111},
+  number  = {1},
+  pages   = {1--20},
+  year    = {1992}
+}
+
+@article{maldonado_1995,
+  author  = {Maldonado, G. I. and Turinsky, P. J. and Kropaczek, D. J.
+             and Parks, G. T.},
+  title   = {Employing Nodal Generalized Perturbation Theory for the
+             Minimization of Feed Enrichment During Pressurized Water
+             Reactor In-Core Nuclear Fuel Management Optimization},
+  journal = {Nuclear Science and Engineering},
+  volume  = {121},
+  number  = {2},
+  pages   = {301--311},
+  year    = {1995},
+  doi     = {10.13182/NSE95-A28566},
+  note    = {VERIFY page range, the volume index lists 301 to 311 while
+             the article page of the publisher lists 312 to 325}
+}
+
+% ---------- stochastic global search (late 1980s and 1990s) -----------
+%  kropaczek_turinsky_1991 already exists in references_partial.bib
+
+@inproceedings{poon_parks_1992,
+  author    = {Poon, P. W. and Parks, G. T.},
+  title     = {Optimizing {PWR} Reload Core Designs},
+  booktitle = {Parallel Problem Solving from Nature 2},
+  editor    = {M{\"a}nner, R. and Manderick, B.},
+  publisher = {North-Holland},
+  address   = {Amsterdam},
+  pages     = {371--380},
+  year      = {1992}
+}
+
+@inproceedings{poon_parks_1993,
+  author    = {Poon, P. W. and Parks, G. T.},
+  title     = {Application of Genetic Algorithms to In-Core Nuclear Fuel
+               Management Optimization},
+  booktitle = {Proceedings of the Joint International Conference on
+               Mathematical Methods and Supercomputing in Nuclear
+               Applications},
+  address   = {Karlsruhe, Germany},
+  volume    = {1},
+  pages     = {777},
+  year      = {1993},
+  note      = {VERIFY final page}
+}
+
+@article{dechaine_feltus_1995,
+  author  = {DeChaine, M. D. and Feltus, M. A.},
+  title   = {Nuclear Fuel Management Optimization Using Genetic
+             Algorithms},
+  journal = {Nuclear Technology},
+  volume  = {111},
+  pages   = {109--114},
+  year    = {1995}
+}
+
+@article{dechaine_feltus_1996,
+  author  = {DeChaine, M. D. and Feltus, M. A.},
+  title   = {Fuel Management Optimization Using Genetic Algorithms and
+             Expert Knowledge},
+  journal = {Nuclear Science and Engineering},
+  volume  = {124},
+  pages   = {188--196},
+  year    = {1996}
+}
+
+@article{parks_1996,
+  author  = {Parks, G. T.},
+  title   = {Multiobjective Pressurized Water Reactor Reload Core Design
+             by Nondominated Genetic Algorithm Search},
+  journal = {Nuclear Science and Engineering},
+  volume  = {124},
+  pages   = {178--187},
+  year    = {1996}
+}
+
+@article{lin_1998,
+  author  = {Lin, C. and others},
+  title   = {Pressurized Water Reactor Loading Pattern Design Using the
+             Simple Tabu Search},
+  journal = {Nuclear Science and Engineering},
+  volume  = {129},
+  pages   = {61--71},
+  year    = {1998},
+  note    = {VERIFY full author list}
+}
+
+@article{yamamoto_1997,
+  author  = {Yamamoto, A.},
+  title   = {A Quantitative Comparison of Loading Pattern Optimization
+             Methods for In-Core Fuel Management of {PWR}},
+  journal = {Journal of Nuclear Science and Technology},
+  volume  = {34},
+  pages   = {339--347},
+  year    = {1997}
+}
+
+% ---------- population-based metaheuristics (2000s and 2010s) ---------
+
+@article{machado_schirru_2002,
+  author  = {Machado, L. and Schirru, R.},
+  title   = {The {Ant-Q} Algorithm Applied to the Nuclear Reload
+             Problem},
+  journal = {Annals of Nuclear Energy},
+  volume  = {29},
+  number  = {12},
+  pages   = {1455--1470},
+  year    = {2002}
+}
+
+@article{delima_2008,
+  author  = {de Lima, A. M. M. and Schirru, R. and da Silva, F. C. and
+             Medeiros, J. A. C. C.},
+  title   = {A Nuclear Reactor Core Fuel Reload Optimization Using
+             Artificial Ant Colony Connective Networks},
+  journal = {Annals of Nuclear Energy},
+  volume  = {35},
+  pages   = {1606--1612},
+  year    = {2008}
+}
+
+@article{pereira_1999,
+  author  = {Pereira, C. M. N. A. and Schirru, R. and Martinez, A. S.},
+  title   = {Basic Investigations Related to Genetic Algorithms in Core
+             Designs},
+  journal = {Annals of Nuclear Energy},
+  volume  = {26},
+  number  = {3},
+  pages   = {173--193},
+  year    = {1999}
+}
+
+@article{pereira_lapa_2003,
+  author  = {Pereira, C. M. N. A. and Lapa, C. M. F.},
+  title   = {Coarse-Grained Parallel Genetic Algorithm Applied to a
+             Nuclear Reactor Core Design Optimization Problem},
+  journal = {Annals of Nuclear Energy},
+  volume  = {30},
+  pages   = {555},
+  year    = {2003},
+  note    = {VERIFY final page}
+}
+
+@article{stewart_2021,
+  author  = {Stewart, R. and Palmer, T. S. and DuPont, B.},
+  title   = {A Survey of Multi-Objective Optimization Methods and Their
+             Applications for Nuclear Scientists and Engineers},
+  journal = {Progress in Nuclear Energy},
+  volume  = {138},
+  pages   = {103830},
+  year    = {2021},
+  doi     = {10.1016/j.pnucene.2021.103830}
+}
+
+@article{chen_2022,
+  author  = {Chen and others},
+  title   = {Core Design Optimization of Small Modular Dual Fluid
+             Reactor Based on {NSGA-III} in the Aspect of Reactor
+             Physics},
+  journal = {Annals of Nuclear Energy},
+  volume  = {174},
+  pages   = {109194},
+  year    = {2022},
+  doi     = {10.1016/j.anucene.2022.109194},
+  note    = {VERIFY full author list}
+}
+
+% ---------- surrogate-assisted search and machine learning ------------
+
+@article{jin_2011,
+  author  = {Jin, Y.},
+  title   = {Surrogate-Assisted Evolutionary Computation: Recent
+             Advances and Future Challenges},
+  journal = {Swarm and Evolutionary Computation},
+  volume  = {1},
+  number  = {2},
+  pages   = {61--70},
+  year    = {2011},
+  doi     = {10.1016/j.swevo.2011.05.001}
+}
+
+@article{wan_2022,
+  author  = {Wan, C. and Lei, K. and Li, Y.},
+  title   = {Optimization Method of Fuel-Reloading Pattern for {PWR}
+             Based on the Improved Convolutional Neural Network and
+             Genetic Algorithm},
+  journal = {Annals of Nuclear Energy},
+  volume  = {171},
+  pages   = {109028},
+  year    = {2022},
+  doi     = {10.1016/j.anucene.2022.109028},
+  note    = {VERIFY author initials}
+}
+
+@article{pevey_2022,
+  author  = {Pevey, J. and Sobes, V. and Hines, J. W.},
+  title   = {Neural Network Acceleration of Genetic Algorithms for the
+             Optimization of a Coupled Fast/Thermal Nuclear Experiment},
+  journal = {Frontiers in Energy Research},
+  volume  = {10},
+  pages   = {874194},
+  year    = {2022},
+  doi     = {10.3389/fenrg.2022.874194},
+  note    = {VERIFY complete author list}
+}
+
+@article{radaideh_2021_rl,
+  author  = {Radaideh, M. I. and Wolverton, I. and Joseph, J. and
+             Tusar, J. J. and Otgonbaatar, U. and Roy, N. and
+             Forget, B. and Shirvan, K.},
+  title   = {Physics-Informed Reinforcement Learning Optimization of
+             Nuclear Assembly Design},
+  journal = {Nuclear Engineering and Design},
+  volume  = {372},
+  pages   = {110966},
+  year    = {2021},
+  doi     = {10.1016/j.nucengdes.2020.110966}
+}
+
+@article{radaideh_2021_bwr,
+  author  = {Radaideh, M. I. and Forget, B. and Shirvan, K.},
+  title   = {Large-Scale Design Optimisation of Boiling Water Reactor
+             Bundles with Neuroevolution},
+  journal = {Annals of Nuclear Energy},
+  volume  = {160},
+  pages   = {108355},
+  year    = {2021},
+  doi     = {10.1016/j.anucene.2021.108355}
+}
+
+@article{radaideh_2023_neorl,
+  author  = {Radaideh, M. I. and Du, K. and Seurin, P. and Seyler, D.
+             and Gu, X. and Wang, H. and Shirvan, K.},
+  title   = {{NEORL}: {NeuroEvolution} Optimization with Reinforcement
+             Learning -- Applications to Carbon-Free Energy Systems},
+  journal = {Nuclear Engineering and Design},
+  volume  = {412},
+  pages   = {112423},
+  year    = {2023},
+  doi     = {10.1016/j.nucengdes.2023.112423}
+}
+
+@article{seurin_2024_rl,
+  author  = {Seurin, P. and Shirvan, K.},
+  title   = {Assessment of Reinforcement Learning Algorithms for Nuclear
+             Power Plant Fuel Optimization},
+  journal = {Applied Intelligence},
+  volume  = {54},
+  year    = {2024},
+  doi     = {10.1007/s10489-023-05013-5},
+  note    = {VERIFY page range}
+}
+
+@article{seurin_2024_pearl,
+  author  = {Seurin, P. and Shirvan, K.},
+  title   = {Multi-Objective Reinforcement Learning-Based Approach for
+             Pressurized Water Reactor Optimization},
+  journal = {Annals of Nuclear Energy},
+  volume  = {205},
+  pages   = {110582},
+  year    = {2024},
+  doi     = {10.1016/j.anucene.2024.110582}
+}
+
+% ---------- Monte Carlo depletion and its numerical stability ---------
+
+@article{dufek_hoogenboom_2009,
+  author  = {Dufek, J. and Hoogenboom, J. E.},
+  title   = {Numerical Stability of Existing Monte Carlo Burnup Codes in
+             Cycle Calculations of Critical Reactors},
+  journal = {Nuclear Science and Engineering},
+  volume  = {162},
+  number  = {3},
+  pages   = {307},
+  year    = {2009},
+  note    = {VERIFY final page}
+}
+
+@article{dufek_2013_pc,
+  author  = {Dufek, J. and Kotlyar, D. and Shwageraus, E. and
+             Lepp{\"a}nen, J.},
+  title   = {Numerical Stability of the Predictor-Corrector Method in
+             Monte Carlo Burnup Calculations of Critical Reactors},
+  journal = {Annals of Nuclear Energy},
+  volume  = {56},
+  pages   = {34--38},
+  year    = {2013},
+  doi     = {10.1016/j.anucene.2013.01.018}
+}
+
+@article{dufek_2013_sie,
+  author  = {Dufek, J. and Kotlyar, D. and Shwageraus, E.},
+  title   = {The Stochastic Implicit {Euler} Method -- A Stable Coupling
+             Scheme for Monte Carlo Burnup Calculations},
+  journal = {Annals of Nuclear Energy},
+  volume  = {60},
+  pages   = {295--300},
+  year    = {2013}
+}
+
+@article{josey_2017,
+  author  = {Josey, C. and Forget, B. and Smith, K.},
+  title   = {High Order Methods for the Integration of the {Bateman}
+             Equations and Other Problems of the Form
+             $y' = F(y,t)y$},
+  journal = {Journal of Computational Physics},
+  volume  = {350},
+  pages   = {296--313},
+  year    = {2017},
+  doi     = {10.1016/j.jcp.2017.08.025}
+}
+
+@article{pusa_2011,
+  author  = {Pusa, M.},
+  title   = {Rational Approximations to the Matrix Exponential in Burnup
+             Calculations},
+  journal = {Nuclear Science and Engineering},
+  volume  = {169},
+  number  = {2},
+  pages   = {155--167},
+  year    = {2011},
+  doi     = {10.13182/NSE10-81}
+}
+
+@article{pusa_2016,
+  author  = {Pusa, M.},
+  title   = {Higher-Order {Chebyshev} Rational Approximation Method and
+             Application to Burnup Equations},
+  journal = {Nuclear Science and Engineering},
+  volume  = {182},
+  number  = {3},
+  year    = {2016},
+  doi     = {10.13182/NSE15-26},
+  note    = {VERIFY page range}
+}
+
+@article{romano_2021_depletion,
+  author  = {Romano, P. K. and Josey, C. J. and Johnson, A. E. and
+             Liang, J.},
+  title   = {Depletion Capabilities in the {OpenMC} Monte Carlo Particle
+             Transport Code},
+  journal = {Annals of Nuclear Energy},
+  volume  = {152},
+  pages   = {107989},
+  year    = {2021},
+  doi     = {10.1016/j.anucene.2020.107989}
+}
+
+% ---------- optimisation software -------------------------------------
+
+@article{blank_deb_2020,
+  author  = {Blank, J. and Deb, K.},
+  title   = {pymoo: Multi-Objective Optimization in {Python}},
+  journal = {IEEE Access},
+  volume  = {8},
+  pages   = {89497--89509},
+  year    = {2020},
+  doi     = {10.1109/ACCESS.2020.2990567}
+}
+
+% ---------- institutional sources -------------------------------------
+
+@techreport{iaea_tecdoc_815,
+  author      = {{International Atomic Energy Agency}},
+  title       = {In-Core Fuel Management Code Package Validation for
+                 {PWRs}},
+  institution = {International Atomic Energy Agency},
+  address     = {Vienna, Austria},
+  number      = {IAEA-TECDOC-815},
+  year        = {1995}
 }

@@ -962,62 +962,68 @@ region instead of stalling.
 \end{figure}
 
 \subsubsection*{One generation}
-
-With the comparisons in place, one full elitist generation of NSGA-II
-reads as follows, and Figure~\ref{fig:bg-nsga2-generation} traces it.
+With the comparisons in place, one elitist generation of NSGA-II
+follows the main loop of Deb et al.~\cite{deb_nsga2_2002}, and
+Figure~\ref{fig:bg-nsga2-generation} traces it.
 
 \begin{enumerate}
-  \item Generate offspring from the current population of size $N$ by
-        tournament selection, crossover and mutation.
-
-  \item Pool parents and offspring, $2N$ designs in total, so no good
-        design is ever lost. This is the elitism of the algorithm.
-
-  \item Sort the pool by constrained non-dominated sorting.
-
-  \item Fill the next generation rank by rank until a rank no longer
-        fits entirely.
-
-  \item Fill the remaining places from that last rank in decreasing
-        order of crowding distance.
-
-  \item Repeat until the generation budget is exhausted. Rank 1 of the
-        final population is the candidate Pareto set.
+  \item Create the offspring population $Q_t$ from the parent
+        population $P_t$ of size $N$ by binary tournament selection
+        under the comparisons above, followed by crossover and
+        mutation.
+  \item Pool parents and offspring into $R_t = P_t \cup Q_t$, $2N$
+        designs in total. Every parent competes again, so the best
+        designs found so far cannot be lost. This is the elitism of
+        the algorithm.
+  \item Sort $R_t$ into fronts $F_1, F_2, \ldots$ by non-dominated
+        sorting under constrained domination.
+  \item Fill the next population $P_{t+1}$ front by front until a
+        front no longer fits entirely.
+  \item Fill the remaining places from that first overfull front in
+        decreasing order of crowding distance.
+  \item Repeat until the generation budget is exhausted. The first
+        front of the final population is the candidate Pareto set.
 \end{enumerate}
 
 \begin{figure}[!tbp]
   \centering
   \includegraphics[width=0.95\linewidth]{images/bg_nsga2_generation.pdf}
-  \caption{One elitist generation. Parents and offspring are pooled,
-  sorted into ranks, and the next population is refilled rank by rank,
-  with the crowding distance splitting the last rank that fits.}
+  \caption{One elitist generation of NSGA-II, adapted from Figure~2 of
+  Deb et al.~\cite{deb_nsga2_2002}. The parents $P_t$ and the offspring $Q_t$
+  are pooled into $R_t$ of size $2N$. Non-dominated sorting splits
+  $R_t$ into fronts $F_1, F_2, \ldots$ and the next population
+  $P_{t+1}$ is filled front by front. The first front that exceeds the
+  remaining places, here $F_3$, is sorted by crowding distance and
+  only its members with the largest distance enter. The rest of $F_3$
+  and all lower fronts are rejected.}
   \label{fig:bg-nsga2-generation}
 \end{figure}
 
-\paragraph{In this thesis.}
 The population lives in the five-dimensional design space of
-Table~\ref{tab:design-space}, handled internally on the unit hypercube,
-and is judged on the two objectives of
+Table~\ref{tab:design-space}, handled internally on the unit
+hypercube. It is judged on the two objectives of
 Section~\ref{sec:objective_functions}, with EFPD negated, under the
-five constraints of Table~\ref{tab:constraints} in the
-$g \le 0$ convention that Equation~\eqref{eq:violation} consumes. The
-decisive point is that NSGA-II never calls OpenMC. It searches the
-Gaussian-process surrogate of Section~\ref{sec:bg-gp}, in the
-production configuration with a population of 60 evolved for 80
-generations per active-learning iteration, initialised by Latin
-hypercube sampling with a fresh random seed each iteration, so that one
-complete search costs seconds instead of months. Constrained domination
-is also what kept the search alive at the Campaign-4 design of
-experiments, where all 36 designs were infeasible and selection was
-governed entirely by rule 2. In that case the final population is
-ranked by total violation and its least-infeasible members are handed
-to the infill step, which is the constraint-violation-driven mode of
-Section~\ref{sec:res-c4}, and the situation drawn in
+five constraints of Table~\ref{tab:constraints} in the $g \le 0$
+convention that Equation~\eqref{eq:violation} consumes.
+
+NSGA-II never calls OpenMC. Each active-learning iteration searches
+the Gaussian-process surrogate of Section~\ref{sec:bg-gp} with a
+population of 60 evolved for 80 generations, initialised by Latin
+hypercube sampling with a fresh random seed, so that one complete
+search costs seconds instead of the thousands of transport
+evaluations it replaces.
+
+Constrained domination also kept the search alive at the Campaign-4
+design of experiments, where all 36 designs were infeasible and
+selection was governed entirely by rule 2. The final population is
+then ranked by total violation and its least-infeasible members are
+handed to the infill step, the constraint-violation-driven mode of
+Section~\ref{sec:res-c4} drawn in
 Figure~\ref{fig:bg-nsga2-thesis}(b).
 %% AUTHOR: confirm population 60 and 80 generations against the
 %% campaign checkpoints. These are the full-run defaults of
-%% run_optimization.py, but a command-line override at launch would not
-%% appear in the repository defaults.
+%% run_optimization.py, but a command-line override at launch would
+%% not appear in the repository defaults.
 
 \FloatBarrier
 
