@@ -468,3 +468,124 @@ domain of multi-batch loading patterns, zoned absorber placement and rod
 programmes~\cite{kropaczek_turinsky_1991,aga_firstcore_2021,chasnupp_lpo_2013}
 --- outside this design space by construction, and the natural
 continuation of the work.}
+
+%% ---------------------------------------------------------------------------
+%% Campaign 5: high-fidelity confirmation of the least-infeasible champion.
+%% Insert into results.tex after the Campaign 5 optimisation subsection.
+%% Requires: booktabs, amsmath, siunitx not required.
+%% ---------------------------------------------------------------------------
+
+\subsection{High-fidelity confirmation of the Campaign 5 champion}
+\label{sec:c5_confirmation}
+
+Campaign 5 returned no strictly feasible design in sixty evaluations. The
+least-infeasible design, archive index 54, violated only the radial
+enthalpy-rise constraint, and by an amount smaller than the run-to-run
+scatter of the Monte Carlo estimator that produces it. A separate
+confirmation study was therefore run to determine whether that violation is
+a property of the design or an artefact of the transport statistics.
+
+The design was re-solved at beginning of life with eight independent
+transport seeds at raised fidelity, namely \num{200000} particles per batch
+over 260 batches with 80 inactive batches, against the campaign setting of
+\num{100000} particles over 170 batches with 60 inactive batches. The
+assembly eigenvalue was re-solved with four independent seeds. No depletion
+was repeated, because the peaking factor is a beginning-of-life quantity and
+the cycle length of this design is set by the burnup ceiling rather than by
+the reactivity target. The peaking estimator, the mesh definition and the
+Shannon-entropy convergence sentinel were taken unchanged from the campaign
+evaluator, so the confirmed quantity is identical in definition to the
+optimisation objective.
+
+The sample statistics are formed as
+
+\begin{equation}
+\bar{F} = \frac{1}{n}\sum_{i=1}^{n} F_i ,
+\qquad
+s = \sqrt{\frac{1}{n-1}\sum_{i=1}^{n}\left(F_i - \bar{F}\right)^2 },
+\qquad
+\mathrm{CI}_{95} = \bar{F} \pm t_{0.975,\,n-1}\,\frac{s}{\sqrt{n}} ,
+\end{equation}
+
+with the terms
+
+\begin{itemize}
+  \item $F_i$, the radial enthalpy-rise hot channel factor returned by
+        transport seed $i$, dimensionless,
+  \item $n$, the number of independent seeds, dimensionless,
+  \item $\bar{F}$, the sample mean of the peaking factor, dimensionless,
+  \item $s$, the sample standard deviation of the peaking factor,
+        dimensionless,
+  \item $t_{0.975,\,n-1}$, the two-sided Student critical value at the
+        \SI{95}{\percent} level with $n-1$ degrees of freedom, dimensionless.
+\end{itemize}
+
+The design was declared feasible on a constraint only when the entire
+confidence interval clears the limit, which is the conservative test.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Campaign 5 champion, archive index 54, confirmed at raised
+           fidelity. The reactivity constraint clears its limit by twenty
+           standard errors. The peaking constraint cannot be separated from
+           its limit.}
+  \label{tab:c5_confirmation}
+  \begin{tabular}{lrrrrl}
+    \toprule
+    Quantity & Mean & $s$ & \multicolumn{2}{c}{\SI{95}{\percent} interval}
+             & Verdict \\
+    \midrule
+    Core $F_{\Delta H}$ ($n=8$)      & 2.00350 & 0.01320 & 1.99246 & 2.01454
+                                     & indistinguishable \\
+    Assembly $k_{\mathrm{BOL}}$ ($n=4$) & 1.34392 & 0.00030 & 1.34344 & 1.34440
+                                     & pass \\
+    Core $k_{\mathrm{eff}}$ ($n=8$)  & 1.27424 & --      & --      & --
+                                     & not constrained \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The reactivity constraint is settled. The assembly eigenvalue clears the
+screening limit of 1.35 by \SI{608}{pcm}, against a seed-to-seed standard
+deviation of \SI{30}{pcm}, so the margin exceeds twenty standard errors. The
+core eigenvalue of the same design is \SI{6968}{pcm} below the assembly
+value, consistent with the range of \SIrange{5012}{7530}{pcm} measured across
+the Campaign 4 archive, which confirms that the screening limit is applied to
+the more conservative of the two quantities.
+
+The peaking constraint is not settled, and cannot be settled at this
+resolution. The mean exceeds the limit of 2.0 by 0.0035, which is
+\SI{0.175}{\percent} of the limit and approximately one quarter of one
+standard deviation of a single solve. Individual seeds fall on both sides of
+the limit, spanning 1.9843 to 2.0217. Reducing the standard error far enough
+for the interval to separate from the limit at the observed offset would
+require of the order of fifty-five independent seeds, and would establish a
+violation of less than two tenths of one percent of a bound that is itself a
+relaxed screening value rather than a licensed limit.
+
+Two observations on the estimator follow from the same data set. The
+campaign evaluation of this design returned 2.0012 at the lower campaign
+fidelity, which falls at the 38th percentile of the eight high-fidelity
+seeds, so no fidelity bias is detectable in the optimisation objective. The
+measured standard deviation is 1.33 times the value predicted by inverse
+square-root scaling of the particle count from the Campaign 3 noise
+measurement. This is expected behaviour, because the peaking factor is a
+maximum over mesh bins rather than a mean, and extreme-value statistics
+converge more slowly than sample means with increasing particle count.
+
+%% AUTHOR: physics interpretation of the gadolinia pin count as the mechanism
+%% that moved the constraint boundary without opening an overlap, and of the
+%% two distinct lobes visited by the infill iterations (forty pins with
+%% moderate gadolinia weight against twelve pins with near-zero gadolinia
+%% weight).
+
+The conclusion for the design space is therefore stronger than a simple
+constraint violation. Adding the gadolinia-bearing rod count as a sixth
+design variable lowered the minimum total constraint violation from 0.0077
+in Campaign 4 to 0.0012 in Campaign 5, so the additional degree of freedom
+measurably moved the constraint boundary. It did not, however, produce an
+overlap of the two constraint regions. The best design that the six-variable
+search can reach lies on the peaking boundary to within the resolution of the
+model. Under uniform loading, no distinguishable peaking margin exists in
+this design space, which motivates the zoned-loading study of
+Section~\openpoint{cross-reference the zoning section once written}.
