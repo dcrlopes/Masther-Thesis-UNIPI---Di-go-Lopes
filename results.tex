@@ -15,18 +15,154 @@
 \section{Campaigns 1 and 2: the shakedown and the estimator}
 \label{sec:res-c1c2}
 
-Campaign 1 (72 evaluations) is retained for one lesson: every design on
-its Pareto front violated the vessel-fit condition once checked
-analytically. Geometry self-consistency has been enforced inside the
-optimiser ever since (Eq.~\ref{eq:renv}).
+The first two campaigns were executed on cloud infrastructure before
+the workstation of Section~\ref{sec:meth-diagnostics} became available.
+Their complete evaluation archives, execution logs and container
+environment were recovered from the original instance and committed to
+the repository, so every number reported here is reproduced from the
+recovered checkpoints rather than from contemporaneous notes.
+Table~\ref{tab:c1c2-provenance} records the execution provenance of
+both campaigns.
 
-Campaign 2 (84 evaluations, 44 feasible, $4\,000\times60$ fidelity)
-located the optimal region and exposed the estimator pathology
-(Table~\ref{tab:c2-summary}): the stored single-seed peaking values
-carried a bias \emph{larger than the front spread they ranked}, and
-resolving the candidates at high fidelity inverted the ranking --- the
-stored 4th became the true 1st, and the apparent winner fell to 7th,
-separated at $|t|=12.8$.
+\begin{table}[htbp]
+  \centering
+  \caption{Execution record of Campaigns 1 and 2, reconstructed from
+  the recovered checkpoints and solver logs.}
+  \label{tab:c1c2-provenance}
+  \begin{tabular}{lcc}
+    \toprule
+    & Campaign 1 & Campaign 2 \\
+    \midrule
+    Execution window (2026)      & 10 July, single run & 12 to 13 July, resumed \\
+    Host                         & \multicolumn{2}{c}{AWS EC2 c7a.8xlarge} \\
+    Processor                    & \multicolumn{2}{c}{AMD EPYC 9R14, 32 physical cores} \\
+    Execution environment        & \multicolumn{2}{c}{Docker image, pinned Conda} \\
+    Transport code               & \multicolumn{2}{c}{OpenMC 0.15.3, ENDF/B-VII.1} \\
+    Transport settings           & \multicolumn{2}{c}{$4\,000 \times 60$ (20 inactive)} \\
+    $k$-target model             & interpolant in $t_\mathrm{refl}$ & tabulated calibration \\
+    Constraint set               & 4 (no $g_\mathrm{geom}$) & 5 (with $g_\mathrm{geom}$) \\
+    Depletion schedule           & fixed, 14 states & adaptive, 10 to 28 states \\
+    Depletion horizon [MWd/kgHM] & 35.5 (implied) & 100.0 \\
+    Real evaluations             & 72 & 84 (54 + 30) \\
+    Transport solves             & 1008 & 2184 \\
+    Evaluations at the horizon   & 39 (54.2\%) & 50 (59.5\%) \\
+    Wall clock [h]               & 9.7 & 12.2 (resumed block) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Campaign 1: two structural findings}
+\label{sec:res-c1}
+
+Campaign 1 sampled the full design space of
+Table~\ref{tab:design-space} at screening fidelity and completed 72
+evaluations in a single 9.7 hour run, with the transport solver
+accounting for 86\% of the wall clock at a mean of 29.7 seconds per
+state solve. It produced 46 feasible designs. The 26 rejections are
+distributed as follows.
+
+\begin{enumerate}
+  \item 25 designs violate $g_{k\max}$, the upper reactivity bound
+        $k_\mathrm{BOL} \le 1.35$.
+  \item 1 design violates $g_\mathrm{peak}$, the peaking screening
+        bound $F_{\Delta H} \le 2.0$.
+  \item No design violates $g_{k\min}$ or $g_\mathrm{enr}$.
+\end{enumerate}
+
+The campaign is retained in the record for two structural findings
+rather than for its front.
+
+The first finding is geometric. All four designs of the final Pareto
+front carry reflector thicknesses between 23.99 and 24.99\,cm, whereas
+the analytic vessel envelope admits at most 19.5\,cm even at the most
+favourable pitch. Every nominally optimal design therefore exceeds the
+vessel budget by at least 4.5\,cm. The optimiser exploited the one
+physical requirement that the constraint set did not encode, and the
+geometry constraint $g_\mathrm{geom}$ of Table~\ref{tab:constraints}
+has been enforced inside the optimiser ever since
+(Eq.~\ref{eq:renv}).
+
+The second finding was silent at the time and emerged only from the
+recovered archive. The depletion horizon of the evaluator maps onto a
+cycle-length cap through the constant specific power,
+
+\begin{equation}
+  t_\mathrm{hor} = \frac{B_\mathrm{hor}}{P_\mathrm{spec}}
+  \label{eq:depletion-horizon}
+\end{equation}
+
+\begin{itemize}
+  \item $t_\mathrm{hor}$ is the maximum reportable cycle length, in
+        effective full power days (EFPD).
+
+  \item $B_\mathrm{hor}$ is the depletion horizon of the evaluator, in
+        MWd/kgHM.
+
+  \item $P_\mathrm{spec} = 9.983 \times 10^{-3}$\,MW/kgHM is the
+        specific power of Table~\ref{tab:model-operating}.
+\end{itemize}
+
+In Campaign 1 the horizon was the evaluator default. Inverting
+Equation~\eqref{eq:depletion-horizon} with the observed cap of
+3555.9\,EFPD gives $B_\mathrm{hor} = 35.5$\,MWd/kgHM. Of the 72
+evaluations, 39 (54.2\%) terminated exactly at this value, carrying an
+identical, right-censored cycle-length entry
+(Figure~\ref{fig:c1-front}a). Among the censored designs the objective
+is degenerate, so dominance within that majority subset is decided by
+the peaking factor alone. The resolved designs span 610.6 to
+3555.9\,EFPD with peaking factors between 1.136 and 2.207.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{th_c1_front}
+  \caption{Campaign 1 from the recovered checkpoint. (a) Objective
+  space, with the 39 right-censored evaluations stacked on the implied
+  35.5\,MWd/kgHM depletion horizon and the four-design Pareto front
+  marked. (b) Hypervolume history over the nine recorded
+  active-learning iterations, reference point
+  $(-1787.5,\ 1.785)$.}
+  \label{fig:c1-front}
+\end{figure}
+
+\subsection{Campaign 2: the horizon test and the estimator}
+\label{sec:res-c2}
+
+Campaign 2 corrected both defects of the shakedown deliberately and
+added the tabulated $k$-target calibration, the adaptive depletion
+schedule and the geometry constraint. It raised the depletion horizon
+from 35.5 to 100\,MWd/kgHM, a factor of 2.8, and completed 84
+evaluations in two blocks, a 54-evaluation design of experiments and a
+checkpoint-resumed block of five infill iterations of six points.
+
+The horizon increase functioned as an unplanned experiment. The
+censored fraction moved from 54.2\% to 59.5\%, essentially unchanged,
+and all 50 censored designs again report the identical converted
+horizon of 10016.7\,EFPD. The closest resolved design terminated at
+10008.3\,EFPD, within 0.08\% of the cap. Tripling the horizon therefore
+did not resolve the objective. The degeneracy is generated by the
+design space itself, in which enrichments approaching the LEU cap
+combined with thick reflectors carry a reactivity inventory that
+sustains criticality far beyond any operationally meaningful cycle.
+The remedy adopted from Campaign 3 onward is the physically grounded
+discharge limit of Section~\ref{sec:meth-atf}, enforced inside the
+depletion loop, which converts the arbitrary horizon into a
+design-basis bound and eliminates censoring by construction.
+
+%% AUTHOR: one short paragraph of physics interpretation is expected
+%% here, connecting the reactivity inventory argument above to the
+%% naval mission profile (why multi-thousand EFPD entries are numerical
+%% artefacts of the unconstrained inventory rather than credible
+%% designs).
+
+Campaign 2 also exposed the estimator pathology
+(Table~\ref{tab:c2-summary}). The stored single-seed peaking values
+carried a bias larger than the front spread they ranked, and resolving
+the candidates at high fidelity inverted the ranking. The stored fourth
+became the true first, the apparent winner fell to seventh, and the
+pair separated at $|t| = 12.8$. The statistical treatment that this
+finding forced, per-design seeding, the fidelity ladder and two-stage
+subset selection, is specified in Sections~\ref{sec:meth-fidelity}
+and~\ref{sec:meth-stats}.
 
 \begin{table}[htbp]
   \centering
@@ -42,6 +178,30 @@ separated at $|t|=12.8$.
     \bottomrule
   \end{tabular}
 \end{table}
+
+\subsection{Hypervolume comparability across campaigns}
+\label{sec:res-hv-comparability}
+
+The recovered archives fix the hypervolume reference points of the
+early campaigns at $(-1787.5,\ 1.785)$ for Campaign 1 and
+$(-5063.4,\ 1.976)$ for Campaign 2, in signed objective space. The
+reference points differ on both axes, and the objective definition
+itself changed when the discharge limit entered the cycle-length
+objective. Hypervolume magnitudes are therefore not comparable across
+campaigns, and none are compared in this work. Each history is read
+only for its internal convergence shape, consistent with the reset
+policy of Section~\ref{sec:meth-atf}. Any future cross-campaign figure
+must first recompute all histories against a single reference point
+taken as the componentwise worst value over the union of the archives,
+a pure post-processing step on the committed checkpoints.
+
+\openpoint{Pin the exact Campaign 1 code state (one of the four
+commits of 10 July 2026) and the step list of the default depletion
+schedule by inspecting the evaluator at that commit. Verify the
+Campaign 2 feasible count of 44 directly from the recovered checkpoint
+before the viva.}
+
+% ============================ end of drop-in ==========================
 
 \section{Campaign 3: design of experiments and feasibility envelope}
 \label{sec:res-c3doe}

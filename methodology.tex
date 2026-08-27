@@ -336,21 +336,25 @@ B_k = \min\left\{\, B > 0 \,:\, k_\infty(B) \le k_\mathrm{target} \,\right\}
 The crossing $B_k$ is obtained by interpolation between the two
 depletion steps that bracket the target.
 
-The discharge limit entered the objective in Campaign 2,
+Designs still critical at the depletion horizon in the early
+campaigns were right-censored and recorded at the horizon value
+rather than extrapolated. The horizon was the evaluator default of
+35.5\,MWd/kgHM in Campaign 1 and an explicit 100\,MWd/kgHM in
+Campaign 2, and the censored fraction was 54.2\% and 59.5\%
+respectively, as quantified in Section~\ref{sec:res-c1c2}. The
+discharge limit entered the objective in Campaign 2,
 retrospectively, through the exact post-processing transform of
-Section~\ref{sec:meth-atf}. Designs still critical at the depletion
-horizon in the early campaigns were right-censored and recorded at the
-horizon value rather than extrapolated. From Campaign 3 onward the
-depletion terminates at $B_\mathrm{ATF}$ inside the loop, so
+Section~\ref{sec:meth-atf}. From Campaign 3 onward the depletion
+terminates at $B_\mathrm{ATF}$ inside the loop, so
 Equation~\eqref{eq:eoc} holds by construction and censoring is
-eliminated. The stopping rule of Section~\ref{sec:meth-loop}
-additionally requires that no censored design remains on the Pareto
-front at convergence.
+eliminated.
 
-%% AUTHOR: confirm the wording of the end-of-cycle criterion above
-%% (Route-B crossing capped by the ATF limit) against the campaign
-%% code, and state the depletion step structure if the examiners are
-%% likely to ask for it.
+The Campaign 2 schedule opens with a beginning-of-life ramp at
+0.5, 1, 2, 4 and 6 days, continues in 4 day steps committed in
+chunks of two, and terminates adaptively, giving 10 to 28
+transport states per evaluation. Campaign 1 used the fixed
+14 state default of the evaluator. From Campaign 3 onward the
+schedule terminates at the discharge limit inside the loop.
 
 \subsubsection{Radial peaking factor}
 
@@ -513,20 +517,29 @@ stopping rule has two conditions, both required.
 
 \begin{table}[htbp]
   \centering
-  \caption{Transport settings per campaign (frozen per checkpoint, only
-  the thread count adapts to the host).}
+  \begin{threeparttable}
+  \caption{Transport settings per campaign and per evaluation stage.
+  Settings are frozen per checkpoint, and only the thread count adapts
+  to the host.}
   \label{tab:fidelity}
   \begin{tabular}{lccc}
     \toprule
-    & particles $\times$ batches (inactive) & seed policy & role \\
+    Stage & Particles $\times$ batches\tnote{a} & Seed policy & Role \\
     \midrule
-    Campaign 2          & $4\,000\times60$ (20)   & single shared & screening \\
-    Campaign 3          & $16\,000\times120$ (30) & per-design (CRC32) & production \\
-    C4 core solve       & $100\,000\times170$ (60) & per-design, salted & objective \\
-    Screening (ranking) & $64\,000\times120$      & replicated & subset selection \\
-    Confirmation        & $256\,000\times120$, 8 seeds & replicated & finalists \\
+    Campaign 1     & $4\,000\times60$ (20)    & shared              & shakedown \\
+    Campaign 2     & $4\,000\times60$ (20)    & shared              & screening \\
+    Campaign 3     & $16\,000\times120$ (30)  & per-design          & production \\
+    C4 core solve  & $100\,000\times170$ (60) & per-design, salted  & objective \\
+    Screening      & $64\,000\times120$ (30)  & replicated          & subset selection \\
+    Confirmation   & $256\,000\times120$ (30) & replicated, 8 seeds & finalists \\
     \bottomrule
   \end{tabular}
+  \begin{tablenotes}[flushleft]\footnotesize
+    \item[a] Inactive batches in parentheses. Per-design seeds are
+      generated as a CRC32 hash of the design vector, and the core
+      solve adds a salt.
+  \end{tablenotes}
+  \end{threeparttable}
 \end{table}
 
 The Campaign-3 fidelity was chosen from a measured ladder. It removes
@@ -732,10 +745,12 @@ batch~1. The finite core has a real transient, and one core case
 converged only at batch~94, hence the generous 60--120 inactive batches
 of the core solves, with a per-run sentinel recorded in the archive.
 
-All work runs on a 64-core workstation without administrative
-privileges. The reproducibility unit is the build-pinned Conda
-environment, with bit-identical OpenMC binaries verified by smoke
-execution and $k_\infty$ agreement. Checkpoints, the $k$-target table,
-every analysis script and every figure generator are
-version-controlled, so each reported number and figure is reproducible
-from the repository alone.
+Campaigns 1 and 2 ran on a cloud instance (AWS EC2 c7a.8xlarge,
+AMD EPYC 9R14, 32 physical cores without simultaneous
+multithreading), inside a purpose-built Docker image that pins the
+Conda environment. Campaigns 3 to 5 run on a 32-core, 64-thread
+workstation without administrative privileges, on the same pinned
+environment. The reproducibility unit is the environment
+definition committed to the repository. OpenMC 0.15.3 and pymoo
+0.6.2 are identical across the two hosts, verified by smoke
+execution and $k_\infty$ agreement.
