@@ -80,12 +80,12 @@ and~\ref{tab:model-operating}.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=\linewidth]{th_model_geometry}
-  \caption{The reference model. (a) The $17\times17$ assembly with its
-  two enrichment zones, guide tubes and the fixed twelve-pin gadolinia
-  pattern. (b) The core plan view: 32 assemblies inside the
-  circumscribed envelope $R_\mathrm{env}$, the steel reflector, and the
-  90\,cm vessel that closes the geometric constraint.}
+  \includegraphics[width=\linewidth]{images/th_model_geometry.pdf}
+  \caption[The reference model and the six-variable design space]{The reference
+    model. (a) The $17\times17$ assembly, with gadolinia rods shaded by the value
+    of $n_\mathrm{Gd}$ at which they enter the nested ladder. (b) The core plan
+    view. Ranges for all six design variables are tabulated beneath the panels,
+    and $p$ and $t_\mathrm{refl}$ are coupled by $g_\mathrm{geom}$.}
   \label{fig:model-geometry}
 \end{figure}
 
@@ -224,7 +224,7 @@ that motivated the change in Section~\ref{sec:meth-core-objective}.
     Constraint & Definition & Evaluation level \\
     \midrule
     $g_{k\min}$       & $1.02 - k_\mathrm{BOL} \le 0$                      & assembly \\
-    $g_{k\max}$       & $k_\mathrm{BOL} - 1.35 \le 0$                      & assembly, core in C5 proposal \\
+    $g_{k\max}$ & $k_\mathrm{BOL} - 1.35 \le 0$ & assembly, all campaigns \\
     $g_\mathrm{enr}$  & $\max(e_\mathrm{in},e_\mathrm{out}) - 19.75 \le 0$ & algebraic \\
     $g_\mathrm{peak}$ & $F_{\Delta H} - 2.0 \le 0$                         & assembly in C1 to C3, \textbf{core} from C4 \\
     $g_\mathrm{geom}$ & $R_\mathrm{env}(p) + t_\mathrm{refl} - 90 \le 0$   & core, analytic \\
@@ -689,52 +689,215 @@ every observed difference is attributable
 
 \begin{table}[htbp]
   \centering
-  \caption{Campaign structure. C5 is a proposal
-  (Sec.~\ref{sec:res-campaign5}).}
+  \small
+  \caption{Campaign structure. One controlled change separates each
+  campaign from its predecessor.}
   \label{tab:campaigns}
-  \begin{tabular}{clll}
+  \begin{tabularx}{\textwidth}{@{}cc>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
     \toprule
-    & Evals & The one change & Outcome / role \\
+    Campaign & Evaluations & The one change & Outcome and role \\
     \midrule
-    C1 & 72 & none (shakedown) & geometry defect found, $g_\mathrm{geom}$ born \\
-    C2 & 84 & analytic $g_\mathrm{geom}$ & estimator bias found, ranking inverted \\
-    C3 & 72 & fidelity + per-design seeds + in-loop ATF & converged, proxy gap found \\
-    C4 & running & $F_{\Delta H}$, $g_\mathrm{peak}$ $\to$ core level & constraint conflict mapped \\
-    C5 & proposal & Gd pin count as variable & absorber-inventory lever \\
+    C1 & 72 & None, shakedown run
+       & Geometry defect found, $g_\mathrm{geom}$ born \\
+    C2 & 84 & Analytic $g_\mathrm{geom}$
+       & Estimator bias found, ranking inverted \\
+    C3 & 72 & Fidelity ladder, per-design seeds, in-loop ATF
+       & Converged, proxy gap found \\
+    C4 & 54 & $F_{\Delta H}$ and $g_\mathrm{peak}$ moved to core level
+       & Constraint conflict mapped \\
+    C5 & 60 & Gd pin count as a design variable
+       & Absorber-inventory lever \\
     \bottomrule
-  \end{tabular}
+  \end{tabularx}
 \end{table}
 
 \section{Soluble boron treatment}
 \label{sec:meth-boron}
 
-The coolant carries a \textbf{constant 1000\,ppm} of natural boron in
-all campaigns, matching the NuScale-like benchmark
-conditions~\cite{nuscale_like_core_2024}.
+The coolant carries a constant concentration of \SI{1000}{ppm} of
+natural boron in every campaign of this work. The value is taken from
+the operating conditions of the NuScale-like neutronics benchmark
+defined by Fridman, Bilodid and
+Valtavirta~\cite{fridman_nuscale_benchmark_2023}, together with the
+uniform fuel temperature of \SI{900}{\kelvin} and the uniform coolant
+and structure temperature of \SI{600}{\kelvin} adopted in
+Section~\ref{sec:meth-operating-conditions}. The concentration is a
+fixed modelling parameter and is not exposed to the optimiser as a
+design variable.
 
-Real operation differs in two ways. An operating PWR \emph{lets boron
-down} continuously toward $\sim$0\,ppm at end of cycle. Naval practice
-avoids soluble boron altogether and controls with burnable absorbers
-and rods~\cite{ismr_sbf_2024,acp100_physor2020}.
+The same benchmark specification fixes the assembly geometry inherited
+by the present model, namely a $17 \times 17$ lattice with 264 fuel
+rods, 24 guide tubes and one central instrument tube, an active height
+of \SI{200}{\centi\metre}, and a heavy reflector enclosed by a
+stainless steel core barrel. Adopting the benchmark boron concentration
+therefore keeps the coolant composition consistent with the geometry
+and material specification from which the model derives, rather than
+introducing an independent assumption.
 
-Two consequences are recorded rather than fixed here.
+The benchmark is a static Beginning of Life (BOL) specification and
+does not prescribe a depletion history. The extension of the benchmark
+conditions to a depleted core is an assumption of the present work and
+is treated as such in Section~\ref{sec:meth-boron-limits}.
+
+\subsection{Basis for the choice}
+\label{sec:meth-boron-basis}
+
+Soluble boron is the reactivity-control method of the boron-controlled
+Pressurized Water Reactor (PWR) lineage from which the present core
+inherits its assembly geometry, and it is retained by the majority of
+land-based light-water Small Modular Reactor (SMR) concepts now under
+development. Four considerations support retaining it here.
 
 \begin{enumerate}
-  \item Removing the boron \emph{raises} beginning-of-life reactivity
-        by $\Delta k \approx +0.08$ to $+0.10$, tightening $g_{k\max}$
-        and shifting the entire feasibility envelope. Boron-free is
-        more realistic for the naval mission but makes the reactivity
-        problem harder, not easier.
-
-  \item The constant-boron end-of-cycle criterion is conservative for
-        below-cap designs, because a real core dilutes and runs longer,
-        with a bias that is enrichment-dependent.
+  \item \textbf{Traceability of the reference conditions.} The
+        NuScale-like benchmark provides a published specification, a
+        Monte Carlo reference solution obtained with
+        Serpent~\cite{fridman_nuscale_benchmark_2023}, and an
+        independent reproduction with the same transport code and
+        nuclear data library used in this work, namely OpenMC with
+        ENDF/B-VII.1~\cite{ez_aldeen_2025}. That
+        reproduction reports agreement within 16 to \SI{31}{pcm} in the
+        effective multiplication factor and a root mean square relative
+        difference below \SI{0.11}{\percent} in assembly radial power.
+        Equivalent open documentation does not exist for the
+        LABGENE-class naval core that motivates the study, and no
+        soluble boron specification for that core is available in the
+        public literature.
+  \item \textbf{Containment of the design space.} Soluble boron and the
+        two absorber-related design variables, the gadolinium oxide
+        (\ce{Gd2O3}) weight fraction and the gadolinium-bearing pin
+        count, act on the same physical quantity, namely the excess
+        reactivity available at beginning of life. Allowing boron to
+        vary would make the study partly a study of boron rather than
+        of the fuel and lattice variables under investigation.
+  \item \textbf{Scope of the safety demonstration.} A
+        Soluble-Boron-Free (SBF) core transfers the entire
+        excess-reactivity budget to burnable absorbers and control
+        rods. A credible SBF design therefore requires a control rod
+        bank layout, a Cold Shutdown Margin (CSDM) demonstration under
+        the single-failure assumption, and an explicit Moderator
+        Temperature Coefficient (MTC) verification, none of which lie
+        within the objective and constraint set defined in
+        Section~\ref{sec:meth-objectives}. Treating SBF operation as an
+        assumption without that supporting analysis would weaken rather
+        than strengthen the design basis.
+  \item \textbf{Known direction of the bias.} As shown in
+        Section~\ref{sec:meth-boron-bias}, the presence of soluble
+        boron relaxes the reactivity constraint and shortens the
+        computed cycle length relative to boron-free operation. The
+        choice is therefore not a concealed relaxation of the
+        optimisation problem in the objective that is being maximised.
 \end{enumerate}
 
-Under the one-change rule the treatment is kept fixed through
-Campaign~4. The planned Campaign-5 decision is preceded by a direct
-measurement, with two finalists re-depleted at 0\,ppm, so the
-design-basis choice rests on numbers, not estimates.
+The sequence of verifying a model against a documented boron-controlled
+specification before addressing boron-free operation is itself
+established practice. Ez Aldeen et
+al.~\cite{ez_aldeen_2025} adopt the boron-controlled
+NuScale-like benchmark as the verification basis for a modelling
+programme whose stated target is boron-free SMR cores.
+
+Soluble-boron-free operation is nevertheless a recurring feature of
+proposed compact and civil marine light-water designs in the open
+literature. The reported motivations are a more negative Moderator
+Temperature Coefficient (MTC), reduced primary-circuit corrosion, lower
+liquid waste production, simplification of the Chemical and Volume
+Control System (CVCS), and, for shipboard application, the concern that
+seawater ingress following a hull breach could dilute borated coolant
+and introduce a criticality
+hazard~\cite{kusunoki_mrx_2000,alam_partI_2019,alzaben_boronfree_2019,ismr_sbf_2024,rr_smr_atf_2025,song_sanchez_2026}.
+Reactivity-control practice in operating naval propulsion reactors is
+not documented in publicly available sources, and no claim about it is
+made here.
+
+\subsection{Direction and magnitude of the bias}
+\label{sec:meth-boron-bias}
+
+Removing the soluble boron raises the beginning-of-life multiplication
+factor. The reactivity worth of the boron inventory converts to a
+change in multiplication factor through
+
+\begin{equation}
+  \Delta k = k_{0}\,k_{1}\,\Delta\rho ,
+  \label{eq:boron-rho-to-k}
+\end{equation}
+
+where
+\begin{itemize}
+  \item $\Delta k$ is the change in effective multiplication factor,
+        dimensionless,
+  \item $k_{0}$ is the multiplication factor with soluble boron
+        present, dimensionless,
+  \item $k_{1}$ is the multiplication factor with the boron removed,
+        dimensionless,
+  \item $\Delta\rho$ is the integral reactivity worth of the removed
+        boron, expressed in units of $\Delta k / k$.
+\end{itemize}
+
+For the beginning-of-life values encountered in this work the product
+$k_{0}k_{1}$ is close to $2$, so a boron worth of one unit of
+reactivity appears as approximately two units of multiplication factor.
+The integral worth itself depends on the moderator-to-fuel ratio and on
+the competition for thermal neutrons with the gadolinium-bearing pins,
+both of which vary across the design space, and it is therefore
+measured rather than assumed in this work.
+
+\openpoint{Insert the measured integral boron worth, in pcm and in
+$\Delta k$, from the \SI{0}{ppm} re-depletion of the Campaign-5
+finalists, and state the differential worth in pcm per ppm for
+comparison with published PWR values.}
+
+Two consequences follow, and both are recorded as documented biases
+rather than corrected within the campaigns.
+
+\begin{enumerate}
+  \item \textbf{Reactivity constraint.} Boron-free operation tightens
+        the beginning-of-life reactivity constraint $g_{k\max}$ and
+        displaces the entire feasibility envelope. Boron-free operation
+        is closer to the naval mission but makes the reactivity-control
+        problem harder, not easier.
+  \item \textbf{Cycle length.} An operating PWR dilutes the boron
+        progressively toward zero over the cycle, which releases
+        reactivity that is unavailable to the constant-concentration
+        model used here. The computed cycle length in Effective Full
+        Power Days (EFPD) is therefore a lower bound for designs that
+        terminate below the burnup ceiling. The magnitude of the
+        shortfall scales with the ratio of the boron worth at end of
+        cycle to the reactivity decline rate, and is consequently
+        design-dependent. The bias is positive for every design, so the
+        ordering of the Pareto front along the cycle-length axis is
+        expected to be preserved, but the front is stretched rather
+        than translated.
+\end{enumerate}
+
+\subsection{Declared limitations}
+\label{sec:meth-boron-limits}
+
+\begin{enumerate}
+  \item The benchmark from which the concentration is taken is a static
+        Beginning of Life (BOL) specification. Its extension to a
+        depleted core is an assumption of the present work and is not
+        supported by the benchmark itself.
+  \item The concentration is held constant throughout depletion. No
+        critical boron search is performed at any burnup step, so the
+        depletion trajectory represents a reactivity-tracking model and
+        not an operating history.
+  \item The Moderator Temperature Coefficient (MTC) is not evaluated in
+        this work. Soluble boron makes the MTC less negative than
+        boron-free operation would, so the present choice is not
+        conservative for that parameter, in contrast to the reactivity
+        and cycle-length effects described in
+        Section~\ref{sec:meth-boron-bias}.
+  \item Boron depletion and \isotope[10]{B} burnout are not modelled,
+        which is consistent with the constant-concentration assumption.
+\end{enumerate}
+
+Under the one-change rule stated in
+Section~\ref{sec:meth-campaign-protocol} the treatment is held fixed
+through Campaign~4. The Campaign-5 design-basis decision is preceded by
+a direct measurement, in which the selected finalists are re-depleted
+at \SI{0}{ppm}, so that the choice rests on computed values rather than
+on estimates.
+
 
 \section{Diagnostics, environments, reproducibility}
 \label{sec:meth-diagnostics}

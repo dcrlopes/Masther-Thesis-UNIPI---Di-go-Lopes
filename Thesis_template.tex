@@ -21,7 +21,15 @@
 \usepackage{booktabs} 
 
 \usepackage[fit]{truncate} % to shorten running titles
+\usepackage{isotope} % for \isotope command
 \usepackage{fancyhdr}      % to define headers and footers
+%AUTHOR Insertion
+\usepackage{emptypage}     % blank versos carry no header and no page number 
+\usepackage{xurl}          % allow long URLs in the bibliography to break anywhere
+\setlength{\headheight}{14.5pt}      % fancyhdr needs 14.5pt for the running header
+\addtolength{\topmargin}{-2.5pt}     % compensate so the text block stays put
+%AUTHOR End Insertion
+
 \usepackage{tikz}          % to elaborate complex graphics
 \usepackage{ctable}        % to handle complex tables
 \usepackage{multirow}      % to allow multirows and multicolumns
@@ -30,6 +38,9 @@
 \usepackage[font=singlespacing,font=footnotesize]{caption} % allow for a smaller font size for figure and table captions
 \usepackage[title]{appendix}
 \usepackage{microtype}     % to enhance appearance and readability
+
+\setlength{\emergencystretch}{1em}   % last-resort stretch instead of an overfull line %AUTHOR Insertion
+
 \usepackage{natbib}
 \usepackage{lipsum}
 \usepackage{sectsty}           % to change style of sectional  headers
@@ -49,7 +60,7 @@
     urlcolor=blue,
     }
 \usepackage{url}
-\graphicspath{{images/}{images/figs_thesis/}{images/figs_bg/}}
+\graphicspath{images/}
 %
 %%% The default font is Computer Modern.                      %%%
 %%% A list of LaTeX fonts and informationon how to use them   %%%
@@ -91,7 +102,7 @@
 \\[3.5cm]
 % Add here below the thesis title and eventually the thesis subtitle
 % If subtitle is not needed comment the corresponding line
-{\Large \textsc{Parametric Neutronic Analysis of a Compact $UO_2$-Fueled SMR Core With LEU Using OpenMC}}\\
+{\Large \textsc{Parametric Neutronic Analysis of a Compact \textrm{UO}\textsubscript{2}-Fueled SMR Core With LEU Using OpenMC}}
 {\large \textsc{Thesis subtitle (if needed)}}\\[1.5cm]
 Submitted in partial fulfilment of the requirements for the\\
 \textsc{\Large Master of Science Degree in}\\

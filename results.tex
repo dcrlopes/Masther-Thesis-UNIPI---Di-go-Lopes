@@ -350,19 +350,28 @@ Fig.~\ref{fig:asmcore}) generalises the finding:
 
 \begin{table}[htbp]
   \centering
-  \caption{The proxy in numbers, and the designs it mis-ranked.}
+  \small
+  \caption{The proxy in numbers, and the designs it mis-ranked. Rank
+  positions refer to the 36 feasible Campaign-3 designs.}
   \label{tab:proxy-numbers}
-  \begin{tabular}{ll}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.48\textwidth}>{\raggedright\arraybackslash}X@{}}
     \toprule
-    Spearman $\rho$ (assembly vs core, $n=36$) & $+0.890$ \\
-    Assembly ranks 1 / 2 / 3 at core level & 11 / 9 / 12 \\
-    Largest gains (``discarded gems'') & d47: \#14$\to$\#4;
-      d43: \#9$\to$\#2; d42: \#11$\to$\#5 \\
-    Core-level Pareto front & single design (d46), violating
-      $F\le2.0$ \\
-    Designs meeting $F_{\Delta H}^\mathrm{core}\le2.0$ & 0 of 36 \\
+    Quantity & Value \\
+    \midrule
+    Spearman $\rho$, assembly versus core, $n=36$
+      & $+0.890$ \\
+    Assembly ranks 1 / 2 / 3, re-evaluated at core level
+      & 11 / 9 / 12 \\
+    Largest rank gains, the discarded gems
+      & d47: \#14 $\to$ \#4 \newline
+        d43: \#9 $\to$ \#2 \newline
+        d42: \#11 $\to$ \#5 \\
+    Core-level Pareto front
+      & A single design, d46, violating $F_{\Delta H}\le 2.0$ \\
+    Designs meeting $F_{\Delta H}^\mathrm{core}\le 2.0$
+      & 0 of 36 \\
     \bottomrule
-  \end{tabular}
+  \end{tabularx}
 \end{table}
 
 The bridge model (Eq.~\ref{eq:bridge}) fitted on all 36 designs,
@@ -525,24 +534,32 @@ Sec.~\ref{sec:res-campaign5}.
 
 \begin{table}[htbp]
   \centering
-  \caption{The champion designs of Campaign 4. Bold marks values at a
-  design-space bound.}
+  \small
+  \caption{The champion designs of Campaign~4. Bold marks a value
+  sitting at a design-space bound.}
   \label{tab:c4-champions}
-  \begin{tabular}{lccc}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.26\textwidth}*{3}{>{\centering\arraybackslash}X}@{}}
     \toprule
-    & idx 6 (DOE) & idx 44 (iter.\ 2) & iter.\ 3 (typical) \\
+    Quantity & idx 6, DOE & idx 44, iteration 2 & Iteration 3, typical \\
     \midrule
-    $e_\mathrm{in}$ / $e_\mathrm{out}$ [wt\%] & 12.28 / 11.50
-      & 11.54 / 11.93 & $e_\mathrm{vw}=11.50$ \\
-    gd [wt\%]            & 1.81  & \textbf{8.00} & 7.98 \\
-    pitch [cm]           & 1.181 & \textbf{1.150} & \textbf{1.150} \\
-    $t_\mathrm{refl}$ [cm] & 15.39 & \textbf{19.49} & 19.35--19.48 \\
-    core $F_{\Delta H}$  & \textbf{1.9215} & 1.9472 & 1.977--2.047 \\
-    $k_\mathrm{BOL}$     & 1.3955 & 1.3564 & 1.3494--1.3507 \\
-    status & peaking OK, $k$ $+0.046$ over & closest approach,
-      $k$ $+0.0055$ over & $k$ OK, peaking over \\
+    $e_\mathrm{in}$ / $e_\mathrm{out}$ [wt\%]
+      & 12.28 / 11.50 & 11.54 / 11.93 & $e_\mathrm{vw} = 11.50$ \\
+    Gd$_2$O$_3$ content [wt\%]
+      & 1.81 & \textbf{8.00} & 7.98 \\
+    Pitch [cm]
+      & 1.181 & \textbf{1.150} & \textbf{1.150} \\
+    $t_\mathrm{refl}$ [cm]
+      & 15.39 & \textbf{19.49} & 19.35--19.48 \\
+    Core $F_{\Delta H}$ [--]
+      & \textbf{1.9215} & 1.9472 & 1.977--2.047 \\
+    $k_\mathrm{BOL}$ [--]
+      & 1.3955 & 1.3564 & 1.3494--1.3507 \\
+    Status
+      & Peaking met, $k_\mathrm{BOL}$ high by 0.046
+      & Closest approach, $k_\mathrm{BOL}$ high by 0.0055
+      & $k_\mathrm{BOL}$ met, peaking exceeded \\
     \bottomrule
-  \end{tabular}
+  \end{tabularx}
 \end{table}
 
 Design idx 44 deserves one further remark: its reflector sits at
@@ -573,54 +590,73 @@ authority (0.0525 in $\Delta k$ at 8\,wt\%) by inventory,
   n \;\approx\; 13.5 ,
   \label{eq:pins-needed}
 \end{equation}
-so \textbf{approximately two additional gadolinia pins} close the gap
---- a far smaller departure from the twelve-pin heritage pattern than
-the DOE-based estimate ($\approx$23 pins) suggested before the infill
-located the true point of closest approach.
+
+so \textbf{approximately two additional gadolinia pins} were predicted to
+close the gap, a far smaller departure from the twelve-pin heritage pattern
+than the DOE-based estimate of approximately 23 pins suggested before the
+infill located the true point of closest approach. Campaign 5 was designed
+to test that prediction by admitting the pin count as a search variable
+rather than fixing it.
 
 \begin{table}[htbp]
   \centering
-  \caption{Campaign-5 proposal, in decreasing certainty. One structural
-  change; the rest are constraint relocations, measurements and
-  advisor decisions.}
+  \small
+  \caption{Campaign 5 relative to Campaign 4. One structural change to the
+  search space, and the disposition of each item at the close of the
+  campaign.}
   \label{tab:c5}
-  \begin{tabular}{p{0.30\linewidth}p{0.62\linewidth}}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.20\textwidth}@{}}
     \toprule
-    Change & Rationale \\
+    Change & Rationale & Disposition \\
     \midrule
-    Gd \textbf{pin count} as 6th variable (12--40,
-    octant-symmetric patterns) & the optimizer exhausted the
-    concentration bound (Fig.~\ref{fig:c4parallel}); inventory scales
-    authority without the self-shielding penalty and is the
-    literature's primary lever at fixed
-    $\sim$8\,wt\%~\cite{rr_smr_atf_2025,apr1400_gd_2020};
-    Eq.~\eqref{eq:pins-needed} \\
-    Immediate single-design test & idx 44 re-evaluated at 14, 16 and 20
-    pins (assembly $k_\mathrm{BOL}$ + core BOL peaking,
-    seed-replicated): decides within hours whether the tangency opens
-    \\
-    $g_{k\max}$ moved to core $k_\mathrm{eff}$ & excess reactivity is a
-    core quantity; $k_\mathrm{eff}^\mathrm{core}$ already recorded per
-    evaluation at no cost \\
-    Soluble-boron decision & naval practice is
-    boron-free~\cite{ismr_sbf_2024,acp100_physor2020}; 0\,ppm raises
-    $k_\mathrm{BOL}$ by $\approx$0.08--0.10 (harder, not easier);
-    decide from the planned two-finalist measurement at 0\,ppm \\
-    Review of the 1.35 bound & the limit proxies controllable excess
-    reactivity without a rod model; at 1.40 both champions of
-    Table~\ref{tab:c4-champions} are already feasible --- an advisor
-    judgement that could dissolve the conflict without any new
-    campaign \\
+    Gd pin count as sixth design variable, 12 to 40 pins in
+    octant-symmetric patterns
+      & The optimiser exhausted the concentration bound
+        (Fig.~\ref{fig:c4parallel}). Inventory scales absorber authority
+        without the self-shielding penalty and is the primary lever
+        reported in the literature at a fixed weight fraction of
+        approximately 8\,wt\%~\cite{rr_smr_atf_2025,apr1400_gd_2020}
+      & Implemented. Minimum total constraint violation fell from 0.0077
+        to 0.0012 \\
+    Single-design pin-count test on idx 44
+      & Re-evaluation at 14, 16 and 20 pins to decide within hours
+        whether the tangency opens
+      & Executed. Feasibility reached at 14 pins,
+        $k_\mathrm{BOL}=1.3456$ \\
+    Constraint normalisation by individual limits
+      & The Campaign 1 to 4 violation sum added quantities in
+        $\Delta k$, peaking factor, weight percent and centimetres
+        without weighting
+      & Implemented in Campaign 5 \\
+    $g_{k\max}$ moved to core $k_\mathrm{eff}$
+      & Excess reactivity is a core quantity, and
+        $k_\mathrm{eff}^\mathrm{core}$ is already recorded per
+        evaluation at no additional cost
+      & Not implemented. The screening limit remains on the assembly,
+        the conservative of the two \\
+    Soluble-boron decision
+      & Naval practice is
+        boron-free~\cite{ismr_sbf_2024,acp100_physor2020}. Removing the
+        boron raises $k_\mathrm{BOL}$ by approximately 0.08 to 0.10,
+        which tightens the problem rather than relaxing it
+      & Open. To be decided from a two-finalist measurement at
+        0\,ppm \\
+    Review of the 1.35 bound
+      & The limit proxies controllable excess reactivity without a rod
+        model. At 1.40 both champions of
+        Table~\ref{tab:c4-champions} are already feasible
+      & Open. Advisor judgement \\
     \bottomrule
-  \end{tabular}
+  \end{tabularx}
 \end{table}
 
-\openpoint{Pin-count test executing (idx 44 at 12/14/16/20 pins). To
-report: measured $\Delta k$ per pin against Eq.~\eqref{eq:pins-needed},
-core peaking response, and the feasibility verdict.}
-\openpoint{Advisor decisions pending: pin count as variable vs
-heritage; the $k_\mathrm{BOL}$ limit; the boron design basis; MTC
-assessment of wide-pitch strategies (outside the 2D BOL scope).}
+
+\openpoint{Advisor decisions pending: the $k_\mathrm{BOL}$ screening limit
+of 1.35 against a licensing-style check at 1.50 to 1.65, the soluble-boron
+design basis, and the moderator temperature coefficient assessment of
+wide-pitch strategies, which lies outside the two-dimensional
+beginning-of-life scope.}
+
 \openpoint{The remaining $\sim$0.4--0.5 of peaking between this
 single-batch uniform core and licensed practice ($F_{\Delta H}$
 limits of 1.50--1.65~\cite{robinson_gd10,nuscale_htp2_2017}) is the
@@ -628,12 +664,6 @@ domain of multi-batch loading patterns, zoned absorber placement and rod
 programmes~\cite{kropaczek_turinsky_1991,aga_firstcore_2021,chasnupp_lpo_2013}
 --- outside this design space by construction, and the natural
 continuation of the work.}
-
-%% ---------------------------------------------------------------------------
-%% Campaign 5: high-fidelity confirmation of the least-infeasible champion.
-%% Insert into results.tex after the Campaign 5 optimisation subsection.
-%% Requires: booktabs, amsmath, siunitx not required.
-%% ---------------------------------------------------------------------------
 
 \subsection{High-fidelity confirmation of the Campaign 5 champion}
 \label{sec:c5_confirmation}
@@ -748,4 +778,235 @@ overlap of the two constraint regions. The best design that the six-variable
 search can reach lies on the peaking boundary to within the resolution of the
 model. Under uniform loading, no distinguishable peaking margin exists in
 this design space, which motivates the zoned-loading study of
-Section~\openpoint{cross-reference the zoning section once written}.
+
+Under uniform loading, no distinguishable peaking margin exists in this
+design space, which motivates a zoned-loading study as the natural
+continuation of the work.
+
+%% ---------------------------------------------------------------------------
+%% Campaign 5 results: the depletion restart defect.
+%% Insert into results.tex after the Campaign 5 optimisation subsection and
+%% before the zoned-loading results.
+%% Requires: booktabs, amsmath, siunitx.
+%% ---------------------------------------------------------------------------
+
+\subsection{A defect in the chunked depletion restart}
+\label{sec:restart_defect}
+
+\subsubsection{Why the depletion is chunked}
+
+The cycle length is not known before the calculation begins, because the end
+of cycle is defined by the burnup at which the reactivity trajectory falls
+through the target value. The evaluator therefore advances the depletion in
+short blocks and inspects the trajectory after each one, continuing only
+while the target has not yet been crossed and the burnup ceiling has not
+been reached.
+
+Each block is a separate call to the transport and depletion solver. The
+first block covers the beginning of life with five steps and every
+subsequent block covers two steps. A block is continued from its predecessor
+by reloading the predecessor's results file and passing it as the previous
+state of a new depletion operator. This reload is referred to here as a
+restart.
+
+\subsubsection{The controlled experiment}
+
+A defect in this restart was identified by depleting one design, archive
+index 7, twice through the same model and the same random seed, with the
+only difference being the block structure:
+
+\begin{enumerate}
+  \item arm A, a single uninterrupted block of six steps of
+        \SI{4}{\mega\watt\day\per\kilo\gram} of heavy metal,
+  \item arm B, three blocks of two steps covering the identical burnup
+        points.
+\end{enumerate}
+
+Because the model and the seed are shared, the two arms compute the same
+quantity at every point and must agree to within the statistical scatter of
+the transport solution.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Reactivity trajectory of archive index 7, computed with and
+           without block restarts. The two arms are identical up to the
+           first restart and diverge monotonically thereafter.}
+  \label{tab:restart_experiment}
+  \begin{tabular}{rrrrl}
+    \toprule
+    Burnup label & Arm A & Arm B & Difference & Position \\
+    $[$\si{\mega\watt\day\per\kilo\gram}$]$ & $k_\infty$ & $k_\infty$
+      & [\si{pcm}] & \\
+    \midrule
+     0 & 1.26846 & 1.26846 &    0 & start \\
+     4 & 1.25680 & 1.25736 &  +56 & before any restart \\
+     8 & 1.26988 & 1.27067 &  +79 & first restart point \\
+    12 & 1.27568 & 1.28094 & +526 & first step after a restart \\
+    16 & 1.26267 & 1.27436 & +1169 & second restart point \\
+    20 & 1.24028 & 1.28461 & +4433 & first step after a restart \\
+    24 & 1.21775 & 1.26382 & +4607 & final point \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsubsection{Three independent confirmations of the mechanism}
+
+The first confirmation is the agreement before the first restart. At 0, 4
+and \SI{8}{\mega\watt\day\per\kilo\gram} the two arms differ by 0, 56 and
+\SI{79}{pcm}, which is the ordinary scatter of the transport solution at the
+campaign settings. Divergence begins at exactly
+\SI{12}{\mega\watt\day\per\kilo\gram}, the first point computed after a
+restart, and never recovers.
+
+The second confirmation is that the divergence is a lag of exactly one step
+per restart. If each restart consumes one step without burning the fuel,
+then the arm B point labelled 16 is the true state at 12 and the point
+labelled 24 is the true state at 16. The measured values are 1.27436 against
+1.27568, a difference of \SI{-132}{pcm}, and 1.26382 against 1.26267, a
+difference of \SI{115}{pcm}. Both lie inside the statistical scatter.
+
+The third confirmation is the isotopic signature of the wasted step. During
+a step in which no fission occurs the physical time still advances, so
+xenon-135 decays without being replaced and the reactivity rises. In the
+Campaign 5 depletion history of archive index 7 this rise appears on the
+first point of every block and nowhere else, with the values 1040, 1029,
+963, 1232, 926, 1019, 732 and \SI{670}{pcm}, giving a mean of \SI{951}{pcm}
+and a standard deviation of \SI{179}{pcm}. A positive reactivity excursion
+of this magnitude, occurring exclusively at block boundaries, is
+characteristic of xenon removal and is not consistent with any depletion
+process.
+
+\subsubsection{Root cause}
+
+The cause was traced to the interaction between the evaluator and version
+0.15.3 of the transport and depletion code, and involves three facts that
+are individually documented and jointly harmful:
+
+\begin{enumerate}
+  \item the integrator gained an option controlling whether reaction rates
+        are written to the results file, and that option defaults to false
+        in order to reduce file size,
+  \item a results object reconstructed from a file written without reaction
+        rates contains an empty reaction rate structure, because the
+        reconstruction relies on metadata that is absent from such a file,
+  \item the restart routine reads the reaction rates from the previous
+        results object and passes them to the depletion solver without
+        verifying that they are populated.
+\end{enumerate}
+
+The consequence is that the first step of every restarted block is solved
+with all transmutation channels set to zero. The material composition
+evolves by radioactive decay alone. No fission occurs, no fission products
+are produced, and no burnup is accumulated, while the burnup label
+maintained by the evaluator advances by the full step.
+
+\subsubsection{Quantified impact}
+
+For a block structure of two steps, the burnup label advances twice as fast
+as the fuel. The relation between the label and the physical burnup is
+
+\begin{equation}
+B_{\mathrm{true}} = B_{0} + \frac{B_{\mathrm{label}} - B_{0}}{2} ,
+\label{eq:true_burnup}
+\end{equation}
+
+with the terms
+
+\begin{itemize}
+  \item $B_{\mathrm{label}}$, the cumulative burnup recorded by the
+        evaluator, in \si{\mega\watt\day\per\kilo\gram} of heavy metal,
+  \item $B_{\mathrm{true}}$, the burnup physically reached by the fuel, in
+        the same units,
+  \item $B_{0}$, the burnup at the end of the first block, which is
+        unaffected because it contains no restart, equal to
+        \SI{13.5}{\mega\watt\day\per\kilo\gram} for the schedule used here.
+\end{itemize}
+
+Applying Equation~\ref{eq:true_burnup} to archive index 7, the reported
+ceiling of \SI{75.0}{\mega\watt\day\per\kilo\gram} corresponds to a physical
+burnup of \SI{43.0}{\mega\watt\day\per\kilo\gram}. The reported cycle length
+of \num{7513} Effective Full Power Days corresponds to \num{4307}, an
+overstatement by a factor of 1.74.
+
+An independent check confirms the factor. The reactivity slope measured on
+the unaffected points of the campaign history is \SI{296}{pcm} per unit of
+labelled burnup, which becomes \SI{593}{pcm} per unit of physical burnup
+after correction. The unchunked arm A measures \SI{561}{pcm} per unit of
+burnup over the same range. The two values agree to within
+\SI{6}{\percent}.
+
+\subsubsection{Scope of the affected results}
+
+The defect affects only quantities that depend on depletion beyond the first
+block. The following results are therefore unaffected and require no
+revision:
+
+\begin{itemize}
+  \item all beginning of life quantities, including every core radial
+        peaking factor and every assembly eigenvalue at zero burnup,
+  \item the entire zoned-loading study of
+        Section~\openpoint{cross reference to the zoning section}, whose
+        transfer test, multiplier optimisation and confirmation are computed
+        at beginning of life,
+  \item the constraint feasibility assessment on peaking and on beginning of
+        life reactivity.
+\end{itemize}
+
+The following results require recomputation:
+
+\begin{itemize}
+  \item every reported cycle length obtained from a trajectory that crossed
+        the reactivity target, which is overstated,
+  \item every reported burnup at the ceiling, which is overstated by
+        Equation~\ref{eq:true_burnup},
+  \item every reactivity slope derived from the affected histories, which is
+        understated by a factor of approximately two.
+\end{itemize}
+
+The correction does not require the depletions to be repeated. The physical
+states already computed are correct, and only their burnup labels are wrong,
+so the archived histories can be relabelled by discarding the first entry of
+each block and applying Equation~\ref{eq:true_burnup}.
+
+\openpoint{Verify which version of the transport and depletion code was used
+for Campaigns 1 to 4. The option controlling the writing of reaction rates
+was introduced in version 0.15.3. Campaigns executed with an earlier version
+wrote reaction rates unconditionally and are therefore not affected.}
+
+\subsubsection{Correction}
+
+The evaluator was modified to request that reaction rates be written to the
+results file, and a verification was added that raises an error if a results
+object about to be used for a restart carries an empty reaction rate
+structure. The verification is deliberately fatal rather than advisory,
+because the failure it detects is silent and produces physically plausible
+output.
+
+The controlled experiment of Table~\ref{tab:restart_experiment} was repeated
+after the correction as an acceptance test, with the criterion that the two
+arms agree at every point to within the statistical scatter of the transport
+solution.
+
+%% AUTHOR: state the physical interpretation of the corrected cycle lengths
+%% and their relation to the fuel burnup limits discussed in the constraint
+%% sourcing section, noting that the corrected ceiling burnup of
+%% 43.0 MWd/kgHM lies below both the 62 GWd/t rod average and the
+%% 55 GWd/t assembly average values.
+
+\subsubsection{Methodological observation}
+
+This is the fourth defect in this work identified by subjecting the model to
+conditions its author had not anticipated, following an inconsistency in a
+geometric padding constant, a failure of the optimiser when no feasible
+design exists, and an incorrect reading of chunked depletion output. In each
+case the defect was silent, in the sense that the calculation completed
+without error and returned values of plausible magnitude.
+
+The common feature is that each was exposed by a deliberate consistency
+test rather than by inspection of the code. The present case is the
+strongest instance, because the defect lies in a widely used external code
+operating in its default configuration, and the test that revealed it is a
+comparison of the same calculation performed two ways.
+
+%% AUTHOR: decide whether to report this defect to the maintainers of the
+%% transport and depletion code, and if so, cite the report here.
