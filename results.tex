@@ -783,41 +783,140 @@ Under uniform loading, no distinguishable peaking margin exists in this
 design space, which motivates a zoned-loading study as the natural
 continuation of the work.
 
-%% ---------------------------------------------------------------------------
-%% Campaign 5 results: the depletion restart defect.
-%% Insert into results.tex after the Campaign 5 optimisation subsection and
-%% before the zoned-loading results.
-%% Requires: booktabs, amsmath, siunitx.
-%% ---------------------------------------------------------------------------
 
-\subsection{A defect in the chunked depletion restart}
+\subsection{A defect in the restarted depletion}
 \label{sec:restart_defect}
 
-\subsubsection{Why the depletion is chunked}
+\subsubsection{Why the depletion is performed in separate blocks}
 
-The cycle length is not known before the calculation begins, because the end
-of cycle is defined by the burnup at which the reactivity trajectory falls
-through the target value. The evaluator therefore advances the depletion in
-short blocks and inspects the trajectory after each one, continuing only
-while the target has not yet been crossed and the burnup ceiling has not
-been reached.
+The depletion solver requires the complete list of burnup steps before the
+calculation starts. A single call of the form "burn six steps of
+\SI{4}{\mega\watt\day\per\kilo\gram}" runs to the end of that list and
+stops.
 
-Each block is a separate call to the transport and depletion solver. The
-first block covers the beginning of life with five steps and every
-subsequent block covers two steps. A block is continued from its predecessor
-by reloading the predecessor's results file and passing it as the previous
-state of a new depletion operator. This reload is referred to here as a
-restart.
+This requirement conflicts with the definition of the cycle length used in
+this work. The end of cycle is the burnup at which the reactivity falls to
+the target value, and that burnup is not known before the calculation is
+performed, because it is a property of the design being evaluated.
+
+Supplying a fixed list is therefore either insufficient or wasteful. A short
+list may end while the reactivity is still far above the target, in which
+case the design has not been evaluated at all. A long list continues to burn
+fuel after the target has been crossed, at a cost of several minutes of
+computing time per unnecessary step. Across the enrichment range explored by
+the campaigns, no single fixed list is appropriate for every design.
+
+The evaluator therefore advances the depletion in short blocks and inspects
+the reactivity after each one. It continues only while the target has not
+been crossed and the burnup ceiling has not been reached. Each block is a
+separate call to the depletion solver, and the number of blocks adapts to
+the design.
+
+Archive index 7 illustrates the resulting structure. Its depletion consists
+of nine blocks:
+
+\begin{enumerate}
+  \item the first block advances five steps of 0.5, 1.0, 2.0, 4.0 and
+        \SI{6.0}{\mega\watt\day\per\kilo\gram}, reaching
+        \SI{13.5}{\mega\watt\day\per\kilo\gram},
+  \item the second through eighth blocks each advance two steps of
+        \SI{4.0}{\mega\watt\day\per\kilo\gram},
+  \item the ninth block advances \SI{4.0}{} and then
+        \SI{1.5}{\mega\watt\day\per\kilo\gram}, stopping at the burnup
+        ceiling rather than at a reactivity crossing.
+\end{enumerate}
+
+\subsubsection{How one block continues from the previous one}
+
+Consecutive blocks are not independent calculations. Each block must begin
+with the fuel in exactly the state the previous block left it, including the
+depleted uranium content, the accumulated plutonium and the fission product
+inventory.
+
+The continuation is performed through the results file. A block writes its
+final state to disk, and the next block reads that file and passes it to a
+new depletion operator as the previous state. This operation is referred to
+here as a restart. The nine blocks of archive index 7 therefore involve
+eight restarts.
+
+A results file is expected to carry two distinct kinds of information:
+
+\begin{enumerate}
+  \item the material composition, which specifies how much of each nuclide
+        is present,
+  \item the reaction rates, which specify how rapidly each nuclide is being
+        transmuted at the current flux level.
+\end{enumerate}
+
+The composition tells the solver where the fuel is. The reaction rates tell
+it how fast the fuel is changing. A restart requires both, because the first
+step after a restart is advanced using the reaction rates carried over from
+the end of the previous block.
+
+\subsubsection{What failed}
+
+Version 0.15.3 of the depletion solver introduced an option controlling
+whether reaction rates are written to the results file, and set its default
+to false in order to reduce file size. The evaluator did not set this
+option, so the results files written by every block contained the material
+composition but no reaction rates.
+
+A results object reconstructed from such a file carries an empty reaction
+rate structure, because the reconstruction relies on metadata that is absent
+from the file. The restart routine reads that structure and passes it to the
+solver without verifying that it is populated.
+
+The consequence is that the first step of every restarted block was advanced
+with all transmutation channels set to zero. The material composition
+evolved by radioactive decay alone. No fission occurred, no fission products
+were produced, and no burnup was accumulated. The burnup label maintained by
+the evaluator was nevertheless advanced by the full step.
+
+The failure was silent. The calculation completed without error, and every
+value it returned was of a plausible magnitude.
+
+\subsubsection{The signature in the recorded history}
+
+Figure~\ref{fig:restart_defect}(a) shows the depletion history of archive
+index 7 as the evaluator recorded it. The points separate into two branches
+approximately \SI{950}{pcm} apart.
+
+The upper branch consists of the first point of every restarted block. These
+are the steps in which the fuel did not burn. Physical time advanced
+nonetheless, so xenon-135 decayed without being replaced by fission and the
+reactivity rose. The measured rises are 1040, 1029, 963, 1232, 926, 1019,
+732 and \SI{670}{pcm}, with a mean of \SI{951}{pcm} and a standard deviation
+of \SI{179}{pcm}. A positive reactivity excursion of this magnitude,
+occurring exclusively at block boundaries and nowhere else, is
+characteristic of xenon removal and is not consistent with any depletion
+process.
+
+The lower branch consists of the second point of every block. These points
+are physically correct. Their burnup labels, however, have advanced twice as
+fast as the fuel.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{images/fig_restart_defect.pdf}
+  \caption{Depletion history of archive index 7. Panel (a) shows the history
+           as recorded, in which the first point of every restarted block
+           did not burn and rises by the xenon worth. Panel (b) shows the
+           same measured reactivities plotted against the burnup the fuel
+           actually reached, together with an independent control
+           calculation performed as a single uninterrupted block. The
+           corrected trajectory and the control calculation agree.}
+  \label{fig:restart_defect}
+\end{figure}
 
 \subsubsection{The controlled experiment}
 
-A defect in this restart was identified by depleting one design, archive
-index 7, twice through the same model and the same random seed, with the
-only difference being the block structure:
+The mechanism was confirmed by depleting archive index 7 twice through the
+same model and the same random seed, with the only difference being the
+block structure:
 
 \begin{enumerate}
   \item arm A, a single uninterrupted block of six steps of
-        \SI{4}{\mega\watt\day\per\kilo\gram} of heavy metal,
+        \SI{4}{\mega\watt\day\per\kilo\gram},
   \item arm B, three blocks of two steps covering the identical burnup
         points.
 \end{enumerate}
@@ -828,9 +927,9 @@ the transport solution.
 
 \begin{table}[htbp]
   \centering
-  \caption{Reactivity trajectory of archive index 7, computed with and
-           without block restarts. The two arms are identical up to the
-           first restart and diverge monotonically thereafter.}
+  \caption{Reactivity of archive index 7 computed with and without block
+           restarts. The two arms agree until the first restart and diverge
+           monotonically thereafter.}
   \label{tab:restart_experiment}
   \begin{tabular}{rrrrl}
     \toprule
@@ -849,61 +948,28 @@ the transport solution.
   \end{tabular}
 \end{table}
 
-\subsubsection{Three independent confirmations of the mechanism}
+Table~\ref{tab:restart_experiment} supports the mechanism in two independent
+ways.
 
-The first confirmation is the agreement before the first restart. At 0, 4
-and \SI{8}{\mega\watt\day\per\kilo\gram} the two arms differ by 0, 56 and
+The first is the location of the divergence. At 0, 4 and
+\SI{8}{\mega\watt\day\per\kilo\gram} the two arms differ by 0, 56 and
 \SI{79}{pcm}, which is the ordinary scatter of the transport solution at the
 campaign settings. Divergence begins at exactly
-\SI{12}{\mega\watt\day\per\kilo\gram}, the first point computed after a
-restart, and never recovers.
+\SI{12}{\mega\watt\day\per\kilo\gram}, the first point computed after the
+first restart, and grows monotonically thereafter.
 
-The second confirmation is that the divergence is a lag of exactly one step
-per restart. If each restart consumes one step without burning the fuel,
-then the arm B point labelled 16 is the true state at 12 and the point
-labelled 24 is the true state at 16. The measured values are 1.27436 against
-1.27568, a difference of \SI{-132}{pcm}, and 1.26382 against 1.26267, a
-difference of \SI{115}{pcm}. Both lie inside the statistical scatter.
+The second is the size of the divergence. If each restart consumes one step
+without burning the fuel, then the arm B point labelled 16 is the true state
+at 12, and the point labelled 24 is the true state at 16. The measured
+values are 1.27436 against 1.27568, a difference of \SI{-132}{pcm}, and
+1.26382 against 1.26267, a difference of \SI{115}{pcm}. Both lie inside the
+statistical scatter. The chunked calculation is therefore not incorrect in
+an unstructured way. It is behind by exactly one step per restart.
 
-The third confirmation is the isotopic signature of the wasted step. During
-a step in which no fission occurs the physical time still advances, so
-xenon-135 decays without being replaced and the reactivity rises. In the
-Campaign 5 depletion history of archive index 7 this rise appears on the
-first point of every block and nowhere else, with the values 1040, 1029,
-963, 1232, 926, 1019, 732 and \SI{670}{pcm}, giving a mean of \SI{951}{pcm}
-and a standard deviation of \SI{179}{pcm}. A positive reactivity excursion
-of this magnitude, occurring exclusively at block boundaries, is
-characteristic of xenon removal and is not consistent with any depletion
-process.
+\subsubsection{Correcting the recorded histories}
 
-\subsubsection{Root cause}
-
-The cause was traced to the interaction between the evaluator and version
-0.15.3 of the transport and depletion code, and involves three facts that
-are individually documented and jointly harmful:
-
-\begin{enumerate}
-  \item the integrator gained an option controlling whether reaction rates
-        are written to the results file, and that option defaults to false
-        in order to reduce file size,
-  \item a results object reconstructed from a file written without reaction
-        rates contains an empty reaction rate structure, because the
-        reconstruction relies on metadata that is absent from such a file,
-  \item the restart routine reads the reaction rates from the previous
-        results object and passes them to the depletion solver without
-        verifying that they are populated.
-\end{enumerate}
-
-The consequence is that the first step of every restarted block is solved
-with all transmutation channels set to zero. The material composition
-evolves by radioactive decay alone. No fission occurs, no fission products
-are produced, and no burnup is accumulated, while the burnup label
-maintained by the evaluator advances by the full step.
-
-\subsubsection{Quantified impact}
-
-For a block structure of two steps, the burnup label advances twice as fast
-as the fuel. The relation between the label and the physical burnup is
+For blocks of two steps, the burnup label advances twice as fast as the
+fuel. The relation between the two is
 
 \begin{equation}
 B_{\mathrm{true}} = B_{0} + \frac{B_{\mathrm{label}} - B_{0}}{2} ,
@@ -917,29 +983,32 @@ with the terms
         evaluator, in \si{\mega\watt\day\per\kilo\gram} of heavy metal,
   \item $B_{\mathrm{true}}$, the burnup physically reached by the fuel, in
         the same units,
-  \item $B_{0}$, the burnup at the end of the first block, which is
-        unaffected because it contains no restart, equal to
+  \item $B_{0}$, the burnup at the end of the first block, which contains no
+        restart and is therefore unaffected, equal to
         \SI{13.5}{\mega\watt\day\per\kilo\gram} for the schedule used here.
 \end{itemize}
 
-Applying Equation~\ref{eq:true_burnup} to archive index 7, the reported
-ceiling of \SI{75.0}{\mega\watt\day\per\kilo\gram} corresponds to a physical
-burnup of \SI{43.0}{\mega\watt\day\per\kilo\gram}. The reported cycle length
-of \num{7513} Effective Full Power Days corresponds to \num{4307}, an
-overstatement by a factor of 1.74.
+Figure~\ref{fig:restart_defect}(b) applies this correction. The points of
+the upper branch are discarded, because they duplicate the state preceding
+them, and the remaining points are relabelled. The two branches collapse
+onto a single smooth trajectory.
 
-An independent check confirms the factor. The reactivity slope measured on
-the unaffected points of the campaign history is \SI{296}{pcm} per unit of
-labelled burnup, which becomes \SI{593}{pcm} per unit of physical burnup
-after correction. The unchunked arm A measures \SI{561}{pcm} per unit of
-burnup over the same range. The two values agree to within
-\SI{6}{\percent}.
+Two quantitative checks confirm the correction. The corrected trajectory
+falls at \SI{592}{pcm} per unit of burnup, against \SI{561}{pcm} measured in
+the independent single-block control calculation, an agreement of
+\SI{5}{\percent}. The control calculation itself is plotted in
+Figure~\ref{fig:restart_defect}(b) and lies on the corrected trajectory.
+
+Applying Equation~\ref{eq:true_burnup}, the reported ceiling of
+\SI{75.0}{\mega\watt\day\per\kilo\gram} for archive index 7 corresponds to a
+physical burnup of \SI{43.0}{\mega\watt\day\per\kilo\gram}. The reported
+cycle length of \num{7513} Effective Full Power Days corresponds to
+\num{4307}, an overstatement by a factor of 1.74.
 
 \subsubsection{Scope of the affected results}
 
 The defect affects only quantities that depend on depletion beyond the first
-block. The following results are therefore unaffected and require no
-revision:
+block. The following results are unaffected and require no revision:
 
 \begin{itemize}
   \item all beginning of life quantities, including every core radial
@@ -948,39 +1017,39 @@ revision:
         Section~\openpoint{cross reference to the zoning section}, whose
         transfer test, multiplier optimisation and confirmation are computed
         at beginning of life,
-  \item the constraint feasibility assessment on peaking and on beginning of
-        life reactivity.
+  \item the feasibility assessment against the peaking constraint and
+        against the beginning of life reactivity constraint.
 \end{itemize}
 
-The following results require recomputation:
+The following results require correction:
 
 \begin{itemize}
-  \item every reported cycle length obtained from a trajectory that crossed
-        the reactivity target, which is overstated,
-  \item every reported burnup at the ceiling, which is overstated by
+  \item every cycle length obtained from a trajectory that crossed the
+        reactivity target, which is overstated,
+  \item every burnup reported at the ceiling, which is overstated by
         Equation~\ref{eq:true_burnup},
   \item every reactivity slope derived from the affected histories, which is
-        understated by a factor of approximately two.
+        understated by approximately a factor of two.
 \end{itemize}
 
-The correction does not require the depletions to be repeated. The physical
-states already computed are correct, and only their burnup labels are wrong,
-so the archived histories can be relabelled by discarding the first entry of
-each block and applying Equation~\ref{eq:true_burnup}.
+The depletions do not need to be repeated. The physical states already
+computed are correct and only their burnup labels are wrong, so the archived
+histories can be corrected by discarding the first entry of each block and
+applying Equation~\ref{eq:true_burnup}.
 
-\openpoint{Verify which version of the transport and depletion code was used
-for Campaigns 1 to 4. The option controlling the writing of reaction rates
-was introduced in version 0.15.3. Campaigns executed with an earlier version
+\openpoint{Verify which version of the depletion solver was used for
+Campaigns 1 to 4. The option controlling the writing of reaction rates was
+introduced in version 0.15.3. Campaigns executed with an earlier version
 wrote reaction rates unconditionally and are therefore not affected.}
 
-\subsubsection{Correction}
+\subsubsection{Correction applied to the evaluator}
 
 The evaluator was modified to request that reaction rates be written to the
-results file, and a verification was added that raises an error if a results
+results file. A verification was added that raises an error if a results
 object about to be used for a restart carries an empty reaction rate
 structure. The verification is deliberately fatal rather than advisory,
-because the failure it detects is silent and produces physically plausible
-output.
+because the condition it detects produces physically plausible output and
+would otherwise remain undetected.
 
 The controlled experiment of Table~\ref{tab:restart_experiment} was repeated
 after the correction as an acceptance test, with the criterion that the two
@@ -996,17 +1065,18 @@ solution.
 \subsubsection{Methodological observation}
 
 This is the fourth defect in this work identified by subjecting the model to
-conditions its author had not anticipated, following an inconsistency in a
+a condition its author had not anticipated, following an inconsistency in a
 geometric padding constant, a failure of the optimiser when no feasible
-design exists, and an incorrect reading of chunked depletion output. In each
-case the defect was silent, in the sense that the calculation completed
-without error and returned values of plausible magnitude.
+design exists, and an incorrect reading of the output of a restarted
+depletion. In each case the calculation completed without error and returned
+values of plausible magnitude.
 
-The common feature is that each was exposed by a deliberate consistency
-test rather than by inspection of the code. The present case is the
-strongest instance, because the defect lies in a widely used external code
-operating in its default configuration, and the test that revealed it is a
-comparison of the same calculation performed two ways.
+The common feature is that each defect was exposed by a deliberate
+consistency test rather than by inspection of the source code. The present
+case is the strongest instance, because the defect arises in a widely used
+external code operating in its default configuration, and the test that
+revealed it consists of performing the same calculation in two ways that
+must agree.
 
 %% AUTHOR: decide whether to report this defect to the maintainers of the
-%% transport and depletion code, and if so, cite the report here.
+%% depletion solver, and if so, cite the report here.
