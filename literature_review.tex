@@ -114,41 +114,120 @@ from marine propulsion~\cite{ritm200n_nei_2024}.
 \subsection{Naval-heritage cores in the open literature}
 \label{subsec:naval-heritage}
 
-Detailed military naval reactor core data are classified. This review therefore
-restricts itself to open, official, and peer-reviewed sources, and it builds
-the naval-heritage argument on the documented transition of naval reactor
-technology to civilian marine and land-based applications.
+Detailed core data for military naval reactors are classified in every state
+that operates them. This review therefore restricts itself to open, official,
+and peer-reviewed sources.
 
-The Russian lineage developed by OKBM Afrikantov proceeds from the OK-150 and
-OK-900 icebreaker reactors to the KLT-40 series and then to the integral
-RITM-200 family~\cite{wna_ships,ritm200n_nei_2024}. The KLT-40S uses uranium
-dioxide dispersed in a silumin matrix at 18.6~wt\% U-235, a core of 121 fuel
-assemblies, and a refuelling cycle of 30 to 36
-months~\cite{worldnuclearreport_smr,klt40s_aris}. The RITM-200N land-based unit
-is rated 190~MWth and 55~MWe, uses uranium enriched below 20~wt\%, and has a
-six-year refuelling interval~\cite{ritm200n_nei_2024}.
+The naval-heritage argument is built not on classified military cores but on
+the documented transition of naval reactor technology into civilian marine and
+land-based applications. Four national lineages are treated in turn, followed
+by the open academic literature on naval core design principles.
 
-The Brazilian LABGENE prototype, developed by the Centro Tecnol\'ogico da
-Marinha em S\~ao Paulo at the Aramar Experimental Center, is a 48~MWth
-pressurised water reactor that reached first controlled criticality in December
-2023 and serves as the land-based prototype for the reactor of the
-\'Alvaro Alberto submarine~\cite{wna_brazil,fapesp_labgene}. Its detailed core
-neutronics are not published in the open literature. The IPEN/MB-01 zero-power
-critical facility, which uses 4.3~wt\% enriched uranium dioxide rods with
-stainless-steel cladding, was built to validate the neutronic parameters of the
-Navy core programme and is the closest open, citable surrogate~\cite{ipen_mb01}.
+\paragraph{The Russian lineage.}
+The line developed by JSC ``Afrikantov OKBM'' proceeds from the OK-150 and
+OK-900 icebreaker reactors to the KLT-40 series, and then to the integral
+RITM-200 family~\cite{wna_ships}.
 
-The French K15 reactor, rated approximately 150~MWth with a core life of about
-ten years, powers French submarines and the aircraft carrier Charles de Gaulle
-and uses low-enriched uranium~\cite{wna_ships}. 
+Two members of this line are documented in sufficient detail to be useful here.
 
-United States and United Kingdom naval reactors use weapon-grade highly enriched uranium at about 93.5~wt\% U-235, and the feasibility of a conversion to low-enriched uranium at 19.75~wt\%
-was examined by the Office of Naval Reactors and by the JASON advisory
-panel~\cite{jason_2016,onr_leu_2016}. Open academic analyses of naval core
-design principles include the Ippolito thesis, which compared cores at 7~wt\%,
-20~wt\% and 97.3~wt\% enrichment~\cite{ippolito_1990}, and the Cambridge
-civil-marine small modular reactor series, which analysed soluble-boron-free
-high-power-density cores~\cite{alam_2019_hotchannel}.
+\begin{itemize}
+  \item The KLT-40S, deployed in the floating nuclear power plant (FNPP)
+    \emph{Akademik Lomonosov}, uses uranium dioxide (UO$_2$) dispersed in a
+    silumin matrix at 18.6~wt\% uranium-235, a core of 121 fuel assemblies, and
+    a refuelling cycle of 30 to 36 months~\cite{worldnuclearreport_smr}.
+  \item The RITM-200N, the land-based member of the family, is rated 190~MWth
+    and 55~MWe gross and uses uranium enriched below
+    20~wt\%~\cite{ritm200n_nei_2024}.
+\end{itemize}
+
+The relevance of the RITM-200N to this work is that its fuel cassettes are
+described by its designers as analogues of those used in the cores of the
+RITM-200 and KLT-40S icebreakers~\cite{ritm200n_nei_2024}. The transfer of a
+marine core to a land-based prototype is therefore an established practice and
+not a device peculiar to the Brazilian programme.
+
+\paragraph{The French lineage.}
+The K15 reactor is rated at approximately 150~MWth with a core life of about ten
+years. It powers French submarines and the aircraft carrier
+\emph{Charles de Gaulle}, and it operates on low-enriched uranium
+(LEU)~\cite{wna_ships}.
+
+The K15 is the closest Western analogue to the present work in the sense that it
+demonstrates a naval propulsion core operating below the 20~wt\% threshold that
+separates low-enriched uranium (LEU) from high-enriched uranium (HEU).
+
+\paragraph{The United States and United Kingdom lineage.}
+Naval reactors of the United States and the United Kingdom use weapon-grade
+highly enriched uranium (HEU) at approximately 93.5~wt\%
+uranium-235~\cite{wna_ships}.
+
+The feasibility of converting these cores to low-enriched uranium (LEU) at
+19.75~wt\% has been examined in two open assessments.
+
+\begin{itemize}
+  \item The report of the JASON advisory panel, which assessed the technical
+    obstacles to conversion~\cite{jason_2016}.
+  \item The report of the Office of Naval Reactors to Congress, which assessed
+    the same question from a programme perspective~\cite{onr_leu_2016}.
+\end{itemize}
+
+These two assessments establish 19.75~wt\% as the recognised ceiling for a
+low-enriched naval core, which is the value adopted as the enrichment constraint
+in this work.
+
+\paragraph{The Brazilian lineage.}
+The LABGENE prototype, developed by the Centro Tecnol\'ogico da Marinha em
+S\~ao Paulo (CTMSP) at the Aramar Experimental Center in Iper\'o, S\~ao Paulo,
+is a 48~MWth pressurised water reactor (PWR). It serves as the land-based
+prototype for the reactor of the \'Alvaro Alberto
+submarine~\cite{fapesp_labgene}.
+
+The detailed core neutronics of LABGENE are not published in the open
+literature. No enrichment, lattice pitch, assembly count, burnable poison
+loading, or peaking factor for that core can be cited from any open source.
+
+This absence of open core data is the reason the present work is framed as a
+LABGENE-class study rather than as a study of LABGENE itself. The rated thermal
+power of 48~MWth and the naval pressurised water reactor (PWR) architecture are
+taken from the open record. Every remaining core parameter, namely enrichment,
+lattice pitch, assembly count, gadolinia (Gd$_2$O$_3$) loading, poisoned-pin
+count, and reflector thickness, is an independent modelling choice of this
+thesis and carries no claim of correspondence with the actual prototype.
+
+%% AUTHOR: physics interpretation of what "LABGENE-class" is taken to constrain
+%% and what it deliberately leaves free, and whether that boundary should be
+%% stated here or deferred to the methodology chapter.
+
+\paragraph{Open academic analyses.}
+Two bodies of open academic work inform the design principles applied in this
+thesis.
+
+\begin{itemize}
+  \item The thesis of Ippolito, which compared naval core designs at 7~wt\%,
+    20~wt\%, and 97.3~wt\% enrichment and established the penalty in core
+    volume and lifetime associated with the reduction in
+    enrichment~\cite{ippolito_1990}.
+  \item The Cambridge series on civil marine small modular reactors (SMRs),
+    which analysed soluble-boron-free high-power-density cores and the hot
+    channel factors that constrain them~\cite{alam_2019_hotchannel}.
+\end{itemize}
+
+\openpoint{The claim that LABGENE reached first controlled criticality in
+December 2023 has been removed from this subsection. It could not be traced to
+the Comiss\~ao Nacional de Energia Nuclear (CNEN), to the Marinha do Brasil, to
+the International Atomic Energy Agency (IAEA), or to any peer-reviewed source.
+Later reporting describes the propulsion plant as being tested first with steam
+from a conventional fossil-fuel boiler and only afterwards with nuclear fuel,
+which is inconsistent with a criticality in December 2023. Reinstate the claim
+only against a primary CNEN or Marinha do Brasil document, and state the exact
+date and the source in the text.}
+
+\openpoint{The claim that the RITM-200N has a six-year refuelling interval has
+been removed. Table~1 of Saha \textit{et al.}~\cite{saha2024ritm200n} does not
+state a refuelling interval, and no other value in that article supports it.
+Take the figure from the IAEA Small Modular Reactor Technology Catalogue, page
+55, if it is stated there~\cite{iaea2025smrcatalogue}.}
+
 
 \subsection{Comparison of naval-heritage and commercial small modular PWR cores}
 \label{subsec:comparison}
