@@ -577,7 +577,7 @@ verification tool, and it found two real defects this way.
 %% AUTHOR: 1-2 sentences of physics on WHY high enrichment flattens the
 %% core radial profile (periphery-to-centre gradient, migration).
 
-\section{Campaign 5: proposal}
+\section{Campaign 5: the absorber inventory as a design variable}
 \label{sec:res-campaign5}
 
 Campaign 4's converged residual is small and precisely located:
@@ -601,15 +601,15 @@ rather than fixing it.
 \begin{table}[htbp]
   \centering
   \small
-  \caption{Campaign 5 relative to Campaign 4. One structural change to the
-  search space, and the disposition of each item at the close of the
-  campaign.}
+  \caption[Campaign 5 relative to Campaign 4]{Campaign 5 relative to
+  Campaign 4. One structural change to the search space, and the
+  disposition of each item at the close of the campaign.}
   \label{tab:c5}
-  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.20\textwidth}@{}}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.24\textwidth}@{}}
     \toprule
     Change & Rationale & Disposition \\
     \midrule
-    Gd pin count as sixth design variable, 12 to 40 pins in
+    Gd pin count as sixth design variable, 12 to 40 rods in
     octant-symmetric patterns
       & The optimiser exhausted the concentration bound
         (Fig.~\ref{fig:c4parallel}). Inventory scales absorber authority
@@ -617,12 +617,13 @@ rather than fixing it.
         reported in the literature at a fixed weight fraction of
         approximately 8\,wt\%~\cite{rr_smr_atf_2025,apr1400_gd_2020}
       & Implemented. Minimum total constraint violation fell from 0.0077
-        to 0.0012 \\
+        to 0.0012 (Fig.~\ref{fig:c5traj}) \\
     Single-design pin-count test on idx 44
-      & Re-evaluation at 14, 16 and 20 pins to decide within hours
+      & Re-evaluation at 14, 16 and 20 rods to decide within hours
         whether the tangency opens
-      & Executed. Feasibility reached at 14 pins,
-        $k_\mathrm{BOL}=1.3456$ \\
+      & Executed. Feasibility reached at 14 rods,
+        $k_\mathrm{BOL}=1.3456$, at a measured authority of
+        approximately \SI{500}{pcm} per rod (Fig.~\ref{fig:c5pins}) \\
     Constraint normalisation by individual limits
       & The Campaign 1 to 4 violation sum added quantities in
         $\Delta k$, peaking factor, weight percent and centimetres
@@ -632,48 +633,425 @@ rather than fixing it.
       & Excess reactivity is a core quantity, and
         $k_\mathrm{eff}^\mathrm{core}$ is already recorded per
         evaluation at no additional cost
-      & Not implemented. The screening limit remains on the assembly,
-        the conservative of the two \\
+      & Not applied during the search. Applied retrospectively to both
+        archives in Section~\ref{sec:res-c5-kbasis}, where it admits
+        exactly the designs the assembly screen admits at 1.40 \\
     Soluble-boron decision
-      & Naval practice is
-        boron-free~\cite{ismr_sbf_2024,acp100_physor2020}. Removing the
-        boron raises $k_\mathrm{BOL}$ by approximately 0.08 to 0.10,
+      & Civil soluble-boron-free practice~\cite{ismr_sbf_2024,acp100_physor2020}
+        motivates a boron-free basis. Removing the boron raises
+        $k_\mathrm{BOL}$ by approximately 0.08 to 0.10,
         which tightens the problem rather than relaxing it
-      & Open. To be decided from a two-finalist measurement at
-        0\,ppm \\
+      & Closed. The \SI{1000}{ppm} benchmark-traceable basis of
+        Section~\ref{sec:meth-boron} is retained for all campaigns, and
+        the boron-free case is recorded as future work \\
     Review of the 1.35 bound
       & The limit proxies controllable excess reactivity without a rod
         model. At 1.40 both champions of
         Table~\ref{tab:c4-champions} are already feasible
-      & Open. Advisor judgement \\
+      & Resolved by the re-scoring of Section~\ref{sec:res-c5-kbasis}.
+        The basis change and the relaxation to 1.40 select identical
+        design sets, so the physically grounded route costs nothing \\
     \bottomrule
   \end{tabularx}
 \end{table}
 
+The single-design test settles the Campaign 4 prediction before the
+campaign results are examined. Re-evaluating the Campaign 4 champion at
+14, 16 and 20 gadolinia rods measures an inventory authority of
+approximately \SI{500}{pcm} per rod, so the two-rod step from 12 to 14
+removes \SI{1011}{pcm} against the required \SI{640}{pcm}. The design is
+feasible on both screening constraints at 14 rods, which confirms the
+prediction of Equation~\eqref{eq:pins-needed} within one rod. The core
+peaking factor is unchanged across the four counts, remaining between
+1.970 and 1.995, so the inventory buys reactivity control and no peaking
+penalty, consistent with the variable-influence finding of
+Section~\ref{sec:res-c4-champions}.
 
-\openpoint{Advisor decisions pending: the $k_\mathrm{BOL}$ screening limit
-of 1.35 against a licensing-style check at 1.50 to 1.65, the soluble-boron
-design basis, and the moderator temperature coefficient assessment of
-wide-pitch strategies, which lies outside the two-dimensional
-beginning-of-life scope.}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\linewidth]{images/c5_pin_worth}
+  \caption[Pin-count test on the Campaign 4 champion]{Pin-count test on
+  the Campaign 4 champion, archive index 44, re-evaluated at 12, 14, 16
+  and 20 gadolinia rods. Left, the assembly eigenvalue crosses the
+  screening limit between 12 and 14 rods, at a fitted authority of
+  \SI{535}{pcm} per rod. Right, the core radial peaking factor is
+  statistically flat across the four counts. Error bars are one standard
+  error of the mean.}
+  \label{fig:c5pins}
+\end{figure}
+
+\subsection{Search outcome under the as-run constraints}
+\label{sec:res-c5-search}
+
+Campaign 5 evaluated 60 designs, a 42-point Latin hypercube design of
+experiments followed by three active-learning iterations of six real
+evaluations each. The two blocks ran on consecutive days and the active
+wall time was \SI{108.4}{\hour}, equal to 6934 core-hours, with the
+complete cost decomposition given in the compute-budget analysis of
+Section~\openpoint{cross-reference the compute chapter section once the
+Campaign 5 update is merged there}.
+
+The feasible set was empty at every recorded checkpoint. The hypervolume
+history is identically zero at all four recorded points, the reference
+point was never frozen because freezing requires a first feasible design,
+and the empirical stopping rule of
+Section~\ref{sec:res-hv-comparability} was therefore inoperative. The
+campaign terminated on its iteration budget, not on convergence. Under an
+empty feasible set the optimiser degrades to minimisation of the total
+constraint violation
+\begin{equation}
+  V \;=\; \sum_{j} \max\!\left(0,\; \frac{g_j}{\lvert g_j^\mathrm{lim}
+  \rvert}\right) ,
+  \label{eq:violation-normalised}
+\end{equation}
+
+with the terms
+
+\begin{itemize}
+  \item $g_j$, the value of constraint $j$ in its native units,
+  \item $g_j^\mathrm{lim}$, the limit of constraint $j$ in the same
+        units, introduced as the per-constraint normalisation adopted in
+        this campaign,
+  \item $V$, the total normalised violation, dimensionless.
+\end{itemize}
+
+Figure~\ref{fig:c5traj} shows the resulting search trajectory. The best
+design of experiments point reaches $V = 0.0264$ at archive index 17.
+The first iteration does not improve on it, closing at $V = 0.0321$. The
+second iteration reaches $V = 0.0074$ at index 49 and the third reaches
+$V = 0.0012$ at index 54, the campaign champion. Relative to the best
+Campaign 4 value of 0.0077, the sixth design variable moved the point of
+closest approach by a factor of six.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\linewidth]{images/c5_search_trajectory}
+  \caption[Campaign 5 search trajectory]{Campaign 5 search trajectory.
+  Total normalised constraint violation per evaluation, with the running
+  best as a step line. The design of experiments occupies indices 0 to
+  41 and the three infill iterations follow in blocks of six. The three
+  annotated designs are the champions discussed in the text.}
+  \label{fig:c5traj}
+\end{figure}
+
+All eighteen infill designs sit at the pitch lower bound of
+\SI{1.150}{\centi\metre}, extending to six variables the vertex-seeking
+behaviour documented for Campaign 4 in
+Section~\ref{sec:res-c4-vertex}. Within that plane the three iterations
+occupy three distinct regions of the design space
+(Fig.~\ref{fig:c5lobes}):
+
+\begin{enumerate}
+  \item iteration 1 proposes 40 rods with gadolinia weight fractions of
+        1.8 to 2.4\,wt\%, inner enrichment near the LEU cap at 18.1 to
+        18.5\,wt\% and a thin reflector of 2.1 to \SI{5.8}{\centi\metre},
+  \item iteration 2 proposes 12 rods with essentially zero gadolinia,
+        both enrichments near 7.2\,wt\% and the reflector at its lower
+        bound of \SI{2.0}{\centi\metre},
+  \item iteration 3 proposes 40 rods with gadolinia weight fractions of
+        1.4 to 1.9\,wt\%, inner enrichment near 13.2\,wt\% and the
+        reflector at its geometric ceiling of 19.4 to
+        \SI{19.5}{\centi\metre}.
+\end{enumerate}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\linewidth]{images/c5_lobes}
+  \caption[The two lobes of the Campaign 5 infill]{The two lobes of the
+  Campaign 5 infill. Left, gadolinia weight fraction against rod count.
+  Right, inner enrichment against reflector thickness, where the three
+  iterations resolve into three clusters. Design of experiments points
+  in grey.}
+  \label{fig:c5lobes}
+\end{figure}
+
+The 40-rod iterations and the 12-rod iteration are two distinct routes
+to the same reactivity screen. The first holds a large fissile inventory
+in check with a large absorber inventory. The second carries so little
+fissile inventory that almost no absorber is required.
+
+%% AUTHOR: physics interpretation of the two lobes. Why the surrogate
+%% found the zero-absorber lobe on its second iteration, what the two
+%% routes imply for cycle length (the 12-rod lobe designs cross their
+%% reactivity target near 3700 EFPD while the 40-rod lobe designs reach
+%% the burnup ceiling), and which lobe is the better engineering basis.
+
+\subsection{Corrected objectives}
+\label{sec:res-c5-corrected}
+
+Every cycle length recorded during the campaign is affected by the
+depletion restart defect analysed in Section~\ref{sec:restart_defect}.
+The salvage procedure of that section recovers the true burnups from the
+archived histories without repeating any transport, and every
+cycle-length statement in this subsection uses the corrected values. All
+beginning-of-life quantities, in particular every peaking factor and
+every eigenvalue in this chapter, are unaffected by construction.
+
+The correction changes the population structure. The sixty evaluations
+separate into three groups rather than the two reported by the evaluator:
+
+\begin{enumerate}
+  \item 18 designs crossed their reactivity target and possess a true,
+        finite end of cycle,
+  \item 39 designs reached the burnup ceiling, whose corrected physical
+        value is \SI{43.0}{\mega\watt\day\per\kilo\gram} rather than the
+        labelled \SI{75.0}{\mega\watt\day\per\kilo\gram}, so their
+        corrected cycle lengths are lower bounds of \num{4307} Effective
+        Full Power Days rather than the recorded \num{7513},
+  \item 3 designs never reached criticality against their own
+        end-of-cycle target and have no cycle at all. These were
+        previously conflated with the ceiling group.
+\end{enumerate}
+
+The overstatement factor across the campaign is 1.68 on average, ranging
+from 1.23 for early-terminating designs to 1.74 for designs that ran the
+full schedule. The 413 discarded dead-step entries carry a mean
+reactivity rise of \SI{785}{pcm}, in the range \SIrange{364}{1540}{pcm},
+which identifies the chunk-locked period-two oscillation observed in the
+recorded histories with the xenon signature of the defect rather than
+with a property of the predictor integrator.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\linewidth]{images/c5_objectives_corrected}
+  \caption[Campaign 5 in the corrected objective plane]{The sixty
+  Campaign 5 evaluations in the corrected objective plane. Circles are
+  designs that crossed their reactivity target, plotted at the corrected
+  end of cycle. Triangles are designs censored at the burnup ceiling,
+  plotted at the corrected ceiling value of \num{4307} Effective Full
+  Power Days as lower bounds. The three never-critical designs have no
+  cycle and are omitted. Thirty-nine designs collapse onto the ceiling
+  line, which is the censoring distortion of
+  Section~\ref{sec:res-c2} reproduced at the corrected ceiling.}
+  \label{fig:c5objcorr}
+\end{figure}
+
+Figure~\ref{fig:c5objcorr} shows the corrected objective plane. Two
+features carry the conclusions of the campaign.
+
+The first is that the ceiling truncates the front. Thirty-nine designs,
+including the champion, collapse onto a single cycle-length value, so no
+trade-off can be resolved beyond \num{4307} Effective Full Power Days.
+The intended ceiling of \SI{75}{\mega\watt\day\per\kilo\gram} was chosen
+to sit above every physical end of cycle. The defect silently halved it,
+and the corrected value of \SI{43.0}{\mega\watt\day\per\kilo\gram} sits
+below the crossing burnup of most of the population. The censoring
+lesson of Campaign 2 therefore applies to Campaign 5 in full, through no
+choice made in the campaign design.
+
+The second is the identity of the interesting designs, summarised in
+Table~\ref{tab:c5-champions}. The corrected non-dominated set consists
+of a single design, archive index 17, which pairs the lowest peaking
+factor of the entire campaign, $F_{\Delta H} = 1.9534$, with a censored
+cycle length of at least \num{4307} Effective Full Power Days. It is a
+design-of-experiments point, and the search machinery never treated it
+as interesting because its assembly eigenvalue of 1.3764 violates the
+as-run reactivity screen. Archive index 49, from the 12-rod lobe, is the
+only design in the campaign that combines a sub-limit peaking factor
+with a completed, uncensored cycle, at a corrected end of cycle of
+\num{3658} Effective Full Power Days, almost exactly ten years at full
+power. The campaign champion, index 54, remains the least-infeasible
+design under the as-run screens, with the peaking excess of 0.0012 that
+the confirmation study of Section~\ref{sec:c5_confirmation} shows to be
+statistically indistinguishable from the limit.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption[The three notable designs of Campaign 5]{The three notable
+  designs of Campaign 5 under the corrected objectives. Bold marks a
+  value at a design-space bound. Feasibility is quoted on both
+  reactivity bases at the common limit of 1.35.}
+  \label{tab:c5-champions}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}*{3}{>{\centering\arraybackslash}X}@{}}
+    \toprule
+    Quantity & idx 17, DOE & idx 49, iteration 2 & idx 54, iteration 3 \\
+    \midrule
+    $e_\mathrm{in}$ / $e_\mathrm{out}$ [wt\%]
+      & 16.83 / 14.52 & 7.08 / 7.39 & 13.07 / 15.00 \\
+    Gd$_2$O$_3$ content [wt\%]
+      & 1.49 & 0.00 & 1.42 \\
+    $n_\mathrm{Gd}$ [rods]
+      & 32 & \textbf{12} & \textbf{40} \\
+    Pitch [cm]
+      & 1.154 & \textbf{1.150} & \textbf{1.150} \\
+    $t_\mathrm{refl}$ [cm]
+      & 17.99 & \textbf{2.00} & 19.41 \\
+    Core $F_{\Delta H}$ [--]
+      & \textbf{1.9534} & 1.9828 & 2.0012 \\
+    Assembly $k_\mathrm{BOL}$ [--]
+      & 1.3764 & 1.3574 & 1.3449 \\
+    Core $k_\mathrm{eff}$ [--]
+      & 1.3060 & 1.2777 & 1.2739 \\
+    Corrected cycle length [EFPD]
+      & $\geq 4307$ & 3658 & $\geq 4307$ \\
+    Feasible, assembly basis
+      & no & no & no, by 0.0012 in $F_{\Delta H}$ \\
+    Feasible, core basis
+      & yes & yes & no, by 0.0012 in $F_{\Delta H}$ \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+The three never-critical designs, archive indices 1, 14 and 22, begin
+below their own end-of-cycle targets and therefore fail before the first
+depletion step by construction. Their evaluations cost \SI{2.48}{\hour}
+in total, 2.3\,\% of the campaign, because the crossing test terminates
+them after the beginning-of-life block, at 45 to 57 minutes each against
+the campaign mean of 108 minutes. The end-of-cycle test therefore already acts
+as an implicit beginning-of-life screen. Making the screen explicit,
+\begin{equation}
+  g_{k\min} \;=\; k_\mathrm{target}(p,\, t_\mathrm{refl})
+  \;-\; k_\mathrm{BOL} \;\leq\; 0 ,
+  \label{eq:kmin-selfcons}
+\end{equation}
+
+with the terms
+
+\begin{itemize}
+  \item $k_\mathrm{BOL}$, the assembly multiplication factor at beginning
+        of life, dimensionless,
+  \item $k_\mathrm{target}(p,\, t_\mathrm{refl})$, the design-specific
+        Route B end-of-cycle target of
+        Section~\ref{sec:res-c2}, dimensionless,
+\end{itemize}
+
+would reject exactly these three designs before any depletion runs,
+recovering the remaining \SI{2.23}{\hour}. Unlike the fixed floor of
+1.02, the test contains no arbitrary constant, and it does not reject
+archive index 33, a design whose core eigenvalue of 1.011 sits below any
+plausible fixed core-level floor yet whose corrected cycle runs to
+\num{3084} Effective Full Power Days. The screen is adopted prospectively
+for future campaigns and is not applied retrospectively here.
+
+\subsection{Re-scoring the reactivity screen on the core basis}
+\label{sec:res-c5-kbasis}
+
+The screening constraint $g_{k\max}$ was applied throughout Campaigns 1
+to 5 to the assembly $k_\infty$ of the reflective-boundary depletion
+model. Excess reactivity is a budget of the finite core, so the
+physically meaningful quantity is the core $k_\mathrm{eff}$, which the
+evaluator has recorded for every evaluation since Campaign 4 at no
+additional cost. This is the same category distinction that moved the
+peaking objective from the assembly to the core in Campaign 4, applied
+to the remaining assembly-level constraint. Because both readings exist
+in the archives, the question of what the core basis would have changed
+is answered by re-scoring, without a single new transport solve.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.82\linewidth]{images/c5_kbasis}
+  \caption[The two reactivity bases across Campaigns 4 and 5]{Every
+  Campaign 4 and Campaign 5 evaluation on the two reactivity bases. The
+  points fall in a narrow band displaced from the identity line by the
+  assembly-to-core gap. The shaded region holds the designs the assembly
+  screen rejects and the core screen admits at the common limit of
+  1.35.}
+  \label{fig:c5kbasis}
+\end{figure}
+
+The assembly-to-core gap is large and systematic. Across the Campaign 5
+archive it spans \SIrange{4299}{8057}{pcm} with a mean of \SI{6563}{pcm},
+and across Campaign 4 it spans \SIrange{5015}{7533}{pcm} with a mean of
+\SI{6753}{pcm}. Table~\ref{tab:c5-sweep} sweeps the limit from 1.20 to
+1.45 on both bases.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption[Feasible designs under both reactivity bases]{Number of
+  designs satisfying all five screening constraints, as a function of
+  the reactivity limit applied on each basis. All other constraints are
+  held at their campaign values.}
+  \label{tab:c5-sweep}
+  \begin{tabular}{c cc cc}
+    \toprule
+    & \multicolumn{2}{c}{Campaign 4 (54)} &
+      \multicolumn{2}{c}{Campaign 5 (60)} \\
+    \cmidrule(lr){2-3}\cmidrule(lr){4-5}
+    $k$ limit & assembly & core & assembly & core \\
+    \midrule
+    1.20 & 0 & 0 & 0 & 0 \\
+    1.25 & 0 & 0 & 0 & 0 \\
+    1.30 & 0 & 6 & 0 & 1 \\
+    1.35 & 0 & 7 & 0 & 2 \\
+    1.40 & 7 & 7 & 2 & 3 \\
+    1.45 & 7 & 7 & 2 & 3 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Three findings follow.
+
+First, the two formulations that have been under discussion select
+identical designs. The core basis at 1.35 admits archive indices 6, 42,
+43, 44, 46, 47 and 53 in Campaign 4 and indices 17 and 49 in Campaign 5.
+The assembly basis at 1.40 admits exactly the same sets, in both
+campaigns. The relaxation to 1.40 and the change of basis are therefore
+interchangeable in outcome, and only their justification differs. The
+basis change rests on the measured gap and on the physical location of
+the excess-reactivity budget, so it is the route adopted here.
+
+Second, the tangency reading of Campaign 4 in
+Section~\ref{sec:res-c4-trajectory} does not survive the re-scoring. On
+the core basis at 1.35, every one of the 47 infeasible Campaign 4
+designs violates the peaking constraint, so $g_{k\max}$ excludes no
+design that $g_\mathrm{peak}$ would have admitted. The two constraints
+are not tangent. There is a single peaking wall, and the apparent second
+wall was the reactivity screen evaluated on a quantity that sits
+approximately \SI{6800}{pcm} above the budgeted one. The same holds in
+Campaign 5 with a single exception, archive index 16, which passes
+peaking at 1.9796 and fails reactivity on both bases. Re-read on the
+core basis, the Campaign 4 active learning was more successful than the
+as-run accounting showed: its second iteration placed five of six
+proposals inside the feasible region, and the third iteration then moved
+away from it, because the violation being minimised was computed on the
+assembly quantity.
+
+Third, the campaign comparison inverts. Under the as-run screens both
+campaigns report zero feasible designs and Campaign 5 reports the
+smaller closest approach. Under the core basis Campaign 4 holds seven
+feasible designs against two, despite the smaller design space. The
+infill pressure toward high absorber inventory, exerted by a reactivity
+screen evaluated on the wrong quantity, drove part of the Campaign 5
+search into the never-critical region documented above. A constraint
+defined on a proxy therefore did not merely mislabel the results. It
+steered the search. This is the same failure mode established for the
+peaking proxy in Section~\ref{sec:res-corevalidation}, observed a second
+time in an independent constraint, which elevates it from an anecdote to
+a property of proxy-constrained surrogate optimisation in this design
+space.
+
+The limit itself remains a screening value. On the core basis, a
+multiplication factor of 1.35 corresponds to approximately
+\SI{25900}{pcm} of excess reactivity to be held by burnable absorber and
+control rods in a boron-free core. Whether that budget is controllable
+is a rod-worth question that the two-dimensional beginning-of-life model
+cannot answer.
+
+\openpoint{Calibrate the core-level reactivity limit from the
+control-rod worth study, and record the advisor decision on adopting the
+core basis prospectively. The re-scoring above shows the decision does
+not change which archived designs are feasible at the equivalent limit.}
 
 \openpoint{The remaining $\sim$0.4--0.5 of peaking between this
 single-batch uniform core and licensed practice ($F_{\Delta H}$
 limits of 1.50--1.65~\cite{robinson_gd10,nuscale_htp2_2017}) is the
 domain of multi-batch loading patterns, zoned absorber placement and rod
-programmes~\cite{kropaczek_turinsky_1991,aga_firstcore_2021,chasnupp_lpo_2013}
---- outside this design space by construction, and the natural
+programmes~\cite{kropaczek_turinsky_1991,aga_firstcore_2021,chasnupp_lpo_2013},
+outside this design space by construction, and the natural
 continuation of the work.}
 
 \subsection{High-fidelity confirmation of the Campaign 5 champion}
 \label{sec:c5_confirmation}
 
-Campaign 5 returned no strictly feasible design in sixty evaluations. The
-least-infeasible design, archive index 54, violated only the radial
-enthalpy-rise constraint, and by an amount smaller than the run-to-run
-scatter of the Monte Carlo estimator that produces it. A separate
-confirmation study was therefore run to determine whether that violation is
-a property of the design or an artefact of the transport statistics.
+Campaign 5 returned no design satisfying every as-run screening
+constraint in sixty evaluations. The least-infeasible design, archive
+index 54, violated only the radial enthalpy-rise constraint, and by an
+amount smaller than the run-to-run scatter of the Monte Carlo estimator
+that produces it. A separate confirmation study was therefore run to
+determine whether that violation is a property of the design or an
+artefact of the transport statistics.
 
 The design was re-solved at beginning of life with eight independent
 transport seeds at raised fidelity, namely \num{200000} particles per batch
@@ -715,7 +1093,8 @@ confidence interval clears the limit, which is the conservative test.
 
 \begin{table}[htbp]
   \centering
-  \caption{Campaign 5 champion, archive index 54, confirmed at raised
+  \caption[Campaign 5 champion confirmed at raised fidelity]{Campaign 5
+           champion, archive index 54, confirmed at raised
            fidelity. The reactivity constraint clears its limit by twenty
            standard errors. The peaking constraint cannot be separated from
            its limit.}
@@ -764,25 +1143,25 @@ maximum over mesh bins rather than a mean, and extreme-value statistics
 converge more slowly than sample means with increasing particle count.
 
 %% AUTHOR: physics interpretation of the gadolinia pin count as the mechanism
-%% that moved the constraint boundary without opening an overlap, and of the
-%% two distinct lobes visited by the infill iterations (forty pins with
-%% moderate gadolinia weight against twelve pins with near-zero gadolinia
-%% weight).
+%% that moved the constraint boundary without opening an overlap on the
+%% as-run basis, read together with the corrected picture of
+%% Section~\ref{sec:res-c5-corrected} in which archive indices 17 and 49
+%% are feasible on the core basis.
 
-The conclusion for the design space is therefore stronger than a simple
-constraint violation. Adding the gadolinia-bearing rod count as a sixth
-design variable lowered the minimum total constraint violation from 0.0077
-in Campaign 4 to 0.0012 in Campaign 5, so the additional degree of freedom
-measurably moved the constraint boundary. It did not, however, produce an
-overlap of the two constraint regions. The best design that the six-variable
-search can reach lies on the peaking boundary to within the resolution of the
-model. Under uniform loading, no distinguishable peaking margin exists in
-this design space, which motivates the zoned-loading study of
+The conclusion for the design space is therefore threefold. Adding the
+gadolinia-bearing rod count as a sixth design variable lowered the
+minimum total constraint violation from 0.0077 in Campaign 4 to 0.0012
+in Campaign 5, so the additional degree of freedom measurably moved the
+constraint boundary on the as-run basis. On that basis the best
+reachable design lies on the peaking boundary to within the resolution
+of the model. On the core reactivity basis of
+Section~\ref{sec:res-c5-kbasis}, two designs of this campaign and seven
+of the previous one are feasible, and the sole remaining obstacle in the
+design space is the peaking wall. Under uniform loading no
+distinguishable peaking margin exists beyond it, which motivates the
+zoned-loading study as the natural continuation of the work.
 
-Under uniform loading, no distinguishable peaking margin exists in this
-design space, which motivates a zoned-loading study as the natural
-continuation of the work.
-
+% ===================== end of replacement block ======================
 
 \subsection{A defect in the restarted depletion}
 \label{sec:restart_defect}
