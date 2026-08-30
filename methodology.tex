@@ -430,6 +430,65 @@ The validation programme that motivated the move to core level is
 presented in Section~\ref{sec:meth-core-objective}, and its
 measurements in Section~\ref{sec:res-corevalidation}.
 
+\subsubsection{Normalisation of the constraint violation}
+\label{subsubsec:cv-norm}
+
+The five constraints of the problem are expressed in four different physical
+units. The reactivity window acts on the multiplication factor, the enrichment
+cap on a weight percentage, the peaking limit on a dimensionless power ratio,
+and the vessel-fit condition on a length in centimetres.
+
+The constraint handling of the NSGA-II (Non-dominated Sorting Genetic
+Algorithm II) implementation ranks infeasible candidates by the total
+constraint violation. When the population contains no feasible member, which
+is the situation throughout Campaigns 4 and 5, this ranking alone drives the
+search. Summing raw violations across heterogeneous units therefore weights
+the constraints by their units rather than by their engineering importance. A
+violation of one centimetre in the vessel-fit condition would outweigh a
+violation of several thousand pcm in the reactivity window.
+
+From Stage 3 onward, each constraint is normalised by its own limit before it
+enters the optimiser. The normalised violation is defined below.
+
+\begin{equation}
+  V = \sum_{j=1}^{n_g} \max\!\left(0, \frac{g_j}{s_j}\right)
+  \label{eq:cv-norm}
+\end{equation}
+
+The terms of Equation~\eqref{eq:cv-norm} have the following meaning.
+
+\begin{itemize}
+  \item $V$ is the total constraint violation used to rank infeasible
+    candidates, dimensionless.
+  \item $g_j$ is the raw value of constraint $j$ in its native unit, with
+    $g_j \leq 0$ denoting feasibility.
+  \item $s_j$ is the normalisation scale of constraint $j$, taken equal to the
+    limit of that constraint, in the same unit as $g_j$.
+  \item $n_g$ is the number of inequality constraints, dimensionless.
+\end{itemize}
+
+The scales adopted are $s = 1.02$ for the lower reactivity bound, $s = 1.35$
+for the upper reactivity bound, $s = 19.75$ for the enrichment cap, $s = 2.0$
+for the peaking limit, and $s = 90.0$~cm for the vessel-fit condition. Each
+normalised violation is then the fraction of its own limit.
+
+Three properties of this change are noted.
+
+\begin{enumerate}
+  \item The feasible set is unchanged, because the scales are positive and the
+    sign of every $g_j$ is preserved.
+  \item The objectives and the hypervolume history are unchanged, because the
+    normalisation acts only on the constraint matrix.
+  \item Archived evaluations from earlier campaigns remain valid, because the
+    physical constraint values are stored unscaled and the normalisation is
+    applied when the archive is loaded.
+\end{enumerate}
+
+%% AUTHOR: one sentence on whether the fraction-of-limit weighting is the
+%% physically appropriate exchange rate between the reactivity window and the
+%% peaking limit at the g_kmax and g_peak tangency, or whether a
+%% safety-informed weighting would be defensible.
+
 \section{Leakage-corrected reactivity target (Route B)}
 \label{sec:meth-ktarget}
 
