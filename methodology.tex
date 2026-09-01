@@ -138,6 +138,92 @@ $k_\mathrm{eff} = 1.221$. The assembly-internal peaking at reference
 conditions is $F_{\Delta H} = 1.137$, consistent with open NuScale-like
 benchmarks~\cite{nuscale_like_core_2024,ez_aldeen_2025}.
 
+% =====================================================================
+%  vessel_figures_short.tex
+%  Condensed version of the dimensioned vessel figure, the elevation
+%  table and the accompanying paragraph.
+%
+%  What changed with respect to vessel_figures.tex
+%   - The provenance left the captions and became an explicit list in
+%     the text, so the captions state only what is shown.
+%   - The two vessel rows left the table, because they describe the
+%     vessel and not the assembly stack. They are now in the text.
+%   - The four spacer grids collapsed to one row plus a rule, since
+%     their spans are equal by construction.
+%
+%  Bib keys: maruyama_2013, ez_aldeen_2025 (keep ONE definition of the
+%  latter in references_additions.bib).
+% =====================================================================
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{images/th_vessel_dimensioned}
+  \caption{Elevation and plan view of the adopted vessel and core
+    layout, in millimetres. The plan view is drawn for a pin pitch of
+    1.26\,cm and a minimum reflector thickness of 4.0\,cm. The core
+    barrel and the downcomer belong to the three-dimensional study and
+    are not part of the campaign model.}
+  \label{fig:vessel-dimensioned}
+\end{figure}
+
+The dimensions of Figure~\ref{fig:vessel-dimensioned} come from three
+sources.
+
+\begin{enumerate}
+  \item The vessel envelope, namely the overall height of 4700\,mm, the
+        cylindrical inner radius of 900\,mm, the wall thickness of
+        100\,mm and the closure-head inner radius of 1000\,mm, is that
+        of the simplified vessel model drawn according to
+        CTMSP~\cite{maruyama_2013}.
+
+  \item The internal elevations, namely the lower core plate at 1090 to
+        1165\,mm and the coolant nozzle penetration at 2614 to
+        3095\,mm, were read from the same drawing with the 4700\,mm
+        dimension as the scale. They are estimates.
+
+  \item The fuel assembly hardware, namely the nozzles, the end caps,
+        the plenum spring and the spacer grids, is that of the
+        NuScale-like benchmark~\cite{ez_aldeen_2025}, kept at the
+        benchmark sizes.
+\end{enumerate}
+
+The active height of 120\,cm is a modelling choice of this thesis.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Axial layout of the fuel assembly adopted for the
+    three-dimensional core model. Elevations in millimetres from the
+    outer bottom of the lower head, with the assembly resting on the
+    lower core plate.}
+  \label{tab:axial-layout}
+  \begin{tabular}{@{}lrrr@{}}
+    \toprule
+    \textbf{Item} & \textbf{Height} & \textbf{From} & \textbf{To} \\
+    \midrule
+    Bottom nozzle             &  101.6  & 1165.0 & 1266.6 \\
+    Lower end cap             &   12.05 & 1266.6 & 1278.6 \\
+    Active fuel               & 1200.0  & 1278.6 & 2478.6 \\
+    Plenum spring             &  134.9  & 2478.6 & 2613.5 \\
+    Upper end cap             &   12.05 & 2613.5 & 2625.6 \\
+    Upper coolant gap         &   84.8  & 2625.6 & 2710.4 \\
+    Top nozzle                &   90.2  & 2710.4 & 2800.6 \\
+    \addlinespace
+    Spacer grids, 4 of        &   44.45 & 1314.2 & 2600.8 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The spacer grids follow the pattern of the benchmark. The first grid is
+of Inconel and the remaining three are of Zircaloy. The first starts
+35.55\,mm above the fuel bottom, the last starts 77.71\,mm above the
+fuel top and therefore lies inside the plenum, and the spans between
+consecutive grids are equal at 414.1\,mm.
+
+The assembly is 1635.6\,mm long. Its top nozzle ends 187\,mm above the
+bottom of the coolant nozzle penetration and 53\,mm below the nozzle
+centreline, so the upper core plate lies within the nozzle band.
+
+
 \section{Optimisation problem}
 \label{sec:meth-problem}
 
@@ -214,17 +300,45 @@ that motivated the change in Section~\ref{sec:meth-core-objective}.
   \end{tabular}
 \end{table}
 
+Campaigns 5 and 6 extend and revise the box. Campaign 5 adds the
+gadolinium pin count as a sixth variable, and Campaign 6 tightens the
+enrichment bound to the value implied by the zoned
+low-enriched-uranium cap of Section~\ref{sec:meth-zoning}.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Design-space revisions of Campaigns 5 and 6. Variables not
+  listed keep the bounds of Table~\ref{tab:design-space}.}
+  \label{tab:design-space-c56}
+  \begin{tabular}{llcc}
+    \toprule
+    Variable & Meaning & Bounds & Unit \\
+    \midrule
+    $n_\mathrm{Gd}$ & Gd-bearing pin count (C5 on)
+      & ladder $\{12,16,20,24,32,40\}$ & pins \\
+    $e_\mathrm{in},\,e_\mathrm{out}$ & enrichments (C6 on)
+      & 2.0 -- 17.174 & wt\% $^{235}$U \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The pin-count ladder follows the interior-first, guide-tube-ringed
+placement policy established for the absorber study, with octant
+symmetry and the outer two rod rows kept absorber free.
+
 \begin{table}[htbp]
   \centering
   \caption{Constraints. The evaluation level of $g_\mathrm{peak}$ is
-  the central methodological change of Campaign 4.}
+  the central methodological change of Campaign 4, and the reactivity
+  window moves to the core basis in Campaign 6
+  (Section~\ref{sec:meth-kbasis}).}
   \label{tab:constraints}
   \begin{tabular}{lll}
     \toprule
     Constraint & Definition & Evaluation level \\
     \midrule
-    $g_{k\min}$       & $1.02 - k_\mathrm{BOL} \le 0$                      & assembly \\
-    $g_{k\max}$ & $k_\mathrm{BOL} - 1.35 \le 0$ & assembly, all campaigns \\
+    $g_{k\min}$       & $1.02 - k_\mathrm{BOL} \le 0$                      & assembly to C5, \textbf{core} from C6 \\
+    $g_{k\max}$ & $k_\mathrm{BOL} - 1.35 \le 0$ & assembly to C5, \textbf{core} from C6 \\
     $g_\mathrm{enr}$  & $\max(e_\mathrm{in},e_\mathrm{out}) - 19.75 \le 0$ & algebraic \\
     $g_\mathrm{peak}$ & $F_{\Delta H} - 2.0 \le 0$                         & assembly in C1 to C3, \textbf{core} from C4 \\
     $g_\mathrm{geom}$ & $R_\mathrm{env}(p) + t_\mathrm{refl} - 90 \le 0$   & core, analytic \\
@@ -287,6 +401,49 @@ The constraint is enforced analytically inside the optimiser rather
 than during model construction. Campaign 1 showed that omitting it lets
 the genetic algorithm converge on designs that cannot be built, because
 the fuel region and the reflector together exceed the vessel envelope.
+
+\subsection{Reactivity window basis}
+\label{sec:meth-kbasis}
+
+Through Campaign 5 the reactivity window acted on the assembly infinite
+multiplication factor. The Route B construction of
+Section~\ref{sec:meth-ktarget} makes the corresponding core eigenvalue
+available at no additional cost, and the leakage gap between the two
+bases is not a constant. Across the design space it varies between
+about \num{4300} and \SI{8060}{pcm}, growing with the reflector
+thickness and the pitch, so a fixed assembly-basis bound is
+inconsistently strict in a way that depends on two of the design
+variables themselves.
+
+From Campaign 6 both bounds of the window therefore act on the core
+effective multiplication factor at beginning of life.
+
+\begin{equation}
+1.02 \;\le\; k_\mathrm{eff}^\mathrm{core}(\mathbf{x}) \;\le\; 1.35
+\label{eq:k-window-core}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $k_\mathrm{eff}^\mathrm{core}$ is the effective multiplication
+        factor of the 32-assembly core at beginning of life,
+        dimensionless, from the same core solve that supplies the
+        peaking objective.
+
+  \item $\mathbf{x}$ is the design vector of
+        Table~\ref{tab:design-space}.
+\end{itemize}
+
+Two consequences follow. First, the re-scoring of the Campaign 5
+archive in Section~\ref{sec:res-c5-kbasis} shows that the core basis at
+1.35 and the assembly basis at 1.40 admit the same designs, so the
+change is a basis correction with a stated numerical consequence and
+not a relaxation of the design intent. Second, the lower bound becomes
+physically meaningful. On the assembly basis a floor of 1.02 was
+vacuous, whereas on the core basis it rejects genuinely subcritical
+cores, and it does so repeatedly in Campaign 6
+(Section~\ref{sec:res-c6-doe}).
 
 \subsection{Objective functions}
 \label{sec:objective_functions}
@@ -447,7 +604,7 @@ the constraints by their units rather than by their engineering importance. A
 violation of one centimetre in the vessel-fit condition would outweigh a
 violation of several thousand pcm in the reactivity window.
 
-From Stage 3 onward, each constraint is normalised by its own limit before it
+From Campaign 6 onward, each constraint is normalised by its own limit before it
 enters the optimiser. The normalised violation is defined below.
 
 \begin{equation}
@@ -483,6 +640,11 @@ Three properties of this change are noted.
     physical constraint values are stored unscaled and the normalisation is
     applied when the archive is loaded.
 \end{enumerate}
+
+The active scales are written into the checkpoint metadata at launch,
+and a resumed campaign refuses to start if its constraint set differs
+from the stored one, so the normalisation cannot change silently
+between blocks.
 
 %% AUTHOR: one sentence on whether the fraction-of-limit weighting is the
 %% physically appropriate exchange rate between the reactivity window and the
@@ -571,6 +733,250 @@ stopping rule has two conditions, both required.
         fully resolved.
 \end{enumerate}
 
+The stopping rule is a necessary condition and not a sufficient one.
+Campaign 6 demonstrates the distinction experimentally. The rule fired
+after three iterations whose acquisition was defective and whose
+hypervolume gain was exactly zero, and it fired again, this time
+correctly, after the acquisition had been repaired and the gains had
+decayed monotonically below the threshold. The two firings are
+presented side by side in Section~\ref{sec:res-c6-margin}.
+
+Two per-iteration health indicators are therefore recorded alongside
+the hypervolume and inspected before the rule is trusted.
+
+\begin{enumerate}
+  \item The number of candidates that pass the feasibility margin of
+        Section~\ref{sec:meth-acq}, which measures whether the
+        constraint surrogate is still learning.
+
+  \item The depth of the diversity relaxation cascade, which measures
+        whether the surrogate front still contains materially new
+        designs.
+\end{enumerate}
+
+\subsection{Acquisition function}
+\label{sec:meth-acq}
+
+The infill batch is drawn from the non-dominated set of the final
+NSGA-II population on the surrogate. The base criterion ranks these
+candidates by their aggregated predictive uncertainty.
+
+\begin{equation}
+a_i \;=\; \sum_{m=1}^{2} \frac{\sigma_{im}}{\max_{l}\,\sigma_{lm}}
+\label{eq:acq-score}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $a_i$ is the acquisition score of candidate $i$,
+        dimensionless.
+
+  \item $\sigma_{im}$ is the Gaussian-process posterior standard
+        deviation of objective $m$ at candidate $i$, in the unit of
+        that objective.
+
+  \item $\max_{l}\,\sigma_{lm}$ is the largest posterior standard
+        deviation of objective $m$ over the candidate set, in the same
+        unit, so that each objective contributes on a common scale.
+\end{itemize}
+
+This is a pure exploration criterion in the sense of
+\cite{forrester_book_2008}. Campaign 6 exposed three distinct failure
+modes of the bare criterion, and each motivated one revision. The
+revisions were introduced one per block, so every behavioural change is
+attributable, and the measurements that motivated them are reported in
+Section~\ref{sec:res-c6-defects}.
+
+\paragraph{Ceiling-aware surrogate objective.}
+The truth evaluator censors every cycle length at the depletion
+ceiling, but a Gaussian process trained on the archive extrapolates
+through it, and the search then concentrates on predictions that the
+evaluator cannot return. The surrogate objective is therefore clipped
+at the ceiling before it enters the search.
+
+\begin{equation}
+\tilde{f}_1(\mathbf{x}) \;=\;
+\max\!\left( f_1(\mathbf{x}),\; -E_\mathrm{cap} \right),
+\qquad
+E_\mathrm{cap} \;=\; \frac{1000\, B_\mathrm{max}}{P_\mathrm{spec}}
+\label{eq:efpd-clip}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $\tilde{f}_1$ is the clipped first objective in minimisation
+        form, in d, equal to the negative predicted cycle length.
+
+  \item $f_1$ is the raw Gaussian-process prediction of the first
+        objective, in d.
+
+  \item $E_\mathrm{cap}$ is the depletion ceiling expressed as a cycle
+        length, in d, equal to \num{10016.7} at the Campaign 6 ceiling.
+
+  \item $B_\mathrm{max}$ is the depletion ceiling, in MWd/kgHM.
+
+  \item $P_\mathrm{spec}$ is the specific power of
+        Table~\ref{tab:model-operating}, in W/gHM.
+\end{itemize}
+
+On the resulting plateau the first objective is constant, so
+non-dominated sorting ranks the plateau by peaking alone, which is
+exactly how constrained dominance ranks censored truth designs. The cap
+is derived at launch from the declared ceiling and the model specific
+power, and is recorded in the checkpoint metadata.
+
+\paragraph{Batch diversity.}
+Ranking a smooth uncertainty field returns neighbours, because the $k$
+highest values of a continuous function are adjacent. A minimum
+separation is therefore enforced greedily down the ranking, between
+each pick and the archive and between the picks themselves.
+
+\begin{equation}
+d(\mathbf{a},\mathbf{b}) \;=\;
+\frac{1}{\sqrt{n_x}}
+\left\lVert \frac{\mathbf{a}-\mathbf{b}}
+{\mathbf{x}_u-\mathbf{x}_l} \right\rVert_2
+\;\ge\; \delta_\mathrm{min}
+\label{eq:batch-div}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $d(\mathbf{a},\mathbf{b})$ is the normalised separation of two
+        designs, dimensionless.
+
+  \item $\mathbf{a}$ and $\mathbf{b}$ are two design vectors, in the
+        native units of Table~\ref{tab:design-space}.
+
+  \item $\mathbf{x}_l$ and $\mathbf{x}_u$ are the lower and upper
+        bounds of the design box, in the same units, applied
+        componentwise.
+
+  \item $n_x$ is the number of design variables, dimensionless, so
+        that $\delta_\mathrm{min}$ reads as a mean per-variable
+        fraction of range.
+
+  \item $\delta_\mathrm{min}$ is the minimum separation,
+        dimensionless. Campaign 6 used 0.10 in block 3 and block 4 and
+        0.14 in block 5.
+\end{itemize}
+
+If the candidate set cannot supply the full batch at
+$\delta_\mathrm{min}$, the threshold is halved and the scan repeats,
+so a small front still fills the batch with the best diversity it can
+offer. Only when the candidates are exhausted entirely is the batch
+completed with space-filling random designs. The depth of this
+relaxation cascade is the second health indicator of the stopping
+rule.
+
+\paragraph{Feasibility margin.}
+The bare criterion never consults the constraint surrogate, and the
+Gaussian-process mean is optimistic exactly where the archive is thin.
+Every candidate is therefore scored on the constraint surrogate with an
+uncertainty margin before the uncertainty ranking is applied.
+
+\begin{equation}
+s_i \;=\; \max_{j \,\in\, \mathcal{G}_\mathrm{GP}}
+\left( \mu_{ij} + \kappa\,\sigma_{ij} \right)
+\label{eq:feas-margin}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $s_i$ is the margin score of candidate $i$, dimensionless in
+        the normalised constraint units of
+        Equation~\eqref{eq:cv-norm}, margin-feasible when
+        non-positive.
+
+  \item $\mathcal{G}_\mathrm{GP}$ is the set of surrogate-predicted
+        constraints. Constraints computed analytically are excluded,
+        because the search population satisfies them exactly and their
+        surrogate uncertainty is meaningless.
+
+  \item $\mu_{ij}$ is the Gaussian-process mean of constraint $j$ at
+        candidate $i$, dimensionless.
+
+  \item $\sigma_{ij}$ is the corresponding posterior standard
+        deviation, dimensionless.
+
+  \item $\kappa$ is the margin multiplier, dimensionless, set to 1.5
+        in Campaign 6.
+\end{itemize}
+
+Margin-feasible candidates rank first, ordered by
+Equation~\eqref{eq:acq-score} as before. The remaining candidates are
+not discarded. They follow, ordered by ascending $s_i$, so a front with
+too few margin-feasible members still fills the batch with the least
+risky picks and the batch never degenerates. Where the surrogate is
+confident the margin is small, and where it extrapolates the margin is
+large, which is the discrimination the bare criterion lacked. The
+construction is the deterministic counterpart of the probability of
+feasibility weighting of constrained surrogate
+optimisation~\cite{forrester_book_2008}, and setting $\kappa = 0$
+restores the bare criterion exactly.
+
+\subsection{Search setting on the surrogate}
+\label{sec:meth-nsga-setting}
+
+The population and generation count of the surrogate search were fixed
+by a dedicated sensitivity study rather than asserted. The Gaussian
+processes were frozen on the Campaign 6 design-of-experiments archive,
+and only the NSGA-II search was repeated over six settings and eight
+independent seeds per setting, so every setting shares the identical
+surrogate and the study measures the search alone.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Surrogate-search sensitivity on the frozen Campaign 6
+  design-of-experiments archive. Eight seeds per setting. The
+  hypervolume is that of the surrogate front against the frozen
+  reference point, the distance is the mean normalised
+  nearest-neighbour distance of the selected infill batch to the
+  baseline selection at the same seed, and the time is the wall-clock
+  cost of one search.}
+  \label{tab:nsga-sens}
+  \begin{tabular}{lcccc}
+    \toprule
+    Setting & Hypervolume & Seed std & Distance & Time (s) \\
+    \midrule
+    $60\times80$   & 1903 & 12.72 & 0.000 & 0.45 \\
+    $80\times120$  & 1913 & 20.41 & 0.073 & 0.82 \\
+    $120\times160$ & 1932 &  5.95 & 0.097 & 1.47 \\
+    $200\times200$ & 1940 &  1.67 & 0.088 & 2.82 \\
+    $200\times400$ & 1943 &  1.36 & 0.095 & 5.63 \\
+    $300\times400$ & 1945 &  0.59 & 0.102 & 8.22 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Two observations fix the choice.
+
+\begin{enumerate}
+  \item The seed-to-seed standard deviation at the historical setting
+        of $60\times80$ is 12.72, which is about thirty per cent of
+        the entire range spanned by all six settings. The historical
+        setting is therefore not reproducible across seeds, quite
+        apart from being the weakest.
+
+  \item The most expensive setting costs \SI{8.2}{\second} against
+        fifteen to twenty-five minutes for one real evaluation, so the search
+        is well below one per cent of the cost of the iteration it
+        feeds and there is no computational argument for economising.
+\end{enumerate}
+
+The setting $300\times400$ is therefore adopted for every infill
+block of Campaign 6. A binary same-design agreement metric was also
+computed and found uninformative, because on a continuous front a
+larger population samples the same ridge more finely and exact matches
+within a fixed tolerance become structurally unlikely. The
+nearest-neighbour distance reported in Table~\ref{tab:nsga-sens} is
+the informative replacement.
+
+
 \section{Transport fidelity and seeding}
 \label{sec:meth-fidelity}
 
@@ -589,6 +995,9 @@ stopping rule has two conditions, both required.
     Campaign 2     & $4\,000\times60$ (20)    & shared              & screening \\
     Campaign 3     & $16\,000\times120$ (30)  & per-design          & production \\
     C4 core solve  & $100\,000\times170$ (60) & per-design, salted  & objective \\
+    Campaign 5     & $16\,000\times120$ (30)  & per-design          & production \\
+    Campaign 6     & $4\,000\times60$ (20)    & per-design          & exploration \\
+    C6 core solve  & $100\,000\times170$ (60) & per-design, salted  & objective + $k$ window \\
     Screening      & $64\,000\times120$ (30)  & replicated          & subset selection \\
     Confirmation   & $256\,000\times120$ (30) & replicated, 8 seeds & finalists \\
     \bottomrule
@@ -604,6 +1013,28 @@ stopping rule has two conditions, both required.
 The Campaign-3 fidelity was chosen from a measured ladder. It removes
 $\approx$87\% of the peaking-estimator bias and two thirds of its noise
 at $\approx$7$\times$ cost.
+
+Campaign 6 deliberately returns the depletion transport to the
+exploration tier of Campaigns 1 and 2, as part of a two-tier fidelity
+strategy. The search explores cheaply, and the finalists are re-scored
+at production fidelity or above before any claim is attached to them.
+The core solve that supplies the peaking objective and the reactivity
+window is unchanged at $100\,000\times170$, so feasibility and the
+peaking values of Campaign 6 are at full fidelity throughout, and only
+the cycle-length axis carries the exploration-tier bias.
+
+Two consequences are declared. First, Campaign 6 cycle lengths are not
+directly comparable with those of Campaigns 3 to 5 without a measured
+inter-fidelity shift. Second, the fidelity is held constant across all
+five Campaign 6 blocks, because a surrogate trained on a
+mixed-fidelity archive carries a bias that varies with the evaluation
+date, which is strictly worse than a constant bias that can be
+quantified and quoted.
+
+\openpoint{Re-score the Campaign 6 Pareto-front finalists at
+$16\,000\times120$ or above and report the measured cycle-length
+shift, closing the two-tier strategy. Until then, every Campaign 6
+cycle length is an exploration-tier value.}
 
 Seeds are deterministic per design, generated as a CRC32 hash of the
 design vector, and the core solve adds a salt. This keeps every
@@ -627,6 +1058,38 @@ post-processing transform of the completed campaign. Campaigns 3 and 4
 terminate depletion at $B_\mathrm{ATF}$ inside the loop, so censoring
 is eliminated by construction. Hypervolume histories reset whenever the
 objective definition changes.
+
+Campaign 6 raises the depletion ceiling from 75 to
+\SI{100}{\mega\watt\day\per\kilo\gram}. The two numbers play different
+roles and the distinction is maintained throughout.
+
+\begin{enumerate}
+  \item $B_\mathrm{ATF} = \SI{75}{\mega\watt\day\per\kilo\gram}$
+        remains the discharge-qualification screen, applied at
+        candidate selection in
+        Section~\ref{sec:res-c6-bscreen}.
+
+  \item $B_\mathrm{max} = \SI{100}{\mega\watt\day\per\kilo\gram}$ is a
+        numerical depletion horizon whose purpose is to keep the
+        Pareto front resolvable. At a ceiling of 75 a substantial part
+        of the interesting design space terminates at the ceiling
+        rather than at the reactivity target, the censored designs
+        distort the objective surrogate, and the front cannot satisfy
+        the second condition of the stopping rule.
+\end{enumerate}
+
+The surrogate is coupled to the ceiling through the clip of
+Equation~\eqref{eq:efpd-clip}, so the search cannot spend evaluations
+on predictions beyond the horizon. Under this arrangement exactly one
+of the 114 Campaign 6 evaluations censored at the ceiling, and that
+design is infeasible on the reactivity window in any case.
+
+The internal consistency of the ceiling constant is checked against
+the archives. The censoring value is \num{10016.7} effective full
+power days at \SI{100}{\mega\watt\day\per\kilo\gram} in Campaigns 2
+and 6 and \num{7512.5} at \SI{75}{\mega\watt\day\per\kilo\gram} in
+Campaigns 3 to 5, and the two are in the exact ratio of the ceilings,
+as required by the fixed heavy-metal inventory.
 
 \section{Statistical treatment of the peaking estimator}
 \label{sec:meth-stats}
@@ -739,6 +1202,87 @@ co-kriging or trust-region model
 management~\cite{alexandrov_2001,poloczek_miso_2017,kandasamy_boca_2017}
 on simplicity grounds.
 
+\section{Evaluator-level radial zoning and the enrichment search box}
+\label{sec:meth-zoning}
+
+From Campaign 6 the beginning-of-life core map is zoned radially inside
+the evaluator, so the peaking objective and the peaking constraint act
+on the zoned core rather than on a uniform loading.
+
+The 32-assembly map is partitioned into three concentric rings of 4
+central, 12 middle and 16 peripheral assemblies. The enrichment of each
+ring is the corresponding design enrichment scaled by a fixed ring
+multiplier.
+
+\begin{equation}
+e_r \;=\; m_r \, e, \qquad r \in \{C, M, P\}
+\label{eq:zoning}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $e_r$ is the as-loaded enrichment of ring $r$, in
+        wt\%~$^{235}$U.
+
+  \item $e$ is the design enrichment assigned to that ring, in
+        wt\%~$^{235}$U.
+
+  \item $m_r$ is the fixed multiplier of ring $r$, dimensionless, with
+        $m_C = 0.720$ for the centre, $m_M = 0.8933$ for the middle
+        ring and $m_P = 1.15$ for the periphery.
+\end{itemize}
+
+%% AUTHOR: one sentence stating exactly how the two design enrichments
+%% e_in and e_out are assigned to the three rings before the
+%% multipliers are applied, matching the evaluator implementation.
+
+The centre-suppressed, periphery-enhanced pattern flattens the radial
+power distribution, and it is the physically real driver of the
+peaking improvement observed in Campaign 6, since neither of the two
+bookkeeping changes of that campaign acts on a beginning-of-life
+quantity. The attribution argument is completed in
+Section~\ref{sec:res-c6-compare}.
+
+The multipliers derive from a dedicated zoned-loading study in which
+four independently obtained champion designs selected the same map.
+That study fixed the peripheral multiplier at 1.250, and Campaign 6
+relaxes it to 1.15. The relaxation trades a fraction of the flattening
+for a wider enrichment search box, because the low-enriched-uranium cap
+now binds through the zoned periphery rather than through the design
+variable directly.
+
+\begin{equation}
+g_\mathrm{enr} \;=\; \max_r \left( m_r\, e \right) - 19.75 \;\le\; 0
+\quad\Longrightarrow\quad
+e \;\le\; \frac{19.75}{m_P} \;=\; 17.174
+\label{eq:leu-box}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $g_\mathrm{enr}$ is the enrichment-cap constraint of
+        Table~\ref{tab:constraints}, in wt\%~$^{235}$U, redefined on
+        the zoned map from Campaign 6.
+
+  \item $19.75$ is the low-enriched-uranium cap, in wt\%~$^{235}$U.
+
+  \item $17.174$ is the resulting upper bound of both enrichment
+        design variables in Campaign 6, in wt\%~$^{235}$U.
+\end{itemize}
+
+The box bound and the constraint are therefore consistent by
+construction, and no design of experiments point can violate the cap
+after zoning, which removes the wasted samples observed under the
+earlier formulation.
+
+\openpoint{The zoned-loading study that produced the multipliers, with
+its transfer test, multiplier optimisation and beginning-of-life
+confirmation, is documented separately and pending integration into
+this document. Cross-reference it here once integrated.}
+
+
 \section{Campaign structure: one change per campaign}
 \label{sec:meth-campaigns}
 
@@ -766,9 +1310,26 @@ every observed difference is attributable
        & Constraint conflict mapped \\
     C5 & 60 & Gd pin count as a design variable
        & Absorber-inventory lever \\
+    C6 & 114 & Bundled corrections, then one acquisition change per block
+       & Converged, front of 15 designs \\
     \bottomrule
   \end{tabularx}
 \end{table}
+
+Campaign 6 departs from the one-change discipline at the campaign
+level, deliberately. It bundles the three corrections established by
+the Campaign 5 analyses, namely the core-basis reactivity window of
+Section~\ref{sec:meth-kbasis}, the evaluator-level zoning of
+Section~\ref{sec:meth-zoning} and the raised depletion horizon of
+Section~\ref{sec:meth-atf}. Attribution is preserved by other means.
+The basis change is quantified in isolation by the Campaign 5
+re-scoring, the zoning acts only on beginning-of-life quantities and
+so cannot explain any cycle-length difference, and the horizon acts
+only on censoring. The one-change discipline then moves inside the
+campaign. Each of the four infill blocks of Campaign 6 changes exactly
+one element of the acquisition of Section~\ref{sec:meth-acq}, and the
+per-block measurements of Section~\ref{sec:res-c6} are attributable on
+that basis.
 
 \section{Soluble boron treatment}
 \label{sec:meth-boron}
@@ -780,7 +1341,7 @@ defined by Fridman, Bilodid and
 Valtavirta~\cite{fridman_nuscale_benchmark_2023}, together with the
 uniform fuel temperature of \SI{900}{\kelvin} and the uniform coolant
 and structure temperature of \SI{600}{\kelvin} adopted in
-Section~\ref{sec:meth-operating-conditions}. The concentration is a
+Table~\ref{tab:model-operating}. The concentration is a
 fixed modelling parameter and is not exposed to the optimiser as a
 design variable.
 
@@ -837,7 +1398,7 @@ development. Four considerations support retaining it here.
         the single-failure assumption, and an explicit Moderator
         Temperature Coefficient (MTC) verification, none of which lie
         within the objective and constraint set defined in
-        Section~\ref{sec:meth-objectives}. Treating SBF operation as an
+        Section~\ref{sec:objective_functions}. Treating SBF operation as an
         assumption without that supporting analysis would weaken rather
         than strengthen the design basis.
   \item \textbf{Known direction of the bias.} As shown in
@@ -951,7 +1512,7 @@ rather than corrected within the campaigns.
 \end{enumerate}
 
 Under the one-change rule stated in
-Section~\ref{sec:meth-campaign-protocol} the treatment is held fixed
+Section~\ref{sec:meth-campaigns} the treatment is held fixed
 through Campaign~4. The Campaign-5 design-basis decision is preceded by
 a direct measurement, in which the selected finalists are re-depleted
 at \SI{0}{ppm}, so that the choice rests on computed values rather than
@@ -970,9 +1531,10 @@ of the core solves, with a per-run sentinel recorded in the archive.
 Campaigns 1 and 2 ran on a cloud instance (AWS EC2 c7a.8xlarge,
 AMD EPYC 9R14, 32 physical cores without simultaneous
 multithreading), inside a purpose-built Docker image that pins the
-Conda environment. Campaigns 3 to 5 run on a 32-core, 64-thread
+Conda environment. Campaigns 3 to 5 ran on a 32-core, 64-thread
 workstation without administrative privileges, on the same pinned
-environment. The reproducibility unit is the environment
+environment, and Campaign 6 returned to the cloud instance under the
+identical image. The reproducibility unit is the environment
 definition committed to the repository. OpenMC 0.15.3 and pymoo
 0.6.2 are identical across the two hosts, verified by smoke
 execution and $k_\infty$ agreement.

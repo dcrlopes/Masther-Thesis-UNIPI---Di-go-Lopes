@@ -1392,8 +1392,8 @@ block. The following results are unaffected and require no revision:
 \begin{itemize}
   \item all beginning of life quantities, including every core radial
         peaking factor and every assembly eigenvalue at zero burnup,
-  \item the entire zoned-loading study of
-        Section~\openpoint{cross reference to the zoning section}, whose
+  \item the entire zoned-loading study, whose multipliers now enter
+        the methodology in Section~\ref{sec:meth-zoning} and whose
         transfer test, multiplier optimisation and confirmation are computed
         at beginning of life,
   \item the feasibility assessment against the peaking constraint and
@@ -1416,10 +1416,12 @@ computed are correct and only their burnup labels are wrong, so the archived
 histories can be corrected by discarding the first entry of each block and
 applying Equation~\ref{eq:true_burnup}.
 
-\openpoint{Verify which version of the depletion solver was used for
-Campaigns 1 to 4. The option controlling the writing of reaction rates was
-introduced in version 0.15.3. Campaigns executed with an earlier version
-wrote reaction rates unconditionally and are therefore not affected.}
+The solver version question is closed. The pinned environments of
+Section~\ref{sec:meth-diagnostics} carry OpenMC 0.15.3 on both hosts
+for every campaign, so Campaigns 1 to 5 all executed under the
+affected default and the correction applies to the whole archive.
+Campaign 6 is the first campaign to run entirely under the corrected
+configuration, and its checkpoint metadata records the setting.
 
 \subsubsection{Correction applied to the evaluator}
 
@@ -1459,3 +1461,532 @@ must agree.
 
 %% AUTHOR: decide whether to report this defect to the maintainers of the
 %% depletion solver, and if so, cite the report here.
+
+\section{Campaign 6: the corrected basis and the acquisition programme}
+\label{sec:res-c6}
+
+Campaign 6 applies the three corrections established by the Campaign 5
+analyses, namely the core-basis reactivity window, the evaluator-level
+radial zoning and the raised depletion horizon, and then uses the
+campaign itself as a controlled test bench for the acquisition
+function. The campaign comprises \num{114} evaluations in five blocks.
+The design of experiments is followed by four infill blocks, and each
+infill block changes exactly one element of the acquisition of
+Section~\ref{sec:meth-acq}, so every behavioural change is
+attributable.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption{Campaign 6 block structure. Each infill block changes one
+  element of the acquisition. The hypervolume is the archive value
+  against the frozen reference point after the last iteration of the
+  block.}
+  \label{tab:c6-blocks}
+  \begin{tabularx}{\textwidth}{@{}lcc>{\raggedright\arraybackslash}Xc@{}}
+    \toprule
+    Block & Evaluations & Feasible & Acquisition state & Hypervolume \\
+    \midrule
+    1, DOE & 42 & 28 & none, Latin hypercube          & 1288.09 \\
+    2      & 18 & 13 & bare uncertainty ranking       & 1288.09 \\
+    3      &  6 &  1 & + batch diversity              & 1288.09 \\
+    4      & 18 & 17 & + feasibility margin           & 1580.05 \\
+    5      & 30 & 29 & unchanged, convergence check   & 1601.51 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{Design of experiments}
+\label{sec:res-c6-doe}
+
+The 42-point Latin hypercube returned 28 feasible designs, against
+zero in the Campaign 5 design of experiments of identical size. Every
+rejection is fully explained by the active constraints.
+
+\begin{itemize}
+  \item Ten designs exceed the peaking limit of 2.0.
+
+  \item Five designs fall below the reactivity floor of 1.02 on the
+        core basis, including one that never reaches criticality at
+        all, with $k_\mathrm{eff}^\mathrm{core} = 0.817$.
+
+  \item Two designs exceed the reactivity ceiling of 1.35.
+
+  \item No design violates the zoned enrichment cap, which the search
+        box of Equation~\eqref{eq:leu-box} guarantees by construction.
+
+  \item Four designs violate two constraints simultaneously, which
+        reconciles the counts with the 14 rejections.
+\end{itemize}
+
+The floor rejections are the first practical consequence of the basis
+change. On the assembly basis of Campaigns 1 to 5 the floor of 1.02
+never acted. On the core basis it rejects genuinely subcritical cores,
+which answers the standing question of whether that bound carries any
+physical content.
+
+The Pareto front of the design of experiments holds two designs, at
+\num{9445} effective full power days with $F_{\Delta H} = 1.6554$ and
+at \num{9035} with $F_{\Delta H} = 1.5741$. Exactly one design
+censored at the ceiling, at \num{10016.7} effective full power days
+and \SI{100.0}{\mega\watt\day\per\kilo\gram}, and it is infeasible on
+the reactivity ceiling in any case.
+
+The frozen hypervolume reference point is constructed from this
+two-design front by the nadir-plus-offset rule, at \num{6776}
+effective full power days and 2.0692 in peaking. The consequences of
+freezing the reference on so small a front are examined in
+Section~\ref{sec:res-c6-margin}.
+
+\subsection{Blocks 2 and 3: two acquisition defects, measured}
+\label{sec:res-c6-defects}
+
+\subsubsection{Block 2: batch collapse}
+
+Block 2 ran the bare uncertainty ranking of
+Equation~\eqref{eq:acq-score} for three iterations of six evaluations.
+The batches collapsed. Within each iteration the six selected designs
+are near copies of one design, and the eighteen evaluations bought
+three distinct design points. The second iteration is representative.
+
+\begin{table}[htbp]
+  \centering
+  \caption{The six infill designs of block 2, iteration 2. The inner
+  enrichment spans 0.03~wt\%, the pitch is identical to three decimals
+  in five of six, and the reflector spans \SI{0.1}{\centi\metre}.}
+  \label{tab:c6-b2-collapse}
+  \begin{tabular}{cccccc}
+    \toprule
+    Index & $e_\mathrm{in}$ (wt\%) & $e_\mathrm{out}$ (wt\%) &
+    $p$ (cm) & $t_\mathrm{refl}$ (cm) & EFPD \\
+    \midrule
+    48 & 4.42 & 3.77 & 1.380 & 5.4 & 2011 \\
+    49 & 4.44 & 3.77 & 1.380 & 5.4 & 2002 \\
+    50 & 4.45 & 3.83 & 1.380 & 5.4 & 2047 \\
+    51 & 4.45 & 3.82 & 1.380 & 5.4 & 2053 \\
+    52 & 4.43 & 3.77 & 1.380 & 5.4 & 2009 \\
+    53 & 4.42 & 3.75 & 1.381 & 5.3 & 1985 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Two mechanisms combine. The top of a smooth uncertainty field is a
+neighbourhood, so the six highest-scoring candidates are adjacent, and
+the duplicate test then in force compared raw design vectors at a
+tolerance of $10^{-6}$, which only exact numerical copies can fail.
+Designs 0.01~wt\% apart passed it four orders of magnitude clear.
+
+The hypervolume did not move in any of the three iterations. The front
+nevertheless grew from two designs to six, entirely at the short-cycle
+end, including the first design of the whole programme to clear the
+1.50 licensing-style screen, at $F_{\Delta H} = 1.4041$ and \num{1054}
+effective full power days. The frozen reference point sits at
+\num{6776} effective full power days, so every one of these additions
+contributes exactly zero to the reported metric. Recomputed against a
+full-range reference the archive hypervolume rises from \num{4643} to
+\num{4876} across the block, which quantifies what the frozen metric
+hides.
+
+\subsubsection{Block 3: constraint blindness}
+
+Block 3 added the batch-diversity separation of
+Equation~\eqref{eq:batch-div} at $\delta_\mathrm{min} = 0.10$ and
+nothing else. The separation worked as designed. The six picks are
+distinct, the pitch spans its full box and the reflector spans
+\num{2.0} to \SI{19.5}{\centi\metre}, and no relaxation was required.
+
+With the collapse removed, the next defect became visible. Five of the
+six designs returned infeasible on the reactivity ceiling.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Block 3 infill outcomes. All six designs carry zero
+  gadolinia. The margin column is the excess of
+  $k_\mathrm{eff}^\mathrm{core}$ over the ceiling of 1.35.}
+  \label{tab:c6-b3-fail}
+  \begin{tabular}{ccccc}
+    \toprule
+    Index & EFPD & $F_{\Delta H}$ & $k_\mathrm{eff}^\mathrm{core}$ &
+    Margin (pcm) \\
+    \midrule
+    60 & 3776 & 1.6430 & 1.29510 & feasible \\
+    61 & 8167 & 1.7288 & 1.36533 & $+1533$ \\
+    62 & 8395 & 1.7380 & 1.37574 & $+2574$ \\
+    63 & 9023 & 1.7324 & 1.39692 & $+4692$ \\
+    64 & 9806 & 1.8328 & 1.42680 & $+7680$ \\
+    65 & 9728 & 1.7408 & 1.42745 & $+7745$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The mechanism is visible in one column of the archive. The gadolinia
+content of all six designs is exactly zero. The objective surrogate had
+learned that the absorber costs cycle length and drove it out, the
+enrichments rose toward the box ceiling, and nothing remained to hold
+beginning-of-life reactivity inside the window. The constraint
+surrogate predicted feasibility for all five failures even though the
+archive already contained a design at
+$k_\mathrm{eff}^\mathrm{core} = 1.402$ in that corner. The
+Gaussian-process mean is optimistic where the data is thin, and the
+bare acquisition never asked it for margin.
+
+\subsection{Blocks 4 and 5: the margin and the convergence}
+\label{sec:res-c6-margin}
+
+Block 4 added the feasibility margin of
+Equation~\eqref{eq:feas-margin} at $\kappa = 1.5$ and nothing else.
+The effect was immediate on all three indicators.
+
+\begin{enumerate}
+  \item Seventeen of eighteen designs returned feasible. The single
+        failure exceeds the ceiling by \num{151}\,pcm, against
+        \num{1533} to \num{7745} in block 3. The search moved from
+        wandering deep into the forbidden region to riding the
+        constraint boundary.
+
+  \item The gadolinia returned, at 1.57 to 3.30~wt\% in the first
+        iteration, then probing the upper bound at 7.92 to 8.00, then
+        the dilute alternative at 0.64 to 0.70. The optimiser was
+        mapping the absorber trade rather than deleting it.
+
+  \item The hypervolume moved for the first time in the campaign, from
+        1288.09 to 1525.01, then 1548.33, then 1580.05, gains of
+        18.39, 1.53 and 2.05 per cent.
+\end{enumerate}
+
+The margin filter also behaved as a learning indicator. The number of
+margin-feasible candidates out of 300 moved from 257 to 168 to 202
+across the three iterations, tightening when the first batch taught
+the constraint surrogate about the high-enrichment corner and
+loosening as further evidence accumulated.
+
+Block 5 changed nothing in the acquisition and ran five iterations at
+$\delta_\mathrm{min} = 0.14$ as a convergence check. The hypervolume
+gains were 0.60, 0.49, 0.21, 0.05 and 0.02 per cent, five consecutive
+iterations below the one per cent threshold. The single censored
+design of the archive is infeasible and off the front, so both
+conditions of the stopping rule of Section~\ref{sec:meth-loop} are
+met and the campaign terminates at \num{114} evaluations.
+
+Two independent signals corroborate the termination.
+
+\begin{enumerate}
+  \item The diversity relaxation cascade deepened monotonically. The
+        first block 5 iteration already needed relaxation to 0.0175 to
+        fill its batch, and the fifth found not a single candidate
+        even at that value and completed below 0.009. The surrogate
+        front no longer contains materially new designs.
+
+  \item The margin-feasible count rose monotonically from 160 to 266
+        of 300, so the constraint surrogate had stopped revising its
+        map of the feasible region.
+\end{enumerate}
+
+The same stopping rule had already fired once before, falsely. After
+block 3 the campaign showed three consecutive iterations at exactly
+zero gain while the acquisition was demonstrably selecting duplicates
+and then constraint violations. Read literally, the rule declared a
+broken search converged. The two firings differ in every indicator
+except the hypervolume itself, which is the experimental basis for
+treating the rule as necessary and not sufficient, and for the health
+indicators added to Section~\ref{sec:meth-loop}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/c6_extra_convergence}
+  \caption{Campaign 6 convergence. Archive hypervolume after every
+  evaluation, under the frozen in-campaign reference (top) and under a
+  full-range reference (bottom), with the five blocks shaded. The
+  frozen metric is flat through blocks 2 and 3 while the full-range
+  metric shows their genuine short-cycle contribution, and the first
+  improvement visible to the frozen metric coincides exactly with the
+  feasibility margin of block 4.}
+  \label{fig:c6-convergence}
+\end{figure}
+
+\subsection{The resolved front}
+\label{sec:res-c6-front}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/c6_pareto_front_114}
+  \caption{Campaign 6 objective space after \num{114} evaluations.
+  Feasible designs are coloured by block, infeasible designs are
+  crosses in the colour of their block, and the Pareto front of the
+  feasible set is the step line. The frozen hypervolume reference
+  point and the licensing-style screens at 1.65 and 1.50 are drawn
+  for context.}
+  \label{fig:c6-front}
+\end{figure}
+
+The final front holds fifteen designs and spans the full trade, from
+\num{1054} effective full power days at $F_{\Delta H} = 1.4041$ to
+\num{9981} at 1.6547 (Table~\ref{tab:c6-front}).
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption{The Campaign 6 Pareto front. Peaking is the zoned-core
+  beginning-of-life value, the eigenvalue is on the core basis, and
+  the burnup is the end-of-cycle value. Every front design carries 40
+  gadolinium-bearing pins, so the pin count is omitted from the
+  columns. Cycle lengths are exploration-tier values in the sense of
+  Section~\ref{sec:meth-fidelity}.}
+  \label{tab:c6-front}
+  \begin{tabular}{cccccccccc}
+    \toprule
+    Index & EFPD & $F_{\Delta H}$ & $k_\mathrm{eff}^\mathrm{core}$ &
+    $B_\mathrm{EOC}$ & $e_\mathrm{in}$ & $e_\mathrm{out}$ &
+    gd & $p$ & $t_\mathrm{refl}$ \\
+     & (d) & & & (MWd/kg) & (wt\%) & (wt\%) & (wt\%) & (cm) & (cm) \\
+    \midrule
+     71 & 9981 & 1.6547 & 1.27234 & 99.6 & 15.05 & 15.23 & 3.30 & 1.388 &  2.8 \\
+     99 & 9749 & 1.6042 & 1.34126 & 97.3 & 14.86 & 14.49 & 0.51 & 1.338 &  2.1 \\
+     94 & 9675 & 1.5866 & 1.33076 & 96.6 & 14.76 & 14.53 & 0.66 & 1.327 &  7.8 \\
+    105 & 9653 & 1.5764 & 1.34626 & 96.4 & 14.85 & 14.43 & 0.44 & 1.318 &  9.2 \\
+     81 & 9588 & 1.5666 & 1.33150 & 95.7 & 14.87 & 14.18 & 0.66 & 1.354 &  7.0 \\
+    103 & 8561 & 1.5635 & 1.33901 & 85.5 & 14.49 & 14.16 & 0.23 & 1.214 & 15.5 \\
+     90 & 8535 & 1.5612 & 1.34353 & 85.2 & 14.65 & 14.09 & 0.19 & 1.214 & 13.0 \\
+    112 & 7677 & 1.5577 & 1.31137 & 76.6 & 14.43 & 13.83 & 0.23 & 1.154 & 19.2 \\
+     86 & 7605 & 1.5550 & 1.27859 & 75.9 & 14.44 & 13.92 & 0.63 & 1.150 & 19.4 \\
+     91 & 3717 & 1.5241 & 1.28575 & 37.1 &  5.73 &  6.04 & 0.00 & 1.430 &  2.3 \\
+     85 & 3248 & 1.4938 & 1.26117 & 32.4 &  5.05 &  5.49 & 0.00 & 1.396 &  4.2 \\
+    110 & 2855 & 1.4894 & 1.13427 & 28.5 &  4.84 &  4.98 & 0.12 & 1.430 &  2.1 \\
+     69 & 1941 & 1.4480 & 1.12128 & 19.4 &  4.03 &  3.72 & 0.04 & 1.302 &  9.7 \\
+    107 & 1919 & 1.4317 & 1.17329 & 19.2 &  3.99 &  3.84 & 0.00 & 1.430 &  2.0 \\
+     59 & 1054 & 1.4041 & 1.07087 & 10.5 &  2.99 &  2.99 & 0.01 & 1.390 &  4.8 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Design 81 dominates the design-of-experiments champion on both
+objectives simultaneously, at \num{9588} against \num{9035} effective
+full power days and 1.5666 against 1.5741 in peaking, and clears the
+1.60 licensing-style screen at
+$k_\mathrm{eff}^\mathrm{core} = 1.332$. Designs 94, 105 and 99 extend
+the cycle further at a graded peaking cost, and design 71 gives the
+longest cycle but sits at \SI{99.6}{\mega\watt\day\per\kilo\gram},
+four tenths of a unit from the depletion horizon, so its cycle length
+is effectively bounded by the horizon and is reported with that
+caveat.
+
+Eleven of the fifteen front designs come from block 5, three from
+block 4 and one from block 2. Not a single design-of-experiments point
+survives on the final front. The repaired acquisition displaced both
+of the campaign's own starting champions.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/c6_vars_parallel}
+  \caption{The fifteen Pareto-front designs across the six design
+  variables, each variable normalised to its own search box and each
+  line coloured by cycle length, over the 88 feasible designs in
+  grey.}
+  \label{fig:c6-parallel}
+\end{figure}
+
+The front is diverse in four of the six variables and unanimous in
+one. The pitch spans its entire box, the reflector spans 99 per cent
+of its box, the enrichments span about 80 per cent, and the gadolinia
+content spans 0 to 3.30~wt\%. Every front design, without exception,
+carries 40 gadolinium-bearing pins, the maximum of the ladder,
+selected from a design of experiments that sampled all six ladder
+values. The trade the optimiser found is many pins at low
+concentration rather than few pins at high concentration. The archive
+contains the concentrated alternative, a design at 7.92~wt\% in 16
+pins reaching \num{9625} effective full power days, and it is
+dominated by the dilute champion by \num{50} days and 0.006 in
+peaking.
+
+%% AUTHOR: two or three sentences of physical interpretation of the
+%% dilute-many versus concentrated-few absorber result, in terms of
+%% self-shielding in the gadolinium pins and residual absorber
+%% penalty at end of cycle.
+
+The parallel-coordinates view also shows the vessel-fit coupling
+directly. The long-cycle designs pair narrow pitch with a thick
+reflector or wide pitch with a thin one, crossing between the two
+axes, which is Equation~\eqref{eq:renv} acting as the budget it is.
+
+\subsection{Variable influence and constraint activity}
+\label{sec:res-c6-influence}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/c6_vars_influence}
+  \caption{Influence of each design variable on the cycle length over
+  the Campaign 6 archive, coloured by the zoned-core peaking factor,
+  with Pareto-front designs ringed. Each panel reports the Spearman
+  rank correlation of the variable with both objectives over the
+  feasible designs.}
+  \label{fig:c6-influence}
+\end{figure}
+
+\begin{table}[htbp]
+  \centering
+  \caption{Spearman rank correlation of each design variable with the
+  two objectives, over the 88 feasible designs of Campaign 6.}
+  \label{tab:c6-spearman}
+  \begin{tabular}{lcc}
+    \toprule
+    Variable & vs cycle length & vs $F_{\Delta H}$ \\
+    \midrule
+    $e_\mathrm{out}$  & $+0.905$ & $+0.422$ \\
+    $e_\mathrm{in}$   & $+0.866$ & $+0.209$ \\
+    gd                & $+0.498$ & $+0.633$ \\
+    $n_\mathrm{Gd}$   & $+0.132$ & $-0.345$ \\
+    $t_\mathrm{refl}$ & $+0.122$ & $-0.044$ \\
+    $p$               & $-0.088$ & $-0.301$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Three readings are supported. First, enrichment dominates the cycle
+length and nothing else approaches it, with the outer zone the
+stronger of the two, consistent with the peripheral weighting of the
+zoned map. Second, the gadolinia content correlates positively with
+both objectives at once, which is not a physical benefit of the
+absorber but a constraint-induced coupling. The absorber is present
+only where the enrichment is high, because only there does the
+reactivity ceiling demand it, so its apparent association with long
+cycles is inherited from the enrichment. Third, the pitch and the
+reflector barely move the cycle length while both act on the peaking,
+which matches their role as radial-budget variables under the
+vessel-fit coupling rather than as reactivity variables.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.92\linewidth]{images/c6_extra_constraints}
+  \caption{Reactivity constraint activity across the Campaign 6
+  archive. The nine long-cycle front designs sit between 1.272 and
+  1.346 against the ceiling of 1.35, and the floor of 1.02 rejects ten
+  genuinely subcritical or barely critical cores.}
+  \label{fig:c6-constraints}
+\end{figure}
+
+The constraint activity closes the argument. Of the 26 rejections,
+nine exceed the reactivity ceiling, ten fall below the floor and seven
+fail the peaking limit alone. The long-cycle end of the front rides
+the ceiling, with the nine designs beyond \num{7000} effective full
+power days holding $k_\mathrm{eff}^\mathrm{core}$ between 1.272 and
+1.346. The upper reactivity bound, not the peaking limit and not the
+enrichment cap, is the active constraint that terminates the front on
+the long-cycle side.
+
+\subsection{The discharge-burnup screen}
+\label{sec:res-c6-bscreen}
+
+The depletion horizon of \SI{100}{\mega\watt\day\per\kilo\gram} is a
+numerical device, and the discharge-qualification screen remains
+$B_\mathrm{ATF} = \SI{75}{\mega\watt\day\per\kilo\gram}$, applied here
+at candidate selection as Section~\ref{sec:meth-atf} prescribes.
+
+The screen is consequential. Of the 88 feasible designs, 51 satisfy
+it, and the nine long-cycle front designs beyond \num{7677} effective
+full power days all exceed it, at end-of-cycle burnups between 75.9
+and \SI{99.6}{\mega\watt\day\per\kilo\gram}. The screened front
+therefore differs from the unscreened one at the long-cycle end.
+
+\begin{table}[htbp]
+  \centering
+  \caption{The Pareto front of the feasible designs satisfying the
+  discharge-qualification screen
+  $B_\mathrm{EOC} \le \SI{75}{\mega\watt\day\per\kilo\gram}$.}
+  \label{tab:c6-front-screened}
+  \begin{tabular}{cccccc}
+    \toprule
+    Index & EFPD & $F_{\Delta H}$ & $k_\mathrm{eff}^\mathrm{core}$ &
+    $B_\mathrm{EOC}$ (MWd/kg) & gd (wt\%) \\
+    \midrule
+    101 & 7439 & 1.5564 & 1.24564 & 74.3 & 1.51 \\
+     91 & 3717 & 1.5241 & 1.28575 & 37.1 & 0.00 \\
+     85 & 3248 & 1.4938 & 1.26117 & 32.4 & 0.00 \\
+    110 & 2855 & 1.4894 & 1.13427 & 28.5 & 0.12 \\
+     69 & 1941 & 1.4480 & 1.12128 & 19.4 & 0.04 \\
+    107 & 1919 & 1.4317 & 1.17329 & 19.2 & 0.00 \\
+     59 & 1054 & 1.4041 & 1.07087 & 10.5 & 0.01 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Under the screen the champion is design 101, at \num{7439} effective
+full power days, $F_{\Delta H} = 1.5564$ and an end-of-cycle burnup of
+\SI{74.3}{\mega\watt\day\per\kilo\gram}, which uses 99 per cent of the
+qualification allowance. The unscreened long-cycle designs, including
+design 94, are conditional results. They quantify what the design
+space offers if discharge burnups beyond
+\SI{75}{\mega\watt\day\per\kilo\gram} can be qualified, and they are
+reported as such rather than as candidates.
+
+%% AUTHOR: state which champion is carried forward to high-fidelity
+%% confirmation, design 101 under the qualification screen or design
+%% 94 conditional on extended-burnup qualification, and the reasoning
+%% in terms of the fuel-performance literature of the constraint
+%% sourcing section.
+
+\subsection{Comparison with the earlier campaigns and residual
+caveats}
+\label{sec:res-c6-compare}
+
+Against the core-level results of the earlier campaigns the
+improvement is large, and it decomposes cleanly into a bookkeeping
+part and a physical part.
+
+\begin{enumerate}
+  \item In the Campaign 3 core validation, zero of 36 designs
+        satisfied the peaking limit and the minimum core value was
+        $2.013 \pm 0.018$. In Campaign 5 the closest approach was
+        2.0012. In Campaign 6 the feasible median is 1.59 and the
+        front reaches 1.4041.
+
+  \item The reactivity basis change and the raised horizon are
+        bookkeeping. The Campaign 5 re-scoring of
+        Section~\ref{sec:res-c5-kbasis} quantifies the basis change
+        in isolation, and the horizon acts only on censoring.
+
+  \item The peaking collapse is attributable to the zoning alone,
+        because $F_{\Delta H}$ is a beginning-of-life quantity that
+        neither bookkeeping change can touch. The evaluator-zoned map
+        of Section~\ref{sec:meth-zoning} is therefore the physically
+        real driver of Campaign 6 feasibility.
+\end{enumerate}
+
+The enrichment landscape of the front is itself a result. The zoned
+peripheral enrichments of the front span 3.4 to 17.5~wt\%, enclosing
+the mid-single-digit values associated with first cores of this
+reactor class and approaching, without being told to, the
+low-enriched-uranium cap that public reporting associates with the
+programme this study is inspired by.
+
+\openpoint{Add the primary-source citations for the publicly reported
+prototype enrichment values from the dedicated LABGENE source file,
+and one sentence locating the two reported values on the front of
+Table~\ref{tab:c6-front}.}
+
+Three caveats bound the claims of this section.
+
+\begin{enumerate}
+  \item Every Campaign 6 cycle length is an exploration-tier value at
+        the $4\,000\times60$ depletion fidelity of
+        Table~\ref{tab:fidelity}, and is not directly comparable with
+        the Campaign 3 to 5 values at $16\,000\times120$ until the
+        finalists are re-scored. Feasibility and every peaking value
+        are unaffected, because the core solve is at full fidelity
+        throughout.
+
+  \item The Campaign 6 depletion runs under the corrected restart
+        configuration of Section~\ref{sec:restart_defect}, verified in
+        the campaign metadata, so its burnups are free of the defect
+        that affected Campaigns 3 to 5.
+
+  \item The frozen hypervolume reference was constructed from a
+        two-design front and proved blind to the entire short-cycle
+        half of the trade. The convergence claim of this campaign
+        therefore rests on the frozen metric, the full-range metric,
+        the relaxation cascade and the margin-feasible count jointly,
+        and Figure~\ref{fig:c6-convergence} reports the first two side
+        by side. Reporting a single hypervolume number against a
+        single reference is, on this evidence, not a sufficient
+        convergence statement for a front whose extent is unknown in
+        advance~\cite{zitzler_thiele_1999}.
+\end{enumerate}
