@@ -61,7 +61,7 @@
     urlcolor=blue,
     }
 \usepackage{url}
-\graphicspath{images/}
+\graphicspath{{images/}}
 %
 %%% The default font is Computer Modern.                      %%%
 %%% A list of LaTeX fonts and informationon how to use them   %%%
@@ -189,8 +189,18 @@ Submitted in partial fulfilment of the requirements for the\\
 \input{conclusions}
 
 \begin{appendices}
-\chapter{Appendix A title}\label{s.appA}
-\lipsum[1]
+\chapter{Traceability of the open data on LABGENE}\label{app:labgene-data}
+
+\openpoint{This appendix is the traceability table of Correction~C10 of
+\texttt{labgene\_corrections.tex}. It lists every item of open information on
+the LABGENE prototype used in this thesis, the value adopted and the primary
+source of that value. Pasting it is blocked on one prerequisite. The file
+\texttt{labgene\_primary\_sources.bib} must first be merged into
+\texttt{references\_additions.bib}, because the table cites twelve keys that
+are not yet defined, among them \texttt{ctmsp\_visita\_2018},
+\texttt{vasconcelos\_fapesp\_2025} and \texttt{brazil\_npt\_wp13\_2026}. Merge
+the bibliography, then paste the block between the markers
+\texttt{\%\% >>> REPLACEMENT C10} and \texttt{\%\% <<< END C10}.}
 \newpage
 
 % Add more appendices if needed, or comment the above one if no Appendices are necessary.

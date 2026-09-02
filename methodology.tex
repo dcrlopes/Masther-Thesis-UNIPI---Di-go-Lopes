@@ -650,10 +650,13 @@ inconsistently strict in a way that depends on two of the design
 variables themselves.
 
 From Campaign 6 both bounds of the window therefore act on the core
-effective multiplication factor at beginning of life.
+effective multiplication factor at beginning of life. The ceiling
+itself is not a constant of the work. It is the adopted screening value
+through Campaign 6 and a derived quantity afterwards, so it is written
+here as a symbol.
 
 \begin{equation}
-1.02 \;\le\; k_\mathrm{eff}^\mathrm{core}(\mathbf{x}) \;\le\; 1.35
+1.02 \;\le\; k_\mathrm{eff}^\mathrm{core}(\mathbf{x}) \;\le\; k_{\max}
 \label{eq:k-window-core}
 \end{equation}
 
@@ -667,6 +670,10 @@ effective multiplication factor at beginning of life.
 
   \item $\mathbf{x}$ is the design vector of
         Table~\ref{tab:design-space}.
+
+  \item $k_{\max}$ is the reactivity ceiling of the campaign,
+        dimensionless. It is 1.35 through Campaign 6 and takes the
+        derived values of Table~\ref{tab:ctrl-bounds} from Campaign 7.
 \end{itemize}
 
 Two consequences follow. First, the re-scoring of the Campaign 5
@@ -2062,8 +2069,13 @@ development. Four considerations support retaining it here.
         rods. A credible SBF design therefore requires a control rod
         bank layout, a Cold Shutdown Margin (CSDM) demonstration under
         the single-failure assumption, and an explicit Moderator
-        Temperature Coefficient (MTC) verification, none of which lie
-        within the objective and constraint set defined in
+        Temperature Coefficient (MTC) verification. Of these, only the
+        bank layout and an operating controllability screen with the
+        regulating banks at power conditions lie within the constraint
+        set, and only from Campaign 7
+        (Section~\ref{sec:meth-ctrl}). The shutdown margin under the
+        single-failure assumption and the coefficient verification
+        remain outside the set defined in
         Section~\ref{sec:objective_functions}. Treating SBF operation as an
         assumption without that supporting analysis would weaken rather
         than strengthen the design basis.

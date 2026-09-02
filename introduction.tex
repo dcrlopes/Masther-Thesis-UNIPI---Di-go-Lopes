@@ -143,11 +143,15 @@ following.
         pin, assembly and 32-assembly core fidelity, and verify its
         internal geometric and neutronic consistency.
 
-  \item Formulate the optimisation over five design variables, namely
-        inner enrichment, outer enrichment, gadolinia (Gd$_2$O$_3$)
-        loading, pin pitch and reflector thickness, subject to five
-        constraints that include a geometric vessel-fit condition and
-        bounds on beginning-of-life (BOL) reactivity.
+  \item Formulate the optimisation over a design space of enrichment,
+        gadolinia (Gd$_2$O$_3$) loading, pin pitch and reflector
+        thickness. The space carries five variables in Campaigns 1
+        to 4, six from Campaign 5, when the gadolinium-bearing pin
+        count is added, and four in Campaign 8, when the pitch is
+        fixed. The constraint set carries five constraints through
+        Campaign 6 and six from Campaign 7, and includes a geometric
+        vessel-fit condition, bounds on beginning-of-life (BOL)
+        reactivity and a measured controllability screen.
 
   \item Couple a Gaussian-process (GP) surrogate to the Non-dominated
         Sorting Genetic Algorithm II (NSGA-II) in an active-learning
@@ -241,6 +245,6 @@ multi-fidelity methods. Chapter~\ref{ch:background} assembles the
 theory the methodology rests on and hosts the formal definitions of the
 quantities used throughout the thesis. Chapter~\ref{ch:methodology}
 presents the model, the optimisation formulation and the statistical
-machinery. Chapter~\ref{ch:results} reports the five optimisation campaigns, the
+machinery. Chapter~\ref{ch:results} reports the eight optimisation campaigns, the
 core-level validation that redirected the work, and the seed-replicated
 confirmation of the final champion, with open items flagged explicitly.

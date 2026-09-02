@@ -95,7 +95,12 @@ itself. Each geometric step opens an additional leakage path.
 
   \item Full 32-assembly core with reflector and vacuum outer boundary,
         $k_\mathrm{eff} = 1.221$, dimensionless. The reduction measures
-        the radial and axial leakage of the finite system.
+        the radial leakage of the finite core. The transport model is
+        two-dimensional, so the axial leakage is absent here. It was
+        measured separately on a finite-height model at about
+        \SI{3000}{pcm}, an axial factor of \num{1.0289}
+        (Section~\ref{sec:meth-lax}), and it enters the end-of-cycle
+        target from Campaign 8.
 \end{itemize}
 
 Reactivity expresses the departure from criticality in a form that adds
@@ -956,8 +961,8 @@ region instead of stalling.
   of experiments, rule 2 orders the population by total violation
   $V$ of Equation~\eqref{eq:violation}. The design below the boundary
   violates a constraint that these axes cannot show, which is why $V$
-  is computed over all five constraints and not read off the objective
-  plane.}
+  is computed over all constraints of Table~\ref{tab:constraints} and
+  not read off the objective plane.}
   \label{fig:bg-nsga2-thesis}
 \end{figure}
 
@@ -999,12 +1004,15 @@ Figure~\ref{fig:bg-nsga2-generation} traces it.
   \label{fig:bg-nsga2-generation}
 \end{figure}
 
-The population lives in the five-dimensional design space of
+The population lives in the design space of
 Table~\ref{tab:design-space}, handled internally on the unit
 hypercube. It is judged on the two objectives of
 Section~\ref{sec:objective_functions}, with EFPD negated, under the
-five constraints of Table~\ref{tab:constraints} in the $g \le 0$
-convention that Equation~\eqref{eq:violation} consumes.
+constraints of Table~\ref{tab:constraints} in the $g \le 0$
+convention that Equation~\eqref{eq:violation} consumes. The number of
+design variables and the number of constraints both change between
+campaigns, and the values of each campaign are those of
+Equation~\eqref{eq:constraint_form}.
 
 NSGA-II never calls OpenMC. Each active-learning iteration searches
 the Gaussian-process surrogate of Section~\ref{sec:bg-gp} with a
@@ -1022,7 +1030,7 @@ Section~\ref{sec:res-c4} drawn in
 Figure~\ref{fig:bg-nsga2-thesis}(b).
 %% AUTHOR: confirm population 60 and 80 generations against the
 %% campaign checkpoints. These are the full-run defaults of
-%% run_optimization.py, but a command-line override at launch would
+%% run_optimisation.py, but a command-line override at launch would
 %% not appear in the repository defaults.
 
 \FloatBarrier
@@ -1196,18 +1204,18 @@ point the two mentions at it, or remove the forward promises.}
 \end{figure}
 
 \paragraph{In this thesis.}
-The inputs are the five design variables, standardised to zero mean and
-unit variance so that one dimensionless length-scale per variable is
-meaningful, and the outputs are normalised likewise. One independent GP
-of the form of Equation~\eqref{eq:kernel} is fitted per output: one for
-each of the two objectives, and a parallel set for the five
+The inputs are the design variables of the campaign, standardised to
+zero mean and unit variance so that one dimensionless length-scale per
+variable is meaningful, and the outputs are normalised likewise. One
+independent GP of the form of Equation~\eqref{eq:kernel} is fitted per
+output: one for each of the two objectives, and a parallel set for the
 constraints, so the surrogate returns predicted objectives, predicted
 constraint values and a standard deviation for each. All
 hyperparameters, the length-scales $\ell_d$, the signal variance
 $\sigma_f^{2}$ and the noise variance $\sigma_n^{2}$, are refitted at
 every iteration by maximising the marginal likelihood with four
 restarts, on the \emph{whole} cumulative archive. That archive holds
-between 36 and 72 designs in the completed campaigns, squarely the
+between 36 and 114 designs in the completed campaigns, squarely the
 small-data regime for which GPs are the tool of
 choice~\cite{rasmussen_gp_2006,forrester_book_2008}. The fitted
 $\ell_d$ feed the variable-importance analysis, and the fitted
