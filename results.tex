@@ -1464,6 +1464,7 @@ must agree.
 
 \section{Campaign 6: the corrected basis and the acquisition programme}
 \label{sec:res-c6}
+\label{sec:res-c6-blocks}
 
 Campaign 6 applies the three corrections established by the Campaign 5
 analyses, namely the core-basis reactivity window, the evaluator-level
@@ -1730,8 +1731,11 @@ The final front holds fifteen designs and spans the full trade, from
   beginning-of-life value, the eigenvalue is on the core basis, and
   the burnup is the end-of-cycle value. Every front design carries 40
   gadolinium-bearing pins, so the pin count is omitted from the
-  columns. Cycle lengths are exploration-tier values in the sense of
-  Section~\ref{sec:meth-fidelity}.}
+  columns. Cycle lengths are two-dimensional exploration-tier values
+  in the sense of Sections~\ref{sec:meth-fidelity}
+  and~\ref{sec:meth-lax}, and the four designs at a pitch below
+  \SI{1.2242}{cm} carry the guide-tube caveat of
+  Section~\ref{sec:res-c7-limits}.}
   \label{tab:c6-front}
   \begin{tabular}{cccccccccc}
     \toprule
@@ -1774,6 +1778,17 @@ Eleven of the fifteen front designs come from block 5, three from
 block 4 and one from block 2. Not a single design-of-experiments point
 survives on the final front. The repaired acquisition displaced both
 of the campaign's own starting champions.
+
+A geometric defect found after this campaign qualifies four front
+designs. Below a pitch of \SI{1.2242}{cm}, twice the guide-tube outer
+radius, the lattice clips the guide-tube wall silently and replaces
+part of it by moderator (Section~\ref{sec:res-c7-limits}). Designs
+103 and 90 at \SI{1.214}{cm}, 112 at \SI{1.154}{cm} and 86 at
+\SI{1.150}{cm} are in the affected band, and their peaking and
+eigenvalue carry an unquantified bias. The long-cycle champions 81, 94,
+105, 99 and 71 sit between \num{1.318} and \SI{1.388}{cm} and are
+unaffected. Campaign 8 removes the defect prospectively by fixing the
+pitch at \SI{1.26}{cm}.
 
 \begin{figure}[htbp]
   \centering
@@ -1912,17 +1927,21 @@ therefore differs from the unscreened one at the long-cycle end.
 Under the screen the champion is design 101, at \num{7439} effective
 full power days, $F_{\Delta H} = 1.5564$ and an end-of-cycle burnup of
 \SI{74.3}{\mega\watt\day\per\kilo\gram}, which uses 99 per cent of the
-qualification allowance. The unscreened long-cycle designs, including
+qualification allowance. Its pitch of \SI{1.150}{cm} places it in the
+guide-tube band of Section~\ref{sec:res-c7-limits}, so its peaking
+value is qualified. The unscreened long-cycle designs, including
 design 94, are conditional results. They quantify what the design
 space offers if discharge burnups beyond
 \SI{75}{\mega\watt\day\per\kilo\gram} can be qualified, and they are
 reported as such rather than as candidates.
 
-%% AUTHOR: state which champion is carried forward to high-fidelity
-%% confirmation, design 101 under the qualification screen or design
-%% 94 conditional on extended-burnup qualification, and the reasoning
-%% in terms of the fuel-performance literature of the constraint
-%% sourcing section.
+Neither champion is carried forward. Campaign 7 showed that the
+reactivity ceiling of this campaign is a proxy for a controllability
+requirement that must be measured (Section~\ref{sec:res-c7-screens}),
+and Campaign 8 rebuilt the design space on that finding. The Campaign
+6 designs are therefore the resolved front of a superseded
+formulation, and the candidate list of this work is that of
+Section~\ref{sec:res-c8-limits}.
 
 \subsection{Comparison with the earlier campaigns and residual
 caveats}
@@ -1955,13 +1974,15 @@ The enrichment landscape of the front is itself a result. The zoned
 peripheral enrichments of the front span 3.4 to 17.5~wt\%, enclosing
 the mid-single-digit values associated with first cores of this
 reactor class and approaching, without being told to, the
-low-enriched-uranium cap that public reporting associates with the
-programme this study is inspired by.
+low-enriched-uranium cap. The comparison with the reported refuelling
+interval and the reported enrichment of the prototype is made once,
+on the Campaign 8 front, in Section~\ref{sec:res-c8-mission}.
 
-\openpoint{Add the primary-source citations for the publicly reported
-prototype enrichment values from the dedicated LABGENE source file,
-and one sentence locating the two reported values on the front of
-Table~\ref{tab:c6-front}.}
+\openpoint{Merge the LABGENE primary-source bibliography file into
+\texttt{references\_additions.bib}, replacing the placeholder entries
+\texttt{fapesp\_labgene} and \texttt{dados\_abertos\_2026}, and
+cite the enrichment and refuelling sources in
+Section~\ref{sec:res-c8-mission}.}
 
 Three caveats bound the claims of this section.
 
@@ -1969,10 +1990,25 @@ Three caveats bound the claims of this section.
   \item Every Campaign 6 cycle length is an exploration-tier value at
         the $4\,000\times60$ depletion fidelity of
         Table~\ref{tab:fidelity}, and is not directly comparable with
-        the Campaign 3 to 5 values at $16\,000\times120$ until the
-        finalists are re-scored. Feasibility and every peaking value
-        are unaffected, because the core solve is at full fidelity
-        throughout.
+        the Campaign 3 to 5 values at $16\,000\times120$. The
+        finalists are not re-scored, for the reason given in
+        Section~\ref{sec:res-c6-bscreen}. Feasibility and every
+        peaking value are unaffected, because the core solve is at
+        full fidelity throughout.
+
+  \item Every Campaign 6 cycle length is a two-dimensional value. The
+        axial study of Section~\ref{sec:meth-lax}, performed on six
+        designs of this campaign, measured the axial leakage factor at
+        \num{1.0282} to \num{1.0298}, about \SI{3000}{pcm}, which at
+        the end-of-cycle reactivity slopes of these designs is roughly
+        450 to 500 effective full power days. The cycle lengths of
+        Table~\ref{tab:c6-front} are overstated by that amount
+        relative to a finite-height core, uniformly, so the ordering
+        of the front is unaffected.
+
+  \item Four front designs and the discharge-screen champion lie in
+        the guide-tube band below \SI{1.2242}{cm}
+        (Section~\ref{sec:res-c6-front}).
 
   \item The Campaign 6 depletion runs under the corrected restart
         configuration of Section~\ref{sec:restart_defect}, verified in
@@ -1990,6 +2026,20 @@ Three caveats bound the claims of this section.
         convergence statement for a front whose extent is unknown in
         advance~\cite{zitzler_thiele_1999}.
 \end{enumerate}
+
+What carries forward from this campaign is its architecture rather
+than its designs. The four-part acquisition of
+Section~\ref{sec:meth-acq}, the surrogate search setting, the two
+health indicators of the stopping rule, the core-basis reactivity
+window and the evaluator-level zoning are all retained by Campaigns 7
+and 8. The designs themselves are superseded, first by the measured
+controllability screen and then by the fixed-pitch design space.
+
+\openpoint{Section~\ref{sec:res-c7-uncertainty} attributes to this
+section an entropy study that bounded the systematic shift of the
+core peaking factor at $\pm 0.02$. That study is not documented here.
+Either insert its text into this section or redirect the reference to
+where the study is reported.}
 
 \input{results_c7}
 

@@ -344,7 +344,8 @@ corresponding amount.
 The core design task is posed as a constrained two-objective problem
 over a design space of four to six variables, depending on the
 campaign (Tables~\ref{tab:design-space}, \ref{tab:design-space-c56}
-and~\ref{tab:design-space-c78}
+and~\ref{tab:design-space-c78}). The constraints are summarised in
+Table~\ref{tab:constraints}.
 
 The first objective maximises the cycle length.
 
@@ -439,6 +440,40 @@ The pin-count ladder follows the interior-first, guide-tube-ringed
 placement policy established for the absorber study, with octant
 symmetry and the outer two rod rows kept absorber free.
 
+Campaign 7 keeps the Campaign 6 box unchanged and adds the measured
+controllability screen. Campaign 8 fixes two variables and searches
+four (Section~\ref{sec:meth-c8-space}).
+
+\begin{table}[htbp]
+  \centering
+  \caption{Design space of Campaigns 7 and 8. The Campaign 8 reflector
+  bound follows from the vessel budget once the barrel and downcomer
+  clearance $c_\mathrm{v}$ of Section~\ref{sec:meth-c8-space} is
+  reserved at the fixed pitch.}
+  \label{tab:design-space-c78}
+  \begin{tabular}{llcc}
+    \toprule
+    Variable & Campaign 7 & Campaign 8 & Unit \\
+    \midrule
+    $e_\mathrm{in},\,e_\mathrm{out}$ & 2.0 -- 17.174 & collapsed to one, $e$ & wt\% $^{235}$U \\
+    $e$ & --- & 3.0 -- 13.913 & wt\% $^{235}$U \\
+    $\mathrm{gd}$ & 0 -- 8.0 & 0 -- 8.0 & wt\% \\
+    $p$ & 1.15 -- 1.43 & fixed, 1.26 & cm \\
+    $t_\mathrm{refl}$ & 2.0 -- 19.5 & 2.0 -- 5.66 & cm \\
+    $n_\mathrm{Gd}$ & ladder 12 -- 40 & ladder 12 -- 40 & pins \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption{Constraints. The evaluation level of $g_\mathrm{peak}$ is
+  the central methodological change of Campaign 4, the reactivity
+  window moves to the core basis in Campaign 6
+  (Section~\ref{sec:meth-kbasis}), and the measured controllability
+  screen enters in Campaign 7 (Section~\ref{sec:meth-ctrl}).}
+  \label{tab:constraints}
 \begin{tabularx}{\textwidth}{
     >{\raggedright\arraybackslash}p{0.15\textwidth}
     >{\raggedright\arraybackslash}p{0.40\textwidth}
@@ -479,7 +514,7 @@ symmetry and the outer two rod rows kept absorber free.
           \emph{recorded, not constrained} \\
     \bottomrule
 \end{tabularx}
-
+\end{table}
 
 The numerical bound of $g_\mathrm{peak}$ is anchored in licensing
 practice. The radial enthalpy-rise hot channel factor is a controlled
@@ -1067,7 +1102,7 @@ k_\mathrm{target}^\mathrm{3D}(t_\mathrm{refl}) = k_\mathrm{target}^\mathrm{2D}(t
 \end{itemize}
 
 With the pitch fixed at \SI{1.26}{cm} the calibration table of
-Section~\ref{sec:meth-routeB} collapses to one dimension. It was
+Section~\ref{sec:meth-ktarget} collapses to one dimension. It was
 recomputed at seven reflector nodes from 2.0 to \SI{5.66}{cm}, one
 assembly solve and seven core solves. The per-node statistical error
 from the core solve alone is 43 to \SI{60}{pcm}, and the single
@@ -1270,8 +1305,18 @@ d(\mathbf{a},\mathbf{b}) \;=\;
 
   \item $\delta_\mathrm{min}$ is the minimum separation,
         dimensionless. Campaign 6 used 0.10 in block 3 and block 4 and
-        0.14 in block 5.
+        0.14 in block 5. The value 0.14 is the established setting,
+        and Campaign 8 restores it explicitly after two Campaign 7
+        blocks ran at the launcher default of 0.05 and collapsed
+        (Section~\ref{sec:res-c7-blocks}).
 \end{itemize}
+
+One limitation of the separation is recorded. It is a mean over all
+design variables, so two variables can supply the whole distance while
+the others repeat. The two collapsed Campaign 7 blocks satisfied the
+rule as coded, at separations of 0.059 to 0.089, in exactly that way.
+A per-variable minimum spread is the natural refinement and is left as
+future work.
 
 If the candidate set cannot supply the full batch at
 $\delta_\mathrm{min}$, the threshold is halved and the scan repeats,
@@ -1313,7 +1358,8 @@ s_i \;=\; \max_{j \,\in\, \mathcal{G}_\mathrm{GP}}
         deviation, dimensionless.
 
   \item $\kappa$ is the margin multiplier, dimensionless, set to 1.5
-        in Campaign 6.
+        from Campaign 6, subject to the same launcher regression and
+        restoration in Campaigns 7 and 8 as the separation above.
 \end{itemize}
 
 Margin-feasible candidates rank first, ordered by
@@ -1378,7 +1424,7 @@ Two observations fix the choice.
 \end{enumerate}
 
 The setting $300\times400$ is therefore adopted for every infill
-block of Campaign 6. A binary same-design agreement metric was also
+block of Campaign 6 and retained in Campaigns 7 and 8. A binary same-design agreement metric was also
 computed and found uninformative, because on a continuous front a
 larger population samples the same ridge more finely and exact matches
 within a fixed tolerance become structurally unlikely. The
@@ -1407,6 +1453,8 @@ the informative replacement.
     Campaign 5     & $16\,000\times120$ (30)  & per-design          & production \\
     Campaign 6     & $4\,000\times60$ (20)    & per-design          & exploration \\
     C6 core solve  & $100\,000\times170$ (60) & per-design, salted  & objective + $k$ window \\
+    Campaign 7     & $4\,000\times60$ (20)\tnote{b}    & per-design & exploration, one rodded core solve \\
+    Campaign 8     & $4\,000\times60$ (20)\tnote{b}    & per-design & candidate, two rodded core solves \\
     Screening      & $64\,000\times120$ (30)  & replicated          & subset selection \\
     Confirmation   & $256\,000\times120$ (30) & replicated, 8 seeds & finalists \\
     \bottomrule
@@ -1415,6 +1463,9 @@ the informative replacement.
     \item[a] Inactive batches in parentheses. Per-design seeds are
       generated as a CRC32 hash of the design vector, and the core
       solve adds a salt.
+    \item[b] Taken from the launch profile shared with Campaign 6.
+      Confirm against the \texttt{transport} entry of each campaign's
+      checkpoint metadata before submission.
   \end{tablenotes}
   \end{threeparttable}
 \end{table}
@@ -1440,10 +1491,14 @@ mixed-fidelity archive carries a bias that varies with the evaluation
 date, which is strictly worse than a constant bias that can be
 quantified and quoted.
 
-\openpoint{Re-score the Campaign 6 Pareto-front finalists at
-$16\,000\times120$ or above and report the measured cycle-length
-shift, closing the two-tier strategy. Until then, every Campaign 6
-cycle length is an exploration-tier value.}
+The second tier is not executed on the Campaign 6 finalists, because
+they are not carried forward. Campaign 7 replaced the reactivity
+ceiling by a measured controllability screen and Campaign 8 fixed the
+pitch and the axial correction, so the candidate list on which the
+closure is performed is that of Section~\ref{sec:res-c8-limits}, and
+the confirmation of those candidates in three dimensions is the
+second tier. Every Campaign 6 and Campaign 7 cycle length therefore
+remains an exploration-tier value, and is quoted as such.
 
 Seeds are deterministic per design, generated as a CRC32 hash of the
 design vector, and the core solve adds a salt. This keeps every
@@ -1685,6 +1740,11 @@ The box bound and the constraint are therefore consistent by
 construction, and no design of experiments point can violate the cap
 after zoning, which removes the wasted samples observed under the
 earlier formulation.
+
+Campaign 7 keeps this box. Campaign 8 collapses the two enrichment
+variables to one and raises the as-loaded peripheral cap to
+\SI{16}{wt\%}, so the same construction gives a bound of
+\SI{13.913}{wt\%} (Section~\ref{sec:meth-c8-space}).
 
 \openpoint{The zoned-loading study that produced the multipliers, with
 its transfer test, multiplier optimisation and beginning-of-life
@@ -2123,8 +2183,10 @@ AMD EPYC 9R14, 32 physical cores without simultaneous
 multithreading), inside a purpose-built Docker image that pins the
 Conda environment. Campaigns 3 to 5 ran on a 32-core, 64-thread
 workstation without administrative privileges, on the same pinned
-environment, and Campaign 6 returned to the cloud instance under the
-identical image. The reproducibility unit is the environment
+environment. Campaigns 6 and 7 returned to the cloud instance under
+the identical image, and Campaign 8 ran on the workstation, whose
+measured particle rate on 64 threads equals that of the 32 cloud cores
+(Section~\ref{sec:res-c8-cost}). The reproducibility unit is the environment
 definition committed to the repository. OpenMC 0.15.3 and pymoo
 0.6.2 are identical across the two hosts, verified by smoke
 execution and $k_\infty$ agreement.
