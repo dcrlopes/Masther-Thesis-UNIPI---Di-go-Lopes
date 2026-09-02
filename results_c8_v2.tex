@@ -1,0 +1,563 @@
+% =====================================================================
+%  results_c8.tex  (version 2, 2 September 2026, with the measured results)
+%  Campaign 8: the candidate campaign. Replaces the skeleton of 1 Sept.
+%  Paste after results_c7.tex or \input{results_c8} after \input{results}.
+%
+%  Figures: copy figs_c8/*.pdf into images/:
+%    c8_pareto, c8_ctrl_plane, c8_front_split, c8_infill_diversity,
+%    c8_worths, c8_vars_influence, c8_constraint_activity, c8_trajectory
+%
+%  Labels defined: sec:res-c8, sec:res-c8-intent, sec:res-c8-blocks,
+%  sec:res-c8-screens, sec:res-c8-front, sec:res-c8-split,
+%  sec:res-c8-mission, sec:res-c8-hyp, sec:res-c8-cost, sec:res-c8-limits,
+%  tab:c8-spec, tab:c8-blocks, tab:c8-nesting, tab:c8-front, tab:c8-two,
+%  tab:c8-hyp-scored, fig:c8-pareto, fig:c8-plane, fig:c8-split,
+%  fig:c8-diversity, fig:c8-worths, fig:c8-influence, fig:c8-activity,
+%  fig:c8-trajectory, eq:two-bank-ceiling, eq:excess, eq:mission-efpd
+%  Labels used: sec:meth-c8-space, sec:meth-ctrl, sec:meth-lax,
+%  sec:meth-boron, sec:res-c7-screens, sec:res-c7-blocks,
+%  sec:res-c7-rodded, sec:res-c7-uncertainty, sec:res-c6-blocks,
+%  tab:ctrl-bounds, eq:ktarget-3d, eq:bank-worth, eq:g-ctrl
+% =====================================================================
+
+\section{Campaign 8: the candidate campaign}
+\label{sec:res-c8}
+
+Campaign 8 is the campaign whose front is proposed as the set of
+candidate cores. It fixes what the earlier campaigns established and
+measures what they could not. It ran 60 evaluations on wks720 in
+\SI{21.02}{h}, every one of them completing without error, and every
+cycle length it reports refers for the first time in this work to a
+finite-height core, through the axially corrected target of
+Equation~\eqref{eq:ktarget-3d}.
+
+\subsection{Specification}
+\label{sec:res-c8-intent}
+
+Section~\ref{sec:meth-c8-space} states the design space and
+Table~\ref{tab:c8-spec} the specification as launched. Three settings
+were pre-registered as the ones under test. The measured control screen
+of Section~\ref{sec:meth-ctrl} is the working reactivity constraint,
+with the three-dimensional derived ceiling of 1.166 behind it. A second
+rodded reading with only the first two regulating banks inserted is
+recorded on every design and is not a constraint. And the acquisition
+settings that Campaign 7 omitted are restored explicitly.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption{Campaign 8 as launched on 1 September 2026.}
+  \label{tab:c8-spec}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.0cm}>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    Item & Setting \\
+    \midrule
+    Design variables & $e$ 3.0 to \SI{13.913}{wt\%}, $w_\mathrm{Gd}$ 0 to \SI{8}{wt\%}, $t_\mathrm{refl}$ 2.0 to \SI{5.66}{cm}, $n_\mathrm{Gd}$ 12 to 40 on the ladder \\
+    Fixed & pitch \SI{1.26}{cm}, active height \SI{120}{cm}, clearance \SI{7.08}{cm}, soluble boron \SI{1000}{ppm}, ring multipliers \num{0.720}, \num{0.893}, \num{1.150} \\
+    Objectives & maximise EFPD, minimise $F_{\Delta H}$ with all rods out \\
+    Reactivity window & $1.02 \le k_\mathrm{eff}^\mathrm{core} \le 1.166$ on the core basis \\
+    Control screen & $k_\mathrm{ARI} \le 0.99$, RE1 to RE4 inserted, B$_4$C, constrained \\
+    Second reading & $k_\mathrm{RE12}$, RE1 and RE2 inserted, recorded only \\
+    End of cycle & $k_\mathrm{target}^\mathrm{3D}$ from 1.0839 to 1.0820 \\
+    Acquisition & minimum separation 0.14, feasibility margin 1.5 standard deviations \\
+    Budget & design of experiments 36, four infill blocks of six \\
+    Fidelity & depletion $4000\times60$, every core solve $100000\times170$ with 60 inactive \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{Blocks, diversity and convergence}
+\label{sec:res-c8-blocks}
+
+Table~\ref{tab:c8-blocks} records the five blocks and
+Figure~\ref{fig:c8-diversity} their diversity. Every infill block
+returned feasible designs and every block moved at least three of the
+four variables. Block 1 held the gadolinia concentration fixed at
+\SI{8.0}{wt\%} across its six designs while moving the other three
+variables, a residual of the collapse mode of Campaign 7 in one
+variable only. Figure~\ref{fig:c8-trajectory} shows the two objectives
+in evaluation order.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Campaign 8 blocks. Hypervolume against the frozen reference
+  of 1760 EFPD and 2.096. Spread is the within-block range of each
+  variable as a fraction of the archive range, in the order $e$,
+  $w_\mathrm{Gd}$, $t_\mathrm{refl}$, $n_\mathrm{Gd}$.}
+  \label{tab:c8-blocks}
+  \begin{tabular}{lcccl}
+    \toprule
+    Block & Designs & Feasible & Hypervolume (gain) & Spread \\
+    \midrule
+    DOE      & 36 & 9 & 1966.0 & 1.00, 0.99, 0.97, 0.99 \\
+    Infill 1 &  6 & 3 & 1966.0 (0.00\,\%) & 0.50, 0.00, 0.33, 0.86 \\
+    Infill 2 &  6 & 3 & 2022.4 (+2.87\,\%) & 0.66, 0.83, 0.65, 1.00 \\
+    Infill 3 &  6 & 1 & 2022.4 (0.00\,\%) & 0.69, 0.68, 0.26, 1.00 \\
+    Infill 4 &  6 & 3 & 2026.1 (+0.18\,\%) & 0.41, 0.62, 1.00, 0.53 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/c8_infill_diversity}
+  \caption{Within-block spread of each design variable. Every infill
+  block moves at least three of the four variables and returns
+  feasible designs, against two collapsed blocks of six in Campaign 7.}
+  \label{fig:c8-diversity}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/c8_trajectory}
+  \caption{The two objectives in evaluation order, blocks separated by
+  vertical lines. The infill blocks concentrate on the long-cycle end
+  of the feasible region, where the control screen binds.}
+  \label{fig:c8-trajectory}
+\end{figure}
+
+The convergence record is honest rather than complete. The hypervolume
+gained \SI{2.87}{\%} in block 2 and then \SI{0.00}{\%} and
+\SI{0.18}{\%} in blocks 3 and 4. Under the rule of
+Section~\ref{sec:res-c6-blocks}, three consecutive gains below one per
+cent with no censored design on the front, the campaign is one block
+short of a formal stop. Unlike Campaign 7, the flat blocks here are not
+acquisition failures: their designs are diverse and land on the
+constraint boundary where the surrogate expects the front to be
+(Figure~\ref{fig:c8-plane}). The front is therefore reported as
+converged at the resolution the frozen reference can see, with the
+stated caveat.
+
+\subsection{Feasibility and the constraint that does the work}
+\label{sec:res-c8-screens}
+
+Of the 60 designs, 19 are feasible, \SI{31.7}{\%}, with 9 of 36 in the
+design of experiments. Table~\ref{tab:c8-nesting} gives the census and
+Figure~\ref{fig:c8-activity} the activity per block. The control screen
+rejects 35 designs and is the dominant constraint in every block. No
+design fails the peaking bound, the enrichment cap or the vessel fit.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Constraint census of Campaign 8 and the joint activity of
+  the two reactivity screens. The nesting of Campaign 7 is reversed:
+  the ceiling never rejects a design that the control screen accepts.}
+  \label{tab:c8-nesting}
+  \begin{tabular}{lc}
+    \toprule
+    Outcome & Designs \\
+    \midrule
+    Fail $g_\mathrm{ctrl}$                          & 35 \\
+    Fail $g_{k\max}$ at 1.166                       & 23 \\
+    Fail $g_{k\max}$ and pass $g_\mathrm{ctrl}$     &  0 \\
+    Fail $g_\mathrm{ctrl}$ and pass $g_{k\max}$     & 12 \\
+    Fail $g_{k\min}$                                &  6 \\
+    Feasible on all six                             & 19 \\
+    Feasible and controllable with two banks        &  4 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/c8_constraint_activity}
+  \caption{Constraint violations per block. The control screen
+  dominates in every block, and the infill blocks concentrate their
+  violations on it because the surrogate places the front on that
+  boundary.}
+  \label{fig:c8-activity}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/c8_ctrl_plane}
+  \caption{The unrodded core eigenvalue against the eigenvalue with
+  four banks inserted (left, the constraint) and with two banks
+  inserted (right, recorded). Every infill design lands on the control
+  boundary. The two-bank reading is subcritical only below an unrodded
+  eigenvalue of about 1.07.}
+  \label{fig:c8-plane}
+\end{figure}
+
+This is the constraint architecture the campaign was built to produce.
+Not one design fails the derived ceiling while passing the measured
+screen, so the ceiling of 1.166 did no work, and twelve designs pass
+the ceiling while failing the screen, so the screen did all of it. The
+twelve are the long-cycle designs, from 3977 to 6169 EFPD, and they
+fail by 17 to \SI{1135}{pcm} in the rodded eigenvalue. Two of them,
+designs 54 and 11, fail by 17 and \SI{63}{pcm}, within the statistical
+resolution of a single core solve, and are treated as marginal rather
+than rejected in Section~\ref{sec:res-c8-limits}.
+
+The bank worths of Equation~\eqref{eq:bank-worth} run from
+\num{11466} to \SI{19313}{pcm} for the four banks and from
+\num{5429} to \SI{9841}{pcm} for the first two, with the ratio between
+\num{0.473} and \num{0.511} on all 60 designs and a mean of
+\num{0.496}. Figure~\ref{fig:c8-worths} shows both against the two
+absorber variables. At fixed pitch the gadolinium pin count is the
+single driver, correlating at $-0.73$ with both worths, and the
+concentration adds a weaker $-0.39$.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/c8_worths}
+  \caption{Regulating-bank worth at fixed pitch, four banks and two
+  banks, against the gadolinium pin count and concentration. The two
+  banks are worth half of the sixteen on every design.}
+  \label{fig:c8-worths}
+\end{figure}
+
+The two-bank ceiling follows from the smallest two-bank worth as the
+four-bank ceiling did in Section~\ref{sec:meth-ctrl}.
+
+\begin{equation}
+k_{\max}^{(2)} = (1 - \Delta\rho_\mathrm{op}) + \rho_\mathrm{bank}^{(2)}
+\label{eq:two-bank-ceiling}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $k_{\max}^{(2)}$ is the highest unrodded eigenvalue that the
+        first two banks alone can hold down at the margin,
+        dimensionless.
+
+  \item $\Delta\rho_\mathrm{op}$ is the operating margin, \num{0.01}.
+
+  \item $\rho_\mathrm{bank}^{(2)}$ is the two-bank worth in units of
+        $k$, \num{0.0543} to \num{0.0984} across the archive, median
+        \num{0.0793}.
+\end{itemize}
+
+The median gives 1.069 and the minimum 1.044. The two-bank window
+above the floor of 1.02 is therefore about \SI{5000}{pcm} wide, against
+\SI{13000}{pcm} for four banks, and it holds four of the nineteen
+feasible designs.
+
+\subsection{The front}
+\label{sec:res-c8-front}
+
+The feasible non-dominated set holds eight designs, from 1941 to 5782
+EFPD and from $F_{\Delta H}$ 1.510 to 1.677. Table~\ref{tab:c8-front}
+lists them and Figure~\ref{fig:c8-pareto} places every design in the
+objective plane with its block. Four front designs come from the
+design of experiments, three from infill block 2 and one from block 4.
+The discharge screen of \SI{75}{MWd/kgHM} is inactive on the front,
+whose highest end-of-cycle burnup is \SI{57.7}{MWd/kgHM}, and no
+design is censored.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption{The Campaign 8 front. Ring enrichments are the as-built
+  centre, middle and periphery values. Excess is the beginning-of-life
+  reactivity at \SI{1000}{ppm} that the rods must hold. $F_{\Delta H}$
+  is given with all rods out, with two banks in and with four banks
+  in.}
+  \label{tab:c8-front}
+  \begin{tabular}{ccccccccccc}
+    \toprule
+    Design & EFPD & rings [wt\%] & $w_\mathrm{Gd}$ & $n_\mathrm{Gd}$ & $t_\mathrm{refl}$ & $k^\mathrm{core}$ & excess [pcm] & $F$ & $F_{2}$ & $F_{16}$ \\
+    \midrule
+    47 & 1941 & 3.16, 3.93, 5.05  & 2.88 & 12 & 4.29 & 1.098 &  8930 & 1.510 & 1.991 & 2.314 \\
+    42 & 1968 & 3.20, 3.97, 5.11  & 2.88 & 12 & 3.76 & 1.101 &  9154 & 1.522 & 1.997 & 2.264 \\
+    23 & 2346 & 3.56, 4.42, 5.68  & 2.80 & 12 & 4.81 & 1.132 & 11626 & 1.534 & 1.968 & 2.356 \\
+    29 & 3070 & 4.25, 5.27, 6.79  & 0.18 & 40 & 4.69 & 1.158 & 13627 & 1.542 & 1.935 & 2.218 \\
+    21 & 4221 & 5.63, 6.98, 8.99  & 3.11 & 32 & 4.92 & 1.126 & 11220 & 1.592 & 1.934 & 2.194 \\
+    44 & 5019 & 6.65, 8.25, 10.61 & 3.20 & 40 & 5.33 & 1.132 & 11631 & 1.612 & 1.996 & 2.177 \\
+    59 & 5104 & 6.73, 8.35, 10.75 & 4.32 & 40 & 5.66 & 1.120 & 10701 & 1.634 & 1.998 & 2.214 \\
+     1 & 5782 & 7.94, 9.85, 12.68 & 7.43 & 40 & 3.94 & 1.131 & 11554 & 1.677 & 2.007 & 2.210 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/c8_pareto}
+  \caption{Campaign 8 objective space with the five blocks
+  distinguished. Filled markers are feasible. The purple rings mark the
+  four feasible designs controllable with the first two banks alone.
+  The vertical dotted lines are five calendar years at capacity
+  factors of 0.5 and 0.8.}
+  \label{fig:c8-pareto}
+\end{figure}
+
+Three features of the front carry into the candidate discussion.
+
+\begin{enumerate}
+  \item The peaking floor did not rise. The pre-registered expectation
+        was a floor near 1.60, on the argument that the low-peaking end
+        of the Campaign 7 front lived at thick reflectors that the fixed
+        pitch cannot accommodate. The Campaign 8 floor is 1.510, at
+        design 47, and it is reached by a different route: a low uniform
+        enrichment with twelve poisoned pins and a short cycle. The
+        reflector lever was removed and the enrichment lever took its
+        place. Peaking correlates at $+0.82$ with enrichment over the
+        feasible set (Figure~\ref{fig:c8-influence}).
+
+  \item Every front design sits on the control boundary. The unrodded
+        eigenvalues run from 1.098 to 1.158, and the rodded eigenvalues
+        from 0.925 to 0.988, so the beginning-of-life excess that the
+        four banks must hold lies between \num{8930} and
+        \SI{13627}{pcm} with the soluble boron already in the coolant.
+        Design 29, with \SI{0.18}{wt\%} gadolinia on forty pins, is
+        effectively unpoisoned and carries the largest excess.
+
+  \item The two-bank peaking of every front design is 1.93 to 2.01.
+        With only RE1 and RE2 inserted the front sits on the screening
+        bound, and with all four banks it exceeds it by 0.18 to 0.36
+        (Figure~\ref{fig:c8-split}). The rodded peaking is a property of
+        the map, not of the design: over all 60 designs the two-bank
+        value spans only 1.82 to 2.35.
+\end{enumerate}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/c8_vars_influence}
+  \caption{Spearman rank correlation of each design variable with the
+  objectives, the four-bank worth and the two-bank peaking, over the
+  archive and over the feasible subset.}
+  \label{fig:c8-influence}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\linewidth]{images/c8_front_split}
+  \caption{The front in its three rod configurations. With two banks
+  inserted every front design is at the screening bound, and with all
+  four banks every one exceeds it.}
+  \label{fig:c8-split}
+\end{figure}
+
+\subsection{The two-bank subset}
+\label{sec:res-c8-split}
+
+Table~\ref{tab:c8-two} lists the four feasible designs that the first
+two banks alone hold subcritical at the margin. They occupy the
+narrow reactivity window of Equation~\eqref{eq:two-bank-ceiling}, with
+unrodded eigenvalues between 1.026 and 1.042, and none of them is on
+the front, because the front is defined by cycle length and they carry
+a beginning-of-life excess of only \num{2564} to \SI{4068}{pcm}.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption{The feasible designs controllable with the first two banks.
+  Design 12 is included for completeness and is not a candidate.}
+  \label{tab:c8-two}
+  \begin{tabular}{cccccccccc}
+    \toprule
+    Design & EFPD & rings [wt\%] & $w_\mathrm{Gd}$ & $n_\mathrm{Gd}$ & $t_\mathrm{refl}$ & $k^\mathrm{core}$ & excess [pcm] & $F$ & $F_{2}$ \\
+    \midrule
+    53 & 1142 & 2.48, 3.08, 3.97 & 2.92 & 12 & 4.74 & 1.026 & 2564 & 1.524 & 2.020 \\
+    13 & 2383 & 3.70, 4.59, 5.91 & 5.25 & 24 & 3.15 & 1.042 & 4068 & 1.632 & 2.131 \\
+    31 & 3381 & 4.74, 5.89, 7.58 & 3.38 & 40 & 4.18 & 1.034 & 3282 & 1.650 & 2.074 \\
+    12 &  598 & 3.47, 4.30, 5.54 & 7.06 & 20 & 2.46 & 1.033 & 3207 & 1.592 & 2.061 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The subset is where the operating physics of a pressurised water
+reactor is recognisable. A commercial core at hot full power holds its
+beginning-of-life excess with soluble boron and burnable absorber and
+keeps the regulating banks nearly withdrawn, so that the rods carry
+only the power defect and the manoeuvring band. The eight front
+designs would need the four regulating banks inserted deep enough to
+hold \num{8930} to \SI{13627}{pcm} at power with \SI{1000}{ppm} in the
+coolant, which no pressurised water reactor does, and which would
+impose the rodded peaking of Figure~\ref{fig:c8-split} continuously.
+The two-bank designs hold \num{2564} to \SI{4068}{pcm}, of the order
+that boron adjustment alone can carry.
+
+The comparison with a licensed-class core makes the point
+quantitative. The NuScale-like benchmark on which the fuel design of
+this thesis rests reports, at beginning of life with \SI{1000}{ppm} of
+soluble boron, a fuel temperature of \SI{900}{K} and a coolant
+temperature of \SI{600}{K}, an all-rods-out eigenvalue of
+\num{1.0279}~\cite{fridman_nuscale_benchmark_2023,ez_aldeen_2025}.
+Its sixteen control rod assemblies, in four banks of four, are worth
+\num{1965}, \num{2379}, \num{3727} and \SI{3728}{pcm} individually and
+\SI{19231}{pcm} all together. The regulating requirement of that core
+at beginning of life is therefore below \SI{2800}{pcm}, held by one
+bank with margin, and the shutdown banks are reserved.
+Table~\ref{tab:bench-compare} places the two Campaign 8 candidate
+lists against it.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption{Beginning-of-life reactivity to be held by the rods, with
+  \SI{1000}{ppm} of soluble boron in the coolant, for the NuScale-like
+  benchmark and for the two Campaign 8 candidate lists. The worth
+  column is for sixteen control rod assemblies in every case: the
+  benchmark's four banks together, and the four regulating banks of
+  this core.}
+  \label{tab:bench-compare}
+  \begin{tabular}{lccc}
+    \toprule
+    Core & $k_\mathrm{eff}^\mathrm{core}$ & excess to hold [pcm] & worth of sixteen assemblies [pcm] \\
+    \midrule
+    NuScale-like benchmark~\cite{fridman_nuscale_benchmark_2023} & 1.028 & 2700 & 19231 \\
+    Campaign 8 front, Table~\ref{tab:c8-front}                   & 1.098 to 1.158 & 8930 to 13627 & 14270 to 17665 \\
+    Campaign 8 two-bank subset, Table~\ref{tab:c8-two}           & 1.026 to 1.042 & 2564 to 4068 & 13906 to 16303 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The rods are alike. Sixteen assemblies of this core are worth
+\num{11466} to \SI{19313}{pcm} across the archive, the same range as
+the sixteen of the benchmark, because the rod design, the absorber
+densities and the guide-tube geometry are the benchmark's. What
+differs is how much the rods are asked to hold. The two-bank subset
+sits in the regime of the benchmark. The front asks three to five
+times what a licensed-class small core asks of its rods at start-up,
+and it can only be held with the four regulating banks inserted deep
+at power.
+
+
+%% AUTHOR: the physical reading of why maximising cycle length and
+%% keeping the regulating banks withdrawn at power pull in opposite
+%% directions in this design space, and whether the two-bank criterion
+%% should be promoted to a constraint in any follow-on work.
+
+
+\subsection{Cycle length against the reported refuelling interval}
+\label{sec:res-c8-mission}
+
+The open record gives the prototype a refuelling interval of four to
+five years. The cycle length that corresponds to it depends on the
+capacity factor, which no open source states.
+
+\begin{equation}
+\mathrm{EFPD}_\mathrm{req} = 365.25\, T_\mathrm{cal}\, \mathrm{CF}
+\label{eq:mission-efpd}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $\mathrm{EFPD}_\mathrm{req}$ is the cycle length that meets the
+        refuelling interval, in effective full power days.
+
+  \item $T_\mathrm{cal}$ is the calendar interval, in years, four to
+        five.
+
+  \item $\mathrm{CF}$ is the capacity factor, dimensionless, assumed
+        between 0.5 and 0.8 for a naval prototype and stated as an
+        assumption.
+\end{itemize}
+
+Five years at a capacity factor of 0.8 is 1461 EFPD, and at 0.5 it is
+913 EFPD. Every design on the front exceeds the former, the shortest by
+a third and the longest by a factor of four, and design 53 in the
+two-bank subset meets it at 1142 EFPD with ring enrichments of 2.5,
+3.1 and \SI{4.0}{wt\%}. The reported enrichment figures locate on the
+same axis. The 6 to \SI{8}{wt\%} stated in 2014 corresponds to designs
+31 and 21, at 3381 and 4221 EFPD, and the \SI{19}{wt\%} reported in
+2025 lies above the search box and, on the evidence of the axial study,
+above what the regulating banks of this core can hold.
+
+The consequence for the design problem is stated as a finding. The
+objective of maximising cycle length pushes every design far beyond
+the reported requirement and, in doing so, onto the control boundary.
+Cycle length is not the binding requirement of this core. The binding
+requirements are controllability and peaking, and a follow-on
+formulation should treat the cycle length as a constraint at the
+required value rather than as an objective.
+
+\subsection{The pre-registered expectations, scored}
+\label{sec:res-c8-hyp}
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption{The eight expectations written before the design of
+  experiments closed, against the measurement.}
+  \label{tab:c8-hyp-scored}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    Expectation & Outcome & Measurement \\
+    \midrule
+    Peaking floor rises to about 1.60 & Failed & Floor 1.510, reached through low enrichment rather than a thick reflector \\
+    Cycles 450 to 500 EFPD shorter than uncorrected & Not testable & No uncorrected Campaign 8 run exists, and the box differs from Campaign 7 \\
+    Two banks worth half of sixteen & Held & Ratio 0.473 to 0.511, mean 0.496, on all 60 designs \\
+    Two-bank window below about 1.074 & Held & Feasible two-bank designs at 1.026 to 1.042, median implied ceiling 1.069 \\
+    Ceiling binds rarely and after the screen & Held & Zero designs rejected by the ceiling alone \\
+    Every block moves all four variables & Partly held & Block 1 held $w_\mathrm{Gd}$ fixed, every block moved three or more and returned feasible designs \\
+    Design-of-experiments feasibility below \SI{31}{\%} & Held & 9 of 36, \SI{25}{\%} \\
+    No censoring, no design near \SI{75}{MWd/kgHM} & Held on the front & No censoring. One infeasible design at \SI{79.6}{MWd/kgHM}, the front maximum is 57.7 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{Cost}
+\label{sec:res-c8-cost}
+
+The campaign cost \SI{75684}{s}, \SI{1261}{s} per evaluation, against
+\SI{949}{s} in Campaign 7 on the AWS instance. The archive now records
+every phase, so the breakdown is exact: assembly solve \SI{11}{s}, core
+solve \SI{107}{s}, depletion \SI{925}{s}, and the two rodded solves
+\num{100} and \SI{102}{s}. The rodded solves are \SI{16.2}{\%} of the
+cost. The depletion dominates because the cycles are long, 14.6
+transport states per design against 13.0 in Campaign 7. The measured
+particle rate on the 64 threads of wks720, \num{5734} per second,
+equals that of the 32 cores of the AWS instance, so the difference in
+wall time is the third core solve and the longer depletions, not the
+machine.
+
+\subsection{Limitations and the candidate list}
+\label{sec:res-c8-limits}
+
+Five limitations bound the claims of this section.
+
+\begin{enumerate}
+  \item Five designs, 15, 24, 26, 28 and 48, reached the active
+        batches with the fission-source entropy not yet converged. None
+        is on the front or in the two-bank subset.
+
+  \item The statistical error on $F_{\Delta H}$ remains unmeasured.
+        Adjacent front designs differ by 0.008 to 0.051 in peaking, and
+        the ordering of the three lowest, 47, 42 and 23, is not
+        resolved until the core tally errors are read.
+
+  \item Designs 54 and 11 fail the control screen by 17 and
+        \SI{63}{pcm}, within the resolution of one core solve at
+        \num{100000} particles. They are marginal, not rejected, and
+        are re-scored with seed replicates before the candidate list is
+        final.
+
+  \item The control screen is evaluated at the benchmark boron
+        concentration and at the model's fixed temperatures. It tests
+        whether the regulating banks hold the fresh core subcritical at
+        power with \SI{1000}{ppm} present. It is not a shutdown-margin
+        demonstration, which requires the cold state, all banks minus
+        the highest-worth assembly, and the boron worth stated
+        explicitly. The boron worth of the candidates is measured in
+        the confirmation study of Section~\ref{sec:meth-boron-worth}.
+
+  \item The convergence claim is one block short of the formal rule.
+\end{enumerate}
+
+Two candidate lists follow from the campaign, and they are different
+answers to different questions.
+
+\begin{enumerate}
+  \item For the longest cycle at a stated peaking, the front of
+        Table~\ref{tab:c8-front}, with designs 47, 23 and 21 as the
+        representatives of its three regions: the short-cycle floor,
+        the knee, and the long-cycle boundary.
+
+  \item For a core that operates like a pressurised water reactor,
+        with the regulating banks withdrawn at power and the reported
+        refuelling interval met, the two-bank subset of
+        Table~\ref{tab:c8-two}, with design 53 as the representative
+        that meets five years at a capacity factor of 0.8 and design 31
+        as the representative at the enrichment reported in 2014.
+\end{enumerate}
+
+The three-dimensional confirmation of the candidates, with the
+hardware stack, the core barrel and the boron worth, decides between
+them.
+
+%% AUTHOR: the choice of the candidate or candidates to carry into the
+%% conclusions, and the physical argument for that choice.

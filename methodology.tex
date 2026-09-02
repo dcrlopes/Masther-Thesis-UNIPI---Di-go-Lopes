@@ -223,6 +223,99 @@ The assembly is 1635.6\,mm long. Its top nozzle ends 187\,mm above the
 bottom of the coolant nozzle penetration and 53\,mm below the nozzle
 centreline, so the upper core plate lies within the nozzle band.
 
+\subsection{Why the barrel and the downcomer are outside the campaign model}
+\label{sec:meth-barrel}
+
+The campaign transport model ends in a vacuum boundary at the outer
+surface of the heavy reflector. The core barrel, the downcomer water
+and the vessel wall are not in it. From Campaign 8 the space they
+occupy is reserved by the vessel-fit constraint, so the geometry is
+consistent, but the material is absent from the transport. This is a
+deliberate simplification and it is defended on four grounds.
+
+\begin{enumerate}
+  \item The effect is a nearly constant shift, and a constant shift
+        does not reorder a Pareto front. What the barrel and the water
+        do is return to the core a fraction of the neutrons that the
+        vacuum boundary loses. The return depends on what lies behind
+        the reflector, which is identical for every design, and on the
+        current of neutrons reaching the reflector surface, which
+        varies only weakly with the design. The evidence that such
+        variations are weak in this core is measured rather than
+        assumed. The Route B calibration of
+        Section~\ref{sec:meth-ktarget} found the radial leakage factor
+        governed by the geometry, the axial factor of
+        Section~\ref{sec:meth-lax} varied by \SI{160}{pcm} over a
+        factor of two in excess reactivity, and the reflector itself,
+        which is the same kind of effect, moves the end-of-cycle target
+        by \SI{51.6}{pcm} per centimetre of thickness.
+
+  \item Route B was built for exactly this kind of correction. The
+        leakage correction enters the loop through the end-of-cycle
+        target, calibrated once per geometry on the full core. A barrel
+        return of a few hundred pcm would enter the same way, at no
+        cost to the loop, and the campaign designs would deplete a few
+        hundred pcm further before reaching the target. The cycle
+        lengths would shift together and the front would not.
+
+  \item The controllability screen is conservative without it. A
+        vacuum boundary makes the rodded core less subcritical than the
+        real core, because the neutrons the barrel would return are
+        lost. A design that passes the screen of
+        Section~\ref{sec:meth-ctrl} therefore passes it with more
+        margin once the barrel is present, and no design that fails
+        the screen is made feasible by leakage that the model does not
+        credit.
+
+  \item The correction is measured on the candidates, not argued for
+        the archive. The three-dimensional confirmation model of the
+        candidate designs carries the assembly hardware, the barrel,
+        the downcomer and the vessel wall explicitly. Its eigenvalue
+        against the two-dimensional solve of the same design gives a
+        leakage factor with the barrel present, $L_\mathrm{ax}^\mathrm{hw}$,
+        and the difference from the campaign value of \num{1.0289} is
+        the barrel and hardware effect. If it is constant across the
+        candidates within its statistical resolution, the defence
+        above is complete. If it is not, the candidates are re-ranked
+        with the measured values, which the archive permits, because
+        the correction acts on the target and not on the design.
+\end{enumerate}
+
+What this simplification does not permit is the claim that the
+campaign cycle lengths are those of the finite core with its barrel.
+They are leakage-corrected two-dimensional values, three-dimensional
+in the axial direction from Campaign 8 onward, whose barrel correction
+is measured on the candidates and reported with them.
+
+The barrel return can be expressed as a correction to the target.
+
+\begin{equation}
+k_\mathrm{target}^\mathrm{hw}(\mathbf{x}) = k_\mathrm{target}^\mathrm{3D}(\mathbf{x}) \times \frac{L_\mathrm{ax}^\mathrm{hw}(\mathbf{x})}{L_\mathrm{ax}}
+\label{eq:barrel-return}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $k_\mathrm{target}^\mathrm{hw}$ is the end-of-cycle target with
+        the barrel, the downcomer and the hardware accounted for,
+        dimensionless.
+
+  \item $k_\mathrm{target}^\mathrm{3D}$ is the campaign target of
+        Equation~\eqref{eq:ktarget-3d}, dimensionless.
+
+  \item $L_\mathrm{ax}^\mathrm{hw}$ is the ratio of the two-dimensional
+        eigenvalue to the eigenvalue of the finite-height model with
+        hardware and barrel, measured on the candidate, dimensionless.
+
+  \item $L_\mathrm{ax}$ is the campaign axial factor, \num{1.0289}.
+\end{itemize}
+
+A ratio below unity means the barrel returns more than the vacuum
+boundary of the water-slab model lost, so the campaign target was
+conservative and the finite-core cycle is longer than reported by the
+corresponding amount.
+
 
 \section{Optimisation problem}
 \label{sec:meth-problem}
@@ -327,19 +420,46 @@ The pin-count ladder follows the interior-first, guide-tube-ringed
 placement policy established for the absorber study, with octant
 symmetry and the outer two rod rows kept absorber free.
 
-\begin{tabular}{lll}
+\begin{tabularx}{\textwidth}{
+    >{\raggedright\arraybackslash}p{0.15\textwidth}
+    >{\raggedright\arraybackslash}p{0.40\textwidth}
+    >{\raggedright\arraybackslash}X
+}
     \toprule
     Constraint & Definition & Evaluation level \\
     \midrule
-    $g_{k\min}$       & $1.02 - k_\mathrm{BOL} \le 0$                      & assembly to C5, \textbf{core} from C6 \\
-    $g_{k\max}$       & $k_\mathrm{BOL} - k_{\max} \le 0$                  & assembly to C5, \textbf{core} from C6, $k_{\max}$ of Table~\ref{tab:ctrl-bounds} \\
-    $g_\mathrm{enr}$  & $e_\mathrm{zoned,max} - e_\mathrm{cap} \le 0$      & algebraic, $e_\mathrm{cap}$ per campaign \\
-    $g_\mathrm{peak}$ & $F_{\Delta H} - 2.0 \le 0$                         & assembly in C1 to C3, \textbf{core} from C4 \\
-    $g_\mathrm{geom}$ & $R_\mathrm{env}(p) + t_\mathrm{refl} + c_\mathrm{v} - 90 \le 0$ & core, analytic, $c_\mathrm{v}$ of Section~\ref{sec:meth-c8-space} \\
-    $g_\mathrm{ctrl}$ & $k_\mathrm{ARI} - 0.99 \le 0$                      & \textbf{core}, all sixteen regulating banks in, from C7 \\
-    $g_\mathrm{ctrl,12}$ & $k_\mathrm{RE12} - 0.99$                        & core, first two banks in, from C8, \emph{recorded, not constrained} \\
+    $g_{k\min}$ 
+        & $1.02 - k_\mathrm{BOL} \le 0$
+        & assembly to C5, \textbf{core} from C6 \\
+
+    $g_{k\max}$ 
+        & $k_\mathrm{BOL} - k_{\max} \le 0$
+        & assembly to C5, \textbf{core} from C6, 
+          $k_{\max}$ of Table~\ref{tab:ctrl-bounds} \\
+
+    $g_\mathrm{enr}$ 
+        & $e_\mathrm{zoned,max} - e_\mathrm{cap} \le 0$
+        & algebraic, $e_\mathrm{cap}$ per campaign \\
+
+    $g_\mathrm{peak}$ 
+        & $F_{\Delta H} - 2.0 \le 0$
+        & assembly in C1 to C3, \textbf{core} from C4 \\
+
+    $g_\mathrm{geom}$ 
+        & $R_\mathrm{env}(p) + t_\mathrm{refl} + c_\mathrm{v} - 90 \le 0$
+        & core, analytic, $c_\mathrm{v}$ of 
+          Section~\ref{sec:meth-c8-space} \\
+
+    $g_\mathrm{ctrl}$ 
+        & $k_\mathrm{ARI} - 0.99 \le 0$
+        & \textbf{core}, all sixteen regulating banks in, from C7 \\
+
+    $g_\mathrm{ctrl,12}$ 
+        & $k_\mathrm{RE12} - 0.99$
+        & core, first two banks in, from C8, 
+          \emph{recorded, not constrained} \\
     \bottomrule
-  \end{tabular}
+\end{tabularx}
 
 
 The numerical bound of $g_\mathrm{peak}$ is anchored in licensing
@@ -1872,6 +1992,102 @@ through Campaign~4. The Campaign-5 design-basis decision is preceded by
 a direct measurement, in which the selected finalists are re-depleted
 at \SI{0}{ppm}, so that the choice rests on computed values rather than
 on estimates.
+
+\subsection{Boron worth and the rods-only margin of the candidates}
+\label{sec:meth-boron-worth}
+
+Every eigenvalue in this work is computed with the benchmark
+concentration of \SI{1000}{ppm} of natural boron in the coolant, as a
+mass fraction, and with the gadolinia of the design in place. The
+beginning-of-life excess reactivity of a core is therefore the excess
+that remains \emph{after} the boron and the burnable absorber have
+acted, and it is the quantity that the control rods alone must hold.
+
+\begin{equation}
+\rho(k) = \frac{k - 1}{k}
+\label{eq:rho-def}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $\rho$ is the reactivity, dimensionless, reported in pcm by
+        multiplying by $10^5$.
+
+  \item $k$ is the core effective multiplication factor in the state
+        considered, dimensionless.
+\end{itemize}
+
+The share of the hold-down that the soluble boron carries is not
+visible in a single solve. It is measured on the candidate designs by
+re-solving the same core at several concentrations, unrodded and
+rodded, and reading the differences.
+
+\begin{equation}
+W_\mathrm{B}(c_1 \rightarrow c_2) = \rho\big(k_\mathrm{ARO}(c_1)\big) - \rho\big(k_\mathrm{ARO}(c_2)\big)
+\label{eq:boron-worth}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $W_\mathrm{B}$ is the boron worth between two concentrations,
+        positive, in pcm.
+
+  \item $k_\mathrm{ARO}(c)$ is the unrodded core eigenvalue at
+        concentration $c$, dimensionless.
+
+  \item $c_1$ and $c_2$ are the two concentrations, in ppm by mass,
+        with $c_1 < c_2$.
+\end{itemize}
+
+The differential worth is $W_\mathrm{B}$ divided by the concentration
+difference, in pcm per ppm. The rods-only margin at a concentration is
+the subcriticality with the banks inserted.
+
+\begin{equation}
+M_\mathrm{bank}(c) = -\rho\big(k_\mathrm{bank}(c)\big)
+\label{eq:rod-only-margin}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $M_\mathrm{bank}$ is the margin, positive when subcritical, in
+        pcm.
+
+  \item $k_\mathrm{bank}(c)$ is the core eigenvalue with the bank set
+        inserted at concentration $c$, dimensionless. At
+        \SI{1000}{ppm} and the sixteen regulating banks it reproduces
+        the campaign screen of Equation~\eqref{eq:g-ctrl-meth}.
+\end{itemize}
+
+The margin at zero concentration answers the soluble-boron-free
+question, which is not the design basis of this core and is reported
+as a sensitivity only. The share of the beginning-of-life hold-down
+that the boron carries is the ratio below.
+
+\begin{equation}
+s_\mathrm{B} = \frac{W_\mathrm{B}(0 \rightarrow 1000)}{W_\mathrm{B}(0 \rightarrow 1000) + \rho_\mathrm{bank}(1000)}
+\label{eq:boron-share}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $s_\mathrm{B}$ is the boron share of the hold-down,
+        dimensionless.
+
+  \item $\rho_\mathrm{bank}(1000)$ is the sixteen-bank worth at the
+        benchmark concentration, in pcm, from
+        Equation~\eqref{eq:bank-worth}.
+\end{itemize}
+
+The measurement runs one core solve per state, concentration and
+seed, at the campaign core fidelity, on the candidates only. It is
+implemented in \texttt{boron\_worth.py} with the same solver path as
+the campaign evaluator, so the values at \SI{1000}{ppm} close on the
+archive to within the Monte Carlo resolution.
 
 
 \section{Diagnostics, environments, reproducibility}
