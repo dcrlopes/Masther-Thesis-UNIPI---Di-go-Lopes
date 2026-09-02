@@ -1,0 +1,178 @@
+% =====================================================================
+%  results_c8.tex
+%  Campaign 8: the candidate campaign. Opening of the section, written
+%  while the campaign runs (launched 1 September 2026 on wks720, 60
+%  evaluations, about 17.5 h). Paste after results_c7.tex.
+%
+%  Every result slot is an \openpoint. Fill them from the checkpoint
+%  with inspect_front.py and c7_figures_v2.py adapted to out_c8.
+%
+%  Labels defined: sec:res-c8, sec:res-c8-intent, sec:res-c8-hyp,
+%  sec:res-c8-doe, sec:res-c8-front, sec:res-c8-split, sec:res-c8-3d,
+%  sec:res-c8-candidates, tab:c8-hypotheses, tab:c8-spec.
+%  Labels used: sec:meth-c8-space, sec:meth-ctrl, sec:meth-lax,
+%  sec:res-c7-screens, sec:res-c7-rodded, sec:res-c7-limits,
+%  tab:ctrl-bounds, eq:ktarget-3d.
+% =====================================================================
+
+\section{Campaign 8: the candidate campaign}
+\label{sec:res-c8}
+
+Campaign 8 is the campaign whose front is proposed as the set of
+candidate cores for the LABGENE-class reactor. Every earlier campaign
+established something that this one fixes, and every question that
+this one asks is one the earlier campaigns could not answer.
+Section~\ref{sec:meth-c8-space} states the design space and
+Table~\ref{tab:c8-spec} summarises the specification as launched.
+
+\subsection{Intent}
+\label{sec:res-c8-intent}
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption{Campaign 8 as launched on 1 September 2026. The reactivity
+  ceiling is the three-dimensional derived value of
+  Table~\ref{tab:ctrl-bounds}.}
+  \label{tab:c8-spec}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.2cm}>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    Item & Setting \\
+    \midrule
+    Design variables & $e$ (3.0 to \SI{13.913}{wt\%}), $w_\mathrm{Gd}$ (0 to \SI{8}{wt\%}), $t_\mathrm{refl}$ (2.0 to \SI{5.66}{cm}), $n_\mathrm{Gd}$ (12 to 40, ladder) \\
+    Fixed & pitch \SI{1.26}{cm}, active height \SI{120}{cm}, clearance \SI{7.08}{cm} (barrel \num{5.08} plus downcomer \num{2.0}), \SI{1000}{ppm} soluble boron \\
+    Objectives & maximise EFPD, minimise $F_{\Delta H}$ with all rods out \\
+    Reactivity window & $1.02 \le k_\mathrm{eff}^\mathrm{core} \le 1.166$, core basis \\
+    Control screen & $k_\mathrm{ARI} \le 0.99$ with RE1 to RE4 inserted, B$_4$C, constrained \\
+    Second reading & $k_\mathrm{RE12}$ with RE1 and RE2 inserted, recorded only \\
+    End of cycle & $k_\mathrm{target}^\mathrm{3D}$ of Equation~\eqref{eq:ktarget-3d}, 1.0839 to 1.0820 \\
+    Acquisition & minimum separation 0.14, feasibility margin 1.5 standard deviations \\
+    Budget & design of experiments 36, four infill blocks of six, 60 evaluations \\
+    Fidelity & depletion $4000\times60$, core solves $100000\times170$ with 60 inactive \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+Three intentions distinguish this campaign from its predecessors.
+
+\begin{enumerate}
+  \item The front is meant to be read as a candidate list, so every
+        design on it must be geometrically consistent, controllable by
+        measurement, and evaluated against a finite-height end of
+        cycle. Campaign 7 satisfied none of the three in full.
+
+  \item The campaign measures, for every design, whether the first two
+        regulating banks alone suffice. If a design is controllable
+        with RE1 and RE2, the all-banks configuration that
+        Section~\ref{sec:res-c7-rodded} showed to exceed the peaking
+        screen is never required in operation, since the shutdown banks
+        remain available for scram.
+
+  \item With four design variables and nine design-of-experiments
+        points per variable, the campaign has the densest sampling of
+        the series, and it is the first in which the reflector
+        thickness acts on the radial power shape alone
+        (Section~\ref{sec:meth-lax}).
+\end{enumerate}
+
+\subsection{Hypotheses stated before the results}
+\label{sec:res-c8-hyp}
+
+The following expectations were written down before the design of
+experiments closed, so that the results can be read against them
+rather than fitted to them. Each is derived from a measurement of
+Campaign 7 or of the axial study.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption{Pre-registered expectations for Campaign 8 and their basis.}
+  \label{tab:c8-hypotheses}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    Expectation & Basis \\
+    \midrule
+    The peaking floor of the front rises from 1.525 to about 1.60
+      & Five of six Campaign 7 control-screen front designs are unbuildable at pitch 1.26, and the reflector lever is capped at \SI{5.66}{cm} \\
+    Cycle lengths are 450 to 500 EFPD shorter than an uncorrected run would give
+      & The axial factor raises the target by \SI{2900}{pcm} at a median slope of \SI{607}{pcm} per MWd/kgHM \\
+    The first two banks are worth about half of the sixteen
+      & Smoke-test ratio 0.47 to 0.53 across a factor of three in enrichment \\
+    Designs controllable with two banks occupy a narrow window, $k_\mathrm{eff}^\mathrm{core}$ below about 1.074
+      & Two-bank worth of about \SI{8450}{pcm} at the \SI{1000}{pcm} margin \\
+    The derived ceiling of 1.166 binds rarely and after the control screen
+      & Of the Campaign 7 archive, 49 of 60 designs have $g_\mathrm{ctrl}$ binding first at that ceiling \\
+    Every infill block moves all four variables and returns feasible designs
+      & The Campaign 6 acquisition settings are restored explicitly \\
+    The feasibility fraction of the design of experiments is below the \SI{31}{\%} of Campaign 7
+      & The reactivity window is narrower and the enrichment box wider \\
+    No design is censored and no design approaches \SI{75}{MWd/kgHM}
+      & Campaign 7 maximum end-of-cycle burnup 63.8, and the corrected target shortens cycles further \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{Design of experiments}
+\label{sec:res-c8-doe}
+
+\openpoint{Feasibility census of the 36 design-of-experiments points
+against the seven recorded quantities, the count below the reactivity
+floor, and the count of designs controllable with two banks. Compare
+with the eighth row of Table~\ref{tab:c8-hypotheses}.}
+
+\openpoint{Constraint activity in the plane of Figure~\ref{fig:c7-screens}
+redrawn for Campaign 8, with the 1.166 ceiling and the control screen,
+and the count of designs where each binds first.}
+
+\subsection{The infill blocks and the front}
+\label{sec:res-c8-front}
+
+\openpoint{Per-block table in the form of Table~\ref{tab:c7-blocks},
+with the four-variable spread of each batch. The sixth row of
+Table~\ref{tab:c8-hypotheses} is decided here.}
+
+\openpoint{The feasible front with the three-dimensional-consistent
+cycle lengths, the objective-space figure in the form of
+Figure~\ref{fig:c7-pareto}, the hypervolume history, and the
+convergence statement under the Campaign 6 rule.}
+
+\openpoint{Statistical error on the cycle length of every front design
+by the propagation of Section~\ref{sec:res-c7-uncertainty}, and the
+measured $\sigma(F_{\Delta H})$ from the core tallies, so that both
+axes of the front carry an uncertainty.}
+
+\subsection{The two-level reading}
+\label{sec:res-c8-split}
+
+\openpoint{The front split by $g_\mathrm{ctrl,12}$. For each front
+design, the sixteen-bank and two-bank worths, the two rodded peaking
+values, and whether two banks hold the core at the margin. State the
+ratio of the two worths against the third row of
+Table~\ref{tab:c8-hypotheses}.}
+
+\openpoint{Rodded peaking in the two-bank configuration against the
+screening bound of 2.0, as the operating counterpart of
+Figure~\ref{fig:c7-rodded}.}
+
+\subsection{Three-dimensional confirmation of the candidates}
+\label{sec:res-c8-3d}
+
+\openpoint{For each candidate, the finite-height core with the
+benchmark hardware stack and the core barrel: unrodded and rodded
+eigenvalues, $L_\mathrm{ax}$ against the campaign value of
+\num{1.0289}, and the three-dimensional $F_{\Delta H}$ next to the
+two-dimensional objective.}
+
+\openpoint{Downcomer sensitivity at \SI{3.7}{cm} on the candidates.}
+
+\subsection{Candidate designs}
+\label{sec:res-c8-candidates}
+
+\openpoint{The candidate table: each front design with its four
+variables, both objectives with uncertainties, the reactivity margins,
+the two-level control result, the three-dimensional confirmation, and
+the location of the reported prototype enrichment figures relative to
+the front.}
+
+%% AUTHOR: the physical reading of the final front and the choice of
+%% the candidate or candidates to carry into the conclusions.

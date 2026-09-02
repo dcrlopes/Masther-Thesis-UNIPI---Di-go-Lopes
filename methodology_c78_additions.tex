@@ -1,0 +1,492 @@
+% =====================================================================
+%  methodology_c78_additions.tex
+%  Drop-in blocks for methodology.tex (line numbers at the current
+%  GitHub head, 1540 lines). Each block states WHERE it goes. Paste the
+%  LaTeX between the markers. Labels defined here: sec:meth-ctrl,
+%  sec:meth-lax, sec:meth-cost, sec:meth-c8-space, tab:design-space-c78,
+%  tab:ctrl-bounds, tab:lax-study, eq:k-ari, eq:g-ctrl-meth,
+%  eq:k-max-derived, eq:lax-def, eq:ktarget-3d, eq:ktarget-c8-fit,
+%  eq:refl-budget-c8.
+%
+%  Style: short paragraphs, no semicolons, no em dashes, every displayed
+%  formula followed by a term list with units, enumerations as lists.
+% =====================================================================
+
+%% ===================================================================
+%% BLOCK M1  (methodology.tex, line 233)
+%% Replace "over a five-dimensional design space" by the sentence below.
+%% ===================================================================
+%% >>> M1
+over a design space of four to six variables, depending on the
+campaign (Tables~\ref{tab:design-space}, \ref{tab:design-space-c56}
+and~\ref{tab:design-space-c78}).
+%% <<< M1
+
+%% ===================================================================
+%% BLOCK M2  (methodology.tex, line 87, caption of the geometry figure)
+%% Replace "Ranges for all six design variables" by
+%% "Ranges for the six design variables of Campaigns 5 to 7".
+%% ===================================================================
+
+%% ===================================================================
+%% BLOCK M3  (methodology.tex, insert after line 324, the end of
+%% tab:design-space-c56)
+%% ===================================================================
+%% >>> M3
+Campaigns 7 and 8 revise the box a third time. Campaign 7 lowers the
+enrichment cap to \SI{12}{wt\%} on the as-built peripheral ring, so
+that the search box becomes 3.0 to \SI{10.43}{wt\%}, as a consequence
+of the controllability screen of Section~\ref{sec:meth-ctrl}.
+Campaign 8 fixes the pitch, collapses the two enrichment variables to
+one, raises the cap to \SI{16}{wt\%} and re-bounds the reflector to the
+budget that remains once a core barrel and a downcomer are reserved
+(Section~\ref{sec:meth-c8-space}).
+
+\begin{table}[htbp]
+  \centering
+  \caption{Design-space revisions of Campaigns 7 and 8. Variables not
+  listed keep the bounds of Table~\ref{tab:design-space}. Campaign 8
+  has four design variables.}
+  \label{tab:design-space-c78}
+  \begin{tabular}{llcc}
+    \toprule
+    Variable & Meaning & Bounds & Unit \\
+    \midrule
+    $e_\mathrm{in},\,e_\mathrm{out}$ & enrichments (C7)
+      & 3.0 -- 10.435 & wt\% $^{235}$U \\
+    $e$ & single assembly enrichment (C8)
+      & 3.0 -- 13.913 & wt\% $^{235}$U \\
+    $p$ & pin pitch (C8, fixed) & 1.26 & cm \\
+    $t_\mathrm{refl}$ & reflector thickness (C8) & 2.0 -- 5.66 & cm \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+%% <<< M3
+
+%% ===================================================================
+%% BLOCK M4  (methodology.tex, tab:constraints, lines 331-349)
+%% Replace the tabular body by the one below. Adds the control screen
+%% and the recorded first-two-banks reading, and updates the ceiling.
+%% ===================================================================
+%% >>> M4
+  \begin{tabular}{lll}
+    \toprule
+    Constraint & Definition & Evaluation level \\
+    \midrule
+    $g_{k\min}$       & $1.02 - k_\mathrm{BOL} \le 0$                      & assembly to C5, \textbf{core} from C6 \\
+    $g_{k\max}$       & $k_\mathrm{BOL} - k_{\max} \le 0$                  & assembly to C5, \textbf{core} from C6, $k_{\max}$ of Table~\ref{tab:ctrl-bounds} \\
+    $g_\mathrm{enr}$  & $e_\mathrm{zoned,max} - e_\mathrm{cap} \le 0$      & algebraic, $e_\mathrm{cap}$ per campaign \\
+    $g_\mathrm{peak}$ & $F_{\Delta H} - 2.0 \le 0$                         & assembly in C1 to C3, \textbf{core} from C4 \\
+    $g_\mathrm{geom}$ & $R_\mathrm{env}(p) + t_\mathrm{refl} + c_\mathrm{v} - 90 \le 0$ & core, analytic, $c_\mathrm{v}$ of Section~\ref{sec:meth-c8-space} \\
+    $g_\mathrm{ctrl}$ & $k_\mathrm{ARI} - 0.99 \le 0$                      & \textbf{core}, all sixteen regulating banks in, from C7 \\
+    $g_\mathrm{ctrl,12}$ & $k_\mathrm{RE12} - 0.99$                        & core, first two banks in, from C8, \emph{recorded, not constrained} \\
+    \bottomrule
+  \end{tabular}
+%% <<< M4
+
+%% ===================================================================
+%% BLOCK M5  (methodology.tex, insert after line 447, the end of
+%% subsection "Reactivity window basis")
+%% ===================================================================
+%% >>> M5
+\subsection{Controllability screen and the reactivity ceiling}
+\label{sec:meth-ctrl}
+
+Through Campaign 6 the reactivity ceiling proxied controllable excess
+reactivity without a rod model. From Campaign 7 the proxy is replaced
+by a measurement. Every evaluation solves the beginning-of-life core a
+second time with the control rod assemblies of the sixteen central
+assemblies inserted, which are the four regulating banks RE1 to RE4 of
+the NuScale-inspired seven-bank scheme adopted in Campaign 6, with the
+three shutdown banks of the outer sixteen assemblies withdrawn. The
+absorber is B$_4$C.
+
+\begin{equation}
+k_\mathrm{ARI}(\mathbf{x}) = k_\mathrm{eff}^\mathrm{core}\big(\mathbf{x},\ \mathrm{RE1\ to\ RE4\ inserted}\big)
+\label{eq:k-ari}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $k_\mathrm{ARI}$ is the core effective multiplication factor at
+        beginning of life with all sixteen regulating-bank assemblies
+        inserted, dimensionless.
+
+  \item $\mathbf{x}$ is the design vector.
+\end{itemize}
+
+The screen demands an operating subcriticality margin.
+
+\begin{equation}
+g_\mathrm{ctrl}(\mathbf{x}) = k_\mathrm{ARI}(\mathbf{x}) - (1 - \Delta\rho_\mathrm{op}) \le 0
+\label{eq:g-ctrl-meth}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $g_\mathrm{ctrl}$ is the constraint value, dimensionless,
+        negative when satisfied.
+
+  \item $\Delta\rho_\mathrm{op}$ is the operating margin, \num{0.01} in
+        units of $k$, that is \SI{1000}{pcm}.
+\end{itemize}
+
+The margin is a modelling choice. An insertion of the regulating banks
+alone with a \SI{1000}{pcm} margin is not a licensing shutdown margin,
+which additionally requires the shutdown banks, the highest-worth
+assembly assumed stuck out, and the cold, xenon-free state. The screen
+therefore tests whether the regulating system can hold the fresh core
+subcritical at power conditions, which is the question the reactivity
+ceiling was standing in for.
+
+Campaign 8 adds a second reading with only the first two banks
+inserted, RE1 in the four central assemblies and RE2 in the four
+diagonal assemblies of the middle ring. It is recorded as
+$g_\mathrm{ctrl,12}$ and is not a constraint, so that the front can be
+split afterwards into designs controllable with two banks and designs
+needing all four, without shrinking the feasible region in advance.
+
+The reactivity ceiling of $g_{k\max}$ can now be derived from the
+measured bank worth rather than adopted.
+
+\begin{equation}
+k_{\max} = (1 - \Delta\rho_\mathrm{op}) + \min_{\mathbf{x} \in \mathcal{S}} \rho_\mathrm{bank}(\mathbf{x})
+\label{eq:k-max-derived}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $k_{\max}$ is the derived ceiling on the unrodded core
+        eigenvalue, dimensionless.
+
+  \item $\rho_\mathrm{bank}$ is the bank worth, the difference between
+        the unrodded and the rodded eigenvalues, dimensionless.
+
+  \item $\mathcal{S}$ is the sample of designs on which the worth was
+        measured.
+\end{itemize}
+
+Table~\ref{tab:ctrl-bounds} lists the ceilings used and derived.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Reactivity ceilings by campaign and their provenance. The
+  three-dimensional values come from the axial study of
+  Section~\ref{sec:meth-lax}.}
+  \label{tab:ctrl-bounds}
+  \begin{tabular}{llll}
+    \toprule
+    Campaigns & $k_{\max}$ & Basis & Provenance \\
+    \midrule
+    C1 to C6 & 1.35  & assembly, then core & adopted screening value \\
+    retrospective & 1.368 & core, 2D & all seven banks, \SI{1000}{pcm}, eight C6 designs \\
+    C7 & 1.126 & core, 2D & four regulating banks, eight C6 designs, worths \num{12174} to \SI{12718}{pcm} \\
+    C7 measured & 1.099 to 1.217 & core, 2D & implied by each design's own worth, 60 designs \\
+    C8 & 1.166 & core, 2D from 3D & smallest 3D worth \SI{14307}{pcm}, times $L_\mathrm{ax}$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Two lessons of Campaign 7 govern the use of the derived ceiling. A
+minimum over a small sample is not a robust estimator, and the
+Campaign 7 value of 1.126 rejected fourteen designs whose own measured
+worth showed them controllable (Section~\ref{sec:res-c7-screens}).
+And the derived ceiling can only be a surrogate for a quantity that is
+measured on every evaluation anyway. From Campaign 8 the measured
+screen is the constraint that does the work, and the derived ceiling
+is retained as a screening bound with its provenance stated.
+
+The retrospective value of 1.368 also settles the status of the
+ceiling used in Campaigns 1 to 6. Derived from the worth of all 32
+control rod assemblies with the same margin, it lies two per cent
+above the adopted 1.35, which is therefore the measured all-bank
+controllability bound of this core to within that tolerance.
+%% <<< M5
+
+%% ===================================================================
+%% BLOCK M6  (methodology.tex, insert after line 701, the end of
+%% section "Leakage-corrected reactivity target (Route B)")
+%% ===================================================================
+%% >>> M6
+\subsection{Axial leakage factor and the three-dimensional target}
+\label{sec:meth-lax}
+
+The Route B target of Equation~\eqref{eq:ktarget} corrects the
+infinite-lattice depletion for the radial leakage of the
+two-dimensional core. The transport model has no axial extent, so the
+axial leakage of the finite core is absent from every cycle length of
+Campaigns 1 to 7. A dedicated study measured it before Campaign 8.
+
+The three-dimensional model extends the two-dimensional core to a
+finite active height of \SI{120}{cm}, adds a \SI{15}{cm} slab of
+borated water above and below the fuel as the axial reflector, and
+places a vacuum boundary beyond the slabs. The radial reflector spans
+the full height. The materials and the zoned enrichment map are those
+of the campaign evaluator, so the only difference between the two
+models is the axial extent. Each paired solve ran at \num{150000}
+particles and 200 batches with 80 inactive, the raised inactive count
+allowing the axial source shape to converge, in two seeds.
+
+The axial leakage factor is the ratio of the two eigenvalues.
+
+\begin{equation}
+L_\mathrm{ax}(\mathbf{x}) = \frac{k_\mathrm{eff}^\mathrm{2D}(\mathbf{x})}{k_\mathrm{eff}^\mathrm{3D}(\mathbf{x})}
+\label{eq:lax-def}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $L_\mathrm{ax}$ is the axial leakage factor, dimensionless.
+
+  \item $k_\mathrm{eff}^\mathrm{2D}$ is the eigenvalue of the
+        two-dimensional core with the campaign radial reflector,
+        dimensionless.
+
+  \item $k_\mathrm{eff}^\mathrm{3D}$ is the eigenvalue of the same core
+        at finite height with the axial reflectors, dimensionless.
+\end{itemize}
+
+Table~\ref{tab:lax-study} reports the six Campaign 6 designs studied.
+They span an unrodded eigenvalue from 1.071 to 1.279 and enrichments
+from 3 to \SI{14}{wt\%}, and their two-dimensional regulating-bank
+worths, \num{14839} to \SI{17815}{pcm}, lie within one standard
+deviation of the Campaign 7 archive median.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Axial leakage study on six Campaign 6 designs. Rodded
+  columns have all sixteen regulating banks inserted. Subcriticality
+  is $(1 - 1/k)$ in pcm, negative when supercritical.}
+  \label{tab:lax-study}
+  \begin{tabular}{ccccccc}
+    \toprule
+    Design & $k^\mathrm{2D}$ & $k^\mathrm{3D}$ & $L_\mathrm{ax}$ & $k^\mathrm{3D}_\mathrm{ARI}$ & 2D subcrit. [pcm] & 3D subcrit. [pcm] \\
+    \midrule
+     1 & 1.11990 & 1.08888 & 1.0285 & 0.93673 &  3821 &  6755 \\
+    22 & 1.09768 & 1.06638 & 1.0293 & 0.89620 &  8534 & 11583 \\
+    31 & 1.10226 & 1.07207 & 1.0282 & 0.91742 &  6095 &  9001 \\
+    59 & 1.07088 & 1.04018 & 1.0295 & 0.89711 &  8402 & 11469 \\
+    69 & 1.12079 & 1.08839 & 1.0298 & 0.92475 &  5095 &  8137 \\
+    86 & 1.27869 & 1.24367 & 1.0282 & 1.07050 & $-9136$ & $-6585$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Three results carry into the method.
+
+\begin{enumerate}
+  \item The factor is effectively a constant. It ranges from
+        \num{1.0282} to \num{1.0298} over a factor of two in excess
+        reactivity, a spread of \SI{160}{pcm}. One value, the mean
+        \num{1.0289}, therefore serves the whole design space with a
+        stated systematic of $\pm\SI{80}{pcm}$, about $\pm 13$ EFPD at
+        the end-of-cycle slopes of Section~\ref{sec:res-c7-uncertainty}.
+        This is the same structural property that justifies Route B
+        itself, namely that a leakage factor is governed by the
+        geometry, and the geometry is fixed.
+
+  \item The rodded core is \num{2900} to \SI{3100}{pcm} more
+        subcritical in three dimensions than in two. The
+        two-dimensional control screen of Section~\ref{sec:meth-ctrl}
+        is therefore conservative by that amount, and the direction of
+        the conservatism is measured rather than argued.
+
+  \item Design 86, the high-enrichment Campaign 6 champion, is
+        supercritical with all regulating banks inserted in both
+        models. The long-cycle end of the unconstrained design space
+        cannot be held down by the regulating system, which is the
+        physical reason for the enrichment cap and the control screen
+        of the final campaign.
+\end{enumerate}
+
+From Campaign 8 the axial factor multiplies the target, so that the
+end of cycle is defined on a finite-height core from the start.
+
+\begin{equation}
+k_\mathrm{target}^\mathrm{3D}(t_\mathrm{refl}) = k_\mathrm{target}^\mathrm{2D}(t_\mathrm{refl}) \times L_\mathrm{ax}
+\label{eq:ktarget-3d}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $k_\mathrm{target}^\mathrm{3D}$ is the target that the depleting
+        assembly must retain at end of cycle for the finite core to be
+        critical, dimensionless.
+
+  \item $k_\mathrm{target}^\mathrm{2D}$ is the Route B target of
+        Equation~\eqref{eq:ktarget} at the fixed pitch, dimensionless.
+
+  \item $L_\mathrm{ax}$ is the axial factor, \num{1.0289}.
+
+  \item $t_\mathrm{refl}$ is the reflector thickness, in cm.
+\end{itemize}
+
+With the pitch fixed at \SI{1.26}{cm} the calibration table of
+Section~\ref{sec:meth-routeB} collapses to one dimension. It was
+recomputed at seven reflector nodes from 2.0 to \SI{5.66}{cm}, one
+assembly solve and seven core solves. The per-node statistical error
+from the core solve alone is 43 to \SI{60}{pcm}, and the single
+assembly solve shifts every node together by \SI{90}{pcm} without
+affecting the shape. A weighted straight line describes the seven
+nodes with a chi-square per degree of freedom of 0.38 and a worst
+residual of 1.16 standard deviations, and the fitted values replace the
+raw ones to remove a one-sigma fluctuation at \SI{3.8}{cm}.
+
+\begin{equation}
+k_\mathrm{target}^\mathrm{2D}(t_\mathrm{refl}) = 1.054528 - 0.000516\, t_\mathrm{refl}
+\label{eq:ktarget-c8-fit}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $k_\mathrm{target}^\mathrm{2D}$ is the two-dimensional target at
+        pitch \SI{1.26}{cm}, dimensionless.
+
+  \item $t_\mathrm{refl}$ is the reflector thickness, in cm, over 2.0
+        to 5.66.
+
+  \item The slope is \SI{51.6}{pcm} per centimetre of reflector.
+\end{itemize}
+
+The three-dimensional target runs from 1.0839 at \SI{2.0}{cm} to
+1.0820 at \SI{5.66}{cm}. Across the entire Campaign 8 design space the
+target therefore moves by about \SI{200}{pcm}, roughly 0.3 MWd/kgHM or
+34 EFPD, so the reflector thickness has ceased to be a reactivity
+variable in this campaign and acts on the radial power shape alone.
+
+The correction raises the target by about \SI{2900}{pcm} relative to
+the two-dimensional campaigns. At the median end-of-cycle slope of
+\SI{607}{pcm} per MWd/kgHM that is 4.8 MWd/kgHM, roughly 450 to 500
+EFPD. Campaign 8 cycle lengths are therefore not comparable with those
+of Campaigns 1 to 7 without adding that amount back, and they are the
+first in this work that refer to a finite-height core.
+%% <<< M6
+
+%% ===================================================================
+%% BLOCK M7  (methodology.tex, insert after line 1285, the end of
+%% section "Evaluator-level radial zoning and the enrichment search box")
+%% ===================================================================
+%% >>> M7
+\section{The Campaign 8 design space}
+\label{sec:meth-c8-space}
+
+The final campaign fixes what the earlier campaigns established and
+searches only what remains open. Four decisions define it.
+
+\begin{enumerate}
+  \item The pin pitch is fixed at \SI{1.26}{cm}, the Westinghouse
+        $17\times17$ value that the reference fuel design of
+        Section~\ref{sec:design-basis} already adopts. Two reasons
+        compel it. The guide-tube outer radius of \SI{0.6121}{cm}
+        exceeds the half-pitch below \SI{1.2242}{cm}, and an OpenMC
+        lattice clips a universe at its cell boundary silently, so
+        every earlier design below that pitch carried guide tubes with
+        up to \SI{27}{\%} of their wall replaced by moderator. And the
+        pitch was the strongest single lever on the regulating-bank
+        worth (Section~\ref{sec:res-c7-worth}), so fixing it removes a
+        source of variability that the control screen would otherwise
+        have to absorb.
+
+  \item The two assembly enrichment zones collapse to one variable.
+        The core-level enrichment variation comes entirely from the
+        C, M, P ring multipliers of Section~\ref{sec:meth-zoning},
+        \num{0.720}, \num{0.893} and \num{1.150}, and the cap on the
+        as-built peripheral ring is raised to \SI{16}{wt\%}, so the
+        search box is 3.0 to \SI{13.913}{wt\%}.
+
+  \item The vessel-fit constraint reserves a clearance for a core
+        barrel and a downcomer. The barrel is the \SI{5.08}{cm}
+        stainless steel wall of the NuScale-like benchmark and the
+        downcomer is \SI{2.0}{cm}, chosen as a minimum coolant return
+        path, with a sensitivity to \SI{3.7}{cm} run on the candidate
+        designs only. The clearance enters the geometric constraint
+        and not the transport model, whose outer boundary remains a
+        vacuum at the reflector surface. The barrel and the downcomer
+        are represented physically in the three-dimensional
+        confirmation of the candidates.
+
+  \item The reflector thickness is re-bounded to the budget that
+        remains.
+\end{enumerate}
+
+\begin{equation}
+t_\mathrm{refl}^{\max} = R_\mathrm{v} - c_\mathrm{v} - R_\mathrm{env}(p) - \delta
+\label{eq:refl-budget-c8}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $t_\mathrm{refl}^{\max}$ is the largest reflector thickness that
+        fits, \SI{5.669}{cm}, bounded in the design space at
+        \SI{5.66}{cm} so that the box edge is strictly feasible.
+
+  \item $R_\mathrm{v}$ is the vessel internal radius, \SI{90}{cm}.
+
+  \item $c_\mathrm{v}$ is the reserved clearance, \SI{7.08}{cm}.
+
+  \item $R_\mathrm{env}(p)$ is the circumscribed radius of the
+        32-assembly fuel envelope at pitch $p$, \SI{77.231}{cm} at
+        \SI{1.26}{cm}.
+
+  \item $\delta$ is the lattice pad, \SI{0.02}{cm}.
+\end{itemize}
+
+The consequence is stated rather than discovered. Five of the six
+designs of the Campaign 7 control-screen front, and 14 of its 60
+designs, are unbuildable at the fixed pitch, because the low-peaking
+end of that front lives at thick reflectors that fit only at narrow
+pitch. Campaign 8 therefore trades the lowest peaking values of
+Campaign 7 for a geometry that is consistent, and the peaking floor is
+expected to rise to about 1.60.
+
+Two further settings close the specification. The acquisition runs
+with the minimum separation of 0.14 and the feasibility margin of 1.5
+standard deviations established in Campaign 6, stated explicitly on
+the command line after the Campaign 7 regression. And the design of
+experiments has 36 points for four variables, nine per variable,
+followed by four infill blocks of six, 60 evaluations in all.
+%% <<< M7
+
+%% ===================================================================
+%% BLOCK M8  (methodology.tex, tab:campaigns, insert after the C6 row,
+%% line 1315)
+%% ===================================================================
+%% >>> M8
+    C7 & 60 & Measured controllability screen $g_\mathrm{ctrl}$
+       & Screens nested, derived ceiling discards controllable designs, two acquisition collapses \\
+    C8 & 60 & Fixed pitch, single enrichment, axial-corrected target, two-level screen
+       & Candidate front for the LABGENE-class core \\
+%% <<< M8
+
+%% ===================================================================
+%% BLOCK M9  (methodology.tex, insert after line 1539, the end of
+%% section "Diagnostics, environments, reproducibility")
+%% ===================================================================
+%% >>> M9
+\subsection{Cost accounting}
+\label{sec:meth-cost}
+
+The per-evaluation cost stored in the archive is the sum of the
+assembly solve, the core solve and the depletion timers. Through
+Campaign 7 the control solve ran after those timers closed and was
+stored separately, so the archived cost understated the true cost by
+the control share, \SI{11}{\%} over Campaign 7. The block-level wall
+time of the run log, which is measured around the whole evaluation
+call, was unaffected and is the figure reported in the cost tables.
+From Campaign 8 every rodded solve is folded into the archived cost
+and the per-case log line reports the full figure.
+
+The per-case parser of the run log was also found never to have
+matched a case line of any campaign, because its regular expression
+did not anticipate the censoring marker inserted after the cycle
+length. The failure was silent. No quantity in this thesis depends on
+its output, since every per-design value is read from the archive, and
+the parser was corrected before Campaign 8.
+%% <<< M9
