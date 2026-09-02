@@ -138,22 +138,41 @@ $k_\mathrm{eff} = 1.221$. The assembly-internal peaking at reference
 conditions is $F_{\Delta H} = 1.137$, consistent with open NuScale-like
 benchmarks~\cite{nuscale_like_core_2024,ez_aldeen_2025}.
 
-% =====================================================================
-%  vessel_figures_short.tex
-%  Condensed version of the dimensioned vessel figure, the elevation
-%  table and the accompanying paragraph.
-%
-%  What changed with respect to vessel_figures.tex
-%   - The provenance left the captions and became an explicit list in
-%     the text, so the captions state only what is shown.
-%   - The two vessel rows left the table, because they describe the
-%     vessel and not the assembly stack. They are now in the text.
-%   - The four spacer grids collapsed to one row plus a rule, since
-%     their spans are equal by construction.
-%
-%  Bib keys: maruyama_2013, ez_aldeen_2025 (keep ONE definition of the
-%  latter in references_additions.bib).
-% =====================================================================
+Three quantities of the campaign model depart from the benchmark
+input files, and each is carried as a sensitivity in the
+three-dimensional confirmation rather than corrected retrospectively,
+because correcting them would change the basis of every campaign.
+
+\begin{enumerate}
+  \item The heavy reflector is homogenised at \SI{90}{\%} steel by
+        volume, a deliberately moderator-rich engineering estimate,
+        against \SI{95.6}{\%} in the benchmark. A denser reflector
+        returns more neutrons and raises the core eigenvalue by a
+        design-independent amount.
+
+  \item The control rod absorber radius is \SI{0.4331}{cm} for both
+        absorbers, against \SI{0.4229}{cm} for boron carbide and
+        \SI{0.4267}{cm} for silver-indium-cadmium in the benchmark.
+        The clad radii, \num{0.4369} and \SI{0.4839}{cm}, and the
+        absorber number densities are the benchmark's. The larger
+        radius overstates the bank worth by a small amount that the
+        confirmation quantifies.
+
+  \item The coolant density is \SI{0.72}{g/cm^3} at \SI{580}{K},
+        against \SI{0.752}{g/cm^3} implied by the benchmark number
+        densities at its stated \SI{600}{K}. The boron mass fraction
+        of \SI{1000}{ppm} is the same in both.
+\end{enumerate}
+
+The two-dimensional control screen also differs from the benchmark
+rod in one axial respect that only the confirmation can resolve. The
+screen inserts boron carbide over the whole fuel height, whereas the
+benchmark rod leaves the bottom \SI{12.04}{cm} of the fuel unrodded,
+the empty guide tube and the end plug, and carries \SI{30.48}{cm} of
+silver-indium-cadmium before the boron carbide. The confirmation
+solves both stacks, so that the conservatism of the screen is
+measured in the presence of the benchmark rod rather than assumed.
+
 
 \begin{figure}[htbp]
   \centering
