@@ -103,9 +103,9 @@ and~\ref{tab:model-operating}.
     Cladding inner / outer radius & 0.4140 / 0.4750 & cm \\
     Guide-tube inner / outer radius & 0.5715 / 0.6121 & cm \\
     Lattice & $17\times17$: 264 rods, 24 GT, 1 IT & -- \\
-    Inner enrichment zone & centred $9\times9$: 81 pins (28\%) & -- \\
-    Outer enrichment zone & 208 pins (72\%) & -- \\
-    Gd$_2$O$_3$ pins & 12, fixed octant-symmetric pattern & -- \\
+    Inner enrichment zone & centred $9\times9$: 72 fuel rods (27\%) & -- \\
+    Outer enrichment zone & 192 fuel rods (73\%) & -- \\
+    Gd$_2$O$_3$ rods & 12 (C1--C4), ladder 12--40 (C5 on) & -- \\
     Active fuel height & 120 (2D transport, mass bookkeeping) & cm \\
     Core map & $6\times6$ minus corners = 32 assemblies & -- \\
     Reflector & stainless steel annulus, thickness $t_\mathrm{refl}$ & -- \\
@@ -365,15 +365,18 @@ Both are subject to the feasibility condition below.
 
 \begin{equation}
 g_j(\mathbf{x}) \le 0,
-\qquad j = 1,\dots,5
+\qquad j = 1,\dots,n_g
 \label{eq:constraint_form}
 \end{equation}
 
 \noindent where the symbols have the following meaning.
 
 \begin{itemize}
-  \item $\mathbf{x}$ is the design vector, whose five components and
-        their units are listed in Table~\ref{tab:design-space}.
+  \item $\mathbf{x}$ is the design vector, whose components and their
+        units are listed in Tables~\ref{tab:design-space},
+        \ref{tab:design-space-c56} and~\ref{tab:design-space-c78}. It
+        has five components in Campaigns 1 to 4, six in Campaigns 5
+        to 7, and four in Campaign 8.
 
   \item $\mathcal{X}$ is the box-bounded design space defined by those
         same bounds.
@@ -387,9 +390,18 @@ g_j(\mathbf{x}) \le 0,
         design $\mathbf{x}$, dimensionless, defined in
         Equation~\eqref{eq:fdh_definition}.
 
-  \item $g_j(\mathbf{x})$ is the $j$-th inequality constraint in
-        normalised violation form, dimensionless, feasible when
-        non-positive.
+  \item $g_j(\mathbf{x})$ is the $j$-th inequality constraint of
+        Table~\ref{tab:constraints}, expressed in its own native unit
+        and feasible when non-positive. The normalisation applied
+        before the constraints are aggregated to rank infeasible
+        populations is introduced in Campaign 6 and defined in
+        Equation~\eqref{eq:cv-norm}.
+
+  \item $n_g$ is the number of active inequality constraints,
+        dimensionless. It is five through Campaign 6 and six from
+        Campaign 7, when the controllability screen enters. The
+        two-bank reading $g_\mathrm{ctrl,12}$ is recorded and not
+        constrained, so it does not enter the count.
 \end{itemize}
 
 The evaluation level of $F_{\Delta H}$ changes between campaigns and is
@@ -436,9 +448,23 @@ low-enriched-uranium cap of Section~\ref{sec:meth-zoning}.
 \end{table}
 
 
-The pin-count ladder follows the interior-first, guide-tube-ringed
-placement policy established for the absorber study, with octant
-symmetry and the outer two rod rows kept absorber free.
+The rod count is a discrete variable. The optimiser proposes a
+continuous value inside the bounds and the evaluator snaps it to the
+ladder before the model is built, recording both the proposed and the
+applied value in the archive. The ladder follows the interior-first,
+guide-tube-ringed placement policy established for the absorber study,
+under four rules.
+
+\begin{enumerate}
+  \item The patterns are nested, so each contains the one below it and
+        the twelve-rod heritage arrangement of Campaigns 1 to 4 is the
+        base of the ladder.
+  \item Every pattern is octant-symmetric.
+  \item The outer two rod rows are kept absorber free.
+  \item Every gadolinia rod is face-adjacent or diagonally adjacent to
+        a guide tube, and no two gadolinia rods are face-adjacent to
+        each other, which limits mutual shadowing.
+\end{enumerate}
 
 Campaign 7 keeps the Campaign 6 box unchanged and adds the measured
 controllability screen. Campaign 8 fixes two variables and searches
@@ -500,8 +526,9 @@ four (Section~\ref{sec:meth-c8-space}).
         & assembly in C1 to C3, \textbf{core} from C4 \\
 
     $g_\mathrm{geom}$ 
-        & $R_\mathrm{env}(p) + t_\mathrm{refl} + c_\mathrm{v} - 90 \le 0$
-        & core, analytic, $c_\mathrm{v}$ of 
+        & $R_\mathrm{env}(p) + \delta + t_\mathrm{refl} + c_\mathrm{v} - 90 \le 0$
+        & core, analytic, lattice pad $\delta$ of
+          Equation~\eqref{eq:ggeom}, clearance $c_\mathrm{v}$ of 
           Section~\ref{sec:meth-c8-space} \\
 
     $g_\mathrm{ctrl}$ 
@@ -566,6 +593,43 @@ millimetres of radial budget. Pitch and reflector thickness compete
 directly for the fixed allowance of the 90\,cm vessel internal radius
 of Table~\ref{tab:model-geometry}, which makes the two variables
 strongly coupled rather than independent.
+
+The enforced form of the constraint carries two further terms. The
+geometry builder pads the lattice corner by a fixed allowance, and
+Campaign 8 reserves a clearance for the core barrel and the downcomer.
+Both must appear in the analytic test, or the test and the builder
+disagree at the boundary.
+
+\begin{equation}
+g_\mathrm{geom} \;=\; R_\mathrm{env}(p) \;+\; \delta \;+\;
+t_\mathrm{refl} \;+\; c_\mathrm{v} \;-\; R_\mathrm{v} \;\le\; 0
+\label{eq:ggeom}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $R_\mathrm{env}(p)$ is the circumscribed radius of
+        Equation~\eqref{eq:renv}, in cm.
+
+  \item $\delta$ is the lattice-corner pad of the geometry builder,
+        \SI{0.02}{cm}, held in a single constant shared by the builder
+        and the constraint.
+
+  \item $t_\mathrm{refl}$ is the reflector thickness, in cm.
+
+  \item $c_\mathrm{v}$ is the reserved barrel and downcomer clearance,
+        zero through Campaign 7 and \SI{7.08}{cm} in Campaign 8, in cm,
+        as derived in Section~\ref{sec:meth-c8-space}.
+
+  \item $R_\mathrm{v}$ is the vessel internal radius, \SI{90}{cm}.
+\end{itemize}
+
+The pad is not cosmetic. In Campaign 4 the analytic test and the
+builder disagreed by exactly this amount, the optimiser located the
+discrepant corner of the design space, and the first infill attempt
+failed there. Since the repair the constant is defined once and
+imported by both consumers.
 
 The constraint is enforced analytically inside the optimiser rather
 than during model construction. Campaign 1 showed that omitting it lets
@@ -703,7 +767,8 @@ Table~\ref{tab:ctrl-bounds} lists the ceilings used and derived.
   three-dimensional values come from the axial study of
   Section~\ref{sec:meth-lax}.}
   \label{tab:ctrl-bounds}
-  \begin{tabular}{llll}
+  \small
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.16\textwidth}c>{\raggedright\arraybackslash}p{0.20\textwidth}>{\raggedright\arraybackslash}X@{}}
     \toprule
     Campaigns & $k_{\max}$ & Basis & Provenance \\
     \midrule
@@ -713,7 +778,7 @@ Table~\ref{tab:ctrl-bounds} lists the ceilings used and derived.
     C7 measured & 1.099 to 1.217 & core, 2D & implied by each design's own worth, 60 designs \\
     C8 & 1.166 & core, 2D from 3D & smallest 3D worth \SI{14307}{pcm}, times $L_\mathrm{ax}$ \\
     \bottomrule
-  \end{tabular}
+  \end{tabularx}
 \end{table}
 
 Two lessons of Campaign 7 govern the use of the derived ceiling. A
@@ -791,14 +856,47 @@ retrospectively, through the exact post-processing transform of
 Section~\ref{sec:meth-atf}. From Campaign 3 onward the depletion
 terminates at $B_\mathrm{ATF}$ inside the loop, so
 Equation~\eqref{eq:eoc} holds by construction and censoring is
-eliminated.
+eliminated in intent. The qualification is necessary because the
+ceiling was reached at half the intended burnup in the campaigns
+affected by the restart defect described below.
 
-The Campaign 2 schedule opens with a beginning-of-life ramp at
-0.5, 1, 2, 4 and 6 days, continues in 4 day steps committed in
-chunks of two, and terminates adaptively, giving 10 to 28
-transport states per evaluation. Campaign 1 used the fixed
-14 state default of the evaluator. From Campaign 3 onward the
-schedule terminates at the discharge limit inside the loop.
+The Campaign 2 schedule opens with a beginning-of-life ramp at 0.5, 1,
+2, 4 and \SI{6}{\mega\watt\day\per\kilo\gram}, continues in steps
+of \SI{4}{\mega\watt\day\per\kilo\gram} committed in blocks of two,
+and terminates adaptively, giving 10 to 28 transport states per
+evaluation. Campaign 1 used the fixed 14-state default of the
+evaluator. From Campaign 3 onward the schedule terminates at the
+discharge limit inside the loop.
+
+The adaptive termination is what forces the depletion to advance in
+short blocks. The solver requires its complete step list before the
+calculation starts, while the stopping burnup is a property of the
+design being evaluated and is not known in advance. Each block is
+therefore a separate depletion call that restarts from the results
+file written by the previous one, and a restart requires that file to
+carry both the material composition and the reaction rates.
+
+The depletion solver of the version used here writes no reaction rates
+to its results files unless explicitly instructed. A restart from a
+rate-free file advances its first step with every transmutation
+channel set to zero, so the fuel evolves by radioactive decay alone
+while the burnup label advances by the full step. The failure is
+silent, because the calculation completes and every value it returns
+is of a plausible magnitude. The evaluator therefore now requests the
+rates explicitly at every block and refuses to restart from a file
+that carries none.
+
+That guard postdates the campaigns reported here. Their recorded
+burnup labels therefore overstate the physical burnup, the in-loop
+ceiling of Equation~\eqref{eq:eoc} was reached at
+\SI{43.0}{\mega\watt\day\per\kilo\gram} of physical burnup rather
+than at the intended \SI{75.0}{\mega\watt\day\per\kilo\gram}, and
+censoring was reintroduced despite the in-loop termination. The
+mechanism, the controlled single-block against multi-block experiment
+that established it, and the exact transform that recovers the true
+burnup from the archived histories are given in
+Section~\ref{sec:restart_defect}. Every cycle length in this work is
+corrected by that transform before use.
 
 \subsubsection{Radial peaking factor}
 
@@ -877,10 +975,12 @@ measurements in Section~\ref{sec:res-corevalidation}.
 \subsubsection{Normalisation of the constraint violation}
 \label{subsubsec:cv-norm}
 
-The five constraints of the problem are expressed in four different physical
+The constraints of the problem are expressed in four different physical
 units. The reactivity window acts on the multiplication factor, the enrichment
 cap on a weight percentage, the peaking limit on a dimensionless power ratio,
-and the vessel-fit condition on a length in centimetres.
+and the vessel-fit condition on a length in centimetres. The
+controllability screen added in Campaign 7 acts on a multiplication
+factor and takes the scale of that window.
 
 The constraint handling of the NSGA-II (Non-dominated Sorting Genetic
 Algorithm II) implementation ranks infeasible candidates by the total
@@ -911,9 +1011,12 @@ The terms of Equation~\eqref{eq:cv-norm} have the following meaning.
   \item $n_g$ is the number of inequality constraints, dimensionless.
 \end{itemize}
 
-The scales adopted are $s = 1.02$ for the lower reactivity bound, $s = 1.35$
-for the upper reactivity bound, $s = 19.75$ for the enrichment cap, $s = 2.0$
-for the peaking limit, and $s = 90.0$~cm for the vessel-fit condition. Each
+The scales adopted are $s = 1.02$ for the lower reactivity bound,
+$s = k_{\max}$ for the upper reactivity bound, equal to 1.35 in
+Campaign 6 and to the campaign value of
+Table~\ref{tab:ctrl-bounds} thereafter, $s = 19.75$ for the enrichment
+cap, $s = 2.0$ for the peaking limit, $s = 90.0$~cm for the vessel-fit
+condition and $s = 0.99$ for the controllability screen. Each
 normalised violation is then the fraction of its own limit.
 
 Three properties of this change are noted.
@@ -1037,6 +1140,7 @@ deviation of the Campaign 7 archive median.
   columns have all sixteen regulating banks inserted. Subcriticality
   is $(1 - 1/k)$ in pcm, negative when supercritical.}
   \label{tab:lax-study}
+  \small
   \begin{tabular}{ccccccc}
     \toprule
     Design & $k^\mathrm{2D}$ & $k^\mathrm{3D}$ & $L_\mathrm{ax}$ & $k^\mathrm{3D}_\mathrm{ARI}$ & 2D subcrit. [pcm] & 3D subcrit. [pcm] \\
@@ -1442,7 +1546,8 @@ the informative replacement.
   Settings are frozen per checkpoint, and only the thread count adapts
   to the host.}
   \label{tab:fidelity}
-  \begin{tabular}{lccc}
+  \small
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.17\textwidth}c>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}X@{}}
     \toprule
     Stage & Particles $\times$ batches\tnote{a} & Seed policy & Role \\
     \midrule
@@ -1457,8 +1562,9 @@ the informative replacement.
     Campaign 8     & $4\,000\times60$ (20)\tnote{b}    & per-design & candidate, two rodded core solves \\
     Screening      & $64\,000\times120$ (30)  & replicated          & subset selection \\
     Confirmation   & $256\,000\times120$ (30) & replicated, 8 seeds & finalists \\
+    C5 confirmation & $200\,000\times260$ (80) & replicated, 8 seeds & champion peaking \\
     \bottomrule
-  \end{tabular}
+  \end{tabularx}
   \begin{tablenotes}[flushleft]\footnotesize
     \item[a] Inactive batches in parentheses. Per-design seeds are
       generated as a CRC32 hash of the design vector, and the core
@@ -1520,8 +1626,11 @@ one-to-one onto a cycle-length cap.
 Campaign 2 imposed the limit retrospectively, as an exact
 post-processing transform of the completed campaign. Campaigns 3 and 4
 terminate depletion at $B_\mathrm{ATF}$ inside the loop, so censoring
-is eliminated by construction. Hypervolume histories reset whenever the
-objective definition changes.
+is eliminated by construction in the labelled burnup. It is not
+eliminated in the physical burnup for the campaigns affected by the
+restart defect of Section~\ref{sec:restart_defect}, whose effective
+ceiling was half the intended one. Hypervolume histories reset whenever
+the objective definition changes.
 
 Campaign 6 raises the depletion ceiling from 75 to
 \SI{100}{\mega\watt\day\per\kilo\gram}. The two numbers play different
@@ -1856,9 +1965,12 @@ every observed difference is attributable
     C3 & 72 & Fidelity ladder, per-design seeds, in-loop ATF
        & Converged, proxy gap found \\
     C4 & 54 & $F_{\Delta H}$ and $g_\mathrm{peak}$ moved to core level
-       & Constraint conflict mapped \\
+       & Apparent two-constraint conflict mapped, later shown to be an
+         artefact of the assembly reactivity basis
+         (Sec.~\ref{sec:meth-kbasis}) \\
     C5 & 60 & Gd pin count as a design variable
-       & Absorber-inventory lever \\
+       & Inventory authority confirmed, empty feasible set on the
+         as-run basis, motivates the Campaign 6 basis change \\
     C6 & 114 & Bundled corrections, then one acquisition change per block
        & Converged, front of 15 designs \\
        C7 & 60 & Measured controllability screen $g_\mathrm{ctrl}$
@@ -2066,11 +2178,16 @@ rather than corrected within the campaigns.
 \end{enumerate}
 
 Under the one-change rule stated in
-Section~\ref{sec:meth-campaigns} the treatment is held fixed
-through Campaign~4. The Campaign-5 design-basis decision is preceded by
-a direct measurement, in which the selected finalists are re-depleted
-at \SI{0}{ppm}, so that the choice rests on computed values rather than
-on estimates.
+Section~\ref{sec:meth-campaigns} the treatment is held fixed at
+\SI{1000}{ppm} through every campaign of this work. The design basis
+is therefore closed on the benchmark-traceable value, and the
+soluble-boron-free case is recorded as future work. The direct
+measurement that would precede any such change has been performed in
+part, as the boron worth study of
+Section~\ref{sec:meth-boron-worth} reports the differential worth and
+the rods-only margin of the Campaign 8 candidates at
+\SIrange{0}{1500}{ppm}, so the eventual decision would rest on
+computed values rather than on estimates.
 
 \subsection{Boron worth and the rods-only margin of the candidates}
 \label{sec:meth-boron-worth}

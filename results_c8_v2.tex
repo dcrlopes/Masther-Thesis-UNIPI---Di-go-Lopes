@@ -249,15 +249,20 @@ design is censored.
 \begin{table}[htbp]
   \centering
   \small
-  \caption{The Campaign 8 front. Ring enrichments are the as-built
-  centre, middle and periphery values. Excess is the beginning-of-life
-  reactivity at \SI{1000}{ppm} that the rods must hold. $F_{\Delta H}$
-  is given with all rods out, with two banks in and with four banks
-  in.}
+  \caption[The Campaign 8 front]{The Campaign 8 front. Ring
+  enrichments are the as-built centre, middle and periphery values.
+  Excess is the beginning-of-life reactivity at \SI{1000}{ppm} that
+  the rods must hold. The peaking factor is given with all rods out
+  ($F$), with two banks in ($F_2$) and with four banks in ($F_{16}$).}
   \label{tab:c8-front}
+  \setlength{\tabcolsep}{3.4pt}
   \begin{tabular}{ccccccccccc}
     \toprule
-    Design & EFPD & rings [wt\%] & $w_\mathrm{Gd}$ & $n_\mathrm{Gd}$ & $t_\mathrm{refl}$ & $k^\mathrm{core}$ & excess [pcm] & $F$ & $F_{2}$ & $F_{16}$ \\
+    Design & EFPD & rings & $w_\mathrm{Gd}$ & $n_\mathrm{Gd}$ &
+      $t_\mathrm{refl}$ & $k^\mathrm{core}$ & excess & $F$ & $F_{2}$ &
+      $F_{16}$ \\
+    {[--]} & [d] & [wt\%] & [wt\%] & [rods] & [cm] & [--] & [pcm] &
+      [--] & [--] & [--] \\
     \midrule
     47 & 1941 & 3.16, 3.93, 5.05  & 2.88 & 12 & 4.29 & 1.098 &  8930 & 1.510 & 1.991 & 2.314 \\
     42 & 1968 & 3.20, 3.97, 5.11  & 2.88 & 12 & 3.76 & 1.101 &  9154 & 1.522 & 1.997 & 2.264 \\
@@ -342,12 +347,18 @@ a beginning-of-life excess of only \num{2564} to \SI{4068}{pcm}.
 \begin{table}[htbp]
   \centering
   \small
-  \caption{The feasible designs controllable with the first two banks.
-  Design 12 is included for completeness and is not a candidate.}
+  \caption[The Campaign 8 two-bank subset]{The feasible designs
+  controllable with the first two banks. Design 12 is included for
+  completeness and is not a candidate. Columns are as in
+  Table~\ref{tab:c8-front}.}
   \label{tab:c8-two}
+  \setlength{\tabcolsep}{3.8pt}
   \begin{tabular}{cccccccccc}
     \toprule
-    Design & EFPD & rings [wt\%] & $w_\mathrm{Gd}$ & $n_\mathrm{Gd}$ & $t_\mathrm{refl}$ & $k^\mathrm{core}$ & excess [pcm] & $F$ & $F_{2}$ \\
+    Design & EFPD & rings & $w_\mathrm{Gd}$ & $n_\mathrm{Gd}$ &
+      $t_\mathrm{refl}$ & $k^\mathrm{core}$ & excess & $F$ & $F_{2}$ \\
+    {[--]} & [d] & [wt\%] & [wt\%] & [rods] & [cm] & [--] & [pcm] &
+      [--] & [--] \\
     \midrule
     53 & 1142 & 2.48, 3.08, 3.97 & 2.92 & 12 & 4.74 & 1.026 & 2564 & 1.524 & 2.020 \\
     13 & 2383 & 3.70, 4.59, 5.91 & 5.25 & 24 & 3.15 & 1.042 & 4068 & 1.632 & 2.131 \\
@@ -386,22 +397,28 @@ lists against it.
 \begin{table}[htbp]
   \centering
   \small
-  \caption{Beginning-of-life reactivity to be held by the rods, with
+  \caption[Reactivity to be held by the rods, against the
+  benchmark]{Beginning-of-life reactivity to be held by the rods, with
   \SI{1000}{ppm} of soluble boron in the coolant, for the NuScale-like
   benchmark and for the two Campaign 8 candidate lists. The worth
-  column is for sixteen control rod assemblies in every case: the
-  benchmark's four banks together, and the four regulating banks of
+  column is for sixteen control rod assemblies in every case, namely
+  the benchmark's four banks together and the four regulating banks of
   this core.}
   \label{tab:bench-compare}
-  \begin{tabular}{lccc}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X ccc@{}}
     \toprule
-    Core & $k_\mathrm{eff}^\mathrm{core}$ & excess to hold [pcm] & worth of sixteen assemblies [pcm] \\
+    Core & $k_\mathrm{eff}^\mathrm{core}$ & excess to hold &
+      worth of 16 CRA \\
+     & [--] & [pcm] & [pcm] \\
     \midrule
-    NuScale-like benchmark~\cite{fridman_nuscale_benchmark_2023} & 1.028 & 2700 & 19231 \\
-    Campaign 8 front, Table~\ref{tab:c8-front}                   & 1.098 to 1.158 & 8930 to 13627 & 14270 to 17665 \\
-    Campaign 8 two-bank subset, Table~\ref{tab:c8-two}           & 1.026 to 1.042 & 2564 to 4068 & 13906 to 16303 \\
+    NuScale-like benchmark~\cite{fridman_nuscale_benchmark_2023}
+      & 1.028 & 2700 & 19231 \\
+    Campaign 8 front, Table~\ref{tab:c8-front}
+      & 1.098 to 1.158 & 8930 to 13627 & 14270 to 17665 \\
+    Campaign 8 two-bank subset, Table~\ref{tab:c8-two}
+      & 1.026 to 1.042 & 2564 to 4068 & 13906 to 16303 \\
     \bottomrule
-  \end{tabular}
+  \end{tabularx}
 \end{table}
 
 The rods are alike. Sixteen assemblies of this core are worth
@@ -495,10 +512,13 @@ required value rather than as an objective.
 
 The campaign cost \SI{75684}{s}, \SI{1261}{s} per evaluation, against
 \SI{949}{s} in Campaign 7 on the AWS instance. The archive now records
-every phase, so the breakdown is exact: assembly solve \SI{11}{s}, core
-solve \SI{107}{s}, depletion \SI{925}{s}, and the two rodded solves
-\num{100} and \SI{102}{s}. The rodded solves are \SI{16.2}{\%} of the
-cost. The depletion dominates because the cycles are long, 14.6
+every transport phase separately, so the breakdown is measured rather
+than apportioned: assembly solve \SI{11}{s}, core solve \SI{107}{s},
+depletion \SI{925}{s}, and the two rodded solves \num{100} and
+\SI{102}{s}. Those five phases sum to \SI{1245}{s}, so the residual
+\SI{16}{s} per evaluation, \SI{1.3}{\%}, is the non-transport
+overhead of the evaluation call. The two rodded solves are
+\SI{16.0}{\%} of the evaluation and \SI{16.2}{\%} of its transport. The depletion dominates because the cycles are long, 14.6
 transport states per design against 13.0 in Campaign 7. The measured
 particle rate on the 64 threads of wks720, \num{5734} per second,
 equals that of the 32 cores of the AWS instance, so the difference in
@@ -535,7 +555,13 @@ Five limitations bound the claims of this section.
         explicitly. The boron worth of the candidates is measured in
         the confirmation study of Section~\ref{sec:meth-boron-worth}.
 
-  \item The convergence claim is one block short of the formal rule.
+  \item The convergence claim is one block short of the formal rule of
+        Section~\ref{sec:meth-loop}, which requires the hypervolume
+        gain to stay below one per cent for three consecutive
+        iterations. Campaign 8 ran four infill blocks and the gain fell
+        below the threshold in the last two, so the third consecutive
+        observation is missing. The front is reported as the best
+        available rather than as a converged one.
 \end{enumerate}
 
 Two candidate lists follow from the campaign, and they are different
