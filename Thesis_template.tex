@@ -238,6 +238,7 @@ this thesis and carry no claim of correspondence with the prototype.
 %\chapter{Appendix Title}\label{s.appB}
 %\lipsum[1]
 %\newpage
+\input{appendix_code_architecture}
 
 \end{appendices}
 
@@ -245,40 +246,6 @@ this thesis and carry no claim of correspondence with the prototype.
 \addcontentsline{toc}{chapter}{\bibname}
 \bibliographystyle{unsrtnat}
 % The bibliographic references are stored in a separate file: biblio.bib
-\bibliography{references_additions}
-
-\chapter*{List of acronyms (optional)}
-% If you need a long list of acronyms, using the glossaries package can be of great advantage:
-% e.g. \usepackage[toc,acronyms,nonumberlist]{glossaries}
-% Otherwise you can do it by yourself filling the following table.
-\addcontentsline{toc}{chapter}{List of acronyms}
-\thispagestyle{specialheader}
-\markboth{}{}
-\begin{table}[!htb]
-\begin{tabular}{lll}
-\textbf{Acronym} &   & \textbf{Definition} \\
-\hline\\[-2mm]
-BOC  &  & Beginning of cycle \\[1mm]
-EOC  &  & End of cycle       \\[1mm]
-HZP  &  & Hot zero power     \\[1mm]
-$\ldots$ &  & $\ldots$       \\[1mm]
-\end{tabular}
-\end{table}
-
-\chapter*{List of symbols (optional)}
-% The glossaries package can also be useful to create a list of symbols. If necessary, you can have a look at the following webpage:
-% https://tex.stackexchange.com/questions/348640/how-to-effectively-use-list-of-symbols-for-a-thesis
-% Otherwise you can do it by yourself filling the following table.
-\addcontentsline{toc}{chapter}{List of symbols}
-\thispagestyle{specialheader}
-\markboth{}{}
-\begin{table}[!htb]
-\begin{tabular}{lll}
-\textbf{Symbol}   & \textbf{Definition} & \textbf{Units (SI)} \\
-\hline\\[-2mm]
-$\Phi$   & neutron flux & $cm^{-2}s^{-1}$ \\[1mm]
-$\ldots$ & $\ldots$     & $\ldots$        \\[1mm]
-\end{tabular}
-\end{table}
+\
 
 \end{document}

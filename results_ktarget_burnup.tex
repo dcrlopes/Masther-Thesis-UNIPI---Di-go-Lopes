@@ -1,0 +1,262 @@
+% =====================================================================
+%  results_ktarget_burnup.tex
+%  Version 2, 3 September 2026. FILLED with the measured results of
+%  kt_burnup/summary.json (10 designs, 3 seeds, 90 core and assembly
+%  solves, 8.43 h of solve wall time).
+%
+%  Paste into results_c8_v2.tex between the AUTHOR note that closes
+%  \subsection{The two-bank subset} (around line 438) and
+%  \subsection{Cycle length against the reported refuelling interval}
+%  (around line 441).
+%
+%  Labels defined: sec:res-kt-burnup, tab:kt-burnup, eq:kt-lf,
+%                  eq:kt-defpd, eq:kt-comp
+%  Labels used:    sec:meth-ktarget, sec:meth-lax, sec:res-corevalidation,
+%                  sec:res-c8-front, sec:res-c8-limits, tab:c8-front,
+%                  tab:c8-two, eq:ktarget
+%
+%  Requires: booktabs, siunitx (both already in Thesis_template.tex).
+%  Two AUTHOR notes remain, marked %% AUTHOR.
+% =====================================================================
+
+\subsection{Burnup and composition dependence of the leakage
+correction}
+\label{sec:res-kt-burnup}
+
+The leakage-corrected target of Equation~\eqref{eq:ktarget} rests on
+two assumptions that the closure check of
+Section~\ref{sec:res-corevalidation} does not reach. The leakage
+factor is evaluated once, at beginning of life, on a single reference
+composition of \num{4.55} and \SI{4.05}{\percent} by weight without
+gadolinia, and it is then held constant over the whole cycle and
+applied to every design in the space. Both assumptions are tested
+here, on the eight front designs of Table~\ref{tab:c8-front} and on
+the two-bank representatives of Table~\ref{tab:c8-two}.
+
+For each design the reflective assembly is depleted once, in a single
+shot with the campaign schedule, up to two steps beyond its end of
+cycle. At beginning of life and at the two depletion steps that
+bracket the end of cycle, the depleted composition is loaded uniformly
+into all \num{32} assemblies of the core model of
+Section~\ref{sec:meth-ktarget} and into the reflective assembly, and
+both eigenvalues are solved with three independent seeds. The measured
+leakage factor follows.
+
+\begin{equation}
+\mathrm{LF}(B) =
+\frac{k_\infty^\mathrm{assembly}(B)}{k_\mathrm{eff}^\mathrm{core}(B)}
+\; L_\mathrm{ax}
+\label{eq:kt-lf}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $\mathrm{LF}(B)$ is the leakage factor measured at burnup $B$
+        on the design's own depleted composition, dimensionless.
+
+  \item $k_\infty^\mathrm{assembly}(B)$ is the infinite multiplication
+        factor of the reflective assembly at burnup $B$,
+        dimensionless.
+
+  \item $k_\mathrm{eff}^\mathrm{core}(B)$ is the effective
+        multiplication factor of the \num{32}-assembly core built with
+        the same reflector thickness, loaded uniformly with the same
+        depleted composition and closed by a vacuum radial boundary,
+        dimensionless.
+
+  \item $L_\mathrm{ax}$ is the axial leakage factor of
+        Section~\ref{sec:meth-lax}, equal to \num{1.0289},
+        dimensionless.
+
+  \item $B$ is the burnup, in MWd/kgHM.
+\end{itemize}
+
+Two quantities are read from the measurement. The drift is the change
+of the leakage factor between the two ends of the cycle and tests the
+burnup assumption. The residual is the leakage factor minus the
+tabulated target and tests the composition assumption. The residual at
+the end of cycle is the one that moves the reported cycle length,
+through the local reactivity slope of the assembly.
+
+\begin{equation}
+\Delta\mathrm{EFPD} =
+\frac{\mathrm{LF}(B_\mathrm{EOC}) - k_\mathrm{target}}
+     {\left. \mathrm{d}k_\infty / \mathrm{d}B \right|_{B_\mathrm{EOC}}}
+\; \frac{1000}{q}
+\label{eq:kt-defpd}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $\Delta\mathrm{EFPD}$ is the correction to the reported cycle
+        length, in effective full-power days.
+
+  \item $\mathrm{LF}(B_\mathrm{EOC})$ is the leakage factor of
+        Equation~\eqref{eq:kt-lf} at the end-of-cycle burnup,
+        dimensionless.
+
+  \item $k_\mathrm{target}$ is the tabulated target the optimiser used
+        for that design, dimensionless.
+
+  \item $\mathrm{d}k_\infty / \mathrm{d}B$ is the local reactivity
+        slope of the assembly between the two bracketing depletion
+        steps, in (MWd/kgHM)$^{-1}$, negative at the end of cycle.
+
+  \item $q$ is the core specific power, equal to
+        \SI{9.9827}{\watt\per\gram} of heavy metal.
+
+  \item $B_\mathrm{EOC}$ is the end-of-cycle burnup, in MWd/kgHM.
+\end{itemize}
+
+Table~\ref{tab:kt-burnup} reports the measurement. Every design ended
+its cycle on the reactivity crossing, so no entry is set by the burnup
+cap.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption[Burnup dependence of the Route B leakage factor]{Burnup
+  dependence of the Route B leakage factor on the Campaign 8 designs.}
+  \label{tab:kt-burnup}
+  \setlength{\tabcolsep}{4.2pt}
+  \begin{tabular}{ccccccccc}
+    \toprule
+    Design & $e$ & $t_\mathrm{refl}$ & $B_\mathrm{EOC}$ &
+      $k_\mathrm{target}$ & $\mathrm{LF}_\mathrm{BOL}$ &
+      $r_\mathrm{BOL}$ & drift & $\Delta\mathrm{EFPD}$ \\
+    {[--]} & [wt\%] & [cm] & [MWd/kgHM] & [--] & [--] & [pcm] & [pcm] &
+      [d] \\
+    \midrule
+     1 & 11.03 & 3.94 & 57.8 & 1.0829 & 1.0793 & $-329$ & $+33 \pm 126$ & $+56$ \\
+    59 &  9.34 & 5.66 & 50.2 & 1.0820 & 1.0796 & $-220$ & $ -4 \pm 107$ & $+43$ \\
+    44 &  9.23 & 5.33 & 49.8 & 1.0822 & 1.0798 & $-219$ & $-10 \pm  90$ & $+42$ \\
+    21 &  7.81 & 4.92 & 42.3 & 1.0824 & 1.0800 & $-222$ & $+149 \pm 84$ & $+11$ \\
+    31 &  6.59 & 4.18 & 33.4 & 1.0828 & 1.0819 & $ -85$ & $-10 \pm  85$ & $+14$ \\
+    29 &  5.90 & 4.69 & 31.0 & 1.0825 & 1.0824 & $  -9$ & $-152 \pm 99$ & $+25$ \\
+    23 &  4.94 & 4.81 & 23.7 & 1.0824 & 1.0830 & $ +53$ & $-67 \pm 116$ & $ +2$ \\
+    42 &  4.44 & 3.76 & 19.7 & 1.0830 & 1.0836 & $ +54$ & $-22 \pm  82$ & $ -4$ \\
+    47 &  4.39 & 4.29 & 19.5 & 1.0827 & 1.0830 & $ +27$ & $ +2 \pm 107$ & $ -4$ \\
+    53 &  3.45 & 4.74 & 10.8 & 1.0825 & 1.0844 & $+174$ & $-84 \pm  88$ & $-14$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The burnup assumption holds. No single drift is resolved at two
+standard deviations, the largest ratio of value to uncertainty being
+\num{1.78} on design 21. The ten drifts are ten independent
+measurements of the same physical quantity, so they are combined by
+inverse-variance weighting.
+
+\begin{equation}
+\overline{\Delta\mathrm{LF}} = -13 \pm \SI{30}{pcm},
+\qquad
+\chi^2 = 6.73 \ \text{on 9 degrees of freedom}
+\label{eq:kt-comp}
+\end{equation}
+
+The weighted mean is \num{0.43} standard deviations from zero. The
+reduced chi-squared of \num{0.75}, with a probability of \num{0.66},
+states that the observed scatter of the ten values is accounted for by
+the Monte Carlo uncertainties alone, so the data support neither a
+common drift nor a design-dependent one. The bound to quote is
+\SI{60}{pcm} at two standard deviations on the mean, which corresponds
+to \num{7} to \SI{11}{d} at the local reactivity slopes of the table,
+below \SI{0.9}{\percent} of every reported cycle. The frozen leakage
+factor is therefore justified over the cycle.
+
+The composition assumption does not hold, and this is the substantive
+result. The beginning-of-life residual runs from $+174$ to
+\SI{-329}{pcm} and is almost perfectly ordered by enrichment.
+
+\begin{itemize}
+  \item The Pearson correlation between $r_\mathrm{BOL}$ and the
+        enrichment is $-0.975$, against $-0.234$ for the reflector
+        thickness, so the effect is compositional and not geometric.
+
+  \item The linear fit is $r_\mathrm{BOL} = 341 - 62.4\,e$ in pcm,
+        with $e$ the enrichment in per cent by weight, and a
+        root-mean-square residual of \SI{38}{pcm}, which is inside the
+        statistics of a single solve.
+
+  \item The residual passes through zero near \SI{5.5}{\percent} by
+        weight, close to the reference composition on which the table
+        was built, and grows to \SI{-329}{pcm} at the
+        \SI{11.03}{\percent} of design 1.
+\end{itemize}
+
+The sign is the one a two-group argument predicts. The non-leakage
+probability of a bare core is governed by the product of the geometric
+buckling and the migration area, and raising the enrichment raises the
+absorption cross section, shrinks the migration area, and reduces the
+relative leakage. A more reactive core therefore needs a smaller
+leakage correction than the reference composition of the table
+supplies.
+
+The consequence for the reported results is bounded and directional. A
+negative residual means the frozen table demanded more reactivity than
+the depleted core required, so Route B was conservative and the
+reported cycle length is a lower bound. This is the case for the six
+longest-cycle designs, with corrections of $+11$ to \SI{+56}{d}, that
+is \num{0.3} to \SI{1.0}{\percent}. The sign reverses below the
+reference composition, and design 53 is overstated by \SI{14}{d}, or
+\SI{1.3}{\percent}. Applying the correction of
+Equation~\eqref{eq:kt-defpd} to all ten designs leaves the ordering of
+Table~\ref{tab:c8-front} unchanged, including the \SI{27}{d} gap
+between designs 42 and 47, because the objective differences on the
+front are of the order of hundreds of days.
+
+The measurement also delivers an independent replicate of the cycle
+length itself. The depletion here was run in a single shot, while the
+campaign ran it in chunks of two steps, and the two used different
+random-number seeds, because the seed is a hash of the design
+dictionary and the two dictionaries carry different key sets. Across
+the nine designs whose end of cycle falls on a \SI{4}{MWd\per\kilo
+\gram} step, the cycle lengths agree to a mean of
+\SI{+0.09}{\percent} with a standard deviation of
+\SI{0.91}{\percent}. This is the first direct measurement of the
+Monte Carlo uncertainty on cycle length in this work, and it also
+confirms that the chunked restart of the campaign carries no
+systematic bias.
+
+Three limits of the measurement should be stated.
+
+\begin{enumerate}
+  \item The depleted composition is loaded uniformly into all
+        \num{32} assemblies. This reproduces the construction of the
+        calibration table exactly, which is what the check requires,
+        but it does not represent the radial burnup distribution of an
+        operating core, in which the periphery burns more slowly than
+        the centre.
+
+  \item The end-of-cycle leakage factor is interpolated linearly
+        between the two bracketing depletion steps, which are up to
+        \SI{4}{MWd\per\kilo\gram} apart. The interpolation error is
+        second order in that interval and is not separated from the
+        statistical uncertainty.
+
+  \item Design 53 ends its cycle at \SI{10.8}{MWd\per\kilo\gram},
+        inside the beginning-of-life block, so its crossing is
+        interpolated across the \SI{6}{MWd\per\kilo\gram} interval
+        between the depletion points at \num{7.5} and
+        \SI{13.5}{MWd\per\kilo\gram}. Its cycle length is
+        correspondingly more sensitive to eigenvalue noise, and it is
+        the one design whose two replicates differ by more than
+        \SI{1.5}{\percent}, at \SI{-4.8}{\percent}. The coarse
+        beginning-of-life block is adequate for the long-cycle
+        designs and marginal for the short-cycle ones.
+\end{enumerate}
+
+%% AUTHOR: whether the composition dependence of the leakage factor
+%% should be reported as a limitation of Route B, as done above, or
+%% closed by refitting the table as a function of enrichment as well
+%% as reflector thickness in any follow-on work. The measured slope of
+%% -62.4 pcm per weight per cent is the coefficient such a refit would
+%% need.
+
+%% AUTHOR: whether the conservative direction of the correction on the
+%% six longest-cycle designs is worth carrying into the comparison
+%% with the reported refuelling interval of
+%% Section~\ref{sec:res-c8-mission}, where a lower bound on the cycle
+%% length strengthens rather than weakens the argument.
