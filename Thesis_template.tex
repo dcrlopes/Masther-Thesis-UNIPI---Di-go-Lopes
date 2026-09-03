@@ -191,16 +191,47 @@ Submitted in partial fulfilment of the requirements for the\\
 \begin{appendices}
 \chapter{Traceability of the open data on LABGENE}\label{app:labgene-data}
 
-\openpoint{This appendix is the traceability table of Correction~C10 of
-\texttt{labgene\_corrections.tex}. It lists every item of open information on
-the LABGENE prototype used in this thesis, the value adopted and the primary
-source of that value. Pasting it is blocked on one prerequisite. The file
-\texttt{labgene\_primary\_sources.bib} must first be merged into
-\texttt{references\_additions.bib}, because the table cites twelve keys that
-are not yet defined, among them \texttt{ctmsp\_visita\_2018},
-\texttt{vasconcelos\_fapesp\_2025} and \texttt{brazil\_npt\_wp13\_2026}. Merge
-the bibliography, then paste the block between the markers
-\texttt{\%\% >>> REPLACEMENT C10} and \texttt{\%\% <<< END C10}.}
+Table~\ref{tab:labgene-data} lists every item of open information on the
+LABGENE prototype used in this thesis, the value adopted, and the primary
+source of that value. Items marked as assumptions are modelling choices of
+this thesis and carry no claim of correspondence with the prototype.
+
+\begin{table}[htbp]
+  \centering
+  \footnotesize
+  \caption{Open-source data on the LABGENE prototype and their primary
+    references.}
+  \label{tab:labgene-data}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.4cm} >{\raggedright\arraybackslash}p{3.6cm} >{\raggedright\arraybackslash}X@{}}
+    \toprule
+    \textbf{Item} & \textbf{Value adopted} & \textbf{Primary source} \\
+    \midrule
+    Reactor type & PWR & \cite{ctmsp_labgene_2015}, confirmed by \cite{vasconcelos_fapesp_2025} \\
+    \addlinespace
+    Rated power & 48\,MW thermal & 48\,MW stated by \cite{ctmsp_visita_2018}. Thermal per \cite{dinizcosta_2017} and \cite{demartini_nuclep_2022} \\
+    \addlinespace
+    Fuel & UO$_2$ pellets in rods grouped into fuel elements & \cite{marinha_inb_labgene_2022}, \cite{pereira_rmb_2023} \\
+    \addlinespace
+    Enrichment class & LEU, below 20\,wt\% & \cite{brazil_npt_wp71_2022}, \cite{brazil_npt_wp13_2026}. Definition of LEU from \cite{nrc_10cfr110_2} \\
+    \addlinespace
+    Enrichment value & Not fixed. Design space 2.0 to 19.75\,wt\% & Reported 6 to 8\,wt\% \cite{dinizcosta_2017}, 18 to 19\,wt\% \cite{kassenova_2014}, up to 19\,wt\% \cite{vasconcelos_fapesp_2025} \\
+    \addlinespace
+    Refuelling interval & Objective of the optimisation, not fixed & Four years \cite{galante_podernaval_2020}, five years \cite{dinizcosta_2017} \\
+    \addlinespace
+    Vessel internal radius & 90\,cm & Figure~13 of \cite{maruyama_2013}, simplified model drawn according to CTMSP \\
+    \addlinespace
+    Vessel wall and height & Not modelled & 100\,mm and 4700\,mm in the same figure of \cite{maruyama_2013} \\
+    \addlinespace
+    Active fuel height & 120\,cm, assumption & Estimated from the proportions of Figure~13 of \cite{maruyama_2013} \\
+    \addlinespace
+    Lattice, pitch, assembly count, absorbers, boron, reflector & Assumptions of this thesis & No open source \\
+    \addlinespace
+    Status of the plant & Not critical as of May 2025, boiler-steam tests first & \cite{vasconcelos_fapesp_2025}\\
+    \addlinespace
+    Safeguards status & Special procedures under Article~13 of the Quadripartite Agreement in negotiation & \cite{iaea_dg_statement_2022}, \cite{eu_statement_bog_2025}, \cite{brazil_npt_wp13_2026} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
 \newpage
 
 % Add more appendices if needed, or comment the above one if no Appendices are necessary.

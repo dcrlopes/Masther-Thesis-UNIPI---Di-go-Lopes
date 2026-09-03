@@ -39,16 +39,23 @@ only where physically necessary to meet the mission objective, namely a
 long refuelling interval under low-enriched uranium (LEU).
 
 The element carried over unchanged from national production is the fuel
-rod. UO$_2$ ceramic pellets, Zircaloy-4 cladding, and the
-rod-fabrication route operated by Ind\'ustrias Nucleares do Brasil
-(INB) at the F\'abrica de Combust\'iveis Nucleares in Resende, which
-supplies reload fuel for Angra~1 and~2~\cite{inb_fcn_resende}, are
-adopted without modification.
+rod. UO$_2$ ceramic pellets, zircaloy cladding, and the rod-fabrication
+route operated by Ind\'ustrias Nucleares do Brasil (INB) at the
+F\'abrica de Combust\'ivel Nuclear in Resende, which supplies the fuel of
+Angra~1 and~2 with pellets enriched between 2 and
+5\,wt\%~\cite{inb_montagem_ec,inb_resende}, are adopted without
+modification. The cladding is modelled as Zircaloy-4. The same
+industrial route already fabricates the UO$_2$ pellets of the LABGENE
+fuel~\cite{marinha_inb_labgene_2022}.
 
 The reference core departs from the $16\times16$ lattice of the Angra
-units~\cite{angra_fuel_1_2} by adopting the $17\times17$
-Westinghouse-type assembly, with 264 fuel rods, 24 guide tubes and one
-instrumentation tube. This changes the assembly \emph{skeleton}, not
+units by adopting the $17\times17$ Westinghouse-type assembly, with 264
+fuel rods, 24 guide tubes and one instrumentation tube. The
+$16\times16$ lattice of the Angra units follows from the published
+counts. An Angra~1 assembly holds 235 fuel rods, 20 guide tubes and one
+instrumentation tube, and an Angra~2 assembly holds 236 fuel rods and 20
+guide tubes, so both fill the 256 positions of a $16\times16$
+array~\cite{inb_montagem_ec,eletronuclear_angra1,eletronuclear_angra2}. This changes the assembly \emph{skeleton}, not
 the rod technology. The $17\times17$ lattice is the most widely
 fabricated and best-benchmarked PWR geometry in service, so its
 adoption is an incremental industrialisation step. It also provides the
@@ -91,9 +98,13 @@ and~\ref{tab:model-operating}.
 
 \begin{table}[htbp]
   \centering
-  \caption{Geometry of the reference model (from the open-data
-  dossier~\cite{dados_abertos_2026} and NuScale-class
-  practice~\cite{nuscale_htp2_2017}).}
+  \caption{Geometry of the reference model. The vessel internal radius
+  is the 900\,mm inner radius of the simplified vessel model drawn
+  according to CTMSP in~\cite{maruyama_2013}, Figure~13, as detailed in
+  Figure~\ref{fig:vessel-dimensioned}. The pin and guide-tube dimensions
+  follow NuScale-class practice~\cite{nuscale_htp2_2017}. The active
+  height, the enrichment zoning, the poisoned-pin pattern, the core map
+  and the reflector are modelling choices of this thesis.}
   \label{tab:model-geometry}
   \begin{tabular}{llc}
     \toprule
@@ -116,7 +127,12 @@ and~\ref{tab:model-operating}.
 
 \begin{table}[htbp]
   \centering
-  \caption{Operating and material basis.}
+  \caption{Operating and material basis. The core thermal power is the
+  48\,MW rating of the LABGENE plant stated by
+  CTMSP~\cite{ctmsp_visita_2018}, identified as thermal power by the
+  academic literature~\cite{dinizcosta_2017}. The temperatures, the
+  soluble boron concentration and the nuclear data are modelling
+  choices.}
   \label{tab:model-operating}
   \begin{tabular}{llc}
     \toprule
@@ -206,7 +222,9 @@ sources.
         benchmark sizes.
 \end{enumerate}
 
-The active height of 120\,cm is a modelling choice of this thesis.
+The active height of 120\,cm is a modelling choice of this thesis. The
+stainless steel reflector annulus is likewise an assumption. No open
+source specifies the reflector or the core barrel of LABGENE.
 
 \begin{table}[htbp]
   \centering
@@ -2053,7 +2071,10 @@ development. Four considerations support retaining it here.
         effective multiplication factor and a root mean square relative
         difference below \SI{0.11}{\percent} in assembly radial power.
         Equivalent open documentation does not exist for the
-        LABGENE-class naval core that motivates the study, and no
+        LABGENE-class naval core that motivates the study, whose design
+        information is provided only to the International Atomic Energy
+        Agency under the special procedures of the Quadripartite
+        Safeguards Agreement~\cite{eu_statement_bog_2025}, and no
         soluble boron specification for that core is available in the
         public literature.
   \item \textbf{Containment of the design space.} Soluble boron and the

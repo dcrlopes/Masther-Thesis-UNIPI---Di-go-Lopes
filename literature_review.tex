@@ -176,11 +176,14 @@ low-enriched naval core, which is the value adopted as the enrichment constraint
 in this work.
 
 \paragraph{The Brazilian lineage.}
-The LABGENE prototype, developed by the Centro Tecnol\'ogico da Marinha em
-S\~ao Paulo (CTMSP) at the Aramar Experimental Center in Iper\'o, S\~ao Paulo,
-is a 48~MWth pressurised water reactor (PWR). It serves as the land-based
-prototype for the reactor of the \'Alvaro Alberto
-submarine~\cite{fapesp_labgene}.
+The Programa Nuclear da Marinha has been executed since 1979 by the
+Centro Tecnol\'ogico da Marinha em S\~ao Paulo (CTMSP) with two purposes,
+mastery of the nuclear fuel cycle and development of a nuclear power
+plant~\cite{ctmsp_pnm_2025}. Its reactor project is LABGENE, the
+Laborat\'orio de Gera\c{c}\~ao de Energia Nucleoel\'etrica, a land-based
+prototype under construction at the Centro Industrial Nuclear de Aramar,
+formerly the Centro Experimental Aramar, in Iper\'o, S\~ao
+Paulo~\cite{ctmsp_labgene_2015,vasconcelos_fapesp_2025}.
 
 \begin{figure}[htbp]
   \centering
@@ -196,21 +199,67 @@ submarine~\cite{fapesp_labgene}.
   \label{fig:vessel-components}
 \end{figure}
 
-The detailed core neutronics of LABGENE are not published in the open
-literature. No enrichment, lattice pitch, assembly count, burnable poison
-loading, or peaking factor for that core can be cited from any open source.
+The open record establishes the following facts about the LABGENE
+plant.
 
-This absence of open core data is the reason the present work is framed as a
-LABGENE-class study rather than as a study of LABGENE itself. The rated thermal
-power of 48~MWth and the naval pressurised water reactor (PWR) architecture are
-taken from the open record. Every remaining core parameter, namely enrichment,
-lattice pitch, assembly count, gadolinia (Gd$_2$O$_3$) loading, poisoned-pin
-count, and reflector thickness, is an independent modelling choice of this
-thesis and carries no claim of correspondence with the actual prototype.
+\begin{itemize}
+  \item It is a pressurised water reactor with primary, secondary and
+        cooling circuits, developed by the Navy for the submarine and
+        tested first on land~\cite{ctmsp_labgene_2015}.
 
-%% AUTHOR: physics interpretation of what "LABGENE-class" is taken to constrain
-%% and what it deliberately leaves free, and whether that boundary should be
-%% stated here or deferred to the methodology chapter.
+  \item Its rated power is 48~MW according to
+        CTMSP~\cite{ctmsp_visita_2018}. The academic literature gives
+        48 to 50~MWth for the submarine reactor~\cite{dinizcosta_2017}
+        and the specialised press gives 48~MW thermal with about
+        11~MWe~\cite{galante_podernaval_2020,demartini_nuclep_2022}.
+
+  \item Its fuel is low-enriched uranium, as declared by Brazil at the
+        Review Conferences of the Non-Proliferation
+        Treaty~\cite{brazil_npt_wp71_2022,brazil_npt_wp13_2026}. The
+        fuel consists of UO$_2$ pellets in rods grouped into fuel
+        elements, with the pellets fabricated by Ind\'ustrias Nucleares
+        do Brasil (INB) from 2021
+        onward~\cite{marinha_inb_labgene_2022,pereira_rmb_2023}.
+
+  \item A reactor of the same design will equip the \'Alvaro Alberto
+        submarine, the conventionally armed nuclear-powered submarine of
+        the PROSUB
+        programme~\cite{vasconcelos_fapesp_2025,brazil_npt_wp13_2026}.
+\end{itemize}
+
+The enrichment of the LABGENE fuel is reported inconsistently in open
+sources. The coordinator of the submarine programme told the Federal
+Senate in 2014 that the fuel would be enriched to 6 to 8~wt\%, whereas
+Kassenova reported 18 to 19~wt\%, a figure first given by a former
+chairman of the Comiss\~ao Nacional de Energia Nuclear in
+2005~\cite{dinizcosta_2017,kassenova_2014}. In 2025 Pesquisa FAPESP
+reported from Aramar that the submarine fuel enrichment will reach
+19~wt\%, and quoted the director of CTMSP stating that the first fuel
+load had already been produced~\cite{vasconcelos_fapesp_2025}. The
+refuelling interval is given as four
+years~\cite{galante_podernaval_2020} or five
+years~\cite{dinizcosta_2017}.
+
+No lattice pitch, assembly count, burnable poison loading, soluble boron
+concentration or peaking factor for the LABGENE core is available from
+any open source. The only open geometric information is the simplified
+vessel drawing published in a structural dissertation carried out for
+CTMSP, with a cylindrical inner radius of 900~mm, a wall thickness of
+100~mm and an overall height of 4700~mm~\cite{maruyama_2013}.
+
+This absence of open core data is the reason the present work is framed
+as a LABGENE-class study rather than as a study of LABGENE itself. The
+rated power, the PWR architecture, the low-enriched fuel and the vessel
+envelope are taken from the open record. Every remaining core parameter,
+namely enrichment zoning, lattice pitch, assembly count, gadolinia
+(Gd$_2$O$_3$) loading, poisoned-pin count and reflector thickness, is an
+independent modelling choice of this thesis and carries no claim of
+correspondence with the actual prototype. The enrichment explored across
+the campaigns, 2.0 to 19.75~wt\%, encloses the whole range reported for
+the prototype. The final campaign, constrained by the controllability
+screen of Section~\ref{sec:meth-ctrl}, searches 3.0 to 13.9~wt\%, so the
+19~wt\% reported for the prototype lies inside the explored range but
+outside the final candidate space.
 
 \paragraph{Open academic analyses.}
 Two bodies of open academic work inform the design principles applied in this
@@ -226,15 +275,16 @@ thesis.
     channel factors that constrain them~\cite{alam_2019_hotchannel}.
 \end{itemize}
 
-\openpoint{The claim that LABGENE reached first controlled criticality in
-December 2023 has been removed from this subsection. It could not be traced to
-the Comiss\~ao Nacional de Energia Nuclear (CNEN), to the Marinha do Brasil, to
-the International Atomic Energy Agency (IAEA), or to any peer-reviewed source.
-Later reporting describes the propulsion plant as being tested first with steam
-from a conventional fossil-fuel boiler and only afterwards with nuclear fuel,
-which is inconsistent with a criticality in December 2023. Reinstate the claim
-only against a primary CNEN or Marinha do Brasil document, and state the exact
-date and the source in the text.}
+As of May 2025 LABGENE had not reached criticality. The Navy informed
+that the propulsion plant will first be tested with steam from a
+conventional fossil-fuel boiler and only afterwards loaded with nuclear
+fuel, and the director of CTMSP estimated three years to
+criticality~\cite{vasconcelos_fapesp_2025}. The design information of
+the land-based prototype is being provided to the International Atomic
+Energy Agency (IAEA) within the negotiation of the special procedures
+under Article~13 of the Quadripartite Safeguards
+Agreement~\cite{iaea_dg_statement_2022,eu_statement_bog_2025,brazil_npt_wp13_2026},
+which is the institutional reason why the core data remain closed.
 
 \openpoint{The claim that the RITM-200N has a six-year refuelling interval
 has been removed from Table~\ref{tab:naval-vs-commercial}. No source consulted
@@ -365,6 +415,14 @@ gadolinia concentration and poisoned-pin count, pin pitch, and reflector
 thickness, together with the constraint on beginning-of-life $k_{\mathrm{eff}}$
 at 1000~ppm soluble boron, express the reduced-boron and heavy-burnable-poison
 strategy characteristic of long-life naval-heritage cores.
+
+The enrichment range explored in Campaigns 1 to 6, 2.0 to 19.75~wt\%,
+encloses every figure reported for the prototype, from the 6 to 8~wt\%
+stated in 2014 to the 19~wt\% reported in
+2025~\cite{dinizcosta_2017,vasconcelos_fapesp_2025}, so the optimisation
+does not presuppose any of them. The controllability screen of the final
+campaign then bounds the candidate space at 13.9~wt\%, below the highest
+reported figure, which is itself a result on the prototype envelope.
 
 \section{Optimisation of nuclear reactor cores: development and state
 of the art}
