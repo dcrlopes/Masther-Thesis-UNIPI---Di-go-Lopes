@@ -46,17 +46,18 @@ The constraint added is the controllability screen of
 Section~\ref{sec:meth-ctrl}.
 
 \begin{equation}
-g_\mathrm{ctrl}(\mathbf{x}) = k_\mathrm{ARI}(\mathbf{x}) - (1 - \Delta\rho_\mathrm{op}) \le 0
+g_\mathrm{ctrl}(\mathbf{x}) = k_\mathrm{RE}(\mathbf{x}) - (1 - \Delta\rho_\mathrm{op}) \le 0
 \label{eq:g-ctrl}
 \end{equation}
 
 \noindent where the symbols have the following meaning.
 
 \begin{itemize}
-  \item $k_\mathrm{ARI}$ is the effective multiplication factor of the
-        32-assembly core at beginning of life with all sixteen
-        regulating-bank assemblies inserted and the shutdown banks
-        withdrawn, dimensionless.
+  \item $k_\mathrm{RE}$ is the effective multiplication factor of the
+        32-assembly core at beginning of life with the sixteen
+        regulating-bank assemblies inserted and the sixteen
+        shutdown-bank assemblies withdrawn, dimensionless. It is not
+        the all-rods-in state of Section~\ref{sec:meth-ctrl}.
 
   \item $\Delta\rho_\mathrm{op}$ is the operating subcriticality margin
         demanded of the regulating banks, \num{0.01} in units of $k$,
@@ -258,7 +259,7 @@ The worth of the sixteen regulating banks is defined on the two core
 solves of every evaluation.
 
 \begin{equation}
-\rho_\mathrm{bank}(\mathbf{x}) = k_\mathrm{eff}^\mathrm{core}(\mathbf{x}) - k_\mathrm{ARI}(\mathbf{x})
+\rho_\mathrm{bank}(\mathbf{x}) = k_\mathrm{eff}^\mathrm{core}(\mathbf{x}) - k_\mathrm{RE}(\mathbf{x})
 \label{eq:bank-worth}
 \end{equation}
 
@@ -271,8 +272,8 @@ solves of every evaluation.
   \item $k_\mathrm{eff}^\mathrm{core}$ is the unrodded core eigenvalue
         at beginning of life, dimensionless.
 
-  \item $k_\mathrm{ARI}$ is the eigenvalue with all sixteen regulating
-        banks inserted, dimensionless.
+  \item $k_\mathrm{RE}$ is the eigenvalue with the sixteen
+        regulating-bank assemblies inserted, dimensionless.
 \end{itemize}
 
 Across the archive the worth ranges from \num{10936} to
@@ -327,7 +328,7 @@ state.
 \label{sec:res-c7-rodded}
 
 The peaking objective is evaluated with all rods out. The same core
-solve that measures $k_\mathrm{ARI}$ also yields the radial peaking
+solve that measures $k_\mathrm{RE}$ also yields the radial peaking
 with the sixteen banks inserted, and Figure~\ref{fig:c7-rodded} plots
 the two against each other.
 

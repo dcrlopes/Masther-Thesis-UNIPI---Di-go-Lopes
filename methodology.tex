@@ -550,8 +550,9 @@ four (Section~\ref{sec:meth-c8-space}).
           Section~\ref{sec:meth-c8-space} \\
 
     $g_\mathrm{ctrl}$ 
-        & $k_\mathrm{ARI} - 0.99 \le 0$
-        & \textbf{core}, all sixteen regulating banks in, from C7 \\
+        & $k_\mathrm{RE} - 0.99 \le 0$
+        & \textbf{core}, the sixteen regulating-bank assemblies in,
+          from C7 \\
 
     $g_\mathrm{ctrl,12}$ 
         & $k_\mathrm{RE12} - 0.99$
@@ -717,16 +718,17 @@ three shutdown banks of the outer sixteen assemblies withdrawn. The
 absorber is B$_4$C.
 
 \begin{equation}
-k_\mathrm{ARI}(\mathbf{x}) = k_\mathrm{eff}^\mathrm{core}\big(\mathbf{x},\ \mathrm{RE1\ to\ RE4\ inserted}\big)
-\label{eq:k-ari}
+k_\mathrm{RE}(\mathbf{x}) = k_\mathrm{eff}^\mathrm{core}\big(\mathbf{x},\ \mathrm{RE1\ to\ RE4\ inserted}\big)
+\label{eq:k-re}
 \end{equation}
 
 \noindent where the symbols have the following meaning.
 
 \begin{itemize}
-  \item $k_\mathrm{ARI}$ is the core effective multiplication factor at
-        beginning of life with all sixteen regulating-bank assemblies
-        inserted, dimensionless.
+  \item $k_\mathrm{RE}$ is the core effective multiplication factor at
+        beginning of life with the sixteen regulating-bank assemblies
+        inserted and the sixteen shutdown-bank assemblies withdrawn,
+        dimensionless.
 
   \item $\mathbf{x}$ is the design vector.
 \end{itemize}
@@ -734,7 +736,7 @@ k_\mathrm{ARI}(\mathbf{x}) = k_\mathrm{eff}^\mathrm{core}\big(\mathbf{x},\ \math
 The screen demands an operating subcriticality margin.
 
 \begin{equation}
-g_\mathrm{ctrl}(\mathbf{x}) = k_\mathrm{ARI}(\mathbf{x}) - (1 - \Delta\rho_\mathrm{op}) \le 0
+g_\mathrm{ctrl}(\mathbf{x}) = k_\mathrm{RE}(\mathbf{x}) - (1 - \Delta\rho_\mathrm{op}) \le 0
 \label{eq:g-ctrl-meth}
 \end{equation}
 
@@ -762,6 +764,37 @@ diagonal assemblies of the middle ring. It is recorded as
 $g_\mathrm{ctrl,12}$ and is not a constraint, so that the front can be
 split afterwards into designs controllable with two banks and designs
 needing all four, without shrinking the feasible region in advance.
+
+The notation deserves an explicit statement, because in reactor
+practice the label all rods in denotes the state with every control rod
+assembly of the core inserted, which is not the state screened here.
+Three rodded states are distinguished in this work.
+
+\begin{enumerate}
+  \item $k_\mathrm{RE}$, with the sixteen regulating-bank assemblies
+        RE1 to RE4 inserted and the sixteen shutdown-bank assemblies
+        withdrawn. It is the state of the constraint of
+        Equation~\eqref{eq:g-ctrl-meth} and of the bank worth of
+        Equation~\eqref{eq:bank-worth}.
+
+  \item $k_\mathrm{RE12}$, with the eight assemblies of banks RE1 and
+        RE2 inserted and all others withdrawn. It is recorded from
+        Campaign 8 and is not constrained.
+
+  \item The all-rods-in state, with all 32 control rod assemblies
+        inserted. It is used only to derive the retrospective ceiling
+        of 1.368 in Table~\ref{tab:ctrl-bounds} and never as a
+        campaign constraint.
+\end{enumerate}
+
+The implementation carries a historical label that does not follow this
+convention. In \texttt{boron\_worth.py} the state named \texttt{ARI}
+and the archive key \texttt{k\_allre} both denote the sixteen
+regulating-bank assemblies of $k_\mathrm{RE}$, so the columns $M_{16}$
+and $M_{8}$ of the boron-worth table of
+Section~\ref{sec:meth-boron-worth} are the margins of the
+sixteen-assembly and of the eight-assembly insertion respectively, and
+neither is a margin of the all-rods-in state.
 
 The reactivity ceiling of $g_{k\max}$ can now be derived from the
 measured bank worth rather than adopted.
@@ -1168,7 +1201,7 @@ deviation of the Campaign 7 archive median.
   \small
   \begin{tabular}{ccccccc}
     \toprule
-    Design & $k^\mathrm{2D}$ & $k^\mathrm{3D}$ & $L_\mathrm{ax}$ & $k^\mathrm{3D}_\mathrm{ARI}$ & 2D subcrit. [pcm] & 3D subcrit. [pcm] \\
+    Design & $k^\mathrm{2D}$ & $k^\mathrm{3D}$ & $L_\mathrm{ax}$ & $k^\mathrm{3D}_\mathrm{RE}$ & 2D subcrit. [pcm] & 3D subcrit. [pcm] \\
     \midrule
      1 & 1.11990 & 1.08888 & 1.0285 & 0.93673 &  3821 &  6755 \\
     22 & 1.09768 & 1.06638 & 1.0293 & 0.89620 &  8534 & 11583 \\
