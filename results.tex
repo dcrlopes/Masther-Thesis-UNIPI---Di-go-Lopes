@@ -2442,8 +2442,8 @@ reconstructs all 60 histories with the end-of-cycle crossing marked.
   \caption{Assembly infinite multiplication factor against burnup for
   every Campaign 7 design, feasible designs on the left. Red markers
   are the end-of-cycle crossings of the leakage-corrected target. The
-  gadolinium burnout maximum is visible between 13 and
-  \SI{17}{MWd/kgHM}, and no design approaches the \SI{75}{MWd/kgHM}
+  gadolinium burnout maximum is visible between \num{7.5} and
+  \SI{17.5}{MWd/kgHM}, and no design approaches the \SI{75}{MWd/kgHM}
   screen.}
   \label{fig:c7-histories}
 \end{figure}
@@ -2457,7 +2457,8 @@ are the two subcritical cores at zero cycle length and one design
 ending at 55 EFPD.
 
 Three facts follow from the figure. The gadolinium hump raises
-$k_\infty$ by up to 0.06 before the decline. The highest end-of-cycle
+$k_\infty$ by up to \num{0.119} before the decline, measured in
+Section~\ref{sec:res-c7-hump}. The highest end-of-cycle
 burnup in the campaign is \SI{63.8}{MWd/kgHM}, so the
 \SI{75}{MWd/kgHM} discharge screen of Section~\ref{sec:meth-atf} is
 inactive and no design is censored, unlike Campaign 6. And the local
@@ -2556,6 +2557,121 @@ indistinguishable until the tally errors are read from the statepoints.
 \openpoint{Measure $\sigma(F_{\Delta H})$ from the per-bin relative
 errors of the core mesh tally on the six front designs, or by seed
 replicates, before any ordering claim on the peaking axis is made.}
+
+\subsection{The gadolinium hump in the Campaign 7 archive}
+\label{sec:res-c7-hump}
+
+The histories of Section~\ref{sec:res-c7-uncertainty} carry a second
+measurement that the crossing analysis does not use. Between beginning
+of life and the end-of-cycle decline, the assembly eigenvalue of a
+gadolinia-bearing design first rises, because the poison burns out
+faster than the fuel. The maximum of that rise, and not the beginning
+of life, is the most reactive state the core ever occupies. Any
+reactivity screen written at beginning of life therefore screens the
+wrong state whenever a hump is present.
+
+The hump is defined on the reactivity scale.
+
+\begin{equation}
+  \Delta\rho_\mathrm{hump} = \rho\!\left(k_\mathrm{peak}\right) -
+  \rho\!\left(k_\mathrm{BOL}\right),
+  \qquad
+  \rho(k) = 10^{5}\,\frac{k-1}{k}
+  \label{eq:c7-hump}
+\end{equation}
+
+where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $\Delta\rho_\mathrm{hump}$ is the reactivity gained between
+        beginning of life and the operating maximum, in pcm.
+  \item $k_\mathrm{BOL}$ is the assembly infinite multiplication factor
+        at zero burnup, xenon-free, at \SI{1000}{ppm} soluble boron,
+        dimensionless.
+  \item $k_\mathrm{peak}$ is the maximum of the assembly infinite
+        multiplication factor over the operating points, dimensionless.
+  \item $\rho$ is the reactivity, in pcm.
+\end{itemize}
+
+Figure~\ref{fig:c7-khist-gd} shows the same histories as
+Figure~\ref{fig:c7-histories}, coloured by gadolinia weight fraction
+instead of by feasibility, and Table~\ref{tab:c7-hump} lists the
+fifteen designs with the largest humps.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\linewidth]{images/k_histories}
+  \caption[Campaign 7 histories coloured by gadolinia loading]{Assembly
+  infinite multiplication factor against burnup for the Campaign 7
+  archive, coloured by the gadolinia weight fraction of the design.}
+  \label{fig:c7-khist-gd}
+\end{figure}
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \setlength{\tabcolsep}{4.0pt}
+  \caption[Reactivity hump of the Campaign 7 designs]{Gadolinium hump and burnup reactivity swing of the Campaign 7 designs, recovered from the run log.}
+  \label{tab:c7-hump}
+  \begin{tabular}{@{}r r r r r r r r@{}}
+    \toprule
+    ID & $e_\mathrm{in}/e_\mathrm{out}$ [wt\%] & Gd [wt\%] & $k_\mathrm{BOL}$ & $k_\mathrm{peak}$ & $B_\mathrm{peak}$ [MWd/kgHM] & hump [pcm] & $\Delta\rho_\mathrm{peak\to EOC}$ [pcm] \\
+    \midrule
+    34 & 4.48/3.14 & 6.59 & 0.8681 & 0.9870 & 17.5 & +13874 & -7158 \\
+    4 & 5.38/3.89 & 5.72 & 0.9423 & 1.0228 & 17.5 & +8352 & -3663 \\
+    27 & 5.32/5.52 & 5.60 & 1.0376 & 1.1302 & 17.5 & +7901 & 7312 \\
+    38 & 4.39/4.20 & 3.61 & 1.0279 & 1.1182 & 13.5 & +7864 & 5918 \\
+    26 & 4.88/3.78 & 1.54 & 1.0530 & 1.1457 & 7.5 & +7690 & 7344 \\
+    29 & 3.11/7.99 & 4.83 & 1.0774 & 1.1623 & 17.5 & +6781 & 8892 \\
+    39 & 9.91/3.21 & 1.12 & 1.1118 & 1.1917 & 7.5 & +6035 & 11297 \\
+    15 & 9.08/3.40 & 4.73 & 1.0454 & 1.1009 & 17.5 & +4821 & 4231 \\
+    22 & 7.35/3.95 & 4.54 & 1.0604 & 1.1082 & 17.5 & +4069 & 4914 \\
+    16 & 3.31/8.68 & 2.99 & 1.1573 & 1.2109 & 13.5 & +3826 & 12335 \\
+    49 & 8.92/7.99 & 2.23 & 1.2064 & 1.2572 & 13.5 & +3351 & 15508 \\
+    50 & 8.99/8.73 & 2.71 & 1.2130 & 1.2635 & 17.5 & +3300 & 16085 \\
+    48 & 8.71/7.80 & 1.93 & 1.2033 & 1.2502 & 13.5 & +3118 & 14811 \\
+    53 & 8.77/7.86 & 2.05 & 1.2065 & 1.2507 & 13.5 & +2934 & 14939 \\
+    51 & 8.98/9.16 & 2.89 & 1.2158 & 1.2534 & 17.5 & +2469 & 15260 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Four readings follow from the table.
+
+\begin{enumerate}
+  \item The hump is large. The largest, design 34, gains
+        \SI{13874}{pcm} between beginning of life and its maximum, and
+        the fifteenth of the list still gains \SI{2469}{pcm}. On the
+        eigenvalue scale design 34 moves from \num{0.8681} to
+        \num{0.9870}, a rise of \num{0.119}.
+
+  \item The maximum does not sit at a single burnup. The recovered
+        maxima fall at \num{7.5}, \num{13.5} and
+        \SI{17.5}{MWd/kgHM}, and the earliest of them belong to the
+        two designs with the lowest gadolinia loading of the list,
+        designs 26 and 39 at \num{1.54} and \SI{1.12}{wt\%}.
+
+  \item The hump is not ordered by gadolinia weight fraction alone.
+        Design 26 gains \SI{7690}{pcm} at \SI{1.54}{wt\%} while design
+        51 gains \SI{2469}{pcm} at \SI{2.89}{wt\%}, so the poisoned-pin
+        count and the enrichment split enter as well.
+
+  \item The two designs whose swing from the maximum to end of cycle is
+        negative, designs 34 and 4, are the two whose beginning-of-life
+        eigenvalue is below unity. Their cycle ends before the poison
+        has finished burning out.
+\end{enumerate}
+
+This measurement is the reason the Campaign 8 analysis reports the
+hump for every candidate in Section~\ref{sec:res-c8-swing}, and the
+reason the reactivity screens of this work are read at the operating
+maximum rather than at beginning of life alone.
+
+%% AUTHOR: the physics of the hump, namely why the poison burnout can
+%% outrun the fuel depletion by more than 10000 pcm in this lattice,
+%% and whether the beginning-of-life screen of
+%% Section~\ref{sec:meth-ctrl} should have been written at the maximum
+%% from the start.
 
 \subsection{Cost and instrumentation}
 \label{sec:res-c7-cost}
@@ -3479,6 +3595,424 @@ at power.
 %% should be promoted to a constraint in any follow-on work.
 
 
+\subsection{Burnup and composition dependence of the leakage
+correction}
+\label{sec:res-kt-burnup}
+
+The leakage-corrected target of Equation~\eqref{eq:ktarget} rests on
+two assumptions that the closure check of
+Section~\ref{sec:res-corevalidation} does not reach. The leakage
+factor is evaluated once, at beginning of life, on a single reference
+composition of \num{4.55} and \SI{4.05}{\percent} by weight without
+gadolinia, and it is then held constant over the whole cycle and
+applied to every design in the space. Both assumptions are tested
+here, on the eight front designs of Table~\ref{tab:c8-front} and on
+the two-bank representatives of Table~\ref{tab:c8-two}.
+
+For each design the reflective assembly is depleted once, in a single
+shot with the campaign schedule, up to two steps beyond its end of
+cycle. At beginning of life and at the two depletion steps that
+bracket the end of cycle, the depleted composition is loaded uniformly
+into all \num{32} assemblies of the core model of
+Section~\ref{sec:meth-ktarget} and into the reflective assembly, and
+both eigenvalues are solved with three independent seeds. The measured
+leakage factor follows.
+
+\begin{equation}
+\mathrm{LF}(B) =
+\frac{k_\infty^\mathrm{assembly}(B)}{k_\mathrm{eff}^\mathrm{core}(B)}
+\; L_\mathrm{ax}
+\label{eq:kt-lf}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $\mathrm{LF}(B)$ is the leakage factor measured at burnup $B$
+        on the design's own depleted composition, dimensionless.
+
+  \item $k_\infty^\mathrm{assembly}(B)$ is the infinite multiplication
+        factor of the reflective assembly at burnup $B$,
+        dimensionless.
+
+  \item $k_\mathrm{eff}^\mathrm{core}(B)$ is the effective
+        multiplication factor of the \num{32}-assembly core built with
+        the same reflector thickness, loaded uniformly with the same
+        depleted composition and closed by a vacuum radial boundary,
+        dimensionless.
+
+  \item $L_\mathrm{ax}$ is the axial leakage factor of
+        Section~\ref{sec:meth-lax}, equal to \num{1.0289},
+        dimensionless.
+
+  \item $B$ is the burnup, in MWd/kgHM.
+\end{itemize}
+
+Two quantities are read from the measurement. The drift is the change
+of the leakage factor between the two ends of the cycle and tests the
+burnup assumption. The residual is the leakage factor minus the
+tabulated target and tests the composition assumption. The residual at
+the end of cycle is the one that moves the reported cycle length,
+through the local reactivity slope of the assembly.
+
+\begin{equation}
+\Delta\mathrm{EFPD} =
+\frac{\mathrm{LF}(B_\mathrm{EOC}) - k_\mathrm{target}}
+     {\left. \mathrm{d}k_\infty / \mathrm{d}B \right|_{B_\mathrm{EOC}}}
+\; \frac{1000}{q}
+\label{eq:kt-defpd}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $\Delta\mathrm{EFPD}$ is the correction to the reported cycle
+        length, in effective full-power days.
+
+  \item $\mathrm{LF}(B_\mathrm{EOC})$ is the leakage factor of
+        Equation~\eqref{eq:kt-lf} at the end-of-cycle burnup,
+        dimensionless.
+
+  \item $k_\mathrm{target}$ is the tabulated target the optimiser used
+        for that design, dimensionless.
+
+  \item $\mathrm{d}k_\infty / \mathrm{d}B$ is the local reactivity
+        slope of the assembly between the two bracketing depletion
+        steps, in (MWd/kgHM)$^{-1}$, negative at the end of cycle.
+
+  \item $q$ is the core specific power, equal to
+        \SI{9.9827}{\watt\per\gram} of heavy metal.
+
+  \item $B_\mathrm{EOC}$ is the end-of-cycle burnup, in MWd/kgHM.
+\end{itemize}
+
+Table~\ref{tab:kt-burnup} reports the measurement. Every design ended
+its cycle on the reactivity crossing, so no entry is set by the burnup
+cap.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption[Burnup dependence of the Route B leakage factor]{Burnup
+  dependence of the Route B leakage factor on the Campaign 8 designs.}
+  \label{tab:kt-burnup}
+  \setlength{\tabcolsep}{4.2pt}
+  \begin{tabular}{ccccccccc}
+    \toprule
+    Design & $e$ & $t_\mathrm{refl}$ & $B_\mathrm{EOC}$ &
+      $k_\mathrm{target}$ & $\mathrm{LF}_\mathrm{BOL}$ &
+      $r_\mathrm{BOL}$ & drift & $\Delta\mathrm{EFPD}$ \\
+    {[--]} & [wt\%] & [cm] & [MWd/kgHM] & [--] & [--] & [pcm] & [pcm] &
+      [d] \\
+    \midrule
+     1 & 11.03 & 3.94 & 57.8 & 1.0829 & 1.0793 & $-329$ & $+33 \pm 126$ & $+56$ \\
+    59 &  9.34 & 5.66 & 50.2 & 1.0820 & 1.0796 & $-220$ & $ -4 \pm 107$ & $+43$ \\
+    44 &  9.23 & 5.33 & 49.8 & 1.0822 & 1.0798 & $-219$ & $-10 \pm  90$ & $+42$ \\
+    21 &  7.81 & 4.92 & 42.3 & 1.0824 & 1.0800 & $-222$ & $+149 \pm 84$ & $+11$ \\
+    31 &  6.59 & 4.18 & 33.4 & 1.0828 & 1.0819 & $ -85$ & $-10 \pm  85$ & $+14$ \\
+    29 &  5.90 & 4.69 & 31.0 & 1.0825 & 1.0824 & $  -9$ & $-152 \pm 99$ & $+25$ \\
+    23 &  4.94 & 4.81 & 23.7 & 1.0824 & 1.0830 & $ +53$ & $-67 \pm 116$ & $ +2$ \\
+    42 &  4.44 & 3.76 & 19.7 & 1.0830 & 1.0836 & $ +54$ & $-22 \pm  82$ & $ -4$ \\
+    47 &  4.39 & 4.29 & 19.5 & 1.0827 & 1.0830 & $ +27$ & $ +2 \pm 107$ & $ -4$ \\
+    53 &  3.45 & 4.74 & 10.8 & 1.0825 & 1.0844 & $+174$ & $-84 \pm  88$ & $-14$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The burnup assumption holds. No single drift is resolved at two
+standard deviations, the largest ratio of value to uncertainty being
+\num{1.78} on design 21. The ten drifts are ten independent
+measurements of the same physical quantity, so they are combined by
+inverse-variance weighting.
+
+\begin{equation}
+\overline{\Delta\mathrm{LF}} = -13 \pm \SI{30}{pcm},
+\qquad
+\chi^2 = 6.73 \ \text{on 9 degrees of freedom}
+\label{eq:kt-comp}
+\end{equation}
+
+The weighted mean is \num{0.43} standard deviations from zero. The
+reduced chi-squared of \num{0.75}, with a probability of \num{0.66},
+states that the observed scatter of the ten values is accounted for by
+the Monte Carlo uncertainties alone, so the data support neither a
+common drift nor a design-dependent one. The bound to quote is
+\SI{60}{pcm} at two standard deviations on the mean, which corresponds
+to \num{7} to \SI{11}{d} at the local reactivity slopes of the table,
+below \SI{0.9}{\percent} of every reported cycle. The frozen leakage
+factor is therefore justified over the cycle.
+
+The composition assumption does not hold, and this is the substantive
+result. The beginning-of-life residual runs from $+174$ to
+\SI{-329}{pcm} and is almost perfectly ordered by enrichment.
+
+\begin{itemize}
+  \item The Pearson correlation between $r_\mathrm{BOL}$ and the
+        enrichment is $-0.975$, against $-0.234$ for the reflector
+        thickness, so the effect is compositional and not geometric.
+
+  \item The linear fit is $r_\mathrm{BOL} = 341 - 62.4\,e$ in pcm,
+        with $e$ the enrichment in per cent by weight, and a
+        root-mean-square residual of \SI{38}{pcm}, which is inside the
+        statistics of a single solve.
+
+  \item The residual passes through zero near \SI{5.5}{\percent} by
+        weight, close to the reference composition on which the table
+        was built, and grows to \SI{-329}{pcm} at the
+        \SI{11.03}{\percent} of design 1.
+\end{itemize}
+
+The sign is the one a two-group argument predicts. The non-leakage
+probability of a bare core is governed by the product of the geometric
+buckling and the migration area, and raising the enrichment raises the
+absorption cross section, shrinks the migration area, and reduces the
+relative leakage. A more reactive core therefore needs a smaller
+leakage correction than the reference composition of the table
+supplies.
+
+The consequence for the reported results is bounded and directional. A
+negative residual means the frozen table demanded more reactivity than
+the depleted core required, so Route B was conservative and the
+reported cycle length is a lower bound. This is the case for the six
+longest-cycle designs, with corrections of $+11$ to \SI{+56}{d}, that
+is \num{0.3} to \SI{1.0}{\percent}. The sign reverses below the
+reference composition, and design 53 is overstated by \SI{14}{d}, or
+\SI{1.3}{\percent}. Applying the correction of
+Equation~\eqref{eq:kt-defpd} to all ten designs leaves the ordering of
+Table~\ref{tab:c8-front} unchanged, including the \SI{27}{d} gap
+between designs 42 and 47, because the objective differences on the
+front are of the order of hundreds of days.
+
+The measurement also delivers an independent replicate of the cycle
+length itself. The depletion here was run in a single shot, while the
+campaign ran it in chunks of two steps, and the two used different
+random-number seeds, because the seed is a hash of the design
+dictionary and the two dictionaries carry different key sets. Across
+the nine designs whose end of cycle falls on a \SI{4}{MWd\per\kilo
+\gram} step, the cycle lengths agree to a mean of
+\SI{+0.09}{\percent} with a standard deviation of
+\SI{0.91}{\percent}. This is the first direct measurement of the
+Monte Carlo uncertainty on cycle length in this work, and it also
+confirms that the chunked restart of the campaign carries no
+systematic bias.
+
+Three limits of the measurement should be stated.
+
+\begin{enumerate}
+  \item The depleted composition is loaded uniformly into all
+        \num{32} assemblies. This reproduces the construction of the
+        calibration table exactly, which is what the check requires,
+        but it does not represent the radial burnup distribution of an
+        operating core, in which the periphery burns more slowly than
+        the centre.
+
+  \item The end-of-cycle leakage factor is interpolated linearly
+        between the two bracketing depletion steps, which are up to
+        \SI{4}{MWd\per\kilo\gram} apart. The interpolation error is
+        second order in that interval and is not separated from the
+        statistical uncertainty.
+
+  \item Design 53 ends its cycle at \SI{10.8}{MWd\per\kilo\gram},
+        inside the beginning-of-life block, so its crossing is
+        interpolated across the \SI{6}{MWd\per\kilo\gram} interval
+        between the depletion points at \num{7.5} and
+        \SI{13.5}{MWd\per\kilo\gram}. Its cycle length is
+        correspondingly more sensitive to eigenvalue noise, and it is
+        the one design whose two replicates differ by more than
+        \SI{1.5}{\percent}, at \SI{-4.8}{\percent}. The coarse
+        beginning-of-life block is adequate for the long-cycle
+        designs and marginal for the short-cycle ones.
+\end{enumerate}
+
+%% AUTHOR: whether the composition dependence of the leakage factor
+%% should be reported as a limitation of Route B, as done above, or
+%% closed by refitting the table as a function of enrichment as well
+%% as reflector thickness in any follow-on work. The measured slope of
+%% -62.4 pcm per weight per cent is the coefficient such a refit would
+%% need.
+
+%% AUTHOR: whether the conservative direction of the correction on the
+%% six longest-cycle designs is worth carrying into the comparison
+%% with the reported refuelling interval of
+%% Section~\ref{sec:res-c8-mission}, where a lower bound on the cycle
+%% length strengthens rather than weakens the argument.
+
+\subsection{Reactivity swing, the hump and the critical boron}
+\label{sec:res-c8-swing}
+
+The single-shot depletions of Section~\ref{sec:res-kt-burnup} carry the
+full $k_\infty(B)$ history of each candidate, so the hump of
+Equation~\eqref{eq:c7-hump} and the burnup reactivity swing can be
+measured on Campaign 8 with no further transport.
+Figure~\ref{fig:c8-swing-khist} shows the ten histories with their
+maxima marked and Table~\ref{tab:c8-swing} reports the quantities.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\linewidth]{images/swing_khist}
+  \caption[Depletion histories of the Campaign 8 candidates]{Assembly
+  infinite multiplication factor against burnup at \SI{1000}{ppm} for
+  the eight front designs and the two two-bank representatives.
+  Triangles mark the operating maximum and the dotted line is the
+  leakage-corrected target.}
+  \label{fig:c8-swing-khist}
+\end{figure}
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \setlength{\tabcolsep}{3.6pt}
+  \begin{threeparttable}
+  \caption[Reactivity swing of the Campaign 8 candidates]{Gadolinium hump and burnup reactivity swing of the Campaign 8 candidates.}
+  \label{tab:c8-swing}
+  \begin{tabular}{@{}r r r r r r r r r r@{}}
+    \toprule
+    ID & $e$ [wt\%] & $k_\mathrm{BOL}$ & $k_\mathrm{peak}$ & $B_\mathrm{peak}$ [MWd/kgHM] & hump [pcm] & $\Delta\rho_\mathrm{peak\to EOC}$ [pcm] & $\Delta\rho_\mathrm{Xe\to EOC}$ [pcm] & $c_\mathrm{BOL}$ [ppm] & $c_\mathrm{peak}$ [ppm] \\
+    \midrule
+    53 & 3.45 & 1.1138 & 1.1055 & 7.5 & -676 & 1922 & 1196 & 1312 & 1312 \\
+    47 & 4.39 & 1.1891 & 1.1670 & 0.5 & -1591 & 6673 & 6673 & 2348 & 2348 \\
+    42 & 4.44 & 1.1922 & 1.1701 & 0.5 & -1578 & 6875 & 6875 & 2377 & 2377 \\
+    23 & 4.94 & 1.2219 & 1.2019 & 0.5 & -1356 & 9184 & 9184 & 2979 & 2979 \\
+    29 & 5.90 & 1.2504 & 1.2961 & 1.5 & +2822 & 15225 & 13102 & 3677 & 4277 \\
+    31 & 6.59 & 1.1236 & 1.1846 & 17.5 & +4580 & 7936 & 1971 & 1701 & 2760 \\
+    21 & 7.81 & 1.2114 & 1.2307 & 17.5 & +1295 & 11136 & 8914 & 3752 & 4095 \\
+    44 & 9.23 & 1.2147 & 1.2420 & 17.5 & +1812 & 11892 & 9340 & 4372 & 4940 \\
+    59 & 9.34 & 1.2043 & 1.2212 & 21.5 & +1150 & 10538 & 8319 & 4112 & 4473 \\
+    1 & 11.03 & 1.2127 & 1.2036 & 0.5 & -626 & 9257 & 9257 & 4674 & 4674 \\
+    \bottomrule
+  \end{tabular}
+  \begin{tablenotes}\footnotesize
+    \item Assembly $k_\infty$ at 1000\,ppm from the single-shot depletion of \texttt{validate\_ktarget\_burnup.py} at the campaign fidelity. The hump is $\rho_\mathrm{peak} - \rho_\mathrm{BOL}$, xenon-free BOL. $\Delta\rho$ is measured to $\rho(k_\mathrm{target})$. The boron concentrations are linear extrapolations above 1000\,ppm with the 1000 to 1500\,ppm differential worth of the core and are lower bounds.
+  \end{tablenotes}
+  \end{threeparttable}
+\end{table}
+
+Four readings follow.
+
+\begin{enumerate}
+  \item Half of the candidates have no hump. Designs 1, 23, 42, 47 and
+        53 reach their maximum at the first operating point, and their
+        hump is negative, from $-626$ to \SI{-1591}{pcm}. For these
+        designs the beginning-of-life state is the most reactive state
+        of the cycle and the screens of Section~\ref{sec:meth-ctrl}
+        screen the right state.
+
+  \item The other half do have one, from $+1150$ to \SI{+4580}{pcm},
+        with the maximum between \num{1.5} and
+        \SI{21.5}{MWd/kgHM}. Design 31 carries the largest hump of the
+        set and design 29 the largest of the front, at
+        \SI{+2822}{pcm}.
+
+  \item The hump is not ordered by the gadolinia loading of
+        Table~\ref{tab:c8-front}. Design 1 carries \SI{7.43}{wt\%}
+        gadolinia on forty pins and shows no hump, while design 29
+        carries \SI{0.18}{wt\%} on forty pins and shows the largest
+        hump of the front.
+
+  \item The campaign was screened at a boron concentration well below
+        the critical one. The extrapolated critical concentration at
+        beginning of life runs from \num{1312} to \SI{4674}{ppm}, and
+        at the operating maximum it reaches \SI{4940}{ppm} on design
+        44. Every value is a lower bound, because the extrapolation is
+        linear above \SI{1500}{ppm} and ignores further
+        self-shielding.
+\end{enumerate}
+
+The last reading is the one that bounds the interpretation of the whole
+campaign. The screens were evaluated at the fixed \SI{1000}{ppm} of
+Section~\ref{sec:meth-boron}, which is not the concentration at which
+any of these cores would be critical at start-up. The direction of the
+resulting bias is the one stated in
+Section~\ref{sec:meth-boron-bias}, and the magnitudes here give it a
+scale for the first time.
+
+Two approximations bound the boron columns. The swing is an assembly
+quantity while the differential boron worth is a core quantity measured
+at beginning of life, so dividing one by the other assumes the worth
+does not change over the cycle, which it does through the spectrum.
+Both concentrations should be read to one significant figure.
+
+%% AUTHOR: the physics of why five candidates show no hump while five
+%% do, and whether the critical-boron column changes the reading of the
+%% controllability result of Section~\ref{sec:res-c8-split}.
+
+\subsection{Three-dimensional confirmation: the four closures}
+\label{sec:res-c8-closures}
+
+Four commitments were made earlier in this work and deferred to a
+three-dimensional confirmation on the core with hardware. This
+subsection reports what each of them measured. Two are closed, one is
+partly closed and one remains open.
+
+The three-dimensional confirmation closes four commitments made earlier
+in this work. Each is listed with the quantity that closes it.
+
+\begin{enumerate}
+  \item The second tier of the fidelity strategy of Section~\ref{sec:meth-fidelity}. Ten front designs were depleted in a single shot at the campaign fidelity with core solves at beginning and end of cycle. The leakage factor drifts by -152 to +149\,pcm between the two, within two standard deviations for 10 of 10 designs, and the implied cycle correction is -14 to +56\,EFPD.
+  \item The axial correction of Section~\ref{sec:meth-lax}. On the core with hardware the unrodded factor is 1.0286 to 1.0311, against the campaign value 1.0289 of the water-slab study, a gap of -25 to +211\,pcm. The two-bank factor is 1.0219 to 1.0252 and the four-bank factor 1.0126 to 1.0177.
+  \item The three departures from the benchmark inputs stated in Section~\ref{sec:reactor-model}. \openpoint{Closure 3a: reflector sensitivity pending. } \openpoint{Closure 3b: absorber-radius sensitivity pending. } The coolant density is not exposed as a sensitivity and remains a stated departure.
+  \item The rod-stack comparison. The two-dimensional screen with full-height boron carbide is conservative by 1272 to 2047\,pcm for four banks and 2062 to 2671\,pcm for two banks against the benchmark rod on the three-dimensional core. \openpoint{Closure 4: the full-B4C stack run that separates the stack from the leakage is pending.}
+\end{enumerate}
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \setlength{\tabcolsep}{4.0pt}
+  \caption[Closures of the three-dimensional confirmation]{Measured closure of the four commitments carried by the three-dimensional confirmation.}
+  \label{tab:c8-closures}
+  \begin{tabular}{@{}l l r l r@{}}
+    \toprule
+    Closure & Quantity & Value & Quantity & Value \\
+    \midrule
+    1 Second tier & leakage-factor drift BOL to EOC [pcm] & -152 to +149 & implied cycle correction [EFPD] & -14 to +56 \\
+    2 Axial correction & $L_\mathrm{ax,hw}$ unrodded & 1.0286 to 1.0311 & gap to the campaign 1.0289 [pcm] & -25 to +211 \\
+    3a Reflector 0.956 & $\Delta\rho$ unrodded 3D [pcm] & pending &  &  \\
+    3b Absorber 0.4229 & $\Delta$ four-bank margin [pcm] & pending & $\Delta$ two-bank margin [pcm] & pending \\
+    4 Rod stack & screen conservatism four-bank [pcm] & 1272 to 2047 & stack effect four-bank [pcm] & pending \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Closure 1 is not an independent measurement. It is the same set of
+solves reported in Section~\ref{sec:res-kt-burnup}, read there for the
+burnup dependence of the leakage factor and read here as the second
+fidelity tier. The drift range and the cycle correction of
+Table~\ref{tab:c8-closures} are the drift and $\Delta\mathrm{EFPD}$
+columns of Table~\ref{tab:kt-burnup}, and they are quoted once as
+evidence for two different commitments.
+
+Closure 2 is the one that changes how the two-dimensional screen should
+be read. The unrodded axial factor on the core with hardware agrees
+with the water-slab value of Section~\ref{sec:meth-lax} to within
+\SI{211}{pcm}, but the rodded factors are smaller, \num{1.0219} to
+\num{1.0252} with two banks and \num{1.0126} to \num{1.0177} with four.
+A smaller factor means less axial leakage credit, so the rodded
+three-dimensional core is more subcritical than the two-dimensional
+screen assumed.
+
+Closure 4 measures that conservatism directly. Against the benchmark
+rod on the three-dimensional core, the two-dimensional screen with
+full-height boron carbide is conservative by \num{1272} to
+\SI{2047}{pcm} on four banks and by \num{2062} to \SI{2671}{pcm} on two
+banks. The screen therefore rejected designs it did not need to reject,
+and no design was admitted that the hardware would refuse.
+
+The beginning-of-life margins above are reduced by the gadolinium hump of the operating maximum, -1723 to +4955\,pcm on the core. At the maximum the two-bank set at 1000\,ppm on the three-dimensional core excludes designs 1, 21, 23, 29, 31, 44, 59.
+
+The hump range quoted here is the assembly hump of
+Table~\ref{tab:c8-swing} carried to the core, which is larger than the
+assembly value by the leakage factor, and it is applied to the
+beginning-of-life margins because
+Section~\ref{sec:res-kt-burnup} shows the leakage factor constant over
+the cycle within the Monte Carlo noise.
+
+%% AUTHOR: physics of the hump and its consequence for the candidate.
+
+%% AUTHOR: whether the exclusion of seven of the ten candidates from
+%% the two-bank set at the operating maximum is the argument that
+%% decides the candidate list of Section~\ref{sec:res-c8-limits}, and
+%% what the remaining designs have in common.
+
 \subsection{Cycle length against the reported refuelling interval}
 \label{sec:res-c8-mission}
 
@@ -3622,9 +4156,9 @@ answers to different questions.
         as the representative at the enrichment reported in 2014.
 \end{enumerate}
 
-The three-dimensional confirmation of the candidates, with the
-hardware stack, the core barrel and the boron worth, decides between
-them.
+The three-dimensional confirmation of
+Section~\ref{sec:res-c8-closures}, with the hardware stack, the core
+barrel and the boron worth, decides between them.
 
 %% AUTHOR: the choice of the candidate or candidates to carry into the
 %% conclusions, and the physical argument for that choice.
