@@ -1594,6 +1594,258 @@ nearest-neighbour distance reported in Table~\ref{tab:nsga-sens} is
 the informative replacement.
 
 
+% ---------------------------------------------------------------------
+%  Validation of the optimisation framework.
+%  Protocol of the two validation exercises run on Campaign 8:
+%    Step 0, cross-validation of the surrogate on the archive and
+%            stability of the archived front, at no transport cost.
+%    Step 3, verification of the surrogate-assisted search against
+%            exhaustive enumeration on a two-variable slice.
+%  The numerical results are in Sections \ref{sec:res-c8-cv},
+%  \ref{sec:res-c8-stability} and \ref{sec:res-c8-valgrid}.
+%  Scripts: c8_surrogate_cv.py, c8_front_stability.py, valgrid_compare.py.
+% ---------------------------------------------------------------------
+
+\section{Validation of the optimisation framework}
+\label{sec:validation-framework}
+
+Two questions are addressed before the Campaign 8 results are
+interpreted. The first is whether the surrogate that drove the
+acquisition predicts the transport results well enough, and with
+uncertainties that are calibrated. The second is whether the
+surrogate-assisted search recovers the Pareto front that an exhaustive
+enumeration finds, and at what fraction of the enumeration cost.
+
+The first question is answered on the archive itself, at no additional
+transport cost. The second requires new transport solves and is
+therefore restricted to a two-variable slice of the design space, where
+enumeration is affordable.
+
+\subsection{Cross-validation of the surrogate on the archive}
+\label{sec:validation-surrogate}
+
+The surrogate under test is the one used at every iteration of the
+active-learning loop of Section~\ref{sec:meth-loop}. One anisotropic
+Gaussian Process (GP) with a Mat\'ern kernel of smoothness $5/2$ and a
+white-noise term is fitted to each output column, after standardisation
+of the design variables and of the output. The objective matrix holds
+the negated cycle length and the radial enthalpy-rise hot channel
+factor $F_{\Delta H}$. The constraint matrix holds every constraint
+divided by its own limit. Both matrices are fitted over all archived
+designs, feasible and infeasible alike, exactly as in the loop.
+
+Two protocols are applied. In leave-one-out cross-validation, each
+archived design is held out in turn, the surrogate is refitted on the
+remaining designs, and the held-out design is predicted. This measures
+the surrogate at the end of the campaign. In walk-forward validation,
+for every infill block the surrogate is fitted on every evaluation that
+preceded the block and the designs of the block are predicted. This
+measures the surrogate at decision time, on the very designs it chose.
+
+For each output $y$ with held-out predictions $\mu_i$ and predictive
+standard deviations $\sigma_i$, the following quantities are reported.
+
+\begin{equation}
+  \mathrm{RMSE} = \sqrt{\frac{1}{N}\sum_{i=1}^{N}\left(y_i - \mu_i\right)^2}
+  \label{eq:val-rmse}
+\end{equation}
+
+\begin{equation}
+  R^2 = 1 - \frac{\sum_{i=1}^{N}\left(y_i - \mu_i\right)^2}
+                 {\sum_{i=1}^{N}\left(y_i - \bar{y}\right)^2}
+  \label{eq:val-r2}
+\end{equation}
+
+\begin{equation}
+  s_z = \sqrt{\frac{1}{N}\sum_{i=1}^{N}\left(z_i - \bar{z}\right)^2},
+  \qquad z_i = \frac{y_i - \mu_i}{\sigma_i}
+  \label{eq:val-sz}
+\end{equation}
+
+where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $N$ is the number of held-out predictions, dimensionless.
+  \item $y_i$ is the true value of the output for design $i$, in the
+        unit of the output.
+  \item $\mu_i$ and $\sigma_i$ are the predictive mean and standard
+        deviation of the surrogate for design $i$, in the unit of the
+        output.
+  \item $\bar{y}$ and $\bar{z}$ are the sample means of $y_i$ and of
+        $z_i$.
+  \item $\mathrm{RMSE}$ is the root mean square error, in the unit of
+        the output.
+  \item $R^2$ is the coefficient of determination, dimensionless.
+  \item $s_z$ is the standard deviation of the standardised residual,
+        dimensionless, equal to 1 for a calibrated predictor, above 1
+        for an over-confident one and below 1 for an under-confident
+        one.
+\end{itemize}
+
+The coverage of the one-sigma and two-sigma predictive intervals, with
+nominal values 0.683 and 0.954 for Gaussian errors, and the Spearman rank
+correlation between predicted and true values complete the set. The rank
+correlation matters because the acquisition ranks candidates rather than
+reading their absolute values. Constraint columns are converted back to
+the eigenvalues they encode, so that errors can be read in reactivity
+units.
+
+The feasibility verdict of the surrogate is also scored. Two rules are
+compared against the true verdict of the transport solves. The mean rule
+declares a design feasible when every predicted constraint mean is at or
+below zero. The margin rule, used by the acquisition, requires every
+predicted constraint mean plus $\kappa$ predictive standard deviations to
+be at or below zero, with $\kappa$ the campaign value of
+Section~\ref{sec:meth-acq}.
+
+\subsection{Stability of the archived front}
+\label{sec:validation-front}
+
+The feasible non-dominated set is recomputed after every evaluation in
+the order the campaign ran them, together with its hypervolume at the
+frozen reference point of the campaign. The evaluation at which each
+final front member entered the set, and every design that was displaced
+from the set later, are recorded. A front whose members all entered in
+the first blocks and stayed is converged. A front that gains a member in
+its last block is not.
+
+The exclusive hypervolume contribution of each member, defined as the
+hypervolume lost when that member alone is removed, identifies the
+members that carry the front. The hypervolume expected after the removal
+of $k$ evaluations chosen at random from the archive is computed
+exactly, since the removal of designs cannot create new non-dominated
+points and the outcome depends only on which front members survive.
+
+Finally, the objectives of every feasible design are perturbed by
+Gaussian noise representing the Monte Carlo uncertainty of the transport
+solves, the non-dominated set is recomputed, and the probability that
+each design belongs to it is estimated over many replicates. The cycle
+length noise of a design follows from the eigenvalue uncertainty through
+the mean reactivity slope of that design.
+
+\begin{equation}
+  \sigma_{\mathrm{cycle}} = \sqrt{2}\,\frac{\sigma_k}{\left(k_{\mathrm{BOL}} - k_{\mathrm{target}}\right)/T}
+  \label{eq:val-sigma-cycle}
+\end{equation}
+
+where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $\sigma_{\mathrm{cycle}}$ is the one-sigma noise on the cycle
+        length, in effective full-power days.
+  \item $\sigma_k$ is the one-sigma Monte Carlo uncertainty of one
+        depletion eigenvalue solve, dimensionless.
+  \item $k_{\mathrm{BOL}}$ is the beginning-of-life multiplication factor
+        of the depleted assembly model, dimensionless.
+  \item $k_{\mathrm{target}}$ is the leakage-corrected end-of-cycle
+        target of the design defined in Section~\ref{sec:meth-ktarget},
+        dimensionless.
+  \item $T$ is the archived cycle length of the design, in effective
+        full-power days.
+  \item The factor $\sqrt{2}$ accounts for the interpolation of the
+        end-of-cycle crossing between two independently noisy
+        eigenvalues.
+\end{itemize}
+
+Two front members whose membership probabilities are well below one are
+not resolved by the transport statistics and should be reported as
+equivalent.
+
+\subsection{Search against exhaustive enumeration on a slice}
+\label{sec:validation-grid}
+
+The reflector thickness and the gadolinia rod count are frozen at the
+values of the central Campaign 8 candidate, so that the enrichment and
+the gadolinia weight fraction remain as live variables within the design
+space of Section~\ref{sec:meth-c8-space}. On this slice, the truth
+evaluator is run twice with identical limits, transport fidelity of
+Section~\ref{sec:meth-fidelity}, depletion schedule and
+$k_{\mathrm{target}}$ table.
+
+\begin{enumerate}
+  \item Exhaustive enumeration of a regular grid of 7 enrichment values
+        between 3.0 and 7.0\,wt\% and 5 gadolinia weight fractions
+        between 0 and 8\,wt\%, 35 evaluations in total. The feasible
+        non-dominated set of the grid is the reference front.
+  \item The surrogate-assisted search with the campaign settings on the
+        same box, with a design of experiments of 8 designs followed by
+        two infill iterations of 6, 20 evaluations in total. Its feasible
+        non-dominated set is the recovered front.
+\end{enumerate}
+
+The grid box is deliberately wider than the feasible band of the
+archive, so that the enumerated front is bounded by its own constraint
+boundaries on every side. Both objectives are normalised by their range
+over the union of the two fronts before any distance is computed, so
+that the cycle length in days and the dimensionless peaking factor
+weigh equally.
+
+The following indicators are reported.
+
+\begin{equation}
+  r_{\mathrm{HV}} = \frac{\mathrm{HV}\!\left(P_{\mathrm{search}}, \mathbf{r}\right)}
+                         {\mathrm{HV}\!\left(P_{\mathrm{grid}}, \mathbf{r}\right)}
+  \label{eq:val-hvratio}
+\end{equation}
+
+\begin{equation}
+  \mathrm{IGD} = \frac{1}{\left|P_{\mathrm{grid}}\right|}
+                 \sum_{\mathbf{q}\in P_{\mathrm{grid}}}
+                 \min_{\mathbf{p}\in P_{\mathrm{search}}}
+                 \left\lVert \mathbf{p} - \mathbf{q} \right\rVert_2
+  \label{eq:val-igd}
+\end{equation}
+
+\begin{equation}
+  I_{\varepsilon+}\!\left(P_{\mathrm{search}}, P_{\mathrm{grid}}\right)
+  = \max_{\mathbf{q}\in P_{\mathrm{grid}}}
+    \min_{\mathbf{p}\in P_{\mathrm{search}}}
+    \max_{j\in\{1,2\}} \left(p_j - q_j\right)
+  \label{eq:val-eps}
+\end{equation}
+
+where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $P_{\mathrm{grid}}$ and $P_{\mathrm{search}}$ are the enumerated
+        and the recovered fronts, as sets of points in the normalised
+        objective space, dimensionless.
+  \item $\mathbf{r}$ is the shared hypervolume reference point, the nadir
+        of the union of the two fronts plus ten per cent of the range,
+        dimensionless.
+  \item $\mathrm{HV}$ is the hypervolume dominated by a front with
+        respect to $\mathbf{r}$, dimensionless.
+  \item $r_{\mathrm{HV}}$ is the hypervolume ratio, dimensionless. A
+        value above one is possible, because the search is continuous
+        and can place designs between grid nodes.
+  \item $\mathrm{IGD}$ is the inverted generational distance, the mean
+        distance from each enumerated-front point to the nearest
+        recovered-front point, dimensionless. A value of zero means that
+        every enumerated-front point is reproduced.
+  \item $I_{\varepsilon+}$ is the additive epsilon indicator, the
+        smallest shift that makes the recovered front weakly dominate
+        every enumerated-front point, dimensionless. It is also reported
+        in effective full-power days and in units of $F_{\Delta H}$ by
+        multiplication with the respective ranges.
+  \item $p_j$ and $q_j$ are the $j$-th normalised objectives of the
+        points $\mathbf{p}$ and $\mathbf{q}$.
+\end{itemize}
+
+The generational distance in the reverse direction, the fraction of
+enumerated-front points strictly dominated or dominated within a
+tolerance by the recovered front, and the provenance of the members of
+the union of the two fronts complete the comparison. The surrogate
+fitted on the search archive is finally evaluated at all 35 grid nodes,
+none of which it has seen, with the metrics of
+Section~\ref{sec:validation-surrogate}.
+
+Both fronts are measured at the campaign transport fidelity and carry
+the same Monte Carlo noise. Differences smaller than the noise
+propagated by Equation~\eqref{eq:val-sigma-cycle} and by the
+seed-to-seed spread of $F_{\Delta H}$ of Section~\ref{sec:meth-stats}
+are not resolved and are reported as such.
+
+
 \section{Transport fidelity and seeding}
 \label{sec:meth-fidelity}
 
