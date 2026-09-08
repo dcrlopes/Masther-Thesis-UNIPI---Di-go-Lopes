@@ -3023,6 +3023,70 @@ Four readings follow directly from the table.
         standardised residual has a standard deviation of 1.63 and 1.81
         on the cycle length, against 1 for a calibrated predictor. The
         two eigenvalues have $s_z$ between 0.98 and 1.11.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/c8_cv_loo}
+  \caption[Leave-one-out predictions against transport truth]{Held-out
+  prediction against transport truth for the two objectives and the two
+  eigenvalues of the controllability screen. Error bars are one
+  predictive standard deviation.}
+  \label{fig:c8-cv-loo}
+\end{figure}
+
+Figure~\ref{fig:c8-cv-loo} shows where the residuals of
+Table~\ref{tab:c8-cv-loo} sit. The two eigenvalues and the cycle length
+follow the diagonal over their whole range. The exception is the
+short-cycle end of the archive, where the held-out prediction departs
+from the truth by several hundred effective full-power days and is
+negative for one design, since a Gaussian Process is not constrained to
+return non-negative outputs. Those designs are the ones that never reach
+the reactivity target and are rejected long before the front is formed.
+
+The leave-one-out result measures the surrogate at the end of the
+campaign. The walk-forward result of
+Figure~\ref{fig:c8-cv-walkforward} measures it at decision time, on the
+six designs of each infill block, with the surrogate fitted only on the
+evaluations that preceded the block.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/c8_cv_walkforward}
+  \caption[Walk-forward accuracy and coverage per infill block]{Block
+  root mean square error and two-sigma coverage of the surrogate at
+  decision time, per infill block. The dashed line in panel (b) is the
+  nominal coverage of 0.954.}
+  \label{fig:c8-cv-walkforward}
+\end{figure}
+
+Three readings follow from the walk-forward record.
+
+\begin{enumerate}
+  \item The cycle-length prediction improved monotonically as the
+        archive grew. The block root mean square error fell from
+        \SI{285}{EFPD} at infill block 1 to \num{191}, \num{136} and
+        \SI{107}{EFPD} at blocks 2, 3 and 4.
+
+  \item The peaking prediction did not. Its block root mean square error
+        fell from 0.063 to 0.027 and 0.022 at blocks 2 and 3, and then
+        rose to 0.040 at block 4.
+
+  \item At decision time the intervals are conservative on the cycle
+        length and erratic on the peaking factor. The two-sigma coverage
+        of the cycle length is 1.00 at every block, above the nominal
+        0.954, while that of the peaking factor is 0.50, 0.83, 1.00 and
+        0.33. Each block holds six designs, so the coverage is quantised
+        in steps of one sixth and these four values carry little
+        resolution.
+\end{enumerate}
+
+The walk-forward surrogate is fitted on fewer designs than the
+leave-one-out surrogate and therefore returns wider predictive
+intervals. This is why the cycle length appears over-confident in
+Table~\ref{tab:c8-cv-loo}, with a two-sigma coverage of 0.87, and
+under-confident in Figure~\ref{fig:c8-cv-walkforward}, with a coverage
+of 1.00. The two measurements are not in conflict, because they score
+different fits.
+
 \end{enumerate}
 
 %% AUTHOR: one or two sentences on what an over-confident cycle-length
@@ -3093,6 +3157,54 @@ Three readings follow directly from the table.
         ordering of the three lowest-peaking designs is not resolved.
 \end{enumerate}
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/c8_stab_chrono}
+  \caption[Chronology of the feasible non-dominated set]{Growth of the
+  feasible front hypervolume and of the front size in evaluation order,
+  and the membership interval of every design that entered the set.
+  Dotted lines in panel (a) are the block boundaries.}
+  \label{fig:c8-stab-chrono}
+\end{figure}
+
+Figure~\ref{fig:c8-stab-chrono} adds the displacement record that
+Table~\ref{tab:c8-front-stability} does not carry. Eleven designs
+entered the feasible non-dominated set over the campaign and three of
+them, designs 12, 13 and 19, were displaced later. All three entered and
+left within the design of experiments. The four design of experiments
+members that survived, designs 1, 21, 23 and 29, entered at evaluations
+2, 22, 24 and 30 and were never displaced. The front size grew from one
+member at evaluation 2 to eight at evaluation 60, and the last increment
+is the entry of design 59.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/c8_stab_robust}
+  \caption[Robustness of the Campaign 8 front]{Exclusive hypervolume of
+  each front member, hypervolume retained after the random removal of
+  evaluations, and the probability that each feasible design belongs to
+  the front under Monte Carlo noise.}
+  \label{fig:c8-stab-robust}
+\end{figure}
+
+Two further readings follow from Figure~\ref{fig:c8-stab-robust}.
+
+\begin{enumerate}
+  \item The front is robust to lost evaluations on average and fragile
+        in the worst case. Removing one, two or three evaluations at
+        random from the archive retains \SI{99.7}{\%}, \SI{99.4}{\%} and
+        \SI{99.1}{\%} of the front hypervolume on average, while the
+        worst case retains \SI{86.1}{\%}, \SI{84.2}{\%} and
+        \SI{65.0}{\%}. The worst case at one removal is the loss of
+        design 1, whose exclusive contribution is \SI{14.0}{\%}.
+
+  \item Three designs that are not front members would become members
+        under the same noise with non-negligible probability. Design 19
+        reaches 0.41, design 56 reaches 0.19 and design 53 reaches 0.11.
+        Design 19 is one of the three that were displaced during the
+        design of experiments.
+\end{enumerate}
+
 A small exclusive hypervolume contribution and a membership probability
 near unity are not in conflict. The first says that the design can be
 removed with almost no loss of front hypervolume. The second says that
@@ -3114,19 +3226,154 @@ that assumption.
 The second validation exercise of Section~\ref{sec:validation-grid}
 compares the surrogate-assisted search against exhaustive enumeration on
 the two-variable slice at frozen reflector thickness and frozen
-gadolinia rod count. The exercise contrasts 35 enumeration evaluations
-with 20 search evaluations at the same transport fidelity.
+gadolinia rod count. The slice is taken at
+$t_\mathrm{refl} = \SI{4.289}{cm}$ and $n_\mathrm{Gd} = 12$, the values
+of design 47, so that the enrichment and the gadolinia weight fraction
+remain as live variables. Table~\ref{tab:valgrid} reports the
+comparison.
 
-\openpoint{Insert \texttt{valgrid\_table.tex}, written by
-\texttt{valgrid\_compare.py}, once \texttt{run\_valgrid.sh} has
-finished, and report the hypervolume ratio of
-Equation~\eqref{eq:val-hvratio}, the inverted generational distance of
-Equation~\eqref{eq:val-igd} and the additive epsilon indicator of
-Equation~\eqref{eq:val-eps} against the enumerated front, together with
-the evaluation count of each run.}
+\begin{table}[htbp]
+  \centering
+  \begin{threeparttable}
+  \caption[Search against exhaustive enumeration]{Surrogate-assisted search against exhaustive enumeration on the two-variable slice.}
+  \label{tab:valgrid}
+  \begin{tabular}{lrr}
+    \toprule
+    Quantity & Enumeration & Search \\
+    \midrule
+    Truth evaluations & 35 & 20 \\
+    Feasible designs & 17 & 15 \\
+    Front members & 8 & 8 \\
+    Hypervolume, nadir reference & 193.1 & 209.7 \\
+    Hypervolume ratio & 1 & 1.086 \\
+    Union-front members & 3 & 8 \\
+    \midrule
+    IGD, normalised & \multicolumn{2}{r}{0.137} \\
+    GD, normalised & \multicolumn{2}{r}{0.104} \\
+    $I_{\varepsilon+}$(search, enumeration), normalised & \multicolumn{2}{r}{0.145} \\
+    $I_{\varepsilon+}$ in cycle length [EFPD] & \multicolumn{2}{r}{328} \\
+    $I_{\varepsilon+}$ in $F_{\Delta H}$ & \multicolumn{2}{r}{0.0199} \\
+    Enumerated-front coverage, strict / within 0.02 & \multicolumn{2}{r}{0.62 / 0.75} \\
+    Wall-clock [h] & 8.5 & 4.9 \\
+    \bottomrule
+  \end{tabular}
+  \begin{tablenotes}\footnotesize
+    \item Objectives are normalised by the range of the union of the two fronts before the distance indicators are computed. IGD is the inverted generational distance from the enumerated front to the recovered front. GD is the generational distance from the recovered front to the enumerated front. $I_{\varepsilon+}$ is the additive epsilon indicator, the smallest shift that makes the recovered front weakly dominate every enumerated-front point. The hypervolume reference point is the nadir of the union of the two fronts plus ten per cent of the range.
+    \item Slice: $t_\mathrm{refl} = \SI{4.28885}{cm}$, $n_\mathrm{Gd} = 12$. Source: valgrid\_compare.py.
+  \end{tablenotes}
+  \end{threeparttable}
+\end{table}
 
-%% AUTHOR: the physical reading of the slice, namely which constraint
-%% bounds the enumerated front on each side, is yours to state.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.92\linewidth]{images/valgrid_objective}
+  \caption[Enumerated and recovered fronts in the objective
+  plane]{Objective plane of the two-variable slice, with the 35
+  enumerated grid nodes, the 20 search evaluations and the two feasible
+  non-dominated sets.}
+  \label{fig:valgrid-objective}
+\end{figure}
+
+Four readings follow from the table and from
+Figure~\ref{fig:valgrid-objective}.
+
+\begin{enumerate}
+  \item The search recovered a front of the same size at a lower cost.
+        Both fronts hold eight members. The search used 20 truth
+        evaluations against 35, that is \SI{57}{\%} of the count, and
+        \SI{4.9}{h} of wall clock against \SI{8.5}{h}, that is
+        \SI{58}{\%} of the time.
+
+  \item The recovered front has the larger hypervolume, 209.7 against
+        193.1, a ratio of 1.086. Section~\ref{sec:validation-grid}
+        anticipates a ratio above one, because the search places designs
+        anywhere in the box while the enumeration is confined to grid
+        nodes.
+
+  \item The recovered front dominates most of the enumerated front. The
+        union of the two fronts retains all eight recovered members and
+        only three of the eight enumerated members, so five enumerated
+        members are dominated outright. The strict coverage of 0.62
+        rises to 0.75 when a tolerance of 0.02 in the normalised
+        objectives is allowed.
+
+  \item The domination is not complete. The additive epsilon indicator
+        is 0.145 in the normalised space, equivalent to \SI{328}{EFPD}
+        on the cycle length or to 0.0199 on the peaking factor. The
+        binding point is on the short-cycle portion of the enumerated
+        front, near \SI{1420}{EFPD}, where the recovered front sits
+        about 0.02 higher in $F_{\Delta H}$.
+\end{enumerate}
+
+The acquisition also spent its evaluations better. Of the 35 enumerated
+nodes 17 are feasible, \SI{48.6}{\%}, against 15 of the 20 search
+evaluations, \SI{75.0}{\%}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.92\linewidth]{images/valgrid_design}
+  \caption[The two fronts in the design plane of the slice]{Design plane
+  of the two-variable slice. Infeasible grid nodes are annotated with
+  the constraint they violate.}
+  \label{fig:valgrid-design}
+\end{figure}
+
+Figure~\ref{fig:valgrid-design} shows where the two fronts sit in the
+design plane, and it answers where the difference of \SI{8.6}{\%} in
+hypervolume comes from.
+
+The feasible band of the slice is bounded on both sides by a reactivity
+constraint. The nodes at \SI{3.0}{wt\%} enrichment with gadolinia at or
+above \SI{2}{wt\%} fail the lower reactivity bound $k_\mathrm{min}$. The
+nodes at \SI{6.33}{wt\%} and above, together with the unpoisoned nodes
+from \SI{4.33}{wt\%} upward, fail the controllability screen. No node in
+the slice fails on peaking.
+
+The enumerated front is confined to the five gadolinia values of the
+grid, 0, 2, 4, 6 and \SI{8}{wt\%}. The recovered front places three of
+its eight members between 0 and \SI{2}{wt\%}, at 0.8, 1.45 and
+\SI{3.05}{wt\%} with enrichments of 4.95, 5.35 and \SI{5.57}{wt\%},
+inside a band that the grid does not sample. It also reaches
+\SI{5.95}{wt\%} enrichment, beyond the last feasible grid column at
+\SI{5.67}{wt\%}, and therefore extends the front to \SI{3070}{EFPD}
+against \SI{2840}{EFPD} for the enumeration.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/valgrid_surrogate}
+  \caption[Surrogate prediction at the unseen grid nodes]{Surrogate
+  fitted on the 20 search evaluations and evaluated at all 35 grid
+  nodes, none of which it has seen. Error bars are one predictive
+  standard deviation.}
+  \label{fig:valgrid-surrogate}
+\end{figure}
+
+The last check of Section~\ref{sec:validation-grid} is a pure
+extrapolation test. The surrogate fitted on the 20 search evaluations is
+evaluated at all 35 grid nodes, none of which entered its training set.
+Figure~\ref{fig:valgrid-surrogate} gives the result. The cycle length
+follows the diagonal over the whole range, with the same departure at
+the short-cycle end already seen in Figure~\ref{fig:c8-cv-loo}. The
+peaking factor scatters more widely, and the one-sigma bars of most
+nodes intersect the diagonal.
+
+Two limits bound this exercise. The slice is two-dimensional, so it
+tests the search on a problem an order of magnitude smaller than the
+four-variable campaign, and the enumeration grid is coarse in gadolinia,
+which is the very axis on which the recovered front gains its
+hypervolume.
+
+%% AUTHOR: two or three sentences of physics on why the low-gadolinia,
+%% high-enrichment corridor of Figure~\ref{fig:valgrid-design} is the
+%% one that carries the front, and on whether the same corridor is
+%% visible in the full four-variable archive of
+%% Section~\ref{sec:res-c8-front}.
+
+%% AUTHOR: one sentence on whether an 8.6 per cent hypervolume gain at
+%% 57 per cent of the evaluations is the claim you want to make for the
+%% framework, or whether the epsilon indicator of 328 EFPD is the more
+%% conservative headline.
+
 
 \subsection{The two-bank subset}
 \label{sec:res-c8-split}
