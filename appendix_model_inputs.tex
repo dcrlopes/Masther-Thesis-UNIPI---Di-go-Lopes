@@ -1,0 +1,1177 @@
+% =====================================================================
+%  appendix_model_inputs.tex
+%  Annex: traceability of every input datum of the reactor model.
+%
+%  This file REPLACES the inline Appendix A currently written inside
+%  Thesis_template.tex (the chapter "Traceability of the open data on
+%  LABGENE", lines 191 to 232 of the file fetched on 9 September 2026).
+%  That chapter is absorbed here as Section A.9.
+%
+%  HOW TO INSERT
+%   1. In Thesis_template.tex, DELETE the whole block from
+%         \chapter{Traceability of the open data on LABGENE}...
+%      down to and including the \newpage that follows
+%         \end{table}
+%      leaving \begin{appendices} and \input{appendix_code_architecture}
+%      in place.
+%   2. Put this line immediately after \begin{appendices}:
+%         \input{appendix_model_inputs}
+%   3. ADD ONE PACKAGE to the preamble. booktabs, tabularx, array,
+%      enumitem, amsmath and siunitx are already loaded. longtable is
+%      NOT. Add:
+%         \usepackage{longtable}
+%   4. \openpoint is defined defensively at the top of this file, so no
+%      preamble change is needed for it.
+%
+%  LABELS
+%   \label{app:labgene-data} is kept on the CHAPTER, so the sentence in
+%   introduction.tex line 94 ("Appendix~\ref{app:labgene-data} lists
+%   every open-source ...") still resolves and still reads correctly.
+%   \label{app:model-inputs} is added as the forward-looking alias.
+%
+%  PROVENANCE OF THE VALUES
+%   Every number in Tables A.1 to A.8 was read on 9 September 2026 from
+%   the simulation repository github.com/dcrlopes/master-thesis-unipi,
+%   BRANCH MAIN, files reactor_model.py, core_geometry.py, zoning.py,
+%   leu_policy.py, openmc_evaluator.py, run_optimization.py and
+%   hardware3d.py. Where the code carries a source in a comment, that
+%   source is cited. Where it does not, the entry is classified as an
+%   estimate or an inference of this work.
+%
+%  Style: short paragraphs, no semicolons, no em dashes, every displayed
+%  formula followed by a term list with units, enumerations as lists.
+% =====================================================================
+
+\providecommand{\openpoint}[1]{\par\noindent\fbox{\parbox{0.97\linewidth}{%
+  \textbf{Open point:} #1}}\par}
+
+\chapter{Traceability of the model input data}
+\label{app:model-inputs}
+\label{app:labgene-data}
+
+\section{Purpose and reading key}
+\label{app:inputs-purpose}
+
+This annex lists every quantity required to rebuild the reactor model of
+this thesis, together with the origin of that quantity and the place in
+the text where it is used or checked.
+
+The intent is that no number in the model is unaccounted for. A reader
+who wants to reproduce the geometry, the materials, the operating point
+or the numerical settings should need nothing beyond this annex and the
+simulation repository.
+
+Each entry carries an origin class. The classes are the following.
+
+\begin{itemize}
+  \item \textbf{OFF}. Stated in a document of the Marinha do Brasil, of
+        the Brazilian government or of an international organisation.
+
+  \item \textbf{LIT}. Stated in a peer-reviewed article, a laboratory
+        report, a code manual or an institutional publication.
+
+  \item \textbf{REP}. Reproduced from the model of another reactor,
+        namely the NuScale-class benchmark adopted as the design analog.
+
+  \item \textbf{INF}. Inferred from open information that does not state
+        the quantity directly, for example a dimension read from a
+        published drawing.
+
+  \item \textbf{EST}. A physical or engineering estimate made in this
+        work, with the reasoning given in the note attached to the row.
+
+  \item \textbf{NUM}. A numerical or modelling device with no physical
+        counterpart, for example a mesh size or a surface pad.
+
+  \item \textbf{DER}. Derived by calculation from other entries of this
+        annex.
+
+  \item \textbf{VAR}. A design variable searched by the optimiser rather
+        than a fixed input. Table~\ref{tab:in-freefixed} lists these.
+\end{itemize}
+
+The column \textbf{V} records whether the value was validated inside
+this thesis. Its three states are the following.
+
+\begin{itemize}
+  \item \textbf{Y}. The value was confirmed by an independent
+        calculation or transport solve reported in the thesis.
+
+  \item \textbf{P}. The value was exercised by a check that constrains
+        it without confirming it on its own, for example a
+        three-dimensional confirmation that varies it as a flag.
+
+  \item \textbf{N}. The value was adopted as given and was not checked
+        independently.
+\end{itemize}
+
+Two things are deliberately outside this annex.
+
+\begin{enumerate}
+  \item The intervals swept in the sensitivity studies. Those intervals
+        belong to the methodology and to the results of each study, not
+        to the traceability of the base model, and they are reported
+        with their own justification where each study is presented.
+
+  \item The design-variable bounds of each campaign. These define the
+        search space rather than the model, and they are given in the
+        design-space table of Section~\ref{sec:meth-c8-space}.
+        Table~\ref{tab:in-freefixed} of this annex states only which
+        quantities are fixed and which are searched.
+\end{enumerate}
+
+All the values below were read from the simulation repository on the
+branch \texttt{main}, which is the single branch carried forward after
+every campaign branch was merged. The files are
+\texttt{reactor\_model.py} for the geometry and the materials,
+\texttt{core\_geometry.py} for the core envelope,
+\texttt{zoning.py} and \texttt{leu\_policy.py} for the loading map and
+the enrichment policy, \texttt{openmc\_evaluator.py} for the depletion
+schedule and the transport settings, \texttt{run\_optimization.py} for
+the campaign limits passed at launch, and \texttt{hardware3d.py} for the
+three-dimensional confirmation model.
+
+%% AUTHOR: state here the exact commit hash of branch main that the
+%% annex describes, so the annex is pinned to one code state. On wks720:
+%%     cd ~/master-thesis-unipi && git rev-parse --short HEAD
+
+% =====================================================================
+\section{Vessel, core envelope and reflector}
+\label{app:inputs-vessel}
+
+The radial budget of the design is set by the vessel inner radius. The
+fuel footprint is bounded by the circumscribed envelope radius, which is
+the smallest cylinder that contains every assembly intact.
+
+\begin{equation}
+R_\mathrm{env}(p) = \sqrt{13}\; N_\mathrm{lat}\, p
+\label{eq:in-renv}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $R_\mathrm{env}$ is the circumscribed radius of the intact
+        32-assembly footprint, in cm.
+  \item $N_\mathrm{lat}$ is the lattice order of one assembly, equal to
+        17, dimensionless.
+  \item $p$ is the fuel rod pitch, in cm.
+  \item $\sqrt{13}$ is the distance in assembly pitches from the core
+        centre to the farthest fuel corner of the six-by-six map with
+        the four corners removed, dimensionless.
+\end{itemize}
+
+The vessel-fit constraint follows directly.
+
+\begin{equation}
+g_\mathrm{geom} = R_\mathrm{env}(p) + \delta_\mathrm{pad}
++ t_\mathrm{refl} - \left( R_\mathrm{ves} - c_\mathrm{ves} \right)
+\label{eq:in-ggeom}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $g_\mathrm{geom}$ is the vessel-fit constraint value, feasible
+        when non-positive, in cm.
+  \item $\delta_\mathrm{pad}$ is the lattice-corner pad, in cm.
+  \item $t_\mathrm{refl}$ is the minimum radial reflector thickness, in
+        cm.
+  \item $R_\mathrm{ves}$ is the vessel inner radius, in cm.
+  \item $c_\mathrm{ves}$ is the radial clearance reserved for the core
+        barrel and the downcomer, in cm.
+\end{itemize}
+
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}p{0.4cm} >{\raggedright\arraybackslash}p{0.9cm}@{}}
+\caption[Vessel, core envelope and reflector inputs.]{Vessel, core
+  envelope and reflector inputs.}
+\label{tab:in-vessel} \\
+\toprule
+\textbf{Parameter} & \textbf{Value} & \textbf{Unit} & \textbf{Class} &
+\textbf{Primary source} & \textbf{V} & \textbf{Note} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Parameter} & \textbf{Value} & \textbf{Unit} & \textbf{Class} &
+\textbf{Primary source} & \textbf{V} & \textbf{Note} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Vessel inner radius & 90.0 & cm & INF & \cite{maruyama_2013}, Figure~13, inner radius 900\,mm & N & (a) \\
+\addlinespace
+Vessel wall thickness & 10.0 & cm & INF & \cite{maruyama_2013}, Figure~13, 100\,mm & N & (b) \\
+\addlinespace
+Vessel overall height & 470 & cm & INF & \cite{maruyama_2013}, Figure~13, 4700\,mm & N & (b) \\
+\addlinespace
+Core barrel thickness & 5.08 & cm & REP & \cite{ez_aldeen_2025,ezaldeen_zenodo_2025} & P & (c) \\
+\addlinespace
+Downcomer allowance & 2.0 & cm & EST & This work & P & (d) \\
+\addlinespace
+Reserved radial clearance & 7.08 & cm & DER & Barrel plus downcomer & Y & (e) \\
+\addlinespace
+Lattice-corner pad & 0.02 & cm & NUM & This work & Y & (f) \\
+\addlinespace
+Core map & 32 assemblies, six by six minus corners & -- & INF & This work & P & (g) \\
+\addlinespace
+Fuel envelope radius at 1.26\,cm pitch & 77.231 & cm & DER & Equation~\eqref{eq:in-renv} & Y & (h) \\
+\addlinespace
+Largest feasible reflector thickness at 1.26\,cm pitch & 5.669 & cm & DER & Equation~\eqref{eq:in-ggeom} & Y & (h) \\
+\addlinespace
+Active fuel height & 120.0 & cm & INF & Proportions of Figure~13 of \cite{maruyama_2013} & P & (i) \\
+\addlinespace
+Radial reflector material & Homogenised SS304 and borated water & -- & EST & This work & P & (j) \\
+\addlinespace
+Reflector steel volume fraction & 0.90 & -- & EST & This work, against 0.956 in \cite{ez_aldeen_2025} & P & (k) \\
+\end{longtable}
+\setlength{\tabcolsep}{6pt}
+\normalsize
+
+\noindent \textbf{Notes to Table~\ref{tab:in-vessel}.}
+
+\begin{enumerate}[label=(\alph*)]
+  \item The drawing is a simplified structural model prepared for CTMSP,
+        not a design specification. It is the only open geometric
+        information on the prototype. Used in
+        Section~\ref{sec:design-basis} and in every campaign through the
+        vessel-fit constraint.
+
+  \item Read from the same figure and recorded for completeness. Neither
+        quantity enters the two-dimensional transport model. The wall is
+        modelled only in the three-dimensional confirmation of
+        Section~\ref{sec:res-c8-3d}.
+
+  \item Taken from the benchmark, where the barrel spans 93.98 to
+        99.06\,cm. It is carried into this model as a thickness rather
+        than as a pair of radii, because the vessel of this study is
+        smaller than the benchmark vessel.
+
+  \item An engineering allowance for the downcomer gap. No open source
+        gives a downcomer for the prototype. The sensitivity of the
+        results to a 3.7\,cm downcomer is run on the candidates only.
+
+  \item Reserved between the reflector outer surface and the vessel
+        inner surface. It tightens the vessel-fit constraint uniformly
+        and is a design-basis decision of this work.
+
+  \item A modelling device that prevents an OpenMC surface from passing
+        exactly through a lattice corner. It consumes real radial
+        budget, so it appears explicitly in
+        Equation~\eqref{eq:in-ggeom}. A duplicated definition of this
+        pad caused a boundary failure in Campaign~4, which is why it now
+        has a single definition in \texttt{core\_geometry.py} shared by
+        the builder and the constraint.
+
+  \item No open source states an assembly count for the prototype. The
+        count follows from the heavy-metal mass implied by the active
+        height and the lattice, as described in note~(i). It is checked
+        in Section~\ref{sec:design-basis}.
+
+  \item Computed generically from the core map rather than assumed, so a
+        future change of layout cannot invalidate it silently.
+
+  \item The height is an estimate. It is read from the proportions of
+        the vessel drawing and cross-checked against the heavy-metal
+        mass of Table~\ref{tab:in-operating}. In the two-dimensional
+        transport model the height enters only the heavy-metal and
+        specific-power bookkeeping, so it changes the specific power and
+        the cycle length in days but no multiplication factor.
+
+  \item No open source specifies the reflector or the core barrel of the
+        prototype. A steel reflector rather than a water pond is adopted
+        because it is the practice of compact naval and integral cores
+        and because it is what the benchmark uses.
+
+  \item The benchmark value is 0.956. The value adopted here is
+        deliberately more moderating, which is the conservative
+        direction for reflector return. The three-dimensional
+        confirmation exposes it as a flag so the difference can be
+        quantified rather than assumed away.
+\end{enumerate}
+
+% =====================================================================
+\section{Fuel assembly, fuel rod and guide tube}
+\label{app:inputs-assembly}
+
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}p{0.4cm} >{\raggedright\arraybackslash}p{0.9cm}@{}}
+\caption[Fuel assembly, fuel rod and guide tube inputs.]{Fuel assembly,
+  fuel rod and guide tube inputs.}
+\label{tab:in-assembly} \\
+\toprule
+\textbf{Parameter} & \textbf{Value} & \textbf{Unit} & \textbf{Class} &
+\textbf{Primary source} & \textbf{V} & \textbf{Note} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Parameter} & \textbf{Value} & \textbf{Unit} & \textbf{Class} &
+\textbf{Primary source} & \textbf{V} & \textbf{Note} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Lattice order & 17 by 17 & -- & REP & \cite{nuscale_htp2_2017,ez_aldeen_2025} & Y & (a) \\
+\addlinespace
+Fuel rods per assembly & 264 & -- & DER & $17^2$ minus 25 non-fuel positions & Y & (a) \\
+\addlinespace
+Guide tubes per assembly & 24 & -- & REP & Westinghouse 17 by 17 map & Y & (a) \\
+\addlinespace
+Instrumentation tubes per assembly & 1 & -- & REP & Westinghouse 17 by 17 map & Y & (b) \\
+\addlinespace
+Fuel pellet outer radius & 0.4058 & cm & REP & \cite{nuscale_htp2_2017,ezaldeen_zenodo_2025} & N & (c) \\
+\addlinespace
+Cladding inner radius & 0.4140 & cm & REP & \cite{nuscale_htp2_2017,ezaldeen_zenodo_2025} & N & (c) \\
+\addlinespace
+Cladding outer radius & 0.4750 & cm & REP & \cite{nuscale_htp2_2017,ezaldeen_zenodo_2025} & N & (c) \\
+\addlinespace
+Guide tube inner radius & 0.5715 & cm & REP & \cite{nuscale_htp2_2017,ezaldeen_zenodo_2025} & N & (c) \\
+\addlinespace
+Guide tube outer radius & 0.6121 & cm & REP & \cite{nuscale_htp2_2017,ezaldeen_zenodo_2025} & Y & (d) \\
+\addlinespace
+Fuel rod pitch & 1.26 & cm & EST & This work, fixed from Campaign~8 & Y & (d) \\
+\addlinespace
+Assembly pitch & 21.42 & cm & DER & $17 \times$ rod pitch & Y & \\
+\addlinespace
+Intra-assembly enrichment zones & Central 9 by 9 inner, remainder outer & -- & EST & This work & P & (e) \\
+\addlinespace
+Gadolinia rod pattern ladder & 12, 16, 20, 24, 32, 40 & rods & EST & This work, after \cite{bae_gd_2023,epr_fsar_ch4,nuscale_htp2_2017} & P & (f) \\
+\addlinespace
+Spacer grid band height & 4.445 & cm & REP & \cite{ezaldeen_zenodo_2025} & P & (g) \\
+\addlinespace
+Number of spacer grids & 4 & -- & EST & This work, benchmark has 5 on 200\,cm & P & (g) \\
+\addlinespace
+Spacer grid span & 41.4 & cm & EST & This work & P & (g) \\
+\addlinespace
+First grid offset above fuel bottom & 3.555 & cm & REP & \cite{ezaldeen_zenodo_2025} & P & (g) \\
+\addlinespace
+Grid strap inner box & 1.2242 & cm & REP & \cite{ezaldeen_zenodo_2025} & Y & (h) \\
+\end{longtable}
+\setlength{\tabcolsep}{6pt}
+\normalsize
+
+\noindent \textbf{Notes to Table~\ref{tab:in-assembly}.}
+
+\begin{enumerate}[label=(\alph*)]
+  \item The reference core departs from the 16 by 16 lattice of the
+        Angra units and adopts the 17 by 17 Westinghouse-type assembly,
+        for the reasons given in Section~\ref{sec:design-basis}. The
+        rod count follows from the lattice order and the non-fuel
+        positions and is used directly in the heavy-metal mass of
+        Equation~\eqref{eq:in-hm}.
+
+  \item The central instrumentation tube is modelled with the guide tube
+        dimensions and the guide tube material. This is a simplification
+        of the model. It affects one position of 289 and no control rod
+        is placed in it.
+
+  \item The pin dimensions are taken unchanged from the design analog.
+        They were not varied in any campaign, so they carry no
+        independent validation in this thesis.
+
+  \item The guide tube outer diameter exceeds the rod pitch when the
+        pitch falls below 1.2242\,cm, which causes OpenMC to clip the
+        tube wall silently. This was measured in this work and reaches
+        27 per cent of the wall at a pitch of 1.150\,cm. It is the
+        reason the pitch is fixed at 1.26\,cm from Campaign~8 onward.
+        The measurement is reported in
+        Sections~\ref{sec:res-c5-search} and \ref{sec:res-c7-limits}.
+
+  \item The inner zone is the centred 9 by 9 block of the lattice. In
+        the final campaign the two intra-assembly enrichments are equal,
+        so the zoning that acts is the radial core zoning of
+        Table~\ref{tab:in-limits} and not the intra-assembly one.
+
+  \item The ladder is nested, octant symmetric, excludes the outer two
+        rows, forbids face-adjacent gadolinia pairs and requires every
+        poisoned rod to touch a guide tube by a face or a corner. The
+        rules follow vendor and licensing practice for poisoned-rod
+        placement, namely the optimised 16, 20 and 24 pin maps of
+        \cite{bae_gd_2023}, the central-zone placement of
+        \cite{epr_fsar_ch4} and the NuFuel-HTP2 patterns of
+        \cite{nuscale_htp2_2017}.
+
+  \item The grid model is used only in the three-dimensional
+        confirmation. The benchmark places five grids over a 200\,cm
+        active height. This work places four over 120\,cm at the same
+        band height, with one of them inside the plenum, where it is
+        smeared at its exact area fraction because the plenum has no pin
+        structure.
+
+  \item See note~(d). The same number sets the pitch below which the
+        guide tube is clipped.
+\end{enumerate}
+
+% =====================================================================
+\section{Material compositions and densities}
+\label{app:inputs-materials}
+
+The uranium isotopics are set explicitly rather than through the OpenMC
+enrichment shortcut, because that shortcut assumes a fixed uranium-234 to
+uranium-235 mass ratio that is documented only below 5\,wt\%. The
+correlation adopted is the one used by the SCALE sequences.
+
+\begin{equation}
+w_{234} = 0.007731 \, \left( w_{235} \right)^{1.0837}
+\label{eq:in-u234}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $w_{234}$ is the uranium-234 content of the uranium, in weight
+        per cent.
+  \item $w_{235}$ is the uranium-235 enrichment of the uranium, in
+        weight per cent.
+\end{itemize}
+
+Uranium-236 is set to zero, because the fuel is modelled as fresh
+non-recycled commercial uranium, and uranium-238 takes the balance. The
+range over which Equation~\eqref{eq:in-u234} is applied is discussed in
+Section~\ref{app:inputs-decisions}.
+
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}p{0.4cm} >{\raggedright\arraybackslash}p{0.9cm}@{}}
+\caption[Material compositions and densities.]{Material compositions and
+  densities.}
+\label{tab:in-materials} \\
+\toprule
+\textbf{Parameter} & \textbf{Value} & \textbf{Unit} & \textbf{Class} &
+\textbf{Primary source} & \textbf{V} & \textbf{Note} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Parameter} & \textbf{Value} & \textbf{Unit} & \textbf{Class} &
+\textbf{Primary source} & \textbf{V} & \textbf{Note} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+UO$_2$ density & 10.4 & g/cm$^3$ & REP & \cite{nuscale_htp2_2017} & N & (a) \\
+\addlinespace
+(U,Gd)O$_2$ density & 10.2 & g/cm$^3$ & EST & This work & N & (a) \\
+\addlinespace
+Uranium-234 content & Equation~\eqref{eq:in-u234} & wt\% & LIT & \cite{bowman_suto_1996,scale_polaris_manual} & N & (b) \\
+\addlinespace
+Uranium-236 content & 0 & wt\% & EST & This work, fresh non-recycled uranium & N & (b) \\
+\addlinespace
+Gd$_2$O$_3$ density & 7.41 & g/cm$^3$ & LIT & Handbook value & N & (c) \\
+\addlinespace
+Gadolinium isotopics & Natural & -- & EST & This work & N & (c) \\
+\addlinespace
+Enrichment derate of a gadolinia rod & 5 per cent relative per wt\% Gd$_2$O$_3$, floored at 0.2\,wt\% & -- & LIT & \cite{mildrum_segovia_2001} & N & (d) \\
+\addlinespace
+Zircaloy-4 composition & Zr 98.2, Sn 1.45, Fe 0.20, Cr 0.10, O 0.05 & wt\% & REP & \cite{nuscale_htp2_2017} & N & (e) \\
+\addlinespace
+Zircaloy-4 density & 6.55 & g/cm$^3$ & REP & \cite{nuscale_htp2_2017} & N & (e) \\
+\addlinespace
+Helium gap density & 0.0015 & g/cm$^3$ & REP & \cite{nuscale_htp2_2017} & N & \\
+\addlinespace
+Coolant density & 0.72 & g/cm$^3$ & EST & This work & N & (f) \\
+\addlinespace
+Coolant thermal scattering & \texttt{c\_H\_in\_H2O} & -- & LIT & ENDF/B-VII.1 & N & \\
+\addlinespace
+Soluble boron & Natural boron, mass fraction of the water & -- & EST & This work & Y & (g) \\
+\addlinespace
+SS304 composition & Fe 69.5, Cr 19.0, Ni 9.5, Mn 2.0 & wt\% & REP & \cite{nuscale_htp2_2017} & N & (e) \\
+\addlinespace
+SS304 density & 7.90 & g/cm$^3$ & REP & \cite{nuscale_htp2_2017} & N & (e) \\
+\addlinespace
+Control rod material number densities & Set by the sum of the nuclide densities & at/b$\cdot$cm & REP & \cite{ezaldeen_zenodo_2025} & N & (h) \\
+\addlinespace
+Cross-section library & ENDF/B-VII.1 & -- & LIT & \cite{chadwick_endf71_2011} & N & (i) \\
+\addlinespace
+Depletion chain & PWR chain for ENDF/B-VII.1 & -- & LIT & OpenMC distribution, file \texttt{chain\_endfb71\_pwr.xml} & N & (i) \\
+\end{longtable}
+\setlength{\tabcolsep}{6pt}
+\normalsize
+
+\noindent \textbf{Notes to Table~\ref{tab:in-materials}.}
+
+\begin{enumerate}[label=(\alph*)]
+  \item The gadolinia-bearing pellet is given a lower density than the
+        plain pellet, which reflects the lower sintered density of the
+        urania-gadolinia mixture. The two densities enter the
+        heavy-metal bookkeeping only through the plain pellet, because
+        the specific power is computed on the unpoisoned pellet density.
+
+  \item The correlation is the one used by the SCALE depletion
+        sequences. Its published validity range must be read together
+        with the enrichment explored here, see
+        Section~\ref{app:inputs-decisions}.
+
+  \item The gadolinia is modelled with natural gadolinium. No isotopic
+        tailoring is applied.
+
+  \item The enrichment of a gadolinia-bearing rod is the enrichment of
+        the zone it sits in, reduced by five per cent of its own value
+        for every weight per cent of Gd$_2$O$_3$. The rule is the
+        standard practice reported for the low-concentration gadolinia
+        design of the Spanish three-loop 17 by 17 fuelled units, where
+        the reduction offsets the degraded thermal conductivity of the
+        urania-gadolinia mixture.
+
+  \item The compositions are those coded in the model. They were not
+        checked against a compendium of material compositions for
+        radiation transport. See the open point in
+        Section~\ref{app:inputs-openpoints}.
+
+  \item The value corresponds to compressed light water at the operating
+        pressure and moderator temperature of
+        Table~\ref{tab:in-operating}. The pressure itself is not an
+        input of the neutronic model. It enters only through this
+        density, which is the honest statement of how the operating
+        pressure acts on the results.
+
+  \item The boron is added as natural boron at the stated mass fraction
+        of the water. The boron worth of the candidate designs was
+        measured directly in Section~\ref{sec:res-c8-boron}, which
+        validates the implementation.
+
+  \item The absorber, cladding and helium number densities are
+        reproduced from the benchmark scripts and each material density
+        is set by their sum. They were not re-derived here.
+
+  \item The library and the chain are the ones distributed for OpenMC
+        and are the same pair used by the benchmark, which is what makes
+        the comparison with the benchmark meaningful.
+\end{enumerate}
+
+% =====================================================================
+\section{Operating conditions and power bookkeeping}
+\label{app:inputs-operating}
+
+The specific power fed to the depletion follows from the thermal power
+and the fresh heavy-metal mass of the core.
+
+\begin{equation}
+q = \frac{P_\mathrm{th}}{m_\mathrm{HM}}
+\qquad\text{with}\qquad
+m_\mathrm{HM} = \pi r_\mathrm{f}^{2} H \rho_\mathrm{UO_2} f_\mathrm{HM}
+\, n_\mathrm{rod} \, n_\mathrm{asm}
+\label{eq:in-hm}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $q$ is the core specific power, in W per gram of heavy metal.
+  \item $P_\mathrm{th}$ is the core thermal power, in W.
+  \item $m_\mathrm{HM}$ is the fresh heavy-metal mass of the core, in g.
+  \item $r_\mathrm{f}$ is the fuel pellet outer radius, in cm.
+  \item $H$ is the active fuel height, in cm.
+  \item $\rho_\mathrm{UO_2}$ is the pellet density, in g/cm$^3$.
+  \item $f_\mathrm{HM}$ is the uranium mass fraction of UO$_2$, equal to
+        0.8815, dimensionless.
+  \item $n_\mathrm{rod}$ is the number of fuel rods per assembly,
+        dimensionless.
+  \item $n_\mathrm{asm}$ is the number of assemblies in the core,
+        dimensionless.
+\end{itemize}
+
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}p{0.4cm} >{\raggedright\arraybackslash}p{0.9cm}@{}}
+\caption[Operating conditions and power bookkeeping.]{Operating
+  conditions and power bookkeeping.}
+\label{tab:in-operating} \\
+\toprule
+\textbf{Parameter} & \textbf{Value} & \textbf{Unit} & \textbf{Class} &
+\textbf{Primary source} & \textbf{V} & \textbf{Note} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Parameter} & \textbf{Value} & \textbf{Unit} & \textbf{Class} &
+\textbf{Primary source} & \textbf{V} & \textbf{Note} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Core thermal power & 48.0 & MW & OFF & \cite{ctmsp_visita_2018}, thermal per \cite{dinizcosta_2017,demartini_nuclep_2022} & N & (a) \\
+\addlinespace
+Number of assemblies & 32 & -- & INF & This work & P & (b) \\
+\addlinespace
+Fresh heavy-metal mass & 4808 & kg & DER & Equation~\eqref{eq:in-hm} & Y & (b) \\
+\addlinespace
+Uranium mass fraction of UO$_2$ & 0.8815 & -- & DER & Stoichiometry of UO$_2$ & Y & \\
+\addlinespace
+Core specific power & 9.983 & W/\hspace{0pt}gHM & DER & Equation~\eqref{eq:in-hm} & Y & (b) \\
+\addlinespace
+Fuel temperature & 900 & K & REP & \cite{ez_aldeen_2025} & N & (c) \\
+\addlinespace
+Cladding and structure temperature & 600 & K & REP & \cite{ez_aldeen_2025} & N & (c) \\
+\addlinespace
+Moderator temperature & 580 & K & EST & This work & N & (d) \\
+\addlinespace
+System pressure & 15 & MPa & EST & This work & N & (e) \\
+\addlinespace
+Soluble boron concentration & 1000 & ppm & EST & This work & P & (f) \\
+\end{longtable}
+\setlength{\tabcolsep}{6pt}
+\normalsize
+
+\noindent \textbf{Notes to Table~\ref{tab:in-operating}.}
+
+\begin{enumerate}[label=(\alph*)]
+  \item The Navy states 48\,MW for the plant without the qualifier
+        thermal. The academic literature and the specialised press
+        identify the figure as thermal power. This is the only
+        performance figure of the prototype that the model takes from an
+        official source.
+
+  \item No open source gives an assembly count. The count is fixed by
+        requiring the heavy-metal mass and the active height to be
+        mutually consistent within the vessel drawing. The mass and the
+        specific power that follow are computed rather than assumed, and
+        they are recomputed at every launch of the evaluator, which is
+        what makes them validated. The figure of 4733\,kg that appears
+        in the source comments is the earlier target mass used to fix
+        the assembly count, not the mass the model builds. The built
+        mass is the 4808\,kg of this table, and the 1.6 per cent
+        difference acts only on the specific power and therefore on the
+        cycle length expressed in days.
+
+  \item Taken from the benchmark, which uses a uniform fuel temperature
+        of 900\,K and a uniform coolant and structure temperature of
+        600\,K.
+
+  \item Chosen as a representative pressurised water reactor moderator
+        temperature. It differs from the 600\,K used for the structure,
+        which is a deliberate separation of the moderator from the
+        cladding rather than an inconsistency. The consequence of the
+        20\,K difference from the benchmark is recorded in
+        Section~\ref{app:inputs-decisions}.
+
+  \item The pressure does not appear anywhere in the neutronic model. It
+        is stated because it is the condition under which the coolant
+        density of Table~\ref{tab:in-materials} is the correct one. See
+        the open point in Section~\ref{app:inputs-openpoints}.
+
+  \item Every campaign of this thesis is evaluated with soluble boron
+        present at this concentration. The core of this thesis is
+        therefore not a soluble-boron-free core. The boron worth of the
+        candidate designs was measured across several concentrations and
+        rod states in Section~\ref{sec:res-c8-boron}, which exercises
+        the value without fixing it.
+\end{enumerate}
+
+% =====================================================================
+\section{Control rod assemblies}
+\label{app:inputs-cra}
+
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}p{0.4cm} >{\raggedright\arraybackslash}p{0.9cm}@{}}
+\caption[Control rod assembly inputs.]{Control rod assembly inputs.}
+\label{tab:in-cra} \\
+\toprule
+\textbf{Parameter} & \textbf{Value} & \textbf{Unit} & \textbf{Class} &
+\textbf{Primary source} & \textbf{V} & \textbf{Note} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Parameter} & \textbf{Value} & \textbf{Unit} & \textbf{Class} &
+\textbf{Primary source} & \textbf{V} & \textbf{Note} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Rodded assemblies & 32 of 32 & -- & EST & This work & P & (a) \\
+\addlinespace
+Regulating banks & Inner 16 assemblies, RE1 to RE4 & -- & EST & This work & Y & (a) \\
+\addlinespace
+Shutdown banks & Outer 16 assemblies & -- & EST & This work & P & (a) \\
+\addlinespace
+Absorber of the screen & B$_4$C & -- & EST & This work & Y & (b) \\
+\addlinespace
+Alternative absorber & AIC, 80 Ag, 15 In, 5 Cd & -- & REP & \cite{ezaldeen_zenodo_2025} & P & (b) \\
+\addlinespace
+Absorber radius, two-dimensional model & 0.4331 & cm & REP & See note & N & (c) \\
+\addlinespace
+Gap outer radius & 0.43688 & cm & REP & \cite{ezaldeen_zenodo_2025} & N & (c) \\
+\addlinespace
+Rod cladding outer radius & 0.48387 & cm & REP & \cite{ezaldeen_zenodo_2025} & N & (c) \\
+\addlinespace
+Rod cladding material & SS304L & -- & REP & \cite{ezaldeen_zenodo_2025} & N & \\
+\addlinespace
+Absorber rods per assembly, three-dimensional model & 24 & -- & REP & \cite{ezaldeen_zenodo_2025} & P & (d) \\
+\addlinespace
+Absorber radii, three-dimensional model & 0.4267 AIC, 0.4229 B$_4$C & cm & REP & \cite{ezaldeen_zenodo_2025} & P & (c) \\
+\end{longtable}
+\setlength{\tabcolsep}{6pt}
+\normalsize
+
+\noindent \textbf{Notes to Table~\ref{tab:in-cra}.}
+
+\begin{enumerate}[label=(\alph*)]
+  \item The bank assignment is a design choice of this work. No open
+        source gives a control rod scheme for the prototype. The
+        regulating banks are validated in the sense that the
+        controllability screen of every campaign is computed on them and
+        the resulting bank worths are reported. The state with the
+        sixteen regulating assemblies inserted is written $k_\mathrm{RE}$
+        throughout this thesis. It is not an all-rods-in state, since
+        the sixteen shutdown assemblies remain withdrawn.
+
+  \item The screen uses boron carbide. The silver-indium-cadmium
+        absorber is available in the model and is used in the
+        three-dimensional confirmation, where the benchmark rod stack
+        places it below the boron carbide.
+
+  \item The two-dimensional campaign model uses one absorber radius for
+        both absorbers, while the benchmark distinguishes them. This is
+        a known departure of the model from its analog, listed in
+        Section~\ref{app:inputs-departures} and exposed as a flag in the
+        three-dimensional confirmation so it can be quantified. The
+        origin of the single radius is recorded in
+        Section~\ref{app:inputs-decisions}.
+
+  \item The instrumentation tube stays empty, so one of the 25 non-fuel
+        positions carries no absorber rod.
+\end{enumerate}
+
+% =====================================================================
+\section{Depletion schedule and transport settings}
+\label{app:inputs-numerics}
+
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}p{0.4cm} >{\raggedright\arraybackslash}p{0.9cm}@{}}
+\caption[Depletion schedule and transport settings.]{Depletion schedule
+  and transport settings.}
+\label{tab:in-numerics} \\
+\toprule
+\textbf{Parameter} & \textbf{Value} & \textbf{Unit} & \textbf{Class} &
+\textbf{Primary source} & \textbf{V} & \textbf{Note} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Parameter} & \textbf{Value} & \textbf{Unit} & \textbf{Class} &
+\textbf{Primary source} & \textbf{V} & \textbf{Note} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Beginning-of-life burnup block & 0.5, 1.0, 2.0, 4.0, 6.0 & MWd/\hspace{0pt}kgHM & EST & This work & Y & (a) \\
+\addlinespace
+Marching burnup step & 4.0 & MWd/\hspace{0pt}kgHM & EST & This work & Y & (a) \\
+\addlinespace
+Steps per operator restart & 2 & -- & NUM & This work & Y & (b) \\
+\addlinespace
+Burnup cap & 100.0 & MWd/\hspace{0pt}kgHM & NUM & This work & Y & (c) \\
+\addlinespace
+Depletion transport & 4000 particles, 60 batches, 20 inactive & -- & NUM & This work & P & (d) \\
+\addlinespace
+Core solve at beginning of life & 100\,000 particles, 170 batches, 60 inactive & -- & NUM & This work & P & (d) \\
+\addlinespace
+Assembly solve default & 20\,000 particles, 150 batches, 40 inactive & -- & NUM & This work & P & (d) \\
+\addlinespace
+Core builder default & 40\,000 particles, 200 batches, 50 inactive & -- & NUM & This work & P & (d) \\
+\addlinespace
+Pin cell default & 10\,000 particles, 100 batches, 20 inactive & -- & NUM & This work & N & \\
+\addlinespace
+Shannon entropy mesh & 8 by 8 by 1 & -- & NUM & This work & Y & (e) \\
+\addlinespace
+Temperature treatment & Interpolation, 294 to 1500\,K, default 900\,K & -- & NUM & OpenMC setting & N & \\
+\addlinespace
+Random seed & Deterministic hash of the design & -- & NUM & This work & Y & (f) \\
+\end{longtable}
+\setlength{\tabcolsep}{6pt}
+\normalsize
+
+\noindent \textbf{Notes to Table~\ref{tab:in-numerics}.}
+
+\begin{enumerate}[label=(\alph*)]
+  \item The short block resolves the xenon and samarium transient and
+        the gadolinia burnout, and accumulates 13.5\,MWd/kgHM. The
+        marching step then advances the depletion until the
+        multiplication factor has peaked and fallen through the target.
+        The schedule is adaptive, so the number of transport states per
+        evaluation varies between designs.
+
+  \item The chunking of the operator is a restart device, not a physical
+        parameter. A defect of the OpenMC depletion restart affecting
+        the first step of every restarted chunk was identified and
+        corrected in this work, and the affected histories were
+        salvaged. The correction is reported in
+        Section~\ref{sec:restart_defect}.
+
+  \item The cap exists only to bound a design that never falls through
+        the target. A design stopped at the cap is flagged as censored
+        and is reported as such rather than as a cycle length.
+
+  \item The particle and batch counts are a cost decision, not a
+        physical input. The generous inactive count of the core solve
+        was set because the finite core has a real source transient, and
+        the entropy diagnostic of note~(e) is what justifies it with
+        data rather than with a rule of thumb.
+
+  \item The Shannon entropy is written into every statepoint, so every
+        evaluation of every campaign carries its own source-convergence
+        evidence.
+
+  \item The seed is derived from the design variables by a
+        cyclic-redundancy hash, with a different salt for each solve
+        type. Two consequences follow. Repeating an evaluation
+        reproduces it exactly, and two different designs never share a
+        seed, so no correlation is introduced across the archive.
+\end{enumerate}
+
+% =====================================================================
+\section{Screening limits, zoning and derived targets}
+\label{app:inputs-limits}
+
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}p{0.4cm} >{\raggedright\arraybackslash}p{0.9cm}@{}}
+\caption[Screening limits, core zoning and derived reactivity
+  targets.]{Screening limits, core zoning and derived reactivity
+  targets.}
+\label{tab:in-limits} \\
+\toprule
+\textbf{Parameter} & \textbf{Value} & \textbf{Unit} & \textbf{Class} &
+\textbf{Primary source} & \textbf{V} & \textbf{Note} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Parameter} & \textbf{Value} & \textbf{Unit} & \textbf{Class} &
+\textbf{Primary source} & \textbf{V} & \textbf{Note} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Minimum multiplication factor & 1.02 & -- & EST & This work & Y & (a) \\
+\addlinespace
+Maximum multiplication factor, core basis & 1.166 & -- & DER & Rod worth study of this thesis & Y & (b) \\
+\addlinespace
+Axial leakage factor & 1.0289 & -- & DER & Axial study of this thesis & Y & (b) \\
+\addlinespace
+Radial peaking screen & 2.00 & -- & EST & This work & Y & (c) \\
+\addlinespace
+Controllability margin & 1000 & pcm & EST & This work & Y & (d) \\
+\addlinespace
+Screening enrichment cap & 19.75 & wt\% & LIT & \cite{jason_2016,onr_leu_2016} & N & (e) \\
+\addlinespace
+Physical low-enrichment boundary & 20 & wt\% & LIT & \cite{nrc_10cfr110_2} & N & (e) \\
+\addlinespace
+Campaign 8 enrichment audit cap & 16 & wt\% & EST & This work & Y & (e) \\
+\addlinespace
+Campaign 8 enrichment search bound & 13.913 & wt\% & DER & Audit cap divided by the peripheral multiplier & Y & (e) \\
+\addlinespace
+Central zone enrichment multiplier & 0.720 & -- & EST & Zoned-loading study of this thesis & Y & (f) \\
+\addlinespace
+Middle zone enrichment multiplier & 0.8933 & -- & DER & Fissile balance & Y & (f) \\
+\addlinespace
+Peripheral zone enrichment multiplier & 1.150 & -- & EST & Zoned-loading study of this thesis & Y & (f) \\
+\addlinespace
+Zone assembly counts & 4, 12, 16 & -- & DER & Ring map on the 32-assembly layout & Y & (f) \\
+\end{longtable}
+\setlength{\tabcolsep}{6pt}
+\normalsize
+
+\noindent \textbf{Notes to Table~\ref{tab:in-limits}.}
+
+\begin{enumerate}[label=(\alph*)]
+  \item The lower bound rejects designs that cannot reach criticality
+        with a working margin. It is a screening choice of this work.
+
+  \item Both numbers are results of this thesis rather than inputs taken
+        from elsewhere. The ceiling on the multiplication factor is
+        derived from the measured worth of the regulating banks in the
+        three-dimensional hardware study, and the axial factor is
+        derived from the same study. Sections~\ref{sec:meth-ctrl} and
+        \ref{sec:meth-lax} give the derivation of each. The earlier
+        bound of 1.35 on the assembly basis was a methodological
+        screening value with no traceable regulatory origin, and it was
+        replaced by 1.166 on the core basis from Campaign~8, see
+        Section~\ref{sec:meth-kbasis}.
+
+  \item The screen is deliberately relaxed. The design limits of
+        comparable integral reactors are tighter, so the screening bound
+        is used during the search and the licensing-relevant check is
+        applied at candidate selection. The two-tier reasoning is set
+        out where the constraint is introduced.
+
+  \item The margin is required between the rodded core and criticality.
+        It is applied with boron carbide as the absorber.
+
+  \item Four enrichment numbers are in play and they have different
+        origins. The physical boundary defines low-enriched uranium. The
+        engineering ceiling sits below it so that manufacturing
+        tolerance cannot cross it. The audit cap of the final campaign
+        is tighter still and is a consequence of the controllability
+        screen, which is a result of this work rather than a limit taken
+        from outside. The search bound on the enrichment variable is the
+        audit cap divided by the peripheral multiplier, that is
+        $16 / 1.15 = 13.913$\,wt\%, so no design the optimiser can
+        propose exceeds the audit cap once the zoning is applied.
+
+  \item The multipliers scale both intra-assembly enrichments of a ring.
+        The middle multiplier is not stored. It is re-derived from the
+        assembly-count-weighted fissile balance, so the core-average
+        enrichment multiplier is exactly unity whatever the other two
+        say. The construction is given in Section~\ref{sec:meth-zoning}.
+\end{enumerate}
+
+% =====================================================================
+\section{Quantities fixed and quantities searched}
+\label{app:inputs-freefixed}
+
+Table~\ref{tab:in-freefixed} separates the quantities the optimiser was
+allowed to change from those held fixed throughout. The bounds of the
+search are not repeated here. They belong to the design-space table of
+Section~\ref{sec:meth-c8-space}.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption[Design variables of the final campaign and fixed
+    quantities.]{Design variables of the final campaign and the
+    quantities held fixed.}
+  \label{tab:in-freefixed}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm} >{\raggedright\arraybackslash}p{2.2cm} >{\raggedright\arraybackslash}X@{}}
+    \toprule
+    \textbf{Quantity} & \textbf{Status} & \textbf{Comment} \\
+    \midrule
+    Fuel enrichment & Searched & One enrichment for the whole assembly from Campaign~8, redistributed radially by the zone multipliers \\
+    \addlinespace
+    Gadolinia weight fraction & Searched & Weight per cent of Gd$_2$O$_3$ in the poisoned rods \\
+    \addlinespace
+    Gadolinia rod count & Searched & Snapped onto the discrete ladder of Table~\ref{tab:in-assembly} \\
+    \addlinespace
+    Reflector thickness & Searched & Bounded above by the vessel-fit constraint of Equation~\eqref{eq:in-ggeom} \\
+    \addlinespace
+    Fuel rod pitch & Fixed & Fixed at 1.26\,cm from Campaign~8 because of the guide-tube clipping of note~(d) of Table~\ref{tab:in-assembly} \\
+    \addlinespace
+    Everything in Tables~\ref{tab:in-vessel} to \ref{tab:in-numerics} not named above & Fixed & Held constant across every campaign \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+% =====================================================================
+\section{Open data on the LABGENE prototype}
+\label{app:inputs-labgene}
+
+The preceding sections describe the model. This section describes the
+prototype that motivates it, and states which of the model inputs are
+anchored to the open record and which are not.
+
+Table~\ref{tab:labgene-data} lists every item of open information on the
+LABGENE prototype used in this thesis, the value adopted and the primary
+source of that value. Items marked as assumptions are modelling choices
+of this thesis and carry no claim of correspondence with the prototype.
+
+\begin{table}[htbp]
+  \centering
+  \footnotesize
+  \caption[Open-source data on the LABGENE prototype.]{Open-source data
+    on the LABGENE prototype and their primary references.}
+  \label{tab:labgene-data}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.4cm} >{\raggedright\arraybackslash}p{3.6cm} >{\raggedright\arraybackslash}X@{}}
+    \toprule
+    \textbf{Item} & \textbf{Value adopted} & \textbf{Primary source} \\
+    \midrule
+    Reactor type & PWR & \cite{ctmsp_labgene_2015}, confirmed by \cite{vasconcelos_fapesp_2025} \\
+    \addlinespace
+    Rated power & 48\,MW thermal & 48\,MW stated by \cite{ctmsp_visita_2018}. Thermal per \cite{dinizcosta_2017} and \cite{demartini_nuclep_2022} \\
+    \addlinespace
+    Fuel & UO$_2$ pellets in rods grouped into fuel elements & \cite{marinha_inb_labgene_2022}, \cite{pereira_rmb_2023} \\
+    \addlinespace
+    Enrichment class & LEU, below 20\,wt\% & \cite{brazil_npt_wp71_2022}, \cite{brazil_npt_wp13_2026}. Definition of LEU from \cite{nrc_10cfr110_2} \\
+    \addlinespace
+    Enrichment value & Not fixed. Design space 2.0 to 19.75\,wt\% & Reported 6 to 8\,wt\% \cite{dinizcosta_2017}, 18 to 19\,wt\% \cite{kassenova_2014}, up to 19\,wt\% \cite{vasconcelos_fapesp_2025} \\
+    \addlinespace
+    Refuelling interval & Objective of the optimisation, not fixed & Four years \cite{galante_podernaval_2020}, five years \cite{dinizcosta_2017} \\
+    \addlinespace
+    Vessel internal radius & 90\,cm, Table~\ref{tab:in-vessel} & Figure~13 of \cite{maruyama_2013}, simplified model drawn according to CTMSP \\
+    \addlinespace
+    Vessel wall and height & 10\,cm and 470\,cm, recorded but not modelled in two dimensions & Same figure of \cite{maruyama_2013} \\
+    \addlinespace
+    Active fuel height & 120\,cm, assumption & Estimated from the proportions of Figure~13 of \cite{maruyama_2013} \\
+    \addlinespace
+    Lattice, pitch, assembly count, absorbers, boron, reflector & Assumptions of this thesis, Tables~\ref{tab:in-vessel} to \ref{tab:in-cra} & No open source \\
+    \addlinespace
+    Status of the plant & Not critical as of May 2025, boiler-steam tests first & \cite{vasconcelos_fapesp_2025}, \cite{marinha_relatorio_gestao_2025} \\
+    \addlinespace
+    Safeguards status & Special procedures under Article~13 of the Quadripartite Agreement in negotiation & \cite{iaea_dg_statement_2022}, \cite{eu_statement_bog_2025}, \cite{brazil_npt_wp13_2026} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+Two summary statements follow from the table and from the preceding
+sections.
+
+\begin{enumerate}
+  \item Four inputs of the model are anchored to the open record on the
+        prototype. These are the reactor type, the rated thermal power,
+        the low-enriched fuel class and the vessel inner radius.
+
+  \item Every other input is either reproduced from the NuScale-class
+        design analog or is an estimate of this work. This is the reason
+        the study is framed as a LABGENE-class study rather than as a
+        study of LABGENE itself.
+\end{enumerate}
+
+% =====================================================================
+\section{Known departures from the reference benchmark}
+\label{app:inputs-departures}
+
+The design analog is a published benchmark of a NuScale-class integral
+reactor. The model of this thesis departs from it in the following
+respects, each of which is stated rather than absorbed silently.
+
+\begin{enumerate}
+  \item The active height is 120\,cm against 200\,cm in the benchmark,
+        which follows from the vessel envelope of the prototype.
+
+  \item The reflector steel volume fraction is 0.90 against 0.956 in the
+        benchmark. The three-dimensional confirmation exposes this as a
+        flag.
+
+  \item The two-dimensional model uses a single absorber radius of
+        0.4331\,cm for both absorbers, where the benchmark uses
+        0.4229\,cm for boron carbide and 0.4267\,cm for the
+        silver-indium-cadmium alloy. The three-dimensional confirmation
+        exposes this as a flag.
+
+  \item The coolant density is 0.72\,g/cm$^3$ against the 0.752\,g/cm$^3$
+        implied by the benchmark number densities, and the moderator
+        temperature is 580\,K against 600\,K. The two choices are paired
+        and are discussed in Section~\ref{app:inputs-decisions}.
+
+  \item The spacer grid model has four grids over the shorter active
+        height against five over the benchmark height, and one of the
+        four sits in the plenum.
+
+  \item The instrumentation tube is modelled with guide tube dimensions
+        and carries no absorber rod.
+\end{enumerate}
+
+% =====================================================================
+\section{Decisions recorded against these inputs}
+\label{app:inputs-decisions}
+
+Four inputs of the preceding tables raise a question that a reader will
+ask. Each was examined and closed with an explicit decision rather than
+left as an open point. The decisions and their reasoning are recorded
+here so that they are not reopened.
+
+\subsection*{Use of the uranium-234 correlation above its documented
+range}
+
+Equation~\eqref{eq:in-u234} is documented for uranium-235 enrichments
+below 10\,wt\%. The enrichment search bound of the final campaign is
+13.913\,wt\% at the design variable and the as-built peripheral ring
+reaches 16\,wt\%, so the correlation is applied beyond its stated range.
+
+The correlation is retained deliberately. Three arguments support the
+decision.
+
+\begin{enumerate}
+  \item The candidate designs selected from the final campaign carry
+        enrichments below 10\,wt\%, so the correlation is used inside
+        its documented range for every design that reaches the
+        post-optimisation analysis.
+
+  \item Uranium-234 is a strong thermal absorber, so an extrapolation
+        that overstates its content understates the multiplication
+        factor. The direction of the error is known and it is
+        conservative for a design that must be shown to reach
+        criticality.
+
+  \item A design driven above 10\,wt\% is already penalised by the
+        controllability screen, which is the binding constraint of this
+        core. Correcting the isotopic vector at high enrichment would
+        not move such a design into the candidate set.
+\end{enumerate}
+
+Two caveats are attached to the decision.
+
+\begin{enumerate}
+  \item The peripheral multiplier of 1.150 means the as-built enrichment
+        of the outer ring is higher than the design variable, so the
+        check on whether a candidate stays below 10\,wt\% must be made
+        on the as-built peripheral enrichment and not on the variable.
+
+  \item The docstring of \texttt{make\_uo2} claims validity over the
+        whole 2 to 19.75\,wt\% range. The cited source does not support
+        that claim, and the text of this thesis states the limitation
+        rather than repeating the docstring.
+\end{enumerate}
+
+\subsection*{Moderator temperature of 580\,K against 600\,K in the
+benchmark}
+
+The moderator temperature is a hardcoded field of the
+\texttt{Operating} dataclass, in the file
+\texttt{reactor\_\allowbreak model.py}. It is not an OpenMC default.
+
+The value is paired consistently with the coolant density of
+0.72\,g/cm$^3$ of Table~\ref{tab:in-materials}, so the model is
+internally coherent even though it sits 20\,K below the benchmark.
+
+The choice does not threaten the Pareto front. The temperature is
+identical for every design of every campaign and the rod pitch is fixed,
+so the effect on the multiplication factor is a common-mode bias. A bias
+that shifts every design by the same amount does not reorder a Pareto
+front, and the front of this thesis is built by ranking designs against
+one another rather than against an absolute reactivity target.
+
+%% AUTHOR: a two-point assembly solve at 580 K and 600 K, with the
+%% corresponding densities, would close this argument quantitatively
+%% rather than by symmetry. It is cheap. Consider running it and
+%% reporting the delta in pcm here.
+
+\subsection*{Origin of the single absorber radius of 0.4331\,cm}
+
+The value was adopted from the benchmark notebook at the initialisation
+of the model, before the two absorber materials were separated in the
+three-dimensional hardware description. It has carried an unresolved
+verification marker in the source code since then, and it is listed as a
+departure in Section~\ref{app:inputs-departures} rather than presented
+as a verified input.
+
+The consequence is bounded. The single radius sits between the two
+benchmark radii, and the three-dimensional confirmation exposes the
+choice as a flag, so the effect on the bank worths can be measured
+rather than argued.
+
+\subsection*{Attribution of the gadolinia rules}
+
+The enrichment derate of a gadolinia-bearing rod is attributed to the
+ENUSA low-concentration gadolinia design report, which states the five
+per cent relative reduction per weight per cent of Gd$_2$O$_3$ and
+attributes it to the degraded thermal conductivity of the mixture.
+
+The placement rules of the nested ladder are attributed to the optimised
+gadolinia pin maps of the Oak Ridge study and to the central-zone
+placement practice of the U.S. EPR safety analysis report. A further
+Idaho National Laboratory uprate assessment cited in an early source
+comment is redundant with these two and is not carried into the thesis.
+
+% =====================================================================
+\section{Items still to be verified}
+\label{app:inputs-openpoints}
+
+\openpoint{The coolant density of 0.72\,g/cm$^3$ is stated as consistent
+with 15\,MPa and 580\,K. Confirm it against an IAPWS-IF97 evaluation and
+cite that evaluation, or replace the density by the tabulated value. The
+number propagates into every multiplication factor of every campaign
+through the moderation ratio.}
+
+\openpoint{The Zircaloy-4 and SS304 compositions were not checked
+against a compendium of material compositions for radiation transport. A
+reviewer of a first-quartile journal will ask where the compositions come
+from. Check them and cite the compendium, or cite the design analog
+explicitly for each composition.}
+
+\openpoint{The vessel dimensions were read from a copy of Figure~13
+embedded in a working compilation. Confirm them on the page of the
+dissertation itself and add the page number to the citation.}
+
+\openpoint{Pin the annex to a commit hash of branch \texttt{main} of the
+simulation repository, in Section~\ref{app:inputs-purpose}. Without it a
+reader cannot tell which code state the tables describe.}
