@@ -2092,10 +2092,20 @@ From Campaign 6 the beginning-of-life core map is zoned radially inside
 the evaluator, so the peaking objective and the peaking constraint act
 on the zoned core rather than on a uniform loading.
 
-The 32-assembly map is partitioned into three concentric rings of 4
-central, 12 middle and 16 peripheral assemblies. The enrichment of each
-ring is the corresponding design enrichment scaled by a fixed ring
-multiplier.
+The 32-assembly map is partitioned into three concentric rings by the
+Euclidean distance of each assembly position from the centre of the
+map, measured in lattice units.
+
+\begin{enumerate}
+  \item Ring C, the centre, 4 assemblies at a distance below 1.0.
+  \item Ring M, the middle, 12 assemblies at a distance from 1.0 to
+        2.3.
+  \item Ring P, the periphery, 16 assemblies at a distance of 2.3 or
+        above.
+\end{enumerate}
+
+The enrichment of each ring is the corresponding design enrichment
+scaled by a fixed ring multiplier.
 
 \begin{equation}
 e_r \;=\; m_r \, e, \qquad r \in \{C, M, P\}
@@ -2111,29 +2121,320 @@ e_r \;=\; m_r \, e, \qquad r \in \{C, M, P\}
   \item $e$ is the design enrichment assigned to that ring, in
         wt\%~$^{235}$U.
 
-  \item $m_r$ is the fixed multiplier of ring $r$, dimensionless, with
+  \item $m_r$ is the multiplier of ring $r$, dimensionless, equal to
         $m_C = 0.720$ for the centre, $m_M = 0.8933$ for the middle
-        ring and $m_P = 1.15$ for the periphery.
+        ring and $m_P = 1.150$ for the periphery.
 \end{itemize}
 
-%% AUTHOR: one sentence stating exactly how the two design enrichments
-%% e_in and e_out are assigned to the three rings before the
-%% multipliers are applied, matching the evaluator implementation.
+\subsection{How the design enrichments enter the rings}
+\label{sec:meth-zoning-map}
 
-The centre-suppressed, periphery-enhanced pattern flattens the radial
-power distribution, and it is the physically real driver of the
-peaking improvement observed in Campaign 6, since neither of the two
-bookkeeping changes of that campaign acts on a beginning-of-life
-quantity. The attribution argument is completed in
-Section~\ref{sec:res-c6-compare}.
+The zoning does not assign one design enrichment to one ring. Every
+assembly of the core keeps the two-zone intra-assembly structure of
+Table~\ref{tab:model-geometry}, namely the centred $9\times9$ block of
+72 rods at $e_\mathrm{in}$ and the surrounding 192 rods at
+$e_\mathrm{out}$. What the ring multiplier does is scale \emph{both}
+intra-assembly enrichments of every assembly in that ring by the same
+factor.
 
-The multipliers derive from a dedicated zoned-loading study in which
-four independently obtained champion designs selected the same map.
-That study fixed the peripheral multiplier at 1.250, and Campaign 6
-relaxes it to 1.15. The relaxation trades a fraction of the flattening
-for a wider enrichment search box, because the low-enriched-uranium cap
-now binds through the zoned periphery rather than through the design
-variable directly.
+\begin{equation}
+e_\mathrm{in}^{\,r} = m_r \, e_\mathrm{in},
+\qquad
+e_\mathrm{out}^{\,r} = m_r \, e_\mathrm{out}
+\label{eq:zoning-pair}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $e_\mathrm{in}^{\,r}$ and $e_\mathrm{out}^{\,r}$ are the
+        as-loaded inner-zone and outer-zone enrichments of an assembly
+        in ring $r$, in wt\%~$^{235}$U.
+
+  \item $e_\mathrm{in}$ and $e_\mathrm{out}$ are the two enrichment
+        design variables, in wt\%~$^{235}$U.
+
+  \item $m_r$ is the multiplier of ring $r$, dimensionless.
+\end{itemize}
+
+Three consequences follow, and all three are properties of the
+implementation rather than modelling choices made afterwards.
+
+\begin{enumerate}
+  \item Zoning is an enrichment redistribution only. Pitch, reflector
+        thickness, gadolinia weight fraction and gadolinia rod count
+        are copied to every ring unchanged, so the three ring
+        assemblies are built by the same builders with the same pin
+        layout as the base assembly.
+
+  \item The gadolinia rod enrichment follows automatically. It is
+        derived from the enrichment of its own zone through the
+        existing derate of the material builder, floored at
+        \SI{0.2}{wt\%}, so no material logic is duplicated in the
+        zoning path.
+
+  \item The zoning is applied on core solves only. The beginning-of-life
+        core solve of Section~\ref{sec:meth-core-objective} and the two
+        rodded solves of Section~\ref{sec:meth-ctrl} are built from the
+        zoned map, while the depletion of Section~\ref{sec:objective_functions}
+        runs on the unzoned base assembly. This is admissible because
+        of the balance imposed in Equation~\eqref{eq:zoning-balance}.
+\end{enumerate}
+
+\subsection{The middle multiplier is derived, not chosen}
+\label{sec:meth-zoning-balance}
+
+Only $m_C$ and $m_P$ are free. The middle multiplier is solved at every
+call from the fissile balance, so that the assembly-count-weighted mean
+multiplier of the core is exactly one.
+
+\begin{equation}
+n_C\, m_C + n_M\, m_M + n_P\, m_P \;=\; n_C + n_M + n_P
+\label{eq:zoning-balance}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $n_C$, $n_M$ and $n_P$ are the assembly counts of the three
+        rings, equal to 4, 12 and 16, dimensionless.
+
+  \item $m_C$, $m_M$ and $m_P$ are the ring multipliers,
+        dimensionless.
+\end{itemize}
+
+With $m_C = 0.720$ and $m_P = 1.150$ the balance returns
+$m_M = 0.8933$. The consequence is the one that matters for the
+evaluator. The zoned core carries the same total fissile inventory as
+the uniform core of the same design vector, so the base assembly still
+represents the core average and the unzoned depletion path remains the
+correct cycle-length proxy for the zoned core.
+
+\subsection{The zoned-loading study}
+\label{sec:meth-zoning-study}
+
+The multipliers were not assumed. They were selected in a dedicated
+study run after Campaign 5 Block 2, whose purpose was to answer a
+methodological objection. The campaigns to that point had optimised
+under uniform loading, so it had to be established whether an optimum
+found under uniform loading is still an optimum once the core is
+zoned. The study mirrors the Campaign 3 core rescore of
+Section~\ref{sec:meth-core-objective} one level up, and it runs in
+three stages.
+
+\paragraph{Stage T, the transfer test.}
+All 60 designs of the Campaign 5 archive were rescored at core level
+under a single nominal map, $m_C = 0.850$, $m_M = 0.950$ and
+$m_P = 1.075$, balanced by Equation~\eqref{eq:zoning-balance}. The
+result is the one that motivated the change of loading, and it is
+reported in Table~\ref{tab:zoning-transfer}.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption[Stage T of the zoned-loading study]{Stage T of the
+  zoned-loading study. The 60 designs of the Campaign 5 archive
+  rescored at core level under one nominal zoned map.}
+  \label{tab:zoning-transfer}
+  \begin{tabular}{lcc}
+    \toprule
+    Quantity & Value & Unit \\
+    \midrule
+    Designs rescored & 60 & -- \\
+    Rank correlation, whole archive & 0.803 & -- \\
+    Rank correlation, top 15 designs & $-0.025$ & -- \\
+    Mean change in $F_{\Delta H}$ & $-0.306 \pm 0.138$ & -- \\
+    Mean change in core reactivity & $-1178$ & pcm \\
+    Designs below $F_{\Delta H} = 2.0$, uniform loading & 3 & -- \\
+    Designs below $F_{\Delta H} = 2.0$, zoned loading & 35 & -- \\
+    Designs violating the LEU screen once zoned & 10 & -- \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Two readings follow from Table~\ref{tab:zoning-transfer}, and they
+point in opposite directions.
+
+\begin{enumerate}
+  \item Zoning moves the peaking wall decisively. Under uniform
+        loading 3 designs of 60 sat below the screening bound of 2.0.
+        Under the nominal zoned map 35 do. The mean improvement of
+        $0.306$ in $F_{\Delta H}$ is an order of magnitude above the
+        per-design transport uncertainty of about 0.018 at these
+        settings.
+
+  \item The ranking does not transfer where it matters. The rank
+        correlation over the whole archive is 0.803, but over the 15
+        best designs it is $-0.025$, that is no relationship at all.
+        This is the same failure mode the Campaign 3 core rescore
+        found one level down, and it is the reason the zoned map had
+        to enter the evaluator rather than be applied to a front
+        obtained under uniform loading.
+\end{enumerate}
+
+\paragraph{Stage 2, the multiplier optimisation.}
+Four independently obtained champion designs of Campaign 5, archive
+indices 7, 35, 54 and 58, were each re-solved over a grid of 20
+multiplier pairs. The grid spans $m_C \in \{1.000, 0.900, 0.800,
+0.720, 0.650\}$ and $m_P \in \{1.000, 1.050, 1.100, 1.150\}$, with
+$m_M$ balanced at every node. All four champions selected the same
+node, and the result is reported in
+Table~\ref{tab:zoning-grid}.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption[Stage 2 of the zoned-loading study]{Stage 2 of the
+  zoned-loading study. Beginning-of-life core peaking of four Campaign
+  5 champions under uniform loading and at the selected map
+  $m_C = 0.720$, $m_P = 1.150$.}
+  \label{tab:zoning-grid}
+  \begin{tabular}{ccccc}
+    \toprule
+    Archive index & $F_{\Delta H}$ uniform & $F_{\Delta H}$ zoned &
+      $\Delta F_{\Delta H}$ & $\Delta k$ \\
+    {[--]} & [--] & [--] & [--] & [pcm] \\
+    \midrule
+    7  & 2.0259 & 1.5609 & $-0.4650$ & $-2529$ \\
+    35 & 2.0874 & 1.5613 & $-0.5261$ & $-2955$ \\
+    54 & 2.0161 & 1.5761 & $-0.4400$ & $-2304$ \\
+    58 & 2.0427 & 1.5613 & $-0.4815$ & $-2339$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The status of the two selected values is not the same, and the
+difference should be stated rather than left to the reader.
+
+\begin{enumerate}
+  \item The central multiplier is an interior optimum. At
+        $m_P = 1.150$ the peaking of every champion rises again when
+        $m_C$ is lowered from 0.720 to 0.650, by 0.003 on index 7 and
+        by 0.028 to 0.050 on the other three, so the grid brackets the
+        minimum in that direction.
+
+  \item The peripheral multiplier sits at the edge of the explored
+        grid. The value 1.150 is the largest node tested, and every
+        champion improved monotonically up to it, so the grid does not
+        bracket the minimum in that direction. Stage 3 therefore
+        stepped beyond the grid, to $m_P = 1.250$, and confirmed that
+        the improvement continues.
+\end{enumerate}
+
+\paragraph{Stage 3, the confirmation.}
+The third stage takes the map beyond the Stage 2 grid and puts a
+resolved peaking interval on it. Two champions were confirmed, archive
+indices 7 and 58, on 27 and 28 August 2026. Both were run at
+$m_P = 1.250$. The centre multiplier was the Stage 2 optimum of 0.720
+on index 7 and the adjacent grid node of 0.650 on index 58, so the two
+confirmations also bracket the centre value. The middle multiplier
+follows from Equation~\eqref{eq:zoning-balance} in each case.
+
+Each confirmation runs in three steps.
+
+\begin{enumerate}
+  \item One depletion per ring variant, so that each ring is followed
+        through burnup at its own as-loaded enrichment.
+
+  \item One zoned core beginning-of-life solve repeated over eight
+        independent seeds, which gives the peaking interval and the
+        seed-averaged ring power shares.
+
+  \item A power-weighted linear-reactivity combination of the three
+        ring histories, evaluated against the design's own Route B
+        target.
+\end{enumerate}
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption[Stage 3 of the zoned-loading study]{Stage 3 of the
+  zoned-loading study. Two Campaign 5 champions confirmed at
+  $m_P = 1.250$, with the beginning-of-life peaking of Stage 2 at
+  $m_P = 1.150$ repeated for comparison. Peaking intervals are
+  half-widths at 95\,\% confidence over eight seeds.}
+  \label{tab:zoning-confirm}
+  \begin{tabular}{lcc}
+    \toprule
+    Quantity & Index 7 & Index 58 \\
+    \midrule
+    $m_C$ / $m_M$ / $m_P$ & 0.720 / 0.760 / 1.250
+                          & 0.650 / 0.783 / 1.250 \\
+    $F_{\Delta H}$, uniform loading            & 2.0259 & 2.0427 \\
+    $F_{\Delta H}$, zoned at $m_P = 1.150$     & 1.5609 & 1.5613 \\
+    $F_{\Delta H}$, zoned at $m_P = 1.250$     & $1.5005 \pm 0.0061$
+                                               & $1.4728 \pm 0.0130$ \\
+    Verdict against the screening bound        & pass & pass \\
+    $k^\mathrm{core}$ at beginning of life     & 1.16662 & 1.23235 \\
+    Relative ring power, C / M / P             & 1.189 / 1.074 / 0.898
+                                               & 1.118 / 1.084 / 0.908 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Two readings follow from Table~\ref{tab:zoning-confirm}, and one
+quantity the stage was meant to deliver is not among them.
+
+\begin{enumerate}
+  \item The flattening continues beyond the grid. Raising the
+        peripheral multiplier from 1.150 to 1.250 lowers the
+        beginning-of-life peaking by a further 0.060 on index 7 and
+        0.089 on index 58, both far outside the eight-seed intervals.
+        The selected value of 1.250 is therefore a confirmed
+        improvement and not an extrapolation.
+
+  \item The flattening is incomplete. Even with the centre suppressed
+        to 0.650 or 0.720 of the design enrichment, the central ring
+        still carries 1.12 to 1.19 times its area-proportional share
+        of the fission power, while the periphery carries about 0.90.
+        The pattern therefore has the right sign and has not been
+        driven past its optimum.
+\end{enumerate}
+
+The zoned cycle length is not reported here, and the reason is stated
+rather than left implicit. Both confirmations returned a censored
+result, because the power-weighted combination never fell to the Route
+B target inside the depleted range, so each zoned cycle length is a
+lower bound. The uniform reference is censored as well. Both champions
+sit at the discharge-burnup limit of \SI{75}{\mega\watt\day\per\kilo\gram},
+which converts to the same 7513 effective full-power days for every
+censored design at this specific power. The comparison would therefore
+set one lower bound against another, and no difference in cycle length
+can be quoted from it.
+
+Two caveats attach to the stage, and both are inherited rather than
+introduced by it.
+
+\begin{enumerate}
+  \item The ring depletions are free of the restarted-depletion defect
+        of Section~\ref{sec:restart_defect}. The correction was
+        committed on 27 August 2026 and both confirmations completed
+        after it, on 27 August at 21:41 and on 28 August at 03:45.
+
+  \item Both champions carry clipped guide tubes. Their pitches are
+        \SI{1.2158}{cm} and \SI{1.1500}{cm}, below the
+        \SI{1.2242}{cm} threshold of
+        Section~\ref{sec:meth-c8-space}, as do 38 of the 60 Campaign 5
+        designs. The direction and the magnitude of the flattening are
+        unaffected, since every map in the study is compared against a
+        uniform loading of the same clipped geometry, but the absolute
+        peaking values of this subsection carry the same caveat as the
+        rest of Campaigns 1 to 7.
+\end{enumerate}
+
+\openpoint{The zoned cycle length remains unresolved. If a number is to
+be quoted, rerun the two confirmations with the depletion horizon
+raised above the discharge limit so that the power-weighted combination
+reaches the Route B target, and report the zoned value against an
+uncensored uniform reference.}
+
+\subsection{The enrichment search box}
+\label{sec:meth-zoning-box}
+
+Because the periphery carries the largest multiplier, the
+low-enriched-uranium cap binds through the as-loaded peripheral ring
+and not through the design variable directly. From Campaign 6 the
+enrichment constraint is therefore written on the zoned map.
 
 \begin{equation}
 g_\mathrm{enr} \;=\; \max_r \left( m_r\, e \right) - 19.75 \;\le\; 0
@@ -2149,27 +2450,43 @@ e \;\le\; \frac{19.75}{m_P} \;=\; 17.174
         Table~\ref{tab:constraints}, in wt\%~$^{235}$U, redefined on
         the zoned map from Campaign 6.
 
-  \item $19.75$ is the low-enriched-uranium cap, in wt\%~$^{235}$U.
+  \item $19.75$ is the low-enriched-uranium screening cap, in
+        wt\%~$^{235}$U.
+
+  \item $m_P$ is the peripheral multiplier, dimensionless, equal to
+        1.150.
 
   \item $17.174$ is the resulting upper bound of both enrichment
         design variables in Campaign 6, in wt\%~$^{235}$U.
 \end{itemize}
 
-The box bound and the constraint are therefore consistent by
-construction, and no design of experiments point can violate the cap
-after zoning, which removes the wasted samples observed under the
-earlier formulation.
+The box bound and the constraint are consistent by construction, so no
+design of experiments point can violate the cap after zoning. This
+removes the wasted samples observed under the earlier formulation, and
+it is also what bounds $m_P$ from above.
+
+The consequence is the one design decision of this section that is not
+a measurement. The study confirmed $m_P = 1.250$ in Stage 3, and
+Campaign 6 adopts 1.150 instead. Raising the peripheral multiplier
+flattens the power further, as Table~\ref{tab:zoning-confirm} shows,
+but it shrinks the enrichment search box in the same proportion,
+from \SI{17.174}{wt\%} at 1.150 to \SI{15.800}{wt\%} at 1.250. Stage T
+had already shown that 10 of the 60 Campaign 5 designs violate the
+screen once zoned. Campaign 6 therefore trades a peaking improvement
+of about 0.06 to 0.09 for the wider box, and the trade is recorded here
+so that a later campaign can reverse it if the box ceases to bind.
 
 Campaign 7 keeps this box. Campaign 8 collapses the two enrichment
 variables to one and raises the as-loaded peripheral cap to
 \SI{16}{wt\%}, so the same construction gives a bound of
 \SI{13.913}{wt\%} (Section~\ref{sec:meth-c8-space}).
 
-\openpoint{The zoned-loading study that produced the multipliers, with
-its transfer test, multiplier optimisation and beginning-of-life
-confirmation, is documented separately and pending integration into
-this document. Cross-reference it here once integrated.}
-
+The centre-suppressed, periphery-enhanced pattern flattens the radial
+power distribution, and it is the physically real driver of the
+peaking improvement observed in Campaign 6, since neither of the two
+bookkeeping changes of that campaign acts on a beginning-of-life
+quantity. The attribution argument is completed in
+Section~\ref{sec:res-c6-compare}.
 \section{The Campaign 8 design space}
 \label{sec:meth-c8-space}
 
