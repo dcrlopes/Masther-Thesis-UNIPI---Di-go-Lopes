@@ -1094,10 +1094,32 @@ and a resumed campaign refuses to start if its constraint set differs
 from the stored one, so the normalisation cannot change silently
 between blocks.
 
-%% AUTHOR: one sentence on whether the fraction-of-limit weighting is the
-%% physically appropriate exchange rate between the reactivity window and the
-%% peaking limit at the g_kmax and g_peak tangency, or whether a
-%% safety-informed weighting would be defensible.
+One caveat belongs with the choice, because the normalisation is a
+numerical device and not a physical statement. Dividing each violation
+by its own limit makes a one per cent exceedance of the reactivity
+ceiling count exactly as much as a one per cent exceedance of the
+peaking bound. Nothing in the physics of the two limits justifies that
+exchange rate. A safety-informed weighting would need the margin to
+failure behind each limit, and the open record does not supply it for
+this core. The peaking bound of 2.0 is itself an exploratory screening
+value (Section~\ref{sec:objective_functions}) and the reactivity
+ceiling was a derived screening bound until the measured controllability
+screen replaced it in Campaign 7
+(Section~\ref{sec:meth-ctrl}). The fraction-of-limit rule is therefore
+adopted as the neutral choice in the absence of a defensible
+alternative.
+
+The exchange rate only matters where two constraints are active on the
+same design, because a single violation orders the infeasible
+population by itself. In the final campaign that situation does not
+arise between the two constraints in question. Of the 41 infeasible
+designs of Campaign 8, 35 fail the controllability screen and 6 fail
+the reactivity floor. The 23 designs that also exceed the reactivity
+ceiling are a strict subset of the 35, and no design violates the
+peaking bound at all, the largest value of $g_\mathrm{peak}$ over the
+archive being $-0.218$. The reactivity ceiling and the peaking limit are
+therefore never simultaneously active in Campaign 8, and no reported
+result depends on the weighting between them.
 
 \section{Leakage-corrected reactivity target (Route B)}
 \label{sec:meth-ktarget}
@@ -1868,8 +1890,10 @@ are not resolved and are reported as such.
     Campaign 5     & $16\,000\times120$ (30)  & per-design          & production \\
     Campaign 6     & $4\,000\times60$ (20)    & per-design          & exploration \\
     C6 core solve  & $100\,000\times170$ (60) & per-design, salted  & objective + $k$ window \\
-    Campaign 7     & $4\,000\times60$ (20)\tnote{b}    & per-design & exploration, one rodded core solve \\
-    Campaign 8     & $4\,000\times60$ (20)\tnote{b}    & per-design & candidate, two rodded core solves \\
+    Campaign 7     & $4\,000\times60$ (20)    & per-design & exploration \\
+    C7 core solves & $100\,000\times170$ (60) & per-design, salted  & objective, $k$ window, one rodded solve \\
+    Campaign 8     & $4\,000\times60$ (20)    & per-design & candidate \\
+    C8 core solves & $100\,000\times170$ (60)\tnote{b} & per-design, salted  & objective, $k$ window, two rodded solves \\
     Screening      & $64\,000\times120$ (30)  & replicated          & subset selection \\
     Confirmation   & $256\,000\times120$ (30) & replicated, 8 seeds & finalists \\
     C5 confirmation & $200\,000\times260$ (80) & replicated, 8 seeds & champion peaking \\
@@ -1879,9 +1903,12 @@ are not resolved and are reported as such.
     \item[a] Inactive batches in parentheses. Per-design seeds are
       generated as a CRC32 hash of the design vector, and the core
       solve adds a salt.
-    \item[b] Taken from the launch profile shared with Campaign 6.
-      Confirm against the \texttt{transport} entry of each campaign's
-      checkpoint metadata before submission.
+    \item[b] The assembly and core profiles of Campaigns 6, 7 and 8 were
+      verified against the \texttt{transport} and \texttt{core\_transport}
+      entries of each campaign's checkpoint metadata. The rodded solves
+      of Campaigns 7 and 8 inherit the core profile from the same
+      settings as the unrodded core solve, so no control reading is
+      taken at reduced fidelity.
   \end{tablenotes}
   \end{threeparttable}
 \end{table}
