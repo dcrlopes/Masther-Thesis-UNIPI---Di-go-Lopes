@@ -5,8 +5,8 @@
 %% Integration in Thesis_template.tex, inside the appendices block:
 %%
 %%   \begin{appendices}
-%%   \chapter{Traceability of the open data on LABGENE} ...   (existing)
-%%   \input{appendix_code_architecture}                       (add this line)
+%%   \input{appendix_model_inputs}                            (Appendix A)
+%%   \input{appendix_code_architecture}                       (Appendix B)
 %%   \end{appendices}
 %%
 %% Figure: images/code_architecture.pdf, produced by
@@ -33,15 +33,26 @@ another core.
 
 The code is public. It is hosted at
 \url{https://github.com/dcrlopes/master-thesis-unipi}, on the branch
-\texttt{campaign8}, which is the state used for the final campaign and for
-the candidate confirmation runs. The state described in this appendix is
-commit \texttt{22bad3d} of 3 September 2026.
+\texttt{main}, which carries the merged state of every campaign branch and
+is the only branch developed after Campaign~8. The state described in this
+appendix is commit \texttt{e4a3582} of 8 September 2026.
+
+The campaign branches \texttt{campaign4} to \texttt{campaign8} are kept in
+the repository as a record of the state under which each campaign was run.
+They receive no further commits. The files that define the geometry, the
+materials, the operating point and the three-dimensional hardware are
+byte-identical between \texttt{campaign8} and \texttt{main}, so citing
+\texttt{main} changes no input reported in
+Appendix~\ref{app:model-inputs}. The two files that do differ,
+\file{openmc_evaluator.py} and \file{run_optimization.py}, differ in
+comment text and in three command-line flags added for the validation
+campaign, and in no physical or numerical constant.
 
 \openpoint{Update the commit hash above to the final state of branch
-\texttt{campaign8} at submission. The branch \texttt{main} still holds the
-Campaign 3 state of the code and must not be cited.}
+\texttt{main} at submission. In the working clone the command is
+\file{git rev-parse --short HEAD}.}
 
-The repository contains 92 Python scripts and 8 shell wrappers. Only the
+The repository contains 117 Python scripts and 12 shell wrappers. Only the
 scripts that perform a computation reported in the thesis are described
 here. The following groups are omitted on purpose.
 
