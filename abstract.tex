@@ -1,0 +1,43 @@
+\chapter*{Abstract}
+\thispagestyle{specialheader}
+\markboth{}{}
+\addcontentsline{toc}{chapter}{Abstract}
+This thesis presents a multi-objective optimisation of a compact
+pressurised water reactor core fuelled with low-enriched \ce{UO2}, based
+on surrogate models and the OpenMC Monte Carlo code. The objective was to find
+core configurations that meet the requirements known from open sources
+for the land-based prototype of the Brazilian naval propulsion
+programme, and to quantify the trade-off
+between cycle length, radial peaking and the soluble boron needed for
+criticality.
+
+The prototype is rated at 48\,MW thermal and its core data are not
+public. The model was built from the few facts in the open record, namely
+the reactor type, the power, the fuel class, the vessel envelope and a
+five-year refuelling interval, and from declared assumptions. The enrichment, the gadolinia loading and the reflector
+thickness were varied on a single-batch core of 32 assemblies. Because one
+depletion evaluation takes around 20 minutes and carries statistical
+noise, a Gaussian-process surrogate model trained on the Monte Carlo
+evaluations was searched by the NSGA-II multi-objective genetic algorithm
+in an active-learning loop over nine campaigns and
+636 evaluations, and the candidates were confirmed on a
+three-dimensional core model.
+
+Campaigns 1 to 8 maximised the cycle length and minimised the radial
+peaking factor. The Campaign 8 champion, C8-47, reaches 1941 effective
+full power days at a peaking factor of 1.510, but every design on that
+front exceeded the five-year requirement, and the longer cycles were
+bought with excess reactivity that only deeply inserted control banks
+could hold. Campaign 9 therefore imposed the cycle length as a
+constraint at 1826 effective full power days and minimised the peaking
+factor and the critical boron concentration at the most reactive state.
+Its front holds five designs at 4.2 to 4.5\,wt\% enrichment, with peaking
+factors of 1.490 to 1.545 and boron demands of 1406 to 1908\,ppm, and the
+boron demand falls as the gadolinia loading rises.
+
+These results hold for a two-dimensional beginning-of-life model in the
+loop with fixed temperatures and constant boron in the depletion, and
+neighbouring designs lie within the Monte Carlo noise on the peaking axis.
+On the three-dimensional core model C9-47, C9-34 and C9-40 stay on the
+Campaign 9 front, and all five designs are held subcritical by the first
+two regulating banks.

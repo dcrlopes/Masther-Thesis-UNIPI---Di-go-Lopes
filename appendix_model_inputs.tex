@@ -129,11 +129,9 @@ every campaign branch was merged. The files are
 the enrichment policy, \texttt{openmc\_evaluator.py} for the depletion
 schedule and the transport settings, \texttt{run\_optimization.py} for
 the campaign limits passed at launch, and \texttt{hardware3d.py} for the
-three-dimensional confirmation model.
-
-%% AUTHOR: state here the exact commit hash of branch main that the
-%% annex describes, so the annex is pinned to one code state. On wks720:
-%%     cd ~/master-thesis-unipi && git rev-parse --short HEAD
+three-dimensional confirmation model. The annex describes commit
+\texttt{e4a3582} of branch \texttt{main}, dated 8 September 2026, the
+same state described in Appendix~\ref{app:code-architecture}.
 
 % =====================================================================
 \section{Vessel, core envelope and reflector}
@@ -184,7 +182,7 @@ g_\mathrm{geom} = R_\mathrm{env}(p) + \delta_\mathrm{pad}
 
 \small
 \setlength{\tabcolsep}{3pt}
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}p{0.4cm} >{\raggedright\arraybackslash}p{0.9cm}@{}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{3.95cm} >{\raggedright\arraybackslash}p{0.4cm} >{\raggedright\arraybackslash}p{1.0cm}@{}}
 \caption[Vessel, core envelope and reflector inputs.]{Vessel, core
   envelope and reflector inputs.}
 \label{tab:in-vessel} \\
@@ -200,13 +198,13 @@ g_\mathrm{geom} = R_\mathrm{env}(p) + \delta_\mathrm{pad}
 \endhead
 \bottomrule
 \endlastfoot
-Vessel inner radius & 90.0 & cm & INF & \cite{maruyama_2013}, Figure~13, inner radius 900\,mm & N & (a) \\
+Vessel inner radius & 90.0 & cm & INF & \cite{maruyama_2013}, Figure~13 (p.~50), inner radius 900\,mm & N & (a) \\
 \addlinespace
-Vessel wall thickness & 10.0 & cm & INF & \cite{maruyama_2013}, Figure~13, 100\,mm & N & (b) \\
+Vessel wall thickness & 10.0 & cm & INF & \cite{maruyama_2013}, Figure~13 (p.~50), 100\,mm & N & (b) \\
 \addlinespace
-Vessel overall height & 470 & cm & INF & \cite{maruyama_2013}, Figure~13, 4700\,mm & N & (b) \\
+Vessel overall height & 470 & cm & INF & \cite{maruyama_2013}, Figure~13 (p.~50), 4700\,mm & N & (b) \\
 \addlinespace
-Core barrel thickness & 5.08 & cm & REP & \cite{ez_aldeen_2025,ezaldeen_zenodo_2025} & P & (c) \\
+Core barrel thickness & 5.08 & cm & REP & \cite{fridman_nuscale_benchmark_2023} & P & (c) \\
 \addlinespace
 Downcomer allowance & 2.0 & cm & EST & This work & P & (d) \\
 \addlinespace
@@ -297,7 +295,7 @@ Reflector steel volume fraction & 0.90 & -- & EST & This work, against 0.956 in 
 
 \small
 \setlength{\tabcolsep}{3pt}
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}p{0.4cm} >{\raggedright\arraybackslash}p{0.9cm}@{}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{3.95cm} >{\raggedright\arraybackslash}p{0.4cm} >{\raggedright\arraybackslash}p{1.0cm}@{}}
 \caption[Fuel assembly, fuel rod and guide tube inputs.]{Fuel assembly,
   fuel rod and guide tube inputs.}
 \label{tab:in-assembly} \\
@@ -321,15 +319,15 @@ Guide tubes per assembly & 24 & -- & REP & Westinghouse 17 by 17 map & Y & (a) \
 \addlinespace
 Instrumentation tubes per assembly & 1 & -- & REP & Westinghouse 17 by 17 map & Y & (b) \\
 \addlinespace
-Fuel pellet outer radius & 0.4058 & cm & REP & \cite{nuscale_htp2_2017,ezaldeen_zenodo_2025} & N & (c) \\
+Fuel pellet outer radius & 0.4058 & cm & REP & \cite{nuscale_htp2_2017,fridman_nuscale_benchmark_2023} & N & (c) \\
 \addlinespace
-Cladding inner radius & 0.4140 & cm & REP & \cite{nuscale_htp2_2017,ezaldeen_zenodo_2025} & N & (c) \\
+Cladding inner radius & 0.4140 & cm & REP & \cite{nuscale_htp2_2017,fridman_nuscale_benchmark_2023} & N & (c) \\
 \addlinespace
-Cladding outer radius & 0.4750 & cm & REP & \cite{nuscale_htp2_2017,ezaldeen_zenodo_2025} & N & (c) \\
+Cladding outer radius & 0.4750 & cm & REP & \cite{nuscale_htp2_2017,fridman_nuscale_benchmark_2023} & N & (c) \\
 \addlinespace
-Guide tube inner radius & 0.5715 & cm & REP & \cite{nuscale_htp2_2017,ezaldeen_zenodo_2025} & N & (c) \\
+Guide tube inner radius & 0.5715 & cm & REP & \cite{nuscale_htp2_2017,fridman_nuscale_benchmark_2023} & N & (c) \\
 \addlinespace
-Guide tube outer radius & 0.6121 & cm & REP & \cite{nuscale_htp2_2017,ezaldeen_zenodo_2025} & Y & (d) \\
+Guide tube outer radius & 0.6121 & cm & REP & \cite{nuscale_htp2_2017,fridman_nuscale_benchmark_2023} & Y & (d) \\
 \addlinespace
 Fuel rod pitch & 1.26 & cm & EST & This work, fixed from Campaign~8 & Y & (d) \\
 \addlinespace
@@ -339,15 +337,15 @@ Intra-assembly enrichment zones & Central 9 by 9 inner, remainder outer & -- & E
 \addlinespace
 Gadolinia rod pattern ladder & 12, 16, 20, 24, 32, 40 & rods & EST & This work, after \cite{bae_gd_2023,epr_fsar_ch4,nuscale_htp2_2017} & P & (f) \\
 \addlinespace
-Spacer grid band height & 4.445 & cm & REP & \cite{ezaldeen_zenodo_2025} & P & (g) \\
+Spacer grid band height & 4.445 & cm & REP & \cite{fridman_nuscale_benchmark_2023} & P & (g) \\
 \addlinespace
 Number of spacer grids & 4 & -- & EST & This work, benchmark has 5 on 200\,cm & P & (g) \\
 \addlinespace
 Spacer grid span & 41.4 & cm & EST & This work & P & (g) \\
 \addlinespace
-First grid offset above fuel bottom & 3.555 & cm & REP & \cite{ezaldeen_zenodo_2025} & P & (g) \\
+First grid offset above fuel bottom & 3.555 & cm & REP & \cite{fridman_nuscale_benchmark_2023} & P & (g) \\
 \addlinespace
-Grid strap inner box & 1.2242 & cm & REP & \cite{ezaldeen_zenodo_2025} & Y & (h) \\
+Grid strap inner box & 1.2242 & cm & REP & \cite{fridman_nuscale_benchmark_2023} & Y & (h) \\
 \end{longtable}
 \setlength{\tabcolsep}{6pt}
 \normalsize
@@ -389,7 +387,8 @@ Grid strap inner box & 1.2242 & cm & REP & \cite{ezaldeen_zenodo_2025} & Y & (h)
         poisoned rod to touch a guide tube by a face or a corner. The
         rules follow vendor and licensing practice for poisoned-rod
         placement, namely the optimised 16, 20 and 24 pin maps of
-        \cite{bae_gd_2023}, the central-zone placement of
+        \cite{bae_gd_2023}, the strategic location of up to 28 gadolinia
+        rods for a favourable radial power distribution in
         \cite{epr_fsar_ch4} and the NuFuel-HTP2 patterns of
         \cite{nuscale_htp2_2017}.
 
@@ -434,7 +433,7 @@ Section~\ref{app:inputs-decisions}.
 
 \small
 \setlength{\tabcolsep}{3pt}
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}p{0.4cm} >{\raggedright\arraybackslash}p{0.9cm}@{}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{3.95cm} >{\raggedright\arraybackslash}p{0.4cm} >{\raggedright\arraybackslash}p{1.0cm}@{}}
 \caption[Material compositions and densities.]{Material compositions and
   densities.}
 \label{tab:in-materials} \\
@@ -450,11 +449,11 @@ Section~\ref{app:inputs-decisions}.
 \endhead
 \bottomrule
 \endlastfoot
-UO$_2$ density & 10.4 & g/cm$^3$ & REP & \cite{nuscale_htp2_2017} & N & (a) \\
+UO$_2$ density & 10.4 & g/cm$^3$ & REP & \cite{ezaldeen_zenodo_2025} & N & (a) \\
 \addlinespace
 (U,Gd)O$_2$ density & 10.2 & g/cm$^3$ & EST & This work & N & (a) \\
 \addlinespace
-Uranium-234 content & Equation~\eqref{eq:in-u234} & wt\% & LIT & \cite{bowman_suto_1996,scale_polaris_manual} & N & (b) \\
+Uranium-234 content & Equation \eqref{eq:in-u234} & wt\% & LIT & \cite{bowman_suto_1996,scale_polaris_manual} & N & (b) \\
 \addlinespace
 Uranium-236 content & 0 & wt\% & EST & This work, fresh non-recycled uranium & N & (b) \\
 \addlinespace
@@ -462,13 +461,13 @@ Gd$_2$O$_3$ density & 7.41 & g/cm$^3$ & LIT & Handbook value & N & (c) \\
 \addlinespace
 Gadolinium isotopics & Natural & -- & EST & This work & N & (c) \\
 \addlinespace
-Enrichment derate of a gadolinia rod & 5 per cent relative per wt\% Gd$_2$O$_3$, floored at 0.2\,wt\% & -- & LIT & \cite{mildrum_segovia_2001} & N & (d) \\
+Enrichment derate of a gadolinia rod & 5 per cent relative per wt\% Gd$_2$O$_3$, floored at 0.2\,wt\% & -- & LIT & \cite{mildrum_segovia_2001}; floor: this work & N & (d) \\
 \addlinespace
-Zircaloy-4 composition & Zr 98.2, Sn 1.45, Fe 0.20, Cr 0.10, O 0.05 & wt\% & REP & \cite{nuscale_htp2_2017} & N & (e) \\
+Zircaloy-4 composition & Zr 98.2, Sn 1.45, Fe 0.20, Cr 0.10, O 0.05 & wt\% & REP & \cite{ezaldeen_zenodo_2025} & N & (e) \\
 \addlinespace
-Zircaloy-4 density & 6.55 & g/cm$^3$ & REP & \cite{nuscale_htp2_2017} & N & (e) \\
+Zircaloy-4 density & 6.55 & g/cm$^3$ & REP & \cite{ezaldeen_zenodo_2025} & N & (e) \\
 \addlinespace
-Helium gap density & 0.0015 & g/cm$^3$ & REP & \cite{nuscale_htp2_2017} & N & \\
+Helium gap density & 0.0015 & g/cm$^3$ & REP & \cite{ezaldeen_zenodo_2025} & N & (e) \\
 \addlinespace
 Coolant density & 0.72 & g/cm$^3$ & EST & This work & N & (f) \\
 \addlinespace
@@ -476,15 +475,15 @@ Coolant thermal scattering & \texttt{c\_H\_in\_H2O} & -- & LIT & ENDF/B-VII.1 & 
 \addlinespace
 Soluble boron & Natural boron, mass fraction of the water & -- & EST & This work & Y & (g) \\
 \addlinespace
-SS304 composition & Fe 69.5, Cr 19.0, Ni 9.5, Mn 2.0 & wt\% & REP & \cite{nuscale_htp2_2017} & N & (e) \\
+SS304 composition & Fe 69.5, Cr 19.0, Ni 9.5, Mn 2.0 & wt\% & REP & \cite{ezaldeen_zenodo_2025} & N & (e) \\
 \addlinespace
-SS304 density & 7.90 & g/cm$^3$ & REP & \cite{nuscale_htp2_2017} & N & (e) \\
+SS304 density & 7.90 & g/cm$^3$ & REP & \cite{ezaldeen_zenodo_2025} & N & (e) \\
 \addlinespace
 Control rod material number densities & Set by the sum of the nuclide densities & at/b$\cdot$cm & REP & \cite{ezaldeen_zenodo_2025} & N & (h) \\
 \addlinespace
 Cross-section library & ENDF/B-VII.1 & -- & LIT & \cite{chadwick_endf71_2011} & N & (i) \\
 \addlinespace
-Depletion chain & PWR chain for ENDF/B-VII.1 & -- & LIT & OpenMC distribution, file \texttt{chain\_endfb71\_pwr.xml} & N & (i) \\
+Depletion chain & PWR chain for ENDF/B-VII.1 & -- & LIT & OpenMC distribution, file \nolinkurl{chain_endfb71_pwr.xml} & N & (i) \\
 \end{longtable}
 \setlength{\tabcolsep}{6pt}
 \normalsize
@@ -514,7 +513,12 @@ Depletion chain & PWR chain for ENDF/B-VII.1 & -- & LIT & OpenMC distribution, f
         the reduction offsets the degraded thermal conductivity of the
         urania-gadolinia mixture.
 
-  \item The compositions are those coded in the model. They were not
+  \item The compositions and densities are those coded in the benchmark
+        scripts~\cite{ezaldeen_zenodo_2025}. The NuScale fuel design
+        report gives no compositions~\cite{nuscale_htp2_2017}, and the
+        benchmark definition gives the materials as number densities,
+        with Zircaloy-4 replacing the M5 cladding of the
+        design~\cite{fridman_nuscale_benchmark_2023}. They were not
         checked against a compendium of material compositions for
         radiation transport. See the open point in
         Section~\ref{app:inputs-openpoints}.
@@ -574,7 +578,7 @@ m_\mathrm{HM} = \pi r_\mathrm{f}^{2} H \rho_\mathrm{UO_2} f_\mathrm{HM}
 
 \small
 \setlength{\tabcolsep}{3pt}
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}p{0.4cm} >{\raggedright\arraybackslash}p{0.9cm}@{}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{3.95cm} >{\raggedright\arraybackslash}p{0.4cm} >{\raggedright\arraybackslash}p{1.0cm}@{}}
 \caption[Operating conditions and power bookkeeping.]{Operating
   conditions and power bookkeeping.}
 \label{tab:in-operating} \\
@@ -590,7 +594,7 @@ m_\mathrm{HM} = \pi r_\mathrm{f}^{2} H \rho_\mathrm{UO_2} f_\mathrm{HM}
 \endhead
 \bottomrule
 \endlastfoot
-Core thermal power & 48.0 & MW & OFF & \cite{ctmsp_visita_2018}, thermal per \cite{dinizcosta_2017,demartini_nuclep_2022} & N & (a) \\
+Core thermal power & 48.0 & MW & OFF & Navy statement in \cite{demartini_nuclep_2022}, 48 to 50\,MWth in \cite{dinizcosta_2017} & N & (a) \\
 \addlinespace
 Number of assemblies & 32 & -- & INF & This work & P & (b) \\
 \addlinespace
@@ -664,7 +668,7 @@ Soluble boron concentration & 1000 & ppm & EST & This work & P & (f) \\
 
 \small
 \setlength{\tabcolsep}{3pt}
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}p{0.4cm} >{\raggedright\arraybackslash}p{0.9cm}@{}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{3.95cm} >{\raggedright\arraybackslash}p{0.4cm} >{\raggedright\arraybackslash}p{1.0cm}@{}}
 \caption[Control rod assembly inputs.]{Control rod assembly inputs.}
 \label{tab:in-cra} \\
 \toprule
@@ -687,19 +691,19 @@ Shutdown banks & Outer 16 assemblies & -- & EST & This work & P & (a) \\
 \addlinespace
 Absorber of the screen & B$_4$C & -- & EST & This work & Y & (b) \\
 \addlinespace
-Alternative absorber & AIC, 80 Ag, 15 In, 5 Cd & -- & REP & \cite{ezaldeen_zenodo_2025} & P & (b) \\
+Alternative absorber & AIC, 80 Ag, 15 In, 5 Cd & -- & REP & \cite{fridman_nuscale_benchmark_2023} & P & (b) \\
 \addlinespace
 Absorber radius, two-dimensional model & 0.4331 & cm & REP & See note & N & (c) \\
 \addlinespace
-Gap outer radius & 0.43688 & cm & REP & \cite{ezaldeen_zenodo_2025} & N & (c) \\
+Gap outer radius & 0.43688 & cm & REP & \cite{fridman_nuscale_benchmark_2023,ezaldeen_zenodo_2025} & N & (c) \\
 \addlinespace
-Rod cladding outer radius & 0.48387 & cm & REP & \cite{ezaldeen_zenodo_2025} & N & (c) \\
+Rod cladding outer radius & 0.48387 & cm & REP & \cite{fridman_nuscale_benchmark_2023,ezaldeen_zenodo_2025} & N & (c) \\
 \addlinespace
-Rod cladding material & SS304L & -- & REP & \cite{ezaldeen_zenodo_2025} & N & \\
+Rod cladding material & SS304L & -- & REP & \cite{fridman_nuscale_benchmark_2023} & N & \\
 \addlinespace
-Absorber rods per assembly, three-dimensional model & 24 & -- & REP & \cite{ezaldeen_zenodo_2025} & P & (d) \\
+Absorber rods per assembly, three-dimensional model & 24 & -- & REP & \cite{fridman_nuscale_benchmark_2023} & P & (d) \\
 \addlinespace
-Absorber radii, three-dimensional model & 0.4267 AIC, 0.4229 B$_4$C & cm & REP & \cite{ezaldeen_zenodo_2025} & P & (c) \\
+Absorber radii, three-dimensional model & 0.4267 AIC, 0.4229 B$_4$C & cm & REP & \cite{fridman_nuscale_benchmark_2023} & P & (c) \\
 \end{longtable}
 \setlength{\tabcolsep}{6pt}
 \normalsize
@@ -739,7 +743,7 @@ Absorber radii, three-dimensional model & 0.4267 AIC, 0.4229 B$_4$C & cm & REP &
 
 \small
 \setlength{\tabcolsep}{3pt}
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}p{0.4cm} >{\raggedright\arraybackslash}p{0.9cm}@{}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{3.95cm} >{\raggedright\arraybackslash}p{0.4cm} >{\raggedright\arraybackslash}p{1.0cm}@{}}
 \caption[Depletion schedule and transport settings.]{Depletion schedule
   and transport settings.}
 \label{tab:in-numerics} \\
@@ -826,7 +830,7 @@ Random seed & Deterministic hash of the design & -- & NUM & This work & Y & (f) 
 
 \small
 \setlength{\tabcolsep}{3pt}
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}p{0.4cm} >{\raggedright\arraybackslash}p{0.9cm}@{}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{3.95cm} >{\raggedright\arraybackslash}p{0.4cm} >{\raggedright\arraybackslash}p{1.0cm}@{}}
 \caption[Screening limits, core zoning and derived reactivity
   targets.]{Screening limits, core zoning and derived reactivity
   targets.}
@@ -847,7 +851,7 @@ Minimum multiplication factor & 1.02 & -- & EST & This work & Y & (a) \\
 \addlinespace
 Maximum multiplication factor, core basis & 1.166 & -- & DER & Rod worth study of this thesis & Y & (b) \\
 \addlinespace
-Axial leakage factor & 1.0289 & -- & DER & Axial study of this thesis & Y & (b) \\
+Axial leakage factor & 1.0289 & -- & DER & Water-slab axial study of this thesis & Y & (b) \\
 \addlinespace
 Radial peaking screen & 2.00 & -- & EST & This work & Y & (c) \\
 \addlinespace
@@ -859,7 +863,9 @@ Physical low-enrichment boundary & 20 & wt\% & LIT & \cite{nrc_10cfr110_2} & N &
 \addlinespace
 Campaign 8 enrichment audit cap & 16 & wt\% & EST & This work & Y & (e) \\
 \addlinespace
-Campaign 8 enrichment search bound & 13.913 & wt\% & DER & Audit cap divided by the peripheral multiplier & Y & (e) \\
+Campaigns 8 and 9 upper bound of the enrichment variable & 13.913 & wt\% & DER & Audit cap divided by the peripheral multiplier & Y & (e) \\
+\addlinespace
+Lower bound of the enrichment variable & 3.0 in Campaign 8, 2.0 in Campaign 9 & wt\% & EST & This work & Y & (e) \\
 \addlinespace
 Central zone enrichment multiplier & 0.720 & -- & EST & Zoned-loading study of this thesis & Y & (f) \\
 \addlinespace
@@ -881,8 +887,8 @@ Zone assembly counts & 4, 12, 16 & -- & DER & Ring map on the 32-assembly layout
   \item Both numbers are results of this thesis rather than inputs taken
         from elsewhere. The ceiling on the multiplication factor is
         derived from the measured worth of the regulating banks in the
-        three-dimensional hardware study, and the axial factor is
-        derived from the same study. Sections~\ref{sec:meth-ctrl} and
+        three-dimensional study with structural components, and the
+        axial factor from the finite-height water-slab model. Sections~\ref{sec:meth-ctrl} and
         \ref{sec:meth-lax} give the derivation of each. The earlier
         bound of 1.35 on the assembly basis was a methodological
         screening value with no traceable regulatory origin, and it was
@@ -904,10 +910,12 @@ Zone assembly counts & 4, 12, 16 & -- & DER & Ring map on the 32-assembly layout
         tolerance cannot cross it. The audit cap of the final campaign
         is tighter still and is a consequence of the controllability
         screen, which is a result of this work rather than a limit taken
-        from outside. The search bound on the enrichment variable is the
-        audit cap divided by the peripheral multiplier, that is
-        $16 / 1.15 = 13.913$\,wt\%, so no design the optimiser can
-        propose exceeds the audit cap once the zoning is applied.
+        from outside. The upper bound of the enrichment variable is the
+        audit cap divided by the peripheral multiplier,
+        $16 / 1.15 = 13.913$\,wt\%, so the search box keeps every
+        proposed design below the cap and $g_\mathrm{enr}$ is never
+        violated. The lower bound is 3.0\,wt\% in Campaign~8 and
+        2.0\,wt\% in Campaign~9.
 
   \item The multipliers scale both intra-assembly enrichments of a ring.
         The middle multiplier is not stored. It is re-derived from the
@@ -976,15 +984,15 @@ of this thesis and carry no claim of correspondence with the prototype.
     \midrule
     Reactor type & PWR & \cite{ctmsp_labgene_2015}, confirmed by \cite{vasconcelos_fapesp_2025} \\
     \addlinespace
-    Rated power & 48\,MW thermal & 48\,MW stated by \cite{ctmsp_visita_2018}. Thermal per \cite{dinizcosta_2017} and \cite{demartini_nuclep_2022} \\
+    Rated power & 48\,MW thermal & 48\,MW thermal according to the Navy, reported in \cite{demartini_nuclep_2022}, 48\,MWth or 11\,MWe in \cite{galante_podernaval_2020}. 48 to 50\,MWth in \cite{dinizcosta_2017} \\
     \addlinespace
     Fuel & UO$_2$ pellets in rods grouped into fuel elements & \cite{marinha_inb_labgene_2022}, \cite{pereira_rmb_2023} \\
     \addlinespace
     Enrichment class & LEU, below 20\,wt\% & \cite{brazil_npt_wp71_2022}, \cite{brazil_npt_wp13_2026}. Definition of LEU from \cite{nrc_10cfr110_2} \\
     \addlinespace
-    Enrichment value & Not fixed. Design space 2.0 to 19.75\,wt\% & Reported 6 to 8\,wt\% \cite{dinizcosta_2017}, 18 to 19\,wt\% \cite{kassenova_2014}, up to 19\,wt\% \cite{vasconcelos_fapesp_2025} \\
+    Enrichment value & Not fixed. Searched up to 13.913\,wt\% in the last two campaigns, below the 19.75\,wt\% screening cap & Reported 6 to 8\,wt\% \cite{dinizcosta_2017}, 18 to 19\,wt\% \cite{kassenova_2014}, up to 19\,wt\% \cite{vasconcelos_fapesp_2025} \\
     \addlinespace
-    Refuelling interval & Objective of the optimisation, not fixed & Four years \cite{galante_podernaval_2020}, five years \cite{dinizcosta_2017} \\
+    Refuelling interval & Objective in Campaigns 1 to 8, constraint at 1826\,EFPD in Campaign 9 & Five years \cite{dinizcosta_2017} \\
     \addlinespace
     Vessel internal radius & 90\,cm, Table~\ref{tab:in-vessel} & Figure~13 of \cite{maruyama_2013}, simplified model drawn according to CTMSP \\
     \addlinespace
@@ -994,7 +1002,7 @@ of this thesis and carry no claim of correspondence with the prototype.
     \addlinespace
     Lattice, pitch, assembly count, absorbers, boron, reflector & Assumptions of this thesis, Tables~\ref{tab:in-vessel} to \ref{tab:in-cra} & No open source \\
     \addlinespace
-    Status of the plant & Not critical as of May 2025, boiler-steam tests first & \cite{vasconcelos_fapesp_2025}, \cite{marinha_relatorio_gestao_2025} \\
+    Status of the plant & Not critical as of May 2025, boiler-steam tests first. Built installations 66.8 per cent complete by the end of 2025 & \cite{vasconcelos_fapesp_2025}; progress figure \cite{marinha_relatorio_gestao_2025} \\
     \addlinespace
     Safeguards status & Special procedures under Article~13 of the Quadripartite Agreement in negotiation & \cite{iaea_dg_statement_2022}, \cite{eu_statement_bog_2025}, \cite{brazil_npt_wp13_2026} \\
     \bottomrule
@@ -1063,18 +1071,20 @@ here so that they are not reopened.
 range}
 
 Equation~\eqref{eq:in-u234} is documented for uranium-235 enrichments
-below 10\,wt\%. The enrichment search bound of the final campaign is
-13.913\,wt\% at the design variable and the as-built peripheral ring
+below 10\,wt\%. The upper bound of the enrichment variable in Campaigns 8 and 9 is
+13.913\,wt\% and the as-built peripheral ring
 reaches 16\,wt\%, so the correlation is applied beyond its stated range.
 
 The correlation is retained deliberately. Three arguments support the
 decision.
 
 \begin{enumerate}
-  \item The candidate designs selected from the final campaign carry
+  \item The Campaign 9 front lies at 4.2 to 4.5\,wt\%, and of the eleven
+        Campaign 8 designs of the post-analysis only design 1, at
+        11.03\,wt\%, exceeds 10\,wt\%. The remaining designs carry
         enrichments below 10\,wt\%, so the correlation is used inside
         its documented range for every design that reaches the
-        post-optimisation analysis.
+        post-optimisation analysis except that one.
 
   \item Uranium-234 is a strong thermal absorber, so an extrapolation
         that overstates its content understates the multiplication
@@ -1129,7 +1139,7 @@ one another rather than against an absolute reactivity target.
 
 The value was adopted from the benchmark notebook at the initialisation
 of the model, before the two absorber materials were separated in the
-three-dimensional hardware description. It has carried an unresolved
+three-dimensional description of the structural components. It has carried an unresolved
 verification marker in the source code since then, and it is listed as a
 departure in Section~\ref{app:inputs-departures} rather than presented
 as a verified input.
@@ -1147,8 +1157,9 @@ per cent relative reduction per weight per cent of Gd$_2$O$_3$ and
 attributes it to the degraded thermal conductivity of the mixture.
 
 The placement rules of the nested ladder are attributed to the optimised
-gadolinia pin maps of the Oak Ridge study and to the central-zone
-placement practice of the U.S. EPR safety analysis report. A further
+gadolinia pin maps of the Oak Ridge study and to the U.S. EPR safety
+analysis report, which places the gadolinia rods to give a favourable
+radial power distribution. A further
 Idaho National Laboratory uprate assessment cited in an early source
 comment is redundant with these two and is not carried into the thesis.
 
@@ -1156,11 +1167,14 @@ comment is redundant with these two and is not carried into the thesis.
 \section{Items still to be verified}
 \label{app:inputs-openpoints}
 
-\openpoint{The coolant density of 0.72\,g/cm$^3$ is stated as consistent
-with 15\,MPa and 580\,K. Confirm it against an IAPWS-IF97 evaluation and
-cite that evaluation, or replace the density by the tabulated value. The
-number propagates into every multiplication factor of every campaign
-through the moderation ratio.}
+The coolant density of 0.72\,g/cm$^3$ was checked against the
+IAPWS-IF97 formulation~\cite{wagner_iapws_if97_2000}, which gives
+0.711\,g/cm$^3$ at 15\,MPa and 580\,K. The value used corresponds to
+575\,K at the same pressure. The 1.3 per cent excess in moderator
+density is common to every design of every campaign and, like the
+temperature choice discussed above, shifts every eigenvalue by the
+same amount without reordering the front. It is recorded here as a
+stated departure and is not corrected.
 
 \openpoint{The Zircaloy-4 and SS304 compositions were not checked
 against a compendium of material compositions for radiation transport. A
@@ -1168,10 +1182,7 @@ reviewer of a first-quartile journal will ask where the compositions come
 from. Check them and cite the compendium, or cite the design analog
 explicitly for each composition.}
 
-\openpoint{The vessel dimensions were read from a copy of Figure~13
-embedded in a working compilation. Confirm them on the page of the
-dissertation itself and add the page number to the citation.}
-
-\openpoint{Pin the annex to a commit hash of branch \texttt{main} of the
-simulation repository, in Section~\ref{app:inputs-purpose}. Without it a
-reader cannot tell which code state the tables describe.}
+The vessel dimensions were confirmed on Figure~13, page 50, of the
+dissertation itself~\cite[p.~50]{maruyama_2013}, which carries the
+900\,mm inner radius, the 100\,mm wall and the 4700\,mm height used
+here.

@@ -1,35 +1,32 @@
 % =====================================================================
-%  conclusions.tex  (draft, 2 September 2026)
-%  New chapter. Add \input{conclusions} after \input{results_c8} in
-%  Thesis_template.tex. Labels defined: ch:conclusions, sec:concl-answer,
-%  sec:concl-reform, sec:concl-candidates, sec:concl-limits,
-%  sec:concl-future, eq:concl-reform, tab:concl-future.
-%  Labels used: sec:res-c8-mission, sec:res-c8-split, sec:res-c8-front,
-%  sec:res-c7-screens, sec:res-c7-rodded, sec:meth-lax, sec:meth-ctrl,
-%  sec:meth-boron-worth, sec:meth-c8-space, tab:c8-front, tab:c8-two,
-%  tab:c8-hyp-scored, fig:c8-pareto, eq:mission-efpd, eq:g-ctrl-meth.
+%  conclusions.tex
+%  Revised 13 September 2026 for the inclusion of Campaign 9.
+%  Labels defined: ch:conclusions, sec:concl-answer, sec:concl-reform,
+%  sec:concl-candidates, sec:concl-limits, sec:concl-future,
+%  eq:concl-reform, tab:concl-future.
 %  Style: short paragraphs, no semicolons, no em dashes, formulas alone
-%  with term lists, enumerations as lists, %% AUTHOR where the reading
-%  is the author's.
+%  with term lists, enumerations as lists.
 % =====================================================================
 
 \chapter{Conclusions}
 \label{ch:conclusions}
 
-\section{What the study set out to do and what it found}
+\section{Summary of the study and its findings}
 \label{sec:concl-answer}
 
 The study asked which core designs a LABGENE-class pressurised water
-reactor of \SI{48}{MW} thermal could adopt, when the only information
-available is the open record, and it answered by building a
+reactor of \SI{48}{MW} thermal could adopt when the only information
+available is the open record. It answered by building a
 surrogate-assisted multi-objective optimisation around a Monte Carlo
-model and running it through eight campaigns. Each campaign changed one
-thing and measured its effect. The final campaign produced a Pareto
-front of eight designs and a second set of four designs that answer a
-different question, and the distinction between the two sets is the
-main conclusion of the work.
+model of the core and running it through nine campaigns, 636
+evaluations in all. Each campaign changed one element of the method and
+measured its effect. Campaigns 1 to 8 maximised the cycle length and
+minimised the radial peaking factor. The eighth produced a front of
+eight designs and a second set of four designs controllable with two
+regulating banks, and the difference between the two sets led to the
+reformulated problem of Campaign 9.
 
-Three findings carry the weight.
+Four findings carry the weight.
 
 \begin{enumerate}
   \item A derived bound is never a substitute for a measured
@@ -46,15 +43,24 @@ Three findings carry the weight.
   \item The finite-height correction is a constant of the geometry.
         The axial leakage factor varies by \SI{160}{pcm} over a factor
         of two in excess reactivity, so a single value corrects the
-        whole design space and every Campaign 8 cycle length refers to
-        a finite-height core (Section~\ref{sec:meth-lax}).
+        whole design space and every cycle length of Campaigns 8 and 9
+        refers to a finite-height core (Section~\ref{sec:meth-lax}).
 
-  \item Cycle length is not the binding requirement of this core.
-        Section~\ref{sec:concl-reform} states this finding and its
-        consequence for the formulation.
+  \item The cycle length of this core is a requirement to be met. Every
+        Campaign 8 design exceeded the reported refuelling interval,
+        and the excess reactivity spent on the longer cycle had to be
+        held by the control rods (Section~\ref{sec:concl-reform}).
+
+  \item At the required cycle length, the boron the core needs falls
+        with its gadolinia loading. Among the feasible Campaign 9
+        designs between 4.15 and \SI{4.55}{wt\%}, the critical
+        concentration at the most reactive state falls from 3003 to
+        \SI{1406}{ppm} as the gadolinia rises from 0.14 to
+        \SI{4.42}{wt\%} (Section~\ref{sec:res-c9-gd}), a trade that the
+        objectives of the first eight campaigns could not reward.
 \end{enumerate}
 
-\section{Cycle length is a requirement, not an objective}
+\section{Reformulation of the cycle length as a constraint}
 \label{sec:concl-reform}
 
 The optimisation was posed, from the first campaign, as the
@@ -62,15 +68,15 @@ maximisation of cycle length against the minimisation of the radial
 peaking factor. That is the natural formulation for a naval core,
 whose defining advantage is time between refuellings, and it was kept
 through eight campaigns so that the campaigns remain comparable.
-Campaign 8 shows that it is the wrong formulation for the final design
+Campaign 8 showed that it is the wrong formulation for the final design
 choice, for a reason that only became visible once controllability was
 measured rather than assumed.
 
-The open record gives the prototype a refuelling interval of four to
-five years. Through Equation~\eqref{eq:mission-efpd} that interval
-corresponds to a cycle length between about 900 and 1500 effective
-full power days, depending on a capacity factor that no open source
-states. Every design on the Campaign 8 front exceeds the upper end of
+The open record gives the prototype a refuelling interval of five
+years~\cite{dinizcosta_2017}. Through Equation~\eqref{eq:mission-efpd} that interval
+corresponds to 913 to 1461 effective full power days for capacity
+factors between 0.5 and 0.8, and no open source states the capacity
+factor. Every design on the Campaign 8 front exceeds the upper end of
 that range, the shortest by a third and the longest by a factor of
 four (Section~\ref{sec:res-c8-mission}). The objective kept pushing
 cycle length long after the requirement was met, and it could only do
@@ -89,23 +95,19 @@ band, while the excess is held by boron adjustment and by burnable
 absorber whose burnout tracks the fuel. The four Campaign 8 designs
 that behave that way, controllable by two banks and holding \num{2564}
 to \SI{4068}{pcm}, still deliver 1142 to 3381 effective full power
-days, and the shortest of them meets five years at a capacity factor
-of 0.8 with commercial-grade enrichment
-(Section~\ref{sec:res-c8-split}).
+days (Section~\ref{sec:res-c8-split}).
 
-The explanation is simple once the numbers are side by side. The
-requirement on cycle length is a floor, not a summit. Anything above
-the floor buys nothing that the mission needs and costs excess
-reactivity that the control system must absorb, and absorbing it
-raises the rodded peaking to the screening bound. The quantities that
-do not have floors, that keep getting better the further one goes, are
-the controllability margin and the peaking. Those are the objectives.
-The cycle length belongs among the constraints, at the value the
-mission requires.
+The requirement on cycle length is a floor. A cycle beyond it gives the
+mission nothing and costs excess reactivity that the control system
+must absorb. The peaking factor and the reactivity to be held at
+start-up have no such floor, and both improve in the direction of the
+design goal for as long as the search can move them. Those are the
+objectives, and the cycle length belongs among the constraints, at the
+value the mission requires. Campaign 9 was posed that way.
 
 \begin{equation}
 \begin{aligned}
-\min_{\mathbf{x}}\ &\big(F_{\Delta H}(\mathbf{x}),\ \ k_\mathrm{RE12}(\mathbf{x})\big) \\
+\min_{\mathbf{x}}\ &\big(F_{\Delta H}(\mathbf{x}),\ c_\mathrm{max}(\mathbf{x})\big) \\
 \text{subject to}\ &\mathrm{EFPD}(\mathbf{x}) \ge \mathrm{EFPD}_\mathrm{req},\quad
 g_j(\mathbf{x}) \le 0
 \end{aligned}
@@ -118,47 +120,104 @@ g_j(\mathbf{x}) \le 0
   \item $F_{\Delta H}$ is the radial enthalpy-rise hot channel factor
         with all rods out, dimensionless, the first objective.
 
-  \item $k_\mathrm{RE12}$ is the core eigenvalue with the first two
-        regulating banks inserted, dimensionless, the second objective.
-        Minimising it maximises the operating margin that the smallest
-        practical rod insertion provides.
+  \item $c_\mathrm{max}$ is the soluble boron concentration at which
+        the core is critical at the most reactive state of its cycle,
+        in ppm, the second objective, defined in
+        Equation~\eqref{eq:c9-cmax}.
 
-  \item $\mathrm{EFPD}_\mathrm{req}$ is the cycle length that meets the
-        refuelling interval at the stated capacity factor, in effective
-        full power days, entering as a constraint.
+  \item $\mathrm{EFPD}_\mathrm{req}$ is the required cycle length,
+        1826 effective full power days, five years at a capacity factor
+        of one, the conservative choice of Section~\ref{sec:meth-c9}.
 
-  \item $g_j$ are the remaining constraints of the final campaign, the
-        reactivity floor, the enrichment cap, the vessel fit, the
-        peaking screen and the four-bank control screen.
+  \item $g_j$ are the remaining constraints of
+        Section~\ref{sec:meth-c9}: the reactivity window, the
+        enrichment cap, the vessel fit, the peaking screen at 1.65, and
+        the control screen at beginning of life and at the operating
+        maximum.
 \end{itemize}
 
-Two things follow from the reformulation that the present study can
-already say. The Campaign 8 archive contains the designs this
-formulation would select, since the two-bank subset is exactly the
-region where $k_\mathrm{RE12}$ is smallest among feasible designs, and
-the surrogate machinery needs no change because the two-bank eigenvalue
-is already recorded on every evaluation. And the reformulation makes
-the enrichment question answerable in the terms the open record poses
-it. At the required cycle length, the enrichment is whatever the
-controllability and peaking objectives leave, which on the Campaign 8
-evidence is between about 3 and \SI{7}{wt\%} as a uniform assembly
-value, the range the programme was reported to be considering in 2014.
+The second objective carries the reactivity that the Campaign 8 front
+could not hold. The critical concentration at the operating maximum
+expresses the beginning-of-life excess and the gadolinium hump in one
+quantity, and it does so in the unit in which the moderator
+temperature coefficient bounds it: a design whose critical
+concentration exceeds the boron ceiling of
+Section~\ref{sec:res-c8-mtc} cannot be held at power by boron with a
+non-positive coefficient.
 
-%% AUTHOR: the physical argument for why the two-bank eigenvalue is the
-%% right second objective rather than, for example, the four-bank margin
-%% or the rodded peaking, and whether the required cycle length should
-%% be stated at a capacity factor of 0.5, 0.8 or as a range.
+Scored on the Campaign 8 archive without transport, the reformulated
+problem at the five-year floor selects designs 47 and 13
+(Section~\ref{sec:res-c8-retro}). Campaign 9 then searched the same
+design space with the boron measured on every design. Its front holds
+five designs at peaking factors of 1.490 to 1.545 and boron demands of
+1406 to \SI{1908}{ppm}, every one within 121 days of the floor, so the
+constraint binds (Section~\ref{sec:res-c9-front}). At that floor the
+enrichment of the front is 4.2 to \SI{4.5}{wt\%}, below the 6 to
+\SI{8}{wt\%} stated for the prototype in 2014 and far below the
+\SI{19}{wt\%} reported in 2025.
 
 \section{Candidate designs}
 \label{sec:concl-candidates}
 
-\openpoint{After the confirmation study: name the candidate or
-candidates carried forward, with the three-dimensional eigenvalues, the
-boron worth and the rods-only margin from
-Section~\ref{sec:meth-boron-worth}, and the two objectives with their
-uncertainties. The comparison to present is design 53 against design
-31 of Table~\ref{tab:c8-two}, with design 47 of Table~\ref{tab:c8-front}
-as the front's own representative.}
+The two formulations give two stages of candidate.
+
+Under the formulation of Campaigns 1 to 8, the candidate is design 47
+of Table~\ref{tab:c8-front}, the low-peaking floor of the front
+(Section~\ref{sec:res-c8-decision}). Its cycle length is 1941\,EFPD,
+reproduced within 1.5 per cent by a replicate depletion, and its
+radial peaking factor is 1.510, with a seed-to-seed standard deviation
+of about 0.014 at the archive fidelity that does not separate it from
+its three nearest neighbours on that axis. On the three-dimensional
+core model with structural components at 1000\,ppm it holds a two-bank margin of
+1330\,pcm, which the gadolinium hump leaves intact because beginning of
+life is its most reactive state. Its differential boron worth is
+6.98\,pcm per ppm, its rods-only margin under the four regulating
+banks with no boron is 3069\,pcm, and its critical concentration of
+\SI{2327}{ppm} lies below the boron ceiling at both primary conditions
+(Sections~\ref{sec:res-c8-boron}, \ref{sec:res-c8-zeroboron}
+and~\ref{sec:res-c8-mtc}). Design 53 holds more margin and needs less
+boron but meets five years only at a capacity factor of 0.8, and design
+31 loses its two-bank margin at the maximum of its hump.
+
+On the objectives of Campaign 9, both Campaign 8 designs selected by
+the retrospective are dominated by members of the Campaign 9 front.
+Design 47 of Campaign 8 needs 419 to \SI{602}{ppm} more boron than
+designs 35, 40 and 34 of Campaign 9, at a peaking factor that differs
+by less than one and a half seed standard deviations, and design 13 is
+dominated by designs 47 and 44 of Campaign 9 on both objectives
+(Section~\ref{sec:res-c9-compare}). The comparison uses critical
+concentrations obtained by different routes and is indicative until the
+two archives are scored on the same footing.
+
+Within Campaign 9 the champion is C9-47, the lowest boron demand of the
+front, and C9-47 and C9-34 are the only members that stay on the front
+in every resample of the measurement noise
+(Section~\ref{sec:res-c9-convergence}). Two further designs, C9-29 and
+C9-30, are excluded from the nominal front by less than the noise, so the
+candidate set of the campaign holds seven designs. Four of the five front
+members, C9-47 among them, would have been buried two to four fronts deep
+under the cycle-length objectives (Section~\ref{sec:res-c9-discarded}).
+
+Re-solved with all rods out on the three-dimensional model, C9-47 and
+C9-34 stay on the front. C9-40 enters it, because its peaking factor
+falls by 0.040, and C9-44 leaves it, because C9-47 then has both the lower
+peaking and the lower boron demand. Both changes exceed four standard
+deviations of the seed noise, but the one that brings C9-40 in rests on
+the design with the largest seed spread of the five
+(Section~\ref{sec:res-c9-peaking}). Neither C9-47 nor C9-34 is yet a final
+candidate. Three of the checks that the Campaign 8 designs passed are now passed by
+the Campaign 9 front. On the three-dimensional model with structural
+components, at each design's own critical
+concentration, the first two regulating banks hold every front member
+subcritical with 9228 to \SI{9545}{pcm} of margin
+(Section~\ref{sec:res-c9-front}), and the boron ceiling measured on the
+lattice of each candidate is cleared, by \SI{1491}{ppm} for C9-47 and
+\SI{1027}{ppm} for C9-34 (Section~\ref{sec:res-c9-ceiling}). The k-target
+leakage factor of every front design is constant over the cycle within its
+uncertainty (Section~\ref{sec:res-c9-post}). Until the remaining checks of
+that section are closed, design 47 of Campaign 8 is the most completely confirmed
+design of the study, and the Campaign 9 front is the set from which the
+final choice will be made.
 
 \section{Limitations}
 \label{sec:concl-limits}
@@ -166,73 +225,90 @@ as the front's own representative.}
 \begin{enumerate}
   \item The model is a two-dimensional beginning-of-life core in the
         optimisation loop, corrected for axial leakage by a measured
-        constant. Axial power shape, axial rod worth curves and the
-        three-dimensional peaking are confirmed on the candidates
-        only.
+        constant. On the eleven Campaign 8 designs the
+        three-dimensional core model gives the peaking, the rod worth
+        and the axial leakage with rods withdrawn and inserted, and
+        shows that the leakage correction of the unrodded core does not
+        hold for the rodded core. On the five Campaign 9 front designs
+        it gives the peaking, the axial power shape, the bank worth and
+        the axial rod worth curves. No depletion was run in three
+        dimensions in any campaign.
 
   \item The control screen tests hold-down at power with the operating
         boron present and no xenon. It is not a shutdown-margin
         demonstration, which needs the cold state, all assemblies
-        minus the highest-worth one, and a stated margin. The boron
-        worth of the candidates is measured separately.
+        minus the highest-worth one, and a stated margin.
 
-  \item The reactivity swing over the cycle is not penalised. The
-        optimiser removed burnable absorber wherever it could, and the
-        gadolinium burnout hump of up to \SI{6000}{pcm} seen in the
-        depletion histories is absorbed by nothing in the objective set.
-        In a borated core the boron letdown absorbs it. In a boron-free
-        core it would have to be absorbed by rods.
+  \item Up to Campaign 8 the reactivity swing over the cycle was not
+        penalised. The optimiser removed burnable absorber wherever it
+        could, and humps of several thousand pcm appear in the depletion
+        histories. Campaign 9 scores the boron demand at the operating
+        maximum and applies the control screen there, which closes this
+        limitation for the last campaign only.
+
+  \item Every cycle length comes from a depletion at a constant
+        \SI{1000}{ppm} and is a lower bound for a core operated with
+        boron letdown.
 
   \item The statistical error on the peaking objective was not
-        measured during the campaigns, only bounded, and the ordering of
-        neighbouring front designs on that axis is not resolved.
+        measured during the campaigns, only bounded. Measured afterwards
+        at the confirmation statistics, it is 0.011 on the Campaign 8
+        designs and 0.0061 on the Campaign 9 front, and the ordering of
+        neighbouring front designs on that axis is not resolved in
+        either campaign. The peaking objective is also two-dimensional,
+        and on the Campaign 9 front the three-dimensional value changes
+        which designs are non-dominated.
 
   \item Every design below a pitch of \SI{1.2242}{cm} in Campaigns 1
-        to 7 carried clipped guide tubes. The final campaign is free of
+        to 7 carried clipped guide tubes. Campaigns 8 and 9 are free of
         the defect and the earlier results are caveated.
 
   \item Thermal-hydraulic feedback is absent. Temperatures are fixed at
-        representative hot full power values, so no coefficient of
-        reactivity, no departure from nucleate boiling ratio and no fuel
-        temperature limit is evaluated.
+        representative hot full power values, so no departure from
+        nucleate boiling ratio and no fuel temperature limit is
+        evaluated. The moderator temperature coefficient was evaluated
+        outside the loop, on one Campaign 8 design and on eight
+        Campaign 9 lattices, and enters only through the boron ceiling.
+
+  \item The boron ceiling was measured on the lattice of Campaign 8
+        design 47, with \SI{2.88}{wt\%} gadolinia on twelve rods. The
+        Campaign 9 front carries 2.6 to \SI{4.4}{wt\%} on 16 or 20
+        rods, so the ceiling is a reference for that front until it is
+        measured on its own lattice.
 \end{enumerate}
 
 \section{Continuation of this work}
 \label{sec:concl-future}
 
-The work stops where the deadline put it, with the confirmation of the
-candidates in progress. Table~\ref{tab:concl-future} lists the
+The work stops where the deadline put it, with the post-analysis of
+Campaign 9 in progress. Table~\ref{tab:concl-future} lists the
 continuations in the order they would be taken up, each with what it
 needs and what it would settle.
 
 \begin{table}[htbp]
   \centering
-  \small
+  \footnotesize
   \caption{Continuations of the study, in order of priority.}
   \label{tab:concl-future}
   \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{4.0cm}@{}}
     \toprule
     Continuation & What it involves & What it settles \\
     \midrule
-    Reformulated final campaign
-      & Equation~\eqref{eq:concl-reform}, cycle length as a constraint at the stated requirement, peaking and two-bank eigenvalue as objectives, on the Campaign 8 design space
-      & The candidate set for the mission actually posed \\
-    \addlinespace
-    Three-dimensional hardware model
-      & Bottom and top nozzles, end caps, plenum, four spacer grids, core barrel and downcomer at the benchmark sizes decided for the axial study, B$_4$C rods scaled to the active height
-      & Three-dimensional peaking, axial rod worth, barrel return, and the physical downcomer sensitivity that the two-dimensional model can only treat geometrically \\
+    Campaign 9 post-analysis
+      & Boron ceiling at 15.5\,MPa on C9-34 and C9-44, independent boron worth
+      & The final candidate \\
     \addlinespace
     Shutdown margin
       & Cold zero-power state, all 32 assemblies minus the highest-worth one, operating boron, margin of at least about \SI{1600}{pcm}
       & Whether the candidates meet a licensing-style shutdown criterion rather than an operating one \\
     \addlinespace
-    Boron worth and the boron-free sensitivity
-      & The measurement of Section~\ref{sec:meth-boron-worth} on the candidates, then the rods-only margin at zero concentration
-      & The share of hold-down the boron carries, and how far this core is from boron-free operation \\
+    Boron letdown in the depletion
+      & A critical boron search at each burnup step in place of the constant \SI{1000}{ppm}
+      & Cycle lengths of an operated core in place of lower bounds \\
     \addlinespace
-    Reactivity swing as a constraint
-      & A bound on the maximum of $k_\infty(B)$ minus its beginning-of-life value, read from the depletion history the evaluator already produces
-      & Removes the incentive to strip burnable absorber and makes the gadolinia ladder do the work it was designed for \\
+    Core-level depletion
+      & Depletion of the core in place of the reflected assembly, at the cost estimated in Section~\ref{sec:meth-dep-level}
+      & The radial burnup distribution, and the removal of the leakage-corrected target approximation \\
     \addlinespace
     Burnable absorber design
       & Mixed gadolinia concentrations per assembly, enriched gadolinium, or erbia, following the soluble-boron-free literature cited in the review
@@ -248,7 +324,7 @@ needs and what it would settle.
     \addlinespace
     Thermal-hydraulic coupling
       & OpenMC coupled to a subchannel or porous-medium solver, in the frameworks surveyed in the review
-      & Reactivity coefficients, departure from nucleate boiling, and fuel temperature margins on the candidates \\
+      & Coupled temperature feedback, departure from nucleate boiling, and fuel temperature margins on the candidates \\
     \addlinespace
     Multi-batch loading
       & Reload strategy and loading-pattern optimisation for a core that refuels rather than replaces
@@ -257,11 +333,31 @@ needs and what it would settle.
   \end{tabularx}
 \end{table}
 
-Three of these are already prepared. The boron worth measurement has
-its script and its methodology block. The three-dimensional
-confirmation runs on the water-slab axial model that corrected the
-campaign target, with the hardware model as the next increment. And
-the reformulated campaign needs no new evaluator, because every
-quantity it optimises was recorded on every Campaign 8 evaluation.
+The first continuation is scripted and was running when this chapter
+was written. Its last stage is the gate for any further campaign. If
+the ratio of three- to two-dimensional peaking is constant across the
+Campaign 9 archive, the three-dimensional objective is a monotone
+transform of the two-dimensional one, the front does not move and no
+further campaign is needed. On the eleven Campaign 8 designs the ratio
+was not constant, with a Spearman coefficient of 0.909 and a largest
+swap of three positions. On the five Campaign 9 front designs the ratio
+is 0.992 with a standard deviation of 0.014, and substituting it already
+changes the non-dominated set of those five, so the measurement on all
+60 designs is what decides whether a three-dimensional campaign is
+needed.
 
-%% AUTHOR: closing paragraph.
+The study set out to show that a core can be designed from four open
+facts and a declared design space, and that a surrogate-assisted loop
+can carry the search at a cost a workstation affords. Both were shown
+within the limits stated above: a two-dimensional beginning-of-life
+model in the loop, a fresh single-batch core, fixed temperatures and a
+constant boron concentration in the depletion. Within those limits the
+framework produced a front of buildable, controllable designs, the
+finding that the cycle length of this core is a requirement to be met,
+and a reformulated campaign whose front meets that requirement with
+less boron than the two Campaign 8 designs selected by the same
+formulation. What lies beyond the limits, the three-dimensional power
+shape of the new front, the shutdown margin, the thermal-hydraulic
+feedback and the reload strategy, is the work of
+Table~\ref{tab:concl-future}, and the archive, the checkpoints and the
+scripts that would carry it out are in place.

@@ -31,7 +31,6 @@
 %AUTHOR End Insertion
 
 \usepackage{tikz}          % to elaborate complex graphics
-\usepackage{ctable}        % to handle complex tables
 \usepackage{multirow}      % to allow multirows and multicolumns
 \usepackage{enumitem}      % to customize list environments
 \usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=3.0cm,right=2.5cm]{geometry} % flexible and easy interface to page dimensions
@@ -43,15 +42,19 @@
 
 \usepackage[numbers,sort&compress]{natbib}
 \usepackage{lipsum}
+\usepackage{silence}           % filter one obsolete sectsty check %AUTHOR Insertion
+\WarningFilter{latex}{Command \underbar}
+\WarningFilter{latex}{Command \underline}
 \usepackage{sectsty}           % to change style of sectional  headers
 \usepackage{titlesec}          % to select alternative section titles
 \usepackage[overload]{empheq}  % for braced-style systems of equations (to treat a set of equations as boxed)
 \usepackage{parskip}           % to handle the paragraph layout
 \usepackage{setspace}          % to set spacing between lines in a document
-\usepackage{mhchem}           % for \ce chemical formulae
-\usepackage{./xreview/xreview} % to allow document review
-\authoredcomments[color=cyan]{author}
-\authoredcomments[color=orange]{reviewer}
+\usepackage[version=4]{mhchem} % for \ce chemical formulae
+\makeatletter\def\input@path{{xreview/}}\makeatother %AUTHOR Insertion
+\usepackage{xreview} % to allow document review
+\authoredcomments[color=cyan, size=\scriptsize]{author}
+\authoredcomments[color=orange, size=\scriptsize]{reviewer}
 \usepackage{hyperref}      % to hanlde hyperlinks
 \hypersetup{
     colorlinks=true,
@@ -104,8 +107,8 @@
 \\[3.5cm]
 % Add here below the thesis title and eventually the thesis subtitle
 % If subtitle is not needed comment the corresponding line
-{\Large \textsc{Parametric Neutronic Analysis of a Compact \textrm{UO}\textsubscript{2}-Fueled SMR Core With LEU Using OpenMC}}
-{\large \textsc{Thesis subtitle (if needed)}}\\[1.5cm]
+{\Large \textsc{Surrogate-Assisted Multi-Objective Optimisation with OpenMC}}\\[0.3cm]
+{\large \textsc{Development and Validation of a Framework for the Neutronic Design of a Compact LEU SMR Core}}\\[1.5cm]
 Submitted in partial fulfilment of the requirements for the\\
 \textsc{\Large Master of Science Degree in}\\
 \textsc{\Large Nuclear Engineering}\\[5.0cm]
@@ -131,24 +134,29 @@ Submitted in partial fulfilment of the requirements for the\\
 \setlength{\abovedisplayshortskip}{5pt}
 \setlength{\belowdisplayshortskip}{10pt}
 
-% Dedication page (if not needed comment the next 5 lines)
-\begin{flushright}
-\null\vspace{\stretch{0.5}}
-\textit{Dedication}
-\vspace{\stretch{2}}\null
-\end{flushright}
-
-\chapter*{Abstract}
-\thispagestyle{specialheader}
-\markboth{}{}
-\addcontentsline{toc}{chapter}{Abstract}
-\lipsum[1]
+\input{abstract}
 
 \chapter*{Acknowledgments}
 \thispagestyle{specialheader}
 \markboth{}{}
 \addcontentsline{toc}{chapter}{Acknowledgments}
-\lipsum[1]
+To my parents, for their love, their example and their support, and for
+the investment in my education that brought me to this point.
+
+To the Brazilian Navy, for entrusting me with the responsibility of
+acquiring knowledge in nuclear engineering and for the support that allowed
+me to carry out my activities in Italy.
+
+To my supervisors, Prof.~Valerio Giusti and Prof.~Riccardo Ciolini, for
+their guidance, patience and support throughout this work.
+
+To the professors of the Master of Science Degree in Nuclear Engineering at
+the University of Pisa, for their valuable teaching, which awakened my
+interest in nuclear engineering and prepared me to carry out my
+professional activity well.
+
+To my family and friends, for their encouragement and help, which, even
+when indirect, allowed this study to be completed.
 
 \tableofcontents
 \thispagestyle{specialheader}

@@ -1,16 +1,3 @@
-% =====================================================================
-%  introduction.tex  --  Chapter 1
-%  Absorbs: title/objective framing from the July progress deck and the
-%  open-data provenance basis (Dados Abertos, Feb 2026).
-%  REVISION NOTE (this version):
-%   - All quantities are described qualitatively here, with pointers to
-%     the formal definitions in the theoretical background chapter.
-%   - Enumerations set as lists. No semicolons, no em dashes in prose.
-%   - Spearman's coefficient written rho_S throughout the thesis, to
-%     avoid the collision with reactivity rho.
-%  Markers:  %% AUTHOR: passages that need Diogo's institutional voice.
-%            \openpoint{...}: work still in progress, flagged visibly.
-% =====================================================================
 \providecommand{\openpoint}[1]{\par\noindent\fbox{\parbox{0.97\linewidth}{%
   \textbf{Open point:} #1}}\par}
 
@@ -20,256 +7,503 @@
 \section{Context and motivation}
 \label{sec:intro-context}
 
-Small modular reactors (SMRs) have taken a growing place in nuclear
-engineering over recent years. Two forces drive this growth.
+Compact pressurised water reactors (PWRs) have propelled naval vessels
+since the 1950s, and some 700 reactors have been used at sea since
+then~\cite{wna_ships}, so their design base is long. Naval nuclear
+propulsion nonetheless remains a demanding capability to acquire, and
+only six countries operate nuclear-powered submarines~\cite{wna_ships}.
+Table~\ref{tab:intro-submarines} gives the size of each national fleet at
+the end of 2019, about 150 submarines in total~\cite{wna_ships}.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Nuclear-powered submarines in service by country, end of 2019.}
+  \label{tab:intro-submarines}
+  \small
+  \begin{tabular}{@{}lr@{}}
+    \toprule
+    Country & Submarines \\
+    \midrule
+    United States  & 70 \\
+    Russia         & 40 \\
+    China          & 19 \\
+    United Kingdom & 10 \\
+    France         & 9  \\
+    India          & 3  \\
+    \bottomrule
+  \end{tabular}
+
+  \vspace{2pt}
+  {\footnotesize Data from~\cite{wna_ships}.}
+\end{table}
+\FloatBarrier
+
+Before a naval reactor goes to sea, it is common practice to prove it in
+a prototype. Work on nuclear marine propulsion began in the 1940s, and
+the first test reactor built for it started up in the United States in
+1953. India operated a 20~MW prototype unit from 2003 for its
+submarine programme~\cite{wna_ships}. The United States programme
+still requires a new fuel to run in a prototype reactor before it is
+deployed in the fleet~\cite{jason_2016}. Chapter~\ref{ch:litreview}
+documents the naval lineages in more detail, and the Brazilian programme
+follows the same path with a land-based prototype.
+
+In Brazil, the naval nuclear propulsion programme rests on LABGENE
+(\emph{Laboratório de Geração de Energia Nucleoelétrica}), a
+land-based prototype plant under construction at the Centro Industrial
+Nuclear de Aramar in Iperó, São Paulo~\cite{ctmsp_visita_2018}. It
+was built to test the nuclear reactor of the submarine Álvaro
+Alberto~\cite{vasconcelos_fapesp_2025}.
+
+The plant serves to validate the design conditions and to test the
+operating conditions of this nuclear propulsion
+plant~\cite{ctmsp_labgene_2015}. The land-based prototype reactor, the
+submarine, its reactor and its fuel are designed and built in
+Brazil~\cite{brazil_npt_wp13_2026}.
+
+The core data of LABGENE are closed. The open record fixes four facts
+about the reactor:
 
 \begin{enumerate}
-  \item The rising electricity demand of data centres and other new
-        large loads.
+  \item \textbf{The reactor type:} It is a pressurised water
+        reactor~\cite{ctmsp_labgene_2015}.
 
-  \item The search for shorter construction times and lower capital
-        costs than those of large nuclear power plants.
+  \item \textbf{The rated power:} According to the Navy the reactor
+        generates 48\,MW of thermal power~\cite{demartini_nuclep_2022}.
+        The academic literature gives 48 to 50\,MW thermal for the
+        submarine reactor~\cite{dinizcosta_2017}.
+
+  \item \textbf{The fuel class:} The fuel is low-enriched uranium (LEU),
+        as declared by Brazil at the 2026 Review Conference of the
+        Non-Proliferation Treaty~\cite{brazil_npt_wp13_2026}, that is,
+        uranium enriched below 20\,wt\% in
+        $^{235}$U~\cite{nrc_10cfr110_2}. The enrichment reported in open
+        sources ranges from 6 to 8\,wt\%~\cite{dinizcosta_2017} to
+        19\,wt\%~\cite{vasconcelos_fapesp_2025}.
+
+  \item \textbf{The vessel envelope:} A structural dissertation on the
+        submarine reactor, proposed by CTMSP under a research agreement
+        with the University of São Paulo, gives the vessel dimensions
+        adopted according to CTMSP. The cylindrical inner radius is
+        900\,mm~\cite{maruyama_2013}.
 \end{enumerate}
 
-Within the SMR family, pressurised-water designs of naval heritage form
-one of the most technologically mature branches. Compact pressurised
-water reactors (PWRs) have propelled naval vessels since the beginning
-of nuclear power history, so their design base is long and well
-exercised.
-
-In Brazil, the Navy's nuclear propulsion programme is anchored by
-LABGENE (\emph{Laborat\'orio de Gera\c{c}\~ao de Energia
-Nucleoel\'etrica}), a land-based prototype plant built at the Centro
-Industrial Nuclear de Aramar in Iper\'o, S\~ao Paulo, to validate the
-design conditions and to test all operating conditions of the naval
-propulsion plant~\cite{ctmsp_labgene_2015,ctmsp_pnm_2025}. Its openly
-disclosed characteristics define the reference envelope of the present
-work.
+Two further points complete what is known:
 
 \begin{itemize}
-  \item A pressurised water reactor~\cite{ctmsp_labgene_2015,vasconcelos_fapesp_2025}
-        rated at 48\,MW according to the Navy~\cite{ctmsp_visita_2018},
-        a figure that the academic literature and the specialised press
-        identify as thermal power~\cite{dinizcosta_2017,demartini_nuclep_2022}.
+  \item A refuelling interval of five years is reported~\cite{dinizcosta_2017}.
 
-  \item Low-enriched uranium (LEU) fuel, below 20\,wt\% $^{235}$U, as
-        declared by Brazil at the Review Conferences of the
-        Non-Proliferation Treaty~\cite{brazil_npt_wp71_2022,brazil_npt_wp13_2026}.
-        The enrichment reported in open sources ranges from 6 to
-        8\,wt\% up to 19\,wt\%~\cite{dinizcosta_2017,kassenova_2014,vasconcelos_fapesp_2025}.
-
-  \item A refuelling interval of four to five
-        years~\cite{galante_podernaval_2020,dinizcosta_2017}.
+  \item No lattice pitch, assembly count, enrichment zoning, burnable
+        absorber loading, soluble boron concentration, or peaking factor
+        is available from any open source.
 \end{itemize}
 
-%% AUTHOR: one paragraph in your own voice on why this matters to the
-%% Brazilian programme and to you as a naval officer; institutional
-%% motivation should not come from the model.
+The study is therefore built exclusively from open sources, and the
+four facts above anchor the model. The other inputs are obtained in two
+ways:
 
-A deliberate methodological choice governs everything that follows:
-\textbf{the study is built exclusively from open sources}.
+\begin{itemize}
+  \item The fuel rod and assembly geometry are reconstructed from the
+        open literature on comparable reactors, in particular the
+        NuScale-class fuel design~\cite{nuscale_htp2_2017}.
 
-Every geometric dimension, material specification and operating
-parameter of the reference core is traced to one of three kinds of
-source.
+  \item Every remaining parameter is a declared assumption of this
+        thesis, documented with its basis in
+        Appendix~\ref{app:model-inputs}.
+\end{itemize}
 
-\begin{enumerate}
-  \item Official statements of the Marinha do Brasil and of the
-        Brazilian government, which fix the reactor type, the rated
-        power and the low-enriched
-        fuel~\cite{ctmsp_labgene_2015,ctmsp_visita_2018,brazil_npt_wp13_2026}.
+The core studied is for that reason a LABGENE-class core, with no claim
+of correspondence to the prototype itself. The thesis also tests how
+far open-source tools and open data can carry a realistic naval core
+design study.
 
-  \item Open academic work on the Brazilian programme, which fixes the
-        vessel envelope adopted here~\cite{maruyama_2013} and documents
-        the range of enrichment and refuelling figures in
-        circulation~\cite{dinizcosta_2017}.
-
-  \item International open literature on comparable reactors, notably
-        the NuScale-class fuel design, from which the fuel rod and
-        assembly geometry is reconstructed~\cite{nuscale_htp2_2017}.
-\end{enumerate}
-
-Where a required quantity is not openly available, it is estimated from
-published proportions, and each estimate is documented as an explicit
-assumption. Appendix~\ref{app:labgene-data} lists every open-source
-item with its primary reference.
-
-This provenance discipline serves two purposes.
-
-\begin{enumerate}
-  \item It keeps the work fully publishable.
-
-  \item It turns the thesis into a demonstration of how far modern
-        open-source tools and open data can carry a realistic
-        naval-core design study.
-\end{enumerate}
+The absence of a public specification also decides the form of the
+study. With four inputs fixed and everything else open, the useful
+question is which core configurations satisfy the known requirements.
+The study is therefore an optimisation over a declared design space,
+in place of the reproduction of a known core.
 
 \section{Problem statement}
 \label{sec:intro-problem}
 
 A long refuelling interval and a flat power distribution pull a PWR
-core design in opposite directions.
+core design in opposite directions, for the following reasons:
 
-Reaching a multi-year cycle under the LEU ceiling demands high fuel
-enrichment and therefore high beginning-of-life (BOL) reactivity, which
-must be suppressed by burnable absorbers and by leakage.
+\begin{enumerate}
+  \item A multi-year cycle under the LEU ceiling needs high enrichment,
+        and therefore a high beginning-of-life (BOL) reactivity.
 
-At the same time the radial peaking factor $F_{\Delta H}$, the
-thermal-margin quantity of first interest in this work, is degraded by
-exactly the enrichment zoning and the absorber placement that the
-cycle-length objective motivates.
+  \item That reactivity must be held down by burnable absorbers, by
+        soluble boron and by the control rods.
 
-The design problem is therefore genuinely multi-objective. Its
-evaluation function, the coupled neutron transport and depletion
-calculation, is computationally expensive and, in Monte Carlo form,
-\emph{stochastic}.
+  \item The enrichment zoning and the absorber placement that the long
+        cycle motivates degrade the radial peaking factor
+        $F_{\Delta H}$, the thermal-margin quantity of first interest
+        in this work.
+\end{enumerate}
 
-The thesis addresses the resulting question: how should a
-surrogate-assisted multi-objective optimisation (MOO) campaign be
-constructed so that its Pareto front is trustworthy when each objective
-evaluation costs hours of computing time and carries statistical noise?
+The design problem therefore has two competing objectives, and no
+single design is best in both. Two different calculations take part in
+solving it, and their costs
+are very different:
+
+\begin{itemize}
+  \item \textbf{The evaluation of a design:} The OpenMC
+        code~\cite{romano_openmc_2015} runs a coupled neutron transport
+        and depletion calculation on the core model. One evaluation
+        takes fifteen to twenty-five minutes. Because OpenMC is a Monte
+        Carlo code, its results also carry statistical noise.
+
+  \item \textbf{The search for the best designs:} A genetic algorithm
+        such as NSGA-II improves a population of designs over many
+        generations. In one run it asks for the objectives of several
+        thousand designs.
+\end{itemize}
+
+If every request of the genetic algorithm were answered by an OpenMC
+evaluation, a single search would need several thousand runs of fifteen
+to twenty-five minutes each. For the 4800 evaluations of one search
+described in Section~\ref{sec:bg-moo}, that is 1200 to 2000 hours, or
+seven to twelve weeks of continuous computation, and the loop repeats
+the search at every iteration. Coupling the search directly to OpenMC is
+therefore out of reach.
+
+In this work, the genetic algorithm never calls OpenMC. It searches a
+Gaussian-process surrogate, a statistical model fitted to the designs
+already evaluated with OpenMC, whose predictions cost almost nothing.
+OpenMC is run only on the small number of designs that the search
+proposes. Their results join the designs already evaluated, and the
+Gaussian-process model is fitted again on the enlarged set, so every
+pass of this active-learning loop gives an improved surrogate. The loop
+continues until its stopping criterion is met or the user of the
+process decides to interrupt it (Section~\ref{sec:bg-al}).
+
+The question the thesis answers is how such a surrogate-assisted
+optimisation can be built so that its Pareto front can be trusted, when
+every OpenMC evaluation costs that much and carries statistical noise.
 
 \section{Objectives}
 \label{sec:intro-objectives}
 
-The general objective is to develop, execute and critically evaluate a
-surrogate-assisted multi-objective optimisation of a LABGENE-class
-48\,MWth Small Modular Reactor (SMR) core, built in the open-source
-Monte Carlo code OpenMC~\cite{romano_openmc_2015} from open data.
+The work has two objectives. The first is methodological. The second
+is the application that motivated it, and it cannot be reached without
+the first.
 
-The optimisation maximises the cycle length in effective full-power
-days (EFPD) and minimises the radial peaking factor $F_{\Delta H}$
-under licensing-motivated constraints.
+The first objective is to build a surrogate-assisted framework that can
+optimise a nuclear core. The framework has three parts:
 
-The cycle length measures how long the core sustains full-power
-operation before it loses the reactivity needed to remain critical. Its
-formal definition, through the conversion between burnup and
-irradiation time, is given in Section~\ref{sec:bg-depletion}.
+\begin{itemize}
+  \item A parametric OpenMC model of the core, built at pin, assembly
+        and 32-assembly fidelity, which evaluates the designs.
 
-The radial peaking factor measures how unevenly power is distributed
-among the fuel rods. It compares the most heavily loaded rod against
-the average of the evaluation domain, so a value close to unity
-indicates a flat radial power distribution and a large value indicates
-a hot rod that consumes thermal margin. Its formal definition is given
-in Section~\ref{sec:bg-peaking}, and the numerical estimator actually
-used, together with its evaluation domain, in
-Section~\ref{sec:objective_functions}.
+  \item A Gaussian-process surrogate~\cite{rasmussen_gp_2006}, which
+        learns from the OpenMC evaluations.
 
-The two objectives conflict, for the physical reasons outlined in
-Section~\ref{sec:intro-problem}. The purpose of the optimisation is
-therefore to map the trade-off between them rather than to find a
-single best design.
+  \item The Non-dominated Sorting Genetic Algorithm II
+        (NSGA-II)~\cite{deb_nsga2_2002}, which searches the surrogate.
+\end{itemize}
 
-The specific objectives, in the order the work addresses them, are the
-following.
+The three parts are joined in an active-learning loop. At each
+iteration, NSGA-II searches the Gaussian-process surrogate, and from the
+candidate designs it returns a small batch, six designs in this work,
+is selected where the surrogate is most uncertain and run in OpenMC
+(Section~\ref{sec:bg-al}). A search that would need thousands of
+evaluations therefore costs only the OpenMC runs of the selected
+designs, at about twenty minutes each.
+
+Before its results can be used, the framework has to be validated in
+three ways:
 
 \begin{enumerate}
-  \item Construct a parametric OpenMC model of the reference core at
-        pin, assembly and 32-assembly core fidelity, and verify its
-        internal geometric and neutronic consistency.
+  \item The surrogate against the OpenMC evaluations it was trained on.
 
-  \item Formulate the optimisation over a design space of enrichment,
-        gadolinia (Gd$_2$O$_3$) loading, pin pitch and reflector
-        thickness. The space carries five variables in Campaigns 1
-        to 4, six from Campaign 5, when the gadolinium-bearing pin
-        count is added, and four in Campaign 8, when the pitch is
-        fixed. The constraint set carries five constraints through
-        Campaign 6 and six from Campaign 7, and includes a geometric
-        vessel-fit condition, bounds on beginning-of-life (BOL)
-        reactivity and a measured controllability screen.
+  \item The cheap assembly-level proxy against the core-level quantity
+        it stands for.
 
-  \item Couple a Gaussian-process (GP) surrogate to the Non-dominated
-        Sorting Genetic Algorithm II (NSGA-II) in an active-learning
-        loop governed by empirical stopping rules.
-
-  \item Impose an accident-tolerant-fuel (ATF) discharge-burnup limit
-        and quantify its reshaping of the Pareto front.
-
-  \item Characterise the statistical behaviour of the Monte Carlo
-        peaking estimator, both its noise \emph{and} its bias, and
-        develop the selection methodology that identifies true optima
-        beyond that noise.
-
-  \item Extract decision-relevant structure from the campaign archive,
-        specifically:
-        \begin{enumerate}
-          \item the feasibility envelopes of the design space,
-          \item the variable importance ranked by decision perspective,
-          \item a small set of physically distinct candidate designs
-                for high-fidelity confirmation.
-        \end{enumerate}
+  \item The candidate designs against a model of higher fidelity than
+        the one used in the loop.
 \end{enumerate}
+
+The second objective is to obtain, from the little open data available,
+a set of candidate core configurations for LABGENE, from which a final
+design can be chosen once their confirmation is complete. The optimisation maximises the
+cycle length, in effective full-power days (EFPD), and minimises the
+radial peaking factor. Its constraints are motivated by licensing
+practice:
+
+\begin{itemize}
+  \item The core must fit inside the vessel.
+
+  \item The excess reactivity at beginning of life must not exceed the
+        reactivity worth available from the burnable absorber and the
+        control rods.
+
+  \item Its enrichment must stay below the LEU ceiling.
+\end{itemize}
+
+The cycle length measures how long the core sustains full power before
+it can no longer be kept critical. The peaking factor compares the most
+heavily loaded fuel rod with the average rod, so a value close to unity
+indicates a flat radial power distribution. A flatter distribution keeps
+the hottest rod further from its thermal limits, above all the departure
+from nucleate boiling, and the margin gained can be spent on power
+output or on cycle length (Section~\ref{sec:bg-peaking}). Both
+quantities are defined formally in Chapter~\ref{ch:background}, and
+the estimators actually used are fixed in Chapter~\ref{ch:methodology}.
+
+Because the two objectives conflict, the result of the optimisation is a
+Pareto front: a set of designs in which none is better than another in
+both objectives. The final design is then chosen from this front using
+criteria outside the optimisation, such as controllability and the
+results of higher-fidelity checks.
+
+Campaigns 1 to 8 pose the problem in that form, and their results
+changed it. Every design on the Campaign 8 front already exceeds a
+refuelling interval of five years. Pushing the cycle length further
+only raised the excess reactivity at beginning of life, which the
+control rods then had to hold with their banks inserted deep into the
+core (Section~\ref{sec:concl-reform}). The design is therefore limited
+by the control of that excess reactivity, and the cycle length only has
+to meet the five-year requirement. Campaign 9 poses the problem again
+with two changes:
+
+\begin{itemize}
+  \item The cycle length becomes a constraint with a minimum of 1826\,EFPD,
+five years at full capacity.
+
+  \item The soluble boron concentration that the core needs at its most
+        reactive state becomes the second objective.
+\end{itemize}
+
+Both objectives were reached. The framework ran nine optimisation campaigns, which together performed
+636 evaluations of the Monte Carlo model, summed over all the campaigns.
+Each campaign changed one element of the method relative to its
+predecessor, and the framework was validated in the three ways listed
+above.
+
+The two final campaigns gave the following results:
+
+\begin{itemize}
+  \item Campaign 8 produced a front of eight feasible designs. Its
+        candidate, C8-47, passed every check that was run on it.
+        The ordering of its nearest neighbours on the peaking axis is
+        inside the seed noise.
+
+  \item Campaign 9 produced a set of five candidate designs on its
+        front, listed in order of increasing boron demand:
+        C9-47, C9-44, C9-34, C9-40 and C9-35. All five meet the
+        five-year requirement with 1406 to 1908\,ppm of soluble boron
+        at their most reactive state. Re-solved on the
+        three-dimensional model with all rods out, C9-47, C9-34 and
+        C9-40 stay on the front. C9-44 leaves it, and C9-35 drops out on
+        a peaking tie that lies within the statistical uncertainty. 
+        Every front member clears the boron ceiling of its own
+        lattice and is held subcritical by the first two regulating
+        banks on the three-dimensional model. A few smaller checks were
+        still open when this thesis was written.
+\end{itemize}
 
 \section{Contributions}
 \label{sec:intro-contributions}
 
-Beyond the reference design study, the work contributes four
-methodological results that generalise to surrogate-assisted
-optimisation with expensive, stochastic, reduced-order evaluations.
+The thesis makes two contributions. The first is a pair of Pareto fronts of possible designs for a
+LABGENE-class 48\,MWth core. The core has a fixed $17\times17$ lattice,
+and the design variables are the following:
+
+\begin{itemize}
+  \item One assembly enrichment, set so that no ring of the zoned core
+        exceeds the low-enriched-uranium limit of 19.75\,wt\%.
+
+  \item The gadolinia concentration.
+
+  \item The number of poisoned pins.
+
+  \item The reflector thickness, bounded by the vessel.
+\end{itemize}
+
+The fronts give the following results:
+
+\begin{itemize}
+  \item Every design on the front of Campaign 8
+        (Section~\ref{sec:res-c8-front}) fits inside the open vessel
+        envelope, holds its beginning-of-life reactivity within the
+        measured worth of the regulating banks, and stays below the LEU
+        ceiling.
+
+  \item A second set from the same campaign is controllable with two
+        banks alone, as a commercial PWR is operated
+        (Section~\ref{sec:res-c8-split}). The comparison shows that the
+        front exceeds the five-year requirement at the cost of excess
+        reactivity held by deeply inserted banks, so the cycle length is
+        a minimum requirement and the excess reactivity is the quantity
+        to optimise (Section~\ref{sec:concl-reform}).
+
+  \item The front of Campaign 9 (Section~\ref{sec:res-c9-front})
+        answers the problem posed that way, with five designs that meet
+        the five-year requirement.
+\end{itemize}
+
+The second contribution is a process that can be used in a design
+project. It rests on the following rules:
 
 \begin{enumerate}
-  \item An exact post-processing transform that imposes a
-        discharge-burnup licensing limit on a completed campaign
-        without re-evaluation.
+  \item The model can be built from the basic information of a design
+        project. Each input takes its value from a source where one
+        exists, or from a declared assumption where it does not, and
+        every input is recorded with its basis in a provenance record
+        kept apart from the results.
 
-  \item A quantified demonstration that a maximum-over-cells Monte
-        Carlo objective is noisy \emph{and} biased upward. The bias
-        exceeded the Pareto-front spread and inverted its ranking. A
-        two-stage noise-margin subset-selection procedure that
-        resolves true optima accompanies the demonstration.
+  \item The same set of design parameters defines the model at pin,
+        assembly and full-core level, so a design screened on the single
+        assembly is exactly the design later confirmed on the core.
 
-  \item A measured proxy-fidelity result. The single-assembly peaking
-        proxy correlates with the true core quantity globally, with a
-        Spearman coefficient $\rho_S = +0.890$ over the full archive,
-        yet scrambles the ordering in the near-optimal set. It carries
-        a design-dependent gap of $1.75$--$1.91\times$ anti-correlated
-        with reflector thickness, and it turned an inactive constraint
-        into one violated by every design. The remedy adopted,
-        evaluating the true core quantity inside the loop at
-        $\approx3\%$ cost, reframes proxy validation as a rank-fidelity
-        requirement.
+  \item The surrogate-assisted loop stops on a rule based on the
+        hypervolume gain.
 
-  \item The reactivity-feasibility structure of the design space.
-        Volume-weighted enrichment governs the envelope, the fixed
-        twelve-pin gadolinia pattern bounds absorber authority at
-        $\Delta k \approx 0.05$, and the measured conflict between
-        core-level peaking and the reactivity limit identifies absorber
-        \emph{inventory}, that is the poisoned-pin count, as the
-        missing design freedom.
+  \item The campaigns change one element at a time, so every difference
+        in outcome between two campaigns is attributable to one cause.
+
+  \item Constraints are measured on the model, as the controllability
+        screen is, in place of bounds derived from assumptions, and the
+        critical boron concentration of every design can be measured
+        inside the evaluator. The results of each campaign are compared
+        with the design rules and the controllability requirements, and
+        that comparison feeds back into the next campaign. It either
+        corrects an earlier assumption or shows that the formulation of
+        the problem must change for a requirement to be met
+        (Chapter~\ref{ch:methodology}).
+
+  \item A proxy, a cheaper quantity computed in place of the one of real
+        interest, such as the peaking factor of a single assembly in
+        place of that of the whole core, is used only after its
+        agreement with the quantity it replaces has been measured, and it is checked again
+        whenever results of higher fidelity become available. A proxy
+        that no longer orders the designs correctly is replaced by the quantity it represents.
+
+  \item The candidates are confirmed with replicated random seeds and on
+        a three-dimensional core model that includes the axial structure
+        of the core.
 \end{enumerate}
+
+The process is documented in Chapter~\ref{ch:methodology} and
+Appendix~\ref{app:code-architecture}. The published surrogate-assisted core studies reviewed in
+Chapter~\ref{ch:litreview} use neural network surrogates on loading
+pattern problems for cores of fixed geometry, trained before the
+search. The process here searches the fuel and the geometry of a core
+without a public specification. It also measures the fidelity of its
+own proxies before relying on them.
 
 \section{Scope and limitations}
 \label{sec:intro-scope}
 
-The optimisation workhorse is a two-dimensional model. Depletion is
-computed on the reflective single assembly, leakage-corrected through a
-calibrated reactivity target. From Campaign 4 onward, the
-beginning-of-life peaking objective is evaluated on the full
-32-assembly core.
+The optimisation loop runs on a two-dimensional model, with the
+following treatment of the core:
 
-Three classes of physics are outside the model.
+\begin{itemize}
+  \item Depletion is computed on the single assembly under reflective
+        boundaries and is corrected for leakage through a calibrated
+        reactivity target.
+
+  \item From Campaign 4 onward, the beginning-of-life peaking objective
+        is evaluated on the full 32-assembly core.
+
+  \item From Campaign 8, the axial leakage enters the target as a
+        constant measured on a finite-height model.
+\end{itemize}
+
+Three-dimensional calculations are limited. For the Campaign 8 candidates,
+the three-dimensional core model gives the peaking, the rod worth, and the
+axial leakage with the rods withdrawn and inserted. These calculations
+showed that the axial leakage correction changes with the number of rods
+inserted and with the position of the withdrawn rods, so the constant
+measured on the unrodded core does not hold for the rodded core. For the
+Campaign 9 front, the same model gives the peaking, the axial power shape,
+the bank worth and the axial rod worth curves. No depletion is run in
+three dimensions.
+
+The boundaries of the model are stated in Chapter~\ref{ch:methodology}
+where each is adopted and collected in Chapter~\ref{ch:conclusions}.
+They are the following:
 
 \begin{enumerate}
-  \item Thermal-hydraulic feedback.
+  \item The core is a fresh, uniform, single-batch loading. Reload
+        strategy, loading-pattern freedom, and multi-batch operation are
+        outside the design space.
 
-  \item Transient safety parameters.
+  \item Thermal-hydraulic feedback is absent. Temperatures are fixed at
+        representative hot full power values, so no departure from
+        nucleate boiling ratio, no fuel temperature limit and no
+        transient is evaluated. The moderator temperature coefficient
+        is evaluated outside the optimisation loop, as a soluble boron
+        ceiling on selected designs, and is never imposed as a
+        constraint (Section~\ref{sec:meth-mtc}).
 
-  \item Axial effects.
+  \item The depletion runs at a constant soluble boron concentration of
+        1000\,ppm, with no critical boron search along the cycle and no
+        boron burnout. Every reported cycle length is therefore a lower
+        bound for a core operated with boron letdown. Campaign 9
+        measures the critical concentration at beginning of life and at
+        the most reactive state of the cycle.
+
+  \item The controllability screen tests whether the regulating banks
+        hold the fresh core subcritical at power with the boron present
+        and no xenon. It is a hold-down test, and the shutdown margin
+        in the cold state with the highest-worth rod withdrawn is not
+        demonstrated.
+
+  \item The statistical error of the peaking objective was bounded but
+        not measured inside the loop. Measured afterwards on the
+        candidates, it does not resolve the ordering of neighbouring
+        front designs along that axis. The work delivers a Pareto front
+        of candidates that are then evaluated at higher fidelity, so an
+        uncertain ordering between neighbouring designs is manageable at
+        this stage.
 \end{enumerate}
-
-The core is a fresh, uniform, single-batch loading with no
-loading-pattern freedom. These boundaries are stated where they bear on
-results and are collected in the concluding chapter.
 
 \section{Thesis outline}
 \label{sec:intro-outline}
 
-Chapter~\ref{ch:litreview} reviews the SMR landscape, burnable-absorber
-practice, surrogate-assisted optimisation, noisy objectives and
-multi-fidelity methods. Chapter~\ref{ch:background} assembles the
-theory the methodology rests on and hosts the formal definitions of the
-quantities used throughout the thesis. Chapter~\ref{ch:methodology}
-presents the model, the optimisation formulation and the statistical
-machinery. Chapter~\ref{ch:results} reports the eight optimisation campaigns, the
-core-level validation that redirected the work, and the seed-replicated
-confirmation of the final champion, with open items flagged explicitly.
+The thesis is organised as follows:
+
+\begin{itemize}
+  \item Chapter~\ref{ch:litreview} reviews the naval-heritage and
+        commercial small modular PWR cores documented in the open
+        literature. It also reviews the development of core
+        optimisation methods, from mathematical programming to
+        surrogate-assisted search, and the gadolinia burnable absorber
+        literature.
+
+  \item Chapter~\ref{ch:background} assembles the theory the
+        methodology rests on. It holds the formal definitions of the
+        multiplication factor, the cycle length and the peaking factor,
+        the Monte Carlo statistics of a maximum-based estimator, the
+        rank correlation used to validate a proxy, and the components
+        of the surrogate-assisted loop.
+
+  \item Chapter~\ref{ch:methodology} presents the reactor model, the
+        optimisation problem, the leakage-corrected reactivity target,
+        and the active-learning loop with its validation. It then
+        covers the treatment of the discharge-burnup limit, the
+        controllability screen, the soluble boron with the moderator
+        temperature coefficient and the boron ceiling, and the campaign
+        structure, including the reformulated problem of Campaign 9.
+
+  \item Chapter~\ref{ch:results} reports the results of the nine
+        campaigns. Campaigns 1 to 7 are condensed to their main results,
+        including the core-level validation that changed the course of
+        the work. Campaigns 8 and 9 are reported in detail: the front and
+        the two-bank subset of Campaign 8 with the post-analysis of its
+        candidates, the retrospective scoring of the reformulated
+        problem, and the front of Campaign 9 with its confirmation.
+
+  \item Chapter~\ref{ch:conclusions} states what the study found and
+        the reformulation of the design problem that follows from it. It
+        closes with the limitations of the work and the possible
+        developments that its results support.
+
+  \item Appendix~\ref{app:model-inputs} records the provenance of every
+        model input.
+
+  \item Appendix~\ref{app:code-architecture} gives an overview of the
+        simulation code and of the archive of the campaigns.
+\end{itemize}

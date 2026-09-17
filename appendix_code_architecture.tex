@@ -19,7 +19,7 @@
 
 \chapter{Architecture of the simulation code}\label{app:code-architecture}
 
-\providecommand{\file}[1]{\texttt{\detokenize{#1}}}
+\providecommand{\file}[1]{\expandafter\nolinkurl\expandafter{\detokenize{#1}}}
 
 \providecommand{\openpoint}[1]{\par\noindent\fbox{\parbox{0.97\linewidth}{%
   \small\textbf{Open point.} #1}}\par}
@@ -40,7 +40,7 @@ appendix is commit \texttt{e4a3582} of 8 September 2026.
 The campaign branches \texttt{campaign4} to \texttt{campaign8} are kept in
 the repository as a record of the state under which each campaign was run.
 They receive no further commits. The files that define the geometry, the
-materials, the operating point and the three-dimensional hardware are
+materials, the operating point and the three-dimensional structural components are
 byte-identical between \texttt{campaign8} and \texttt{main}, so citing
 \texttt{main} changes no input reported in
 Appendix~\ref{app:model-inputs}. The two files that do differ,
@@ -69,18 +69,17 @@ here. The following groups are omitted on purpose.
 
 Figure~\ref{fig:code-architecture} shows the nine blocks of the pipeline and
 the artefacts that cross each interface. Purple blocks call OpenMC
-\cite{romano_openmc_2015}, the Monte Carlo transport and depletion code.
-The coral block is the only one that never calls OpenMC directly. Gray
-blocks are infrastructure and outputs. Unlabelled arrows are Python
-imports. Labelled arrows name the file, or the pair of vectors, exchanged.
+\cite{romano_openmc_2015,romano_2021_depletion}, the Monte Carlo transport and depletion code.
+The coral block, the surrogate-assisted optimiser, is the only one that
+never calls OpenMC directly. Grey blocks are infrastructure and outputs.
+Unlabelled arrows are Python imports. Labelled arrows name the file, or
+the pair of vectors, exchanged. The scripts listed inside each block are
+detailed in Tables~\ref{tab:arch-builders} to~\ref{tab:arch-post}.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/code_architecture.pdf}
-  \caption{Macro architecture of the simulation code. Purple blocks run
-  OpenMC, the coral block runs the surrogate-assisted optimiser, gray blocks
-  are infrastructure and outputs. Scripts listed inside each block are
-  detailed in Tables~\ref{tab:arch-builders} to \ref{tab:arch-post}.}
+  \caption{Macro architecture of the simulation code.}
   \label{fig:code-architecture}
 \end{figure}
 
@@ -154,8 +153,8 @@ dictionary.
     \file{zoning.py} & Ring map, centre, middle and periphery multipliers,
       control-bank positions, core beginning-of-life solve, reactivity
       history reader \\
-    \file{hardware3d.py} & Finite-height core with the assembly hardware
-      stack, used by the three-dimensional confirmation \\
+    \file{hardware3d.py} & Finite-height core with the axial stack of assembly
+      structural components, used by the three-dimensional confirmation \\
     \bottomrule
   \end{tabularx}
 \end{table}
@@ -165,14 +164,15 @@ dictionary.
 This block produces the end-of-cycle reactivity target used by the
 evaluator, as described in the methodology. The target is tabulated on the
 full core, corrected for axial leakage, and validated against the burnup
-dependence of the leakage.
+dependence of the leakage. Table~\ref{tab:arch-ktarget} lists its scripts.
+The two validation scripts read the campaign checkpoint to select the
+designs they evaluate.
 
 \begin{table}[htbp]
   \centering\footnotesize
-  \caption{Reactivity-target block. The two validation scripts read the
-  campaign checkpoint to select the designs they evaluate.}
+  \caption{Reactivity-target block.}
   \label{tab:arch-ktarget}
-  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{5.0cm} X >{\raggedright\arraybackslash}p{4.4cm}@{}}
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{5.0cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{4.4cm}@{}}
     \toprule
     Script & Role & Main output \\
     \midrule
@@ -223,14 +223,15 @@ and writes one \file{depletion_results.h5} per case.
 This block measures the worth of the control banks on archived designs and
 turns the minimum worth into the reactivity ceiling passed to the driver.
 It runs before a campaign, and again on the candidates after it.
+Table~\ref{tab:arch-ctrl} lists its scripts. All of them read the campaign
+checkpoint except \texttt{derive\_kmax.py}, which reads the screen written
+by \texttt{rod\_bank\_worth.py}.
 
 \begin{table}[htbp]
   \centering\footnotesize
-  \caption{Control-rod block. All scripts read the campaign checkpoint
-  except \texttt{derive\_kmax.py}, which reads the screen written by
-  \texttt{rod\_bank\_worth.py}.}
+  \caption{Control-rod block.}
   \label{tab:arch-ctrl}
-  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{5.0cm} X >{\raggedright\arraybackslash}p{4.4cm}@{}}
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{5.0cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{4.4cm}@{}}
     \toprule
     Script & Role & Main output \\
     \midrule
@@ -252,13 +253,15 @@ The optimiser holds the design space, the surrogates, the acquisition step
 and the checkpoint. The driver exposes it as a command line, records the
 provenance of every run in the checkpoint, and refuses to resume a
 checkpoint whose settings differ from the current command.
+Table~\ref{tab:arch-optimiser} lists its scripts. The driver reads the
+target table and, on resume, the checkpoint, and the two analysis scripts
+read the checkpoint.
 
 \begin{table}[htbp]
   \centering\footnotesize
-  \caption{Optimiser block. The driver reads the target table and, on
-  resume, the checkpoint. The two analysis scripts read the checkpoint.}
+  \caption{Optimiser block.}
   \label{tab:arch-optimiser}
-  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{5.0cm} X >{\raggedright\arraybackslash}p{4.4cm}@{}}
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{5.0cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{4.4cm}@{}}
     \toprule
     Script & Role & Main output \\
     \midrule
@@ -282,17 +285,18 @@ scripts share one pattern. They read the campaign checkpoint, select
 designs by index or by front membership, run OpenMC at a fidelity chosen on
 the command line, cache every solve in a \file{runs.json} keyed by design
 and state, and write a summary. The cache makes every script resumable.
+Table~\ref{tab:arch-confirm} lists them.
 
 \begin{table}[htbp]
   \centering\footnotesize
-  \caption{Confirmation block. All scripts read the campaign checkpoint.}
+  \caption{Confirmation block.}
   \label{tab:arch-confirm}
-  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{5.0cm} X >{\raggedright\arraybackslash}p{4.4cm}@{}}
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{5.0cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{4.4cm}@{}}
     \toprule
     Script & Role & Main output \\
     \midrule
-    \file{confirm3d.py} & Three-dimensional confirmation with the hardware
-      stack, several rod states and boron concentrations & \file{summary.json} \\
+    \file{confirm3d.py} & Three-dimensional confirmation with the structural
+      components, several rod states and boron concentrations & \file{summary.json} \\
     \file{boron_worth.py} & Boron worth and share of the beginning-of-life
       hold-down across rod states and concentrations & \file{boron_table.tex} \\
     \file{tier1_coefficients.py} & Reactivity coefficients of a candidate &
@@ -331,7 +335,7 @@ summaries and produces the quantities reported in the results chapters.
   \caption{Post-processing block. Figure generators and log parsers are
   omitted, see Section~\ref{sec:arch-scope}.}
   \label{tab:arch-post}
-  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{5.0cm} X >{\raggedright\arraybackslash}p{4.4cm}@{}}
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{5.0cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{4.4cm}@{}}
     \toprule
     Script & Role & Main output \\
     \midrule
@@ -371,7 +375,7 @@ the code.
   \centering\footnotesize
   \caption{Artefacts exchanged between blocks.}
   \label{tab:arch-interfaces}
-  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{5.1cm} >{\raggedright\arraybackslash}p{2.1cm} >{\raggedright\arraybackslash}p{2.5cm} X@{}}
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{5.1cm} >{\raggedright\arraybackslash}p{2.1cm} >{\raggedright\arraybackslash}p{2.5cm} >{\raggedright\arraybackslash}X@{}}
     \toprule
     Artefact & Producer & Consumer & Content \\
     \midrule

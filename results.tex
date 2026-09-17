@@ -107,7 +107,9 @@ Equation~\eqref{eq:depletion-horizon} with the observed cap of
 3555.9\,EFPD gives $B_\mathrm{hor} = 35.5$\,MWd/kgHM. Of the 72
 evaluations, 39 (54.2\%) terminated exactly at this value, carrying an
 identical, right-censored cycle-length entry
-(Figure~\ref{fig:c1-front}a). Among the censored designs the objective
+(Figure~\ref{fig:c1-front}a, where they are stacked on the implied
+35.5\,MWd/kgHM depletion horizon and the four-design Pareto front is
+marked). Among the censored designs the objective
 is degenerate, so dominance within that majority subset is decided by
 the peaking factor alone. The resolved designs span 610.6 to
 3555.9\,EFPD with peaking factors between 1.136 and 2.207.
@@ -115,12 +117,7 @@ the peaking factor alone. The resolved designs span 610.6 to
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{images/th_c1_front.pdf}
-  \caption{Campaign 1 from the recovered checkpoint. (a) Objective
-  space, with the 39 right-censored evaluations stacked on the implied
-  35.5\,MWd/kgHM depletion horizon and the four-design Pareto front
-  marked. (b) Hypervolume history over the nine recorded
-  active-learning iterations, reference point
-  $(-1787.5,\ 1.785)$.}
+  \caption[Campaign 1 from the recovered checkpoint]{Campaign 1 from the recovered checkpoint. (a)~Objective space. (b)~Hypervolume history over the nine recorded active-learning iterations, reference point $(-1787.5,\ 1.785)$.}
   \label{fig:c1-front}
 \end{figure}
 
@@ -148,11 +145,15 @@ discharge limit of Section~\ref{sec:meth-atf}, enforced inside the
 depletion loop, which converts the arbitrary horizon into a
 design-basis bound and eliminates censoring by construction.
 
-%% AUTHOR: one short paragraph of physics interpretation is expected
-%% here, connecting the reactivity inventory argument above to the
-%% naval mission profile (why multi-thousand EFPD entries are numerical
-%% artefacts of the unconstrained inventory rather than credible
-%% designs).
+The entries at the horizon carry no design meaning. The reported
+refuelling interval of five years corresponds to 913 to 1461
+EFPD at capacity factors between 0.5 and 0.8
+(Section~\ref{sec:res-c8-mission}), so a cycle length of several
+thousand days exceeds the mission by a factor of five to ten. Such a
+design carries at beginning of life a reactivity inventory that the
+controllability screen of Section~\ref{sec:meth-ctrl} later shows to
+be beyond the regulating banks, and the horizon values measure that
+inventory rather than describe a credible core.
 
 Campaign 2 also exposed the estimator pathology
 (Table~\ref{tab:c2-summary}). The stored single-seed peaking values
@@ -171,13 +172,19 @@ and~\ref{sec:meth-stats}.
   \begin{tabular}{lc}
     \toprule
     Uncapped front span, EFPD / $F_{\Delta H}$ & 17.7\% / 5.1\% \\
-    Seed-to-seed s.d.\ of $F_{\Delta H}$ (stored fidelity) & 0.018 \\
+    Seed-to-seed s.d.\ of $F_{\Delta H}$ (stored fidelity) & up to 0.018 \\
     Bias of the stored values vs 256k reference & $-0.07$ \\
     Ranking outcome after resolution & inverted (4th $\to$ 1st) \\
     Corrected 75\,MWd/kgHM front & 2 designs (trade-off restored) \\
     \bottomrule
   \end{tabular}
 \end{table}
+
+The seed-to-seed standard deviation in Table~\ref{tab:c2-summary} comes
+from a replication of the three lowest-peaking front designs at the
+stored fidelity of $4\,000\times60$, with five seeds each. The
+per-design values are 0.018, 0.007 and 0.018, and the pooled value is
+$0.015\pm0.003$.
 
 \subsection{Hypervolume comparability across campaigns}
 \label{sec:res-hv-comparability}
@@ -223,9 +230,9 @@ Three readings of Eq.~\eqref{eq:envelope} organise the design space.
 Volume-weighted enrichment governs: the 72/28 zone split makes
 $e_\mathrm{out}$ dominant by construction. Gadolinium at the fixed
 twelve-pin pattern buys only $\Delta k \approx 0.05$--$0.06$ over its
-full range, which is 2.7\,wt\% of enrichment headroom, against a
-literature practice of 20--40 poisoned
-pins~\cite{rr_smr_atf_2025,ismr_sbf_2024}. And pitch emerges as the
+full range, which is 2.7\,wt\% of enrichment headroom, against layouts
+of up to 40 poisoned pins per assembly studied for soluble-boron-free
+cores~\cite{rr_smr_atf_2025,ismr_sbf_2024}. And pitch emerges as the
 second feasibility lever (logistic coefficient $+1.67$ at $n=72$,
 behind only $e_\mathrm{out}$): over-moderation reaches criticality at
 low enrichment. The envelope figure generated from the archive
@@ -234,12 +241,14 @@ low enrichment. The envelope figure generated from the archive
 \section{Campaign 3: convergence and the resolved front}
 \label{sec:res-c3front}
 
+Figure~\ref{fig:hv} shows the hypervolume of Campaign 3. Block 1 delivers
+the gains, and Block 2 returns three consecutive exact zeros, so the
+stopping rule is met with margin.
+
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.86\linewidth]{images/th_hv_history}
-  \caption{Campaign-3 hypervolume. Block 1 delivers the gains; Block 2
-  returns three consecutive exact zeros, so the stopping rule is met
-  with margin.}
+  \caption{Campaign 3 hypervolume.}
   \label{fig:hv}
 \end{figure}
 
@@ -252,13 +261,15 @@ the constraint boundary of an already-stable front: the signature of
 convergence seen from inside.
 
 High-fidelity resolution ($256\,000\times8$ seeds,
-Fig.~\ref{fig:plateau}) then reshapes the stored front:
+Fig.~\ref{fig:plateau}) then reshapes the stored front
+(Table~\ref{tab:c3-resolved}). The shifts are design-dependent, from
+$-0.003$ to $-0.020$, and the four plateau members are pairwise
+unresolved. The design-dependent bias re-orders the set a second time,
+after Campaign 2.
 
 \begin{table}[htbp]
   \centering
-  \caption{Campaign-3 finalists after resolution. Shifts are
-  design-dependent ($-0.003$ to $-0.020$); the four plateau members are
-  pairwise unresolved.}
+  \caption{Campaign 3 finalists after high-fidelity resolution.}
   \label{tab:c3-resolved}
   \begin{tabular}{lcccc}
     \toprule
@@ -281,10 +292,7 @@ Fig.~\ref{fig:plateau}) then reshapes the stored front:
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.9\linewidth]{images/th_c3_plateau}
-  \caption{Stored versus resolved peaking. The design-dependent bias
-  re-orders the set a second time (after Campaign 2), and four designs
-  collapse into a peaking-equivalent plateau spanning a factor of two in
-  cycle length.}
+  \caption{Stored versus resolved peaking of the Campaign 3 finalists.}
   \label{fig:plateau}
 \end{figure}
 
@@ -309,9 +317,7 @@ reflective assembly cannot see (Table~\ref{tab:core-finalists}).
 
 \begin{table}[htbp]
   \centering
-  \caption{Finalists at core level ($100\,000\times$ up to 230 batches,
-  8 seeds). The capped pair ties and dominates; \emph{no design meets
-  the 2.0 limit}.}
+  \caption{Campaign 3 finalists at core level ($100\,000\times$ up to 230 batches, 8 seeds).}
   \label{tab:core-finalists}
   \begin{tabular}{lcccc}
     \toprule
@@ -337,22 +343,23 @@ peaking constraint, inactive everywhere at assembly level, is now
 $2.013\pm0.018$ against the 2.0 limit.
 
 Rescoring the \emph{entire} feasible archive (36 designs,
-Fig.~\ref{fig:asmcore}) generalises the finding:
+Fig.~\ref{fig:asmcore}) generalises the finding. The proxy is globally
+informative, with $\rho=+0.890$, yet scrambles the ordering exactly where
+the optimiser operates. Table~\ref{tab:proxy-numbers} gives the proxy in
+numbers and the designs it mis-ranked, with rank positions taken among
+the 36 feasible Campaign 3 designs.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.9\linewidth]{images/th_asm_vs_core}
-  \caption{Every feasible Campaign-3 design rescored at core level. The
-  proxy is globally informative ($\rho=+0.890$) but scrambles the
-  ordering exactly where the optimiser operates.}
+  \caption{Every feasible Campaign 3 design rescored at core level.}
   \label{fig:asmcore}
 \end{figure}
 
 \begin{table}[htbp]
   \centering
   \small
-  \caption{The proxy in numbers, and the designs it mis-ranked. Rank
-  positions refer to the 36 feasible Campaign-3 designs.}
+  \caption{The proxy in numbers, and the designs it mis-ranked.}
   \label{tab:proxy-numbers}
   \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.48\textwidth}>{\raggedright\arraybackslash}X@{}}
     \toprule
@@ -383,10 +390,15 @@ The bridge model (Eq.~\ref{eq:bridge}) fitted on all 36 designs,
 \end{equation}
 confirms reflector and pitch as the corrupting variables, and its
 residual quarter is the argument for measuring rather than correcting.
+The fit describes the uniform loading of Campaign~3 only. On the zoned
+core that the evaluator builds from Campaign~6 the ratio is smaller and
+no longer depends on the geometry, as
+Section~\ref{sec:res-proxy-gap-zoned} reports.
+
 Route-B closure on the finalists gives residuals of $-91$ to
 $-429$\,pcm (most negative for thick reflectors), validating the
-cycle-length proxy at the $\sim$2\% level, and the core-scale entropy
-sentinel caught one case converging at batch 94 against a 40-batch
+cycle-length proxy at the $\sim$2\% level, and the Shannon-entropy
+diagnostic of the core solves identified one case converging at batch 94 against a 40-batch
 cutoff, which is the reason the production core solves carry 60 to 120
 inactive batches.
 
@@ -404,14 +416,13 @@ Campaign 4 moves $F_{\Delta H}$ and $g_\mathrm{peak}$ to core level at
 $\approx3\%$ evaluation cost (Eq.~\ref{eq:corecost}) and is complete:
 a 36-point DOE plus three infill iterations of six evaluations each,
 54 designs in total, \textbf{zero feasible}
-(Table~\ref{tab:c4-doe}, Fig.~\ref{fig:c4traj}).
+(Table~\ref{tab:c4-doe}, Fig.~\ref{fig:c4traj}). With an empty feasible set
+the hypervolume is undefined and is reported as zero, so convergence is
+judged on the reduction of the constraint violation.
 
 \begin{table}[htbp]
   \centering
-  \caption{Campaign-4 DOE against Campaign-3's, same limits and design
-  space. With an empty feasible set the hypervolume is undefined
-  (reported 0), so convergence is judged on constraint-violation
-  reduction.}
+  \caption{Campaign 4 design of experiments against that of Campaign 3, with the same limits and design space.}
   \label{tab:c4-doe}
   \begin{tabular}{lcc}
     \toprule
@@ -429,28 +440,22 @@ a 36-point DOE plus three infill iterations of six evaluations each,
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/c4_trajectory}
-  \caption{Campaign 4 on the constraint plane. (a) All 54 designs; the
-  feasible corner is empty. (b) The three-iteration walk along the
-  boundary: iteration 2 is the closest approach ever achieved
-  ($F_{\Delta H}=1.947$ at $k_\mathrm{BOL}$ only $+0.0055$ over);
-  iteration 3 crosses $k_\mathrm{BOL}\leq1.35$ but peaking rises past
-  2.0 in exchange.}
+  \caption[Campaign 4 on the constraint plane]{Campaign 4 on the constraint plane. (a)~All 54 designs. (b)~The three-iteration walk along the boundary.}
   \label{fig:c4traj}
 \end{figure}
 
-\subsection{The infill trajectory: a tangency, not an overlap}
+\subsection{Infill trajectory and the tangency of the feasible region}
 \label{sec:res-c4-trajectory}
 
 The infill ran under constraint-violation ranking throughout, since no
 design was ever feasible. Its trajectory
-(Table~\ref{tab:c4-trajectory}) is the campaign's central measurement.
+(Table~\ref{tab:c4-trajectory}) is the campaign's central measurement. The
+total violation reaches its minimum at iteration 2 and rises again at
+iteration 3, when $k_\mathrm{BOL}\leq1.35$ is finally satisfied.
 
 \begin{table}[htbp]
   \centering
-  \caption{The three infill iterations (six designs each; ranges over
-  the six). The search collapses onto the reactivity boundary and walks
-  along it; total violation reaches a minimum at iteration 2 and rises
-  again when $k_\mathrm{BOL}\leq1.35$ is finally satisfied.}
+  \caption{Campaign 4 infill iterations: ranges over the six designs of each iteration.}
   \label{tab:c4-trajectory}
   \begin{tabular}{ccccc}
     \toprule
@@ -479,16 +484,17 @@ within this five-variable space: each is satisfiable alone, their
 intersection was never reached, and the converged residual gap is
 $\Delta k \approx 0.006$ measured at the point of closest approach.
 
-\subsection{The design space is exhausted at a vertex}
+\subsection{Exhaustion of the design space at a vertex}
 \label{sec:res-c4-vertex}
+
+Figure~\ref{fig:c4parallel} shows the Campaign 4 designs in parallel
+coordinates by phase, with the design of experiments in grey filling the
+box.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.92\linewidth]{images/c4_parallel}
-  \caption{Parallel coordinates by phase. The DOE (grey) fills the box;
-  iterations 2--3 collapse onto single lines with gadolinium at its
-  8\,wt\% bound, pitch at its 1.15\,cm bound, and the reflector at the
-  geometric ceiling. Enrichment is the only variable still moving.}
+  \caption{Campaign 4 design variables in parallel coordinates by phase.}
   \label{fig:c4parallel}
 \end{figure}
 
@@ -517,25 +523,29 @@ biased by an unquantified amount
 \subsection{Variable influence and the champion designs}
 \label{sec:res-c4-champions}
 
+Figure~\ref{fig:c4influence} plots each design variable against the core
+peaking factor over all 54 designs. Volume-weighted enrichment dominates,
+with $r=-0.59$, and $-0.63$ for $e_\mathrm{out}$ alone. Gadolinium is
+peaking-neutral at $r=-0.16$, because it buys reactivity without
+flattening the power, which is why the conflict is structural.
+
+Figure~\ref{fig:c4objectives} shows the objective plane. With 46 of 54
+designs at the 75\,MWd/kgHM cap the trade-off degenerates. The
+unconstrained non-dominated set is a single infeasible capped design, and
+the campaign is effectively a single-objective constrained minimisation
+of core peaking. Table~\ref{tab:c4-champions} lists the champion designs.
+
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/c4_influence}
-  \caption{Each design variable against core $F_{\Delta H}$ over all 54
-  designs. Volume-weighted enrichment dominates
-  ($r=-0.59$; $e_\mathrm{out}$ alone $-0.63$); gadolinium is
-  peaking-neutral ($r=-0.16$), because it buys reactivity and not
-  flatness, which is why the conflict is structural.}
+  \caption{Campaign 4 design variables against core $F_{\Delta H}$, all 54 designs.}
   \label{fig:c4influence}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.9\linewidth]{images/c4_objectives}
-  \caption{The objective plane. With 46 of 54 designs at the
-  75\,MWd/kgHM cap, the trade-off degenerates: the unconstrained
-  non-dominated set is a single (infeasible) capped design, and the
-  campaign is effectively single-objective constrained minimisation of
-  core peaking.}
+  \caption{Campaign 4 objective plane.}
   \label{fig:c4objectives}
 \end{figure}
 
@@ -603,14 +613,14 @@ close the gap, a far smaller departure from the twelve-pin heritage pattern
 than the DOE-based estimate of approximately 23 pins suggested before the
 infill located the true point of closest approach. Campaign 5 was designed
 to test that prediction by admitting the pin count as a search variable
-rather than fixing it.
+rather than fixing it. Table~\ref{tab:c5} lists the changes relative to
+Campaign 4, one of them structural to the search space, and the
+disposition of each at the close of the campaign.
 
 \begin{table}[htbp]
   \centering
   \small
-  \caption[Campaign 5 relative to Campaign 4]{Campaign 5 relative to
-  Campaign 4. One structural change to the search space, and the
-  disposition of each item at the close of the campaign.}
+  \caption[Campaign 5 relative to Campaign 4]{Campaign 5 relative to Campaign 4: changes and their disposition at the close of the campaign.}
   \label{tab:c5}
   \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.24\textwidth}@{}}
     \toprule
@@ -622,7 +632,7 @@ rather than fixing it.
         (Fig.~\ref{fig:c4parallel}). Inventory scales absorber authority
         without the self-shielding penalty and is the primary lever
         reported in the literature at a fixed weight fraction of
-        approximately 8\,wt\%~\cite{rr_smr_atf_2025,apr1400_gd_2020}
+        approximately 8\,wt\%~\cite{rr_smr_atf_2025}
       & Implemented. Minimum total constraint violation fell from 0.0077
         to 0.0012 (Fig.~\ref{fig:c5traj}) \\
     Single-design pin-count test on idx 44
@@ -676,16 +686,16 @@ peaking factor is unchanged across the four counts, remaining between
 penalty, consistent with the variable-influence finding of
 Section~\ref{sec:res-c4-champions}.
 
+In Figure~\ref{fig:c5pins} the assembly eigenvalue, left, crosses the
+screening limit between 12 and 14 rods, and a fit over the four counts
+gives an authority of \SI{535}{pcm} per rod. The core radial peaking
+factor, right, is statistically flat across the four counts. The error
+bars are one standard error of the mean.
+
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.95\linewidth]{images/c5_pin_worth}
-  \caption[Pin-count test on the Campaign 4 champion]{Pin-count test on
-  the Campaign 4 champion, archive index 44, re-evaluated at 12, 14, 16
-  and 20 gadolinia rods. Left, the assembly eigenvalue crosses the
-  screening limit between 12 and 14 rods, at a fitted authority of
-  \SI{535}{pcm} per rod. Right, the core radial peaking factor is
-  statistically flat across the four counts. Error bars are one standard
-  error of the mean.}
+  \caption[Pin-count test on the Campaign 4 champion]{Pin-count test on the Campaign 4 champion, archive index 44, at 12, 14, 16 and 20 gadolinia rods.}
   \label{fig:c5pins}
 \end{figure}
 
@@ -696,9 +706,8 @@ Campaign 5 evaluated 60 designs, a 42-point Latin hypercube design of
 experiments followed by three active-learning iterations of six real
 evaluations each. The two blocks ran on consecutive days and the active
 wall time was \SI{108.4}{\hour}, equal to 6934 core-hours, with the
-complete cost decomposition given in the compute-budget analysis of
-Section~\openpoint{cross-reference the compute chapter section once the
-Campaign 5 update is merged there}.
+complete cost decomposition recorded with the campaign checkpoint
+(Appendix~\ref{app:code-architecture}).
 
 The feasible set was empty at every recorded checkpoint. The hypervolume
 history is identically zero at all four recorded points, the reference
@@ -724,7 +733,10 @@ with the terms
   \item $V$, the total normalised violation, dimensionless.
 \end{itemize}
 
-Figure~\ref{fig:c5traj} shows the resulting search trajectory. The best
+Figure~\ref{fig:c5traj} shows the resulting search trajectory, with the
+running best as a step line. The design of experiments occupies indices
+0 to 41, the three infill iterations follow in blocks of six, and the
+three annotated designs are the champions discussed below. The best
 design of experiments point reaches $V = 0.0264$ at archive index 17.
 The first iteration does not improve on it, closing at $V = 0.0321$. The
 second iteration reaches $V = 0.0074$ at index 49 and the third reaches
@@ -735,11 +747,7 @@ closest approach by a factor of six.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.95\linewidth]{images/c5_search_trajectory}
-  \caption[Campaign 5 search trajectory]{Campaign 5 search trajectory.
-  Total normalised constraint violation per evaluation, with the running
-  best as a step line. The design of experiments occupies indices 0 to
-  41 and the three infill iterations follow in blocks of six. The three
-  annotated designs are the champions discussed in the text.}
+  \caption[Campaign 5 search trajectory]{Campaign 5 search trajectory: total normalised constraint violation per evaluation.}
   \label{fig:c5traj}
 \end{figure}
 
@@ -748,7 +756,7 @@ All eighteen infill designs sit at the pitch lower bound of
 behaviour documented for Campaign 4 in
 Section~\ref{sec:res-c4-vertex}. Within that plane the three iterations
 occupy three distinct regions of the design space
-(Fig.~\ref{fig:c5lobes}):
+(Fig.~\ref{fig:c5lobes}, design of experiments points in grey):
 
 \begin{enumerate}
   \item iteration 1 proposes 40 rods with gadolinia weight fractions of
@@ -779,11 +787,7 @@ extra moderator in the guide-tube ring.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.95\linewidth]{images/c5_lobes}
-  \caption[The two lobes of the Campaign 5 infill]{The two lobes of the
-  Campaign 5 infill. Left, gadolinia weight fraction against rod count.
-  Right, inner enrichment against reflector thickness, where the three
-  iterations resolve into three clusters. Design of experiments points
-  in grey.}
+  \caption[The two lobes of the Campaign 5 infill]{The two lobes of the Campaign 5 infill. Left, gadolinia weight fraction against rod count. Right, inner enrichment against reflector thickness.}
   \label{fig:c5lobes}
 \end{figure}
 
@@ -833,23 +837,24 @@ which identifies the chunk-locked period-two oscillation observed in the
 recorded histories with the xenon signature of the defect rather than
 with a property of the predictor integrator.
 
+Figure~\ref{fig:c5objcorr} places the sixty Campaign 5 evaluations in the
+corrected objective plane. Circles are designs that crossed their
+reactivity target, plotted at the corrected end of cycle. Triangles are
+designs censored at the burnup ceiling, plotted at the corrected ceiling
+as lower bounds, and the three never-critical designs have no cycle and
+are omitted. The collapse onto the ceiling line is the censoring
+distortion of Section~\ref{sec:res-c2}, reproduced at the corrected
+ceiling.
+
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.95\linewidth]{images/c5_objectives_corrected}
-  \caption[Campaign 5 in the corrected objective plane]{The sixty
-  Campaign 5 evaluations in the corrected objective plane. Circles are
-  designs that crossed their reactivity target, plotted at the corrected
-  end of cycle. Triangles are designs censored at the burnup ceiling,
-  plotted at the corrected ceiling value of \num{4307} Effective Full
-  Power Days as lower bounds. The three never-critical designs have no
-  cycle and are omitted. Thirty-nine designs collapse onto the ceiling
-  line, which is the censoring distortion of
-  Section~\ref{sec:res-c2} reproduced at the corrected ceiling.}
+  \caption[Campaign 5 in the corrected objective plane]{Campaign 5 evaluations in the corrected objective plane.}
   \label{fig:c5objcorr}
 \end{figure}
 
-Figure~\ref{fig:c5objcorr} shows the corrected objective plane. Two
-features carry the conclusions of the campaign.
+Two features of Figure~\ref{fig:c5objcorr} carry the conclusions of the
+campaign.
 
 The first is that the ceiling truncates the front. Thirty-nine designs,
 including the champion, collapse onto a single cycle-length value, so no
@@ -862,7 +867,9 @@ lesson of Campaign 2 therefore applies to Campaign 5 in full, through no
 choice made in the campaign design.
 
 The second is the identity of the interesting designs, summarised in
-Table~\ref{tab:c5-champions}. The corrected non-dominated set consists
+Table~\ref{tab:c5-champions}, where feasibility is quoted on both
+reactivity bases at the common limit of 1.35. The corrected
+non-dominated set consists
 of a single design, archive index 17, which pairs the lowest peaking
 factor of the entire campaign, $F_{\Delta H} = 1.9534$, with a censored
 cycle length of at least \num{4307} Effective Full Power Days. It is a
@@ -880,10 +887,7 @@ statistically indistinguishable from the limit.
 \begin{table}[htbp]
   \centering
   \small
-  \caption[The three notable designs of Campaign 5]{The three notable
-  designs of Campaign 5 under the corrected objectives. Bold marks a
-  value at a design-space bound. Feasibility is quoted on both
-  reactivity bases at the common limit of 1.35.}
+  \caption[The three notable designs of Campaign 5]{The three notable designs of Campaign 5 under the corrected objectives. Bold marks a value at a design-space bound.}
   \label{tab:c5-champions}
   \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}*{3}{>{\centering\arraybackslash}X}@{}}
     \toprule
@@ -960,15 +964,16 @@ to the remaining assembly-level constraint. Because both readings exist
 in the archives, the question of what the core basis would have changed
 is answered by re-scoring, without a single new transport solve.
 
+Figure~\ref{fig:c5kbasis} places every Campaign 4 and Campaign 5
+evaluation on the two bases. The points fall in a narrow band displaced
+from the identity line by the assembly-to-core gap, and the shaded region
+holds the designs that the assembly screen rejects and the core screen
+admits at the common limit of 1.35.
+
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.82\linewidth]{images/c5_kbasis}
-  \caption[The two reactivity bases across Campaigns 4 and 5]{Every
-  Campaign 4 and Campaign 5 evaluation on the two reactivity bases. The
-  points fall in a narrow band displaced from the identity line by the
-  assembly-to-core gap. The shaded region holds the designs the assembly
-  screen rejects and the core screen admits at the common limit of
-  1.35.}
+  \caption[The two reactivity bases across Campaigns 4 and 5]{Campaign 4 and Campaign 5 evaluations on the assembly and core reactivity bases.}
   \label{fig:c5kbasis}
 \end{figure}
 
@@ -976,15 +981,13 @@ The assembly-to-core gap is large and systematic. Across the Campaign 5
 archive it spans \SIrange{4299}{8057}{pcm} with a mean of \SI{6563}{pcm},
 and across Campaign 4 it spans \SIrange{5015}{7533}{pcm} with a mean of
 \SI{6753}{pcm}. Table~\ref{tab:c5-sweep} sweeps the limit from 1.20 to
-1.45 on both bases.
+1.45 on both bases, with all other constraints held at their campaign
+values.
 
 \begin{table}[htbp]
   \centering
   \small
-  \caption[Feasible designs under both reactivity bases]{Number of
-  designs satisfying all five screening constraints, as a function of
-  the reactivity limit applied on each basis. All other constraints are
-  held at their campaign values.}
+  \caption[Feasible designs under both reactivity bases]{Number of designs satisfying all five screening constraints against the reactivity limit on each basis.}
   \label{tab:c5-sweep}
   \begin{tabular}{c cc cc}
     \toprule
@@ -1061,13 +1064,13 @@ The regulating banks alone hold down considerably less, and from
 Campaign 7 the ceiling is replaced as the working constraint by the
 measured controllability screen of Section~\ref{sec:meth-ctrl}.
 
-\openpoint{The remaining $\sim$0.4--0.5 of peaking between this
-single-batch uniform core and licensed practice ($F_{\Delta H}$
-limits of 1.50--1.65~\cite{robinson_gd10,nuscale_htp2_2017}) is the
-domain of multi-batch loading patterns, zoned absorber placement and rod
-programmes~\cite{kropaczek_turinsky_1991,aga_firstcore_2021,chasnupp_lpo_2013},
-outside this design space by construction, and the natural
-continuation of the work.}
+The remaining gap in peaking between this single-batch uniform core and
+licensed practice, where a Technical Specification limit of 1.65 on
+$F_{\Delta H}$ applies~\cite{robinson_gd10}, is the domain of
+multi-batch loading patterns, zoned absorber placement and rod
+programmes~\cite{kropaczek_turinsky_1991,aga_firstcore_2021,chasnupp_lpo_2013}.
+Those are outside this design space by construction and are the
+natural continuation of the work (Section~\ref{sec:concl-future}).
 
 \subsection{High-fidelity confirmation of the Campaign 5 champion}
 \label{sec:c5_confirmation}
@@ -1088,7 +1091,7 @@ assembly eigenvalue was re-solved with four independent seeds. No depletion
 was repeated, because the peaking factor is a beginning-of-life quantity and
 the cycle length of this design is set by the burnup ceiling rather than by
 the reactivity target. The peaking estimator, the mesh definition and the
-Shannon-entropy convergence sentinel were taken unchanged from the campaign
+Shannon-entropy source-convergence diagnostic were taken unchanged from the campaign
 evaluator, so the confirmed quantity is identical in definition to the
 optimisation objective.
 
@@ -1117,14 +1120,12 @@ with the terms
 
 The design was declared feasible on a constraint only when the entire
 confidence interval clears the limit, which is the conservative test.
+Table~\ref{tab:c5_confirmation} gives the result for the champion. The
+peaking constraint cannot be separated from its limit.
 
 \begin{table}[htbp]
   \centering
-  \caption[Campaign 5 champion confirmed at raised fidelity]{Campaign 5
-           champion, archive index 54, confirmed at raised
-           fidelity. The reactivity constraint clears its limit by twenty
-           standard errors. The peaking constraint cannot be separated from
-           its limit.}
+  \caption[Campaign 5 champion confirmed at raised fidelity]{Campaign 5 champion, archive index 54, confirmed at raised fidelity.}
   \label{tab:c5_confirmation}
   \begin{tabular}{lrrrrl}
     \toprule
@@ -1193,7 +1194,7 @@ zoned-loading study as the natural continuation of the work.
 \subsection{A defect in the restarted depletion}
 \label{sec:restart_defect}
 
-\subsubsection{Why the depletion is performed in separate blocks}
+\subsubsection{Depletion in separate blocks}
 
 The depletion solver requires the complete list of burnup steps before the
 calculation starts. A single call of the form "burn six steps of
@@ -1259,7 +1260,7 @@ it how fast the fuel is changing. A restart requires both, because the first
 step after a restart is advanced using the reaction rates carried over from
 the end of the previous block.
 
-\subsubsection{What failed}
+\subsubsection{Origin of the restart defect}
 
 Version 0.15.3 of the depletion solver introduced an option controlling
 whether reaction rates are written to the results file, and set its default
@@ -1299,18 +1300,16 @@ process.
 
 The lower branch consists of the second point of every block. These points
 are physically correct. Their burnup labels, however, have advanced twice as
-fast as the fuel.
+fast as the fuel. Figure~\ref{fig:restart_defect}(b) plots the same
+measured reactivities against the burnup the fuel actually reached,
+together with an independent control calculation performed as a single
+uninterrupted block, and the corrected trajectory agrees with the control
+calculation.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{images/fig_restart_defect.pdf}
-  \caption{Depletion history of archive index 7. Panel (a) shows the history
-           as recorded, in which the first point of every restarted block
-           did not burn and rises by the xenon worth. Panel (b) shows the
-           same measured reactivities plotted against the burnup the fuel
-           actually reached, together with an independent control
-           calculation performed as a single uninterrupted block. The
-           corrected trajectory and the control calculation agree.}
+  \caption[Depletion history of archive index 7]{Depletion history of archive index 7. (a)~As recorded. (b)~Against the burnup actually reached, with the control calculation.}
   \label{fig:restart_defect}
 \end{figure}
 
@@ -1329,13 +1328,12 @@ block structure:
 
 Because the model and the seed are shared, the two arms compute the same
 quantity at every point and must agree to within the statistical scatter of
-the transport solution.
+the transport solution. Table~\ref{tab:restart_experiment} compares the
+two arms.
 
 \begin{table}[htbp]
   \centering
-  \caption{Reactivity of archive index 7 computed with and without block
-           restarts. The two arms agree until the first restart and diverge
-           monotonically thereafter.}
+  \caption{Reactivity of archive index 7 computed with and without block restarts.}
   \label{tab:restart_experiment}
   \begin{tabular}{rrrrl}
     \toprule
@@ -1503,15 +1501,14 @@ function. The campaign comprises \num{114} evaluations in five blocks.
 The design of experiments is followed by four infill blocks, and each
 infill block changes exactly one element of the acquisition of
 Section~\ref{sec:meth-acq}, so every behavioural change is
-attributable.
+attributable. Table~\ref{tab:c6-blocks} gives the block structure, with
+the hypervolume taken as the archive value against the frozen reference
+point after the last iteration of each block.
 
 \begin{table}[htbp]
   \centering
   \small
-  \caption{Campaign 6 block structure. Each infill block changes one
-  element of the acquisition. The hypervolume is the archive value
-  against the frozen reference point after the last iteration of the
-  block.}
+  \caption{Campaign 6 block structure.}
   \label{tab:c6-blocks}
   \begin{tabularx}{\textwidth}{@{}lcc>{\raggedright\arraybackslash}Xc@{}}
     \toprule
@@ -1578,12 +1575,13 @@ Equation~\eqref{eq:acq-score} for three iterations of six evaluations.
 The batches collapsed. Within each iteration the six selected designs
 are near copies of one design, and the eighteen evaluations bought
 three distinct design points. The second iteration is representative.
+Table~\ref{tab:c6-b2-collapse} lists its six designs. The inner
+enrichment spans 0.03~wt\%, the pitch is identical to three decimals in
+five of the six, and the reflector spans \SI{0.1}{\centi\metre}.
 
 \begin{table}[htbp]
   \centering
-  \caption{The six infill designs of block 2, iteration 2. The inner
-  enrichment spans 0.03~wt\%, the pitch is identical to three decimals
-  in five of six, and the reflector spans \SI{0.1}{\centi\metre}.}
+  \caption{Campaign 6, block 2, iteration 2: the six infill designs.}
   \label{tab:c6-b2-collapse}
   \begin{tabular}{cccccc}
     \toprule
@@ -1627,12 +1625,12 @@ distinct, the pitch spans its full box and the reflector spans
 
 With the collapse removed, the next defect became visible. Five of the
 six designs returned infeasible on the reactivity ceiling.
+Table~\ref{tab:c6-b3-fail} lists the outcomes, with the margin taken as
+the excess of $k_\mathrm{eff}^\mathrm{core}$ over the ceiling of 1.35.
 
 \begin{table}[htbp]
   \centering
-  \caption{Block 3 infill outcomes. All six designs carry zero
-  gadolinia. The margin column is the excess of
-  $k_\mathrm{eff}^\mathrm{core}$ over the ceiling of 1.35.}
+  \caption{Campaign 6, block 3: infill outcomes.}
   \label{tab:c6-b3-fail}
   \begin{tabular}{ccccc}
     \toprule
@@ -1730,50 +1728,51 @@ stated explicitly on the command line from Campaign 8, and a flat
 hypervolume is read as a stopping signal only when the acquisition is
 known to be functioning.
 
+Figure~\ref{fig:c6-convergence} shows the archive hypervolume after every
+evaluation, under the frozen in-campaign reference in the top panel and
+under a full-range reference in the bottom panel, with the five blocks
+shaded. The frozen metric is flat through blocks 2 and 3 while the
+full-range metric shows their genuine short-cycle contribution, and the
+first improvement visible to the frozen metric coincides exactly with the
+feasibility margin of block 4.
+
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/c6_extra_convergence}
-  \caption{Campaign 6 convergence. Archive hypervolume after every
-  evaluation, under the frozen in-campaign reference (top) and under a
-  full-range reference (bottom), with the five blocks shaded. The
-  frozen metric is flat through blocks 2 and 3 while the full-range
-  metric shows their genuine short-cycle contribution, and the first
-  improvement visible to the frozen metric coincides exactly with the
-  feasibility margin of block 4.}
+  \caption{Campaign 6 convergence: archive hypervolume under the frozen and the full-range reference points.}
   \label{fig:c6-convergence}
 \end{figure}
 
 \subsection{The resolved front}
 \label{sec:res-c6-front}
 
+Figure~\ref{fig:c6-front} shows the objective space after \num{114}
+evaluations. Feasible designs are coloured by block, infeasible designs
+are crosses in the colour of their block, and the step line is the
+Pareto front of the feasible set. The frozen hypervolume reference point
+and the licensing-style screens at 1.65 and 1.50 are drawn for context.
+
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/c6_pareto_front_114}
-  \caption{Campaign 6 objective space after \num{114} evaluations.
-  Feasible designs are coloured by block, infeasible designs are
-  crosses in the colour of their block, and the Pareto front of the
-  feasible set is the step line. The frozen hypervolume reference
-  point and the licensing-style screens at 1.65 and 1.50 are drawn
-  for context.}
+  \caption{Campaign 6 objective space after \num{114} evaluations.}
   \label{fig:c6-front}
 \end{figure}
 
 The final front holds fifteen designs and spans the full trade, from
 \num{1054} effective full power days at $F_{\Delta H} = 1.4041$ to
-\num{9981} at 1.6547 (Table~\ref{tab:c6-front}).
+\num{9981} at 1.6547 (Table~\ref{tab:c6-front}). In the table the
+peaking factor is the zoned-core beginning-of-life value, the eigenvalue
+is on the core basis and the burnup is the end-of-cycle value. The pin
+count is omitted because every front design carries 40
+gadolinium-bearing pins, and the cycle lengths are two-dimensional
+exploration-tier values in the sense of Sections~\ref{sec:meth-fidelity}
+and~\ref{sec:meth-lax}.
 
 \begin{table}[htbp]
   \centering
   \small
-  \caption{The Campaign 6 Pareto front. Peaking is the zoned-core
-  beginning-of-life value, the eigenvalue is on the core basis, and
-  the burnup is the end-of-cycle value. Every front design carries 40
-  gadolinium-bearing pins, so the pin count is omitted from the
-  columns. Cycle lengths are two-dimensional exploration-tier values
-  in the sense of Sections~\ref{sec:meth-fidelity}
-  and~\ref{sec:meth-lax}, and the four designs at a pitch below
-  \SI{1.2242}{cm} carry the guide-tube caveat of
-  Section~\ref{sec:res-c7-limits}.}
+  \caption{The Campaign 6 Pareto front.}
   \label{tab:c6-front}
   \begin{tabular}{cccccccccc}
     \toprule
@@ -1828,13 +1827,15 @@ eigenvalue carry an unquantified bias. The long-cycle champions 81, 94,
 unaffected. Campaign 8 removes the defect prospectively by fixing the
 pitch at \SI{1.26}{cm}.
 
+Figure~\ref{fig:c6-parallel} shows the fifteen front designs across the
+six design variables, each variable normalised to its own search box and
+each line coloured by cycle length, over the 88 feasible designs in
+grey.
+
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/c6_vars_parallel}
-  \caption{The fifteen Pareto-front designs across the six design
-  variables, each variable normalised to its own search box and each
-  line coloured by cycle length, over the 88 feasible designs in
-  grey.}
+  \caption{The fifteen Campaign 6 Pareto-front designs in parallel coordinates.}
   \label{fig:c6-parallel}
 \end{figure}
 
@@ -1851,10 +1852,22 @@ pins reaching \num{9625} effective full power days, and it is
 dominated by the dilute champion by \num{50} days and 0.006 in
 peaking.
 
-%% AUTHOR: two or three sentences of physical interpretation of the
-%% dilute-many versus concentrated-few absorber result, in terms of
-%% self-shielding in the gadolinium pins and residual absorber
-%% penalty at end of cycle.
+The preference for many dilute pins follows from the self-shielding
+of the absorber. A poisoned pellet is optically black to thermal
+neutrons, so absorption proceeds from its surface inward and the rate
+at which the poison burns out is set by the surface exposed rather
+than by the mass loaded (Section~\ref{sec:bg-gd}). Forty pins at low
+concentration expose more surface than sixteen at high concentration,
+so they burn out early and little absorber survives to the end of
+cycle, whereas concentrated pins burn out late and carry a larger
+residual penalty. The mechanism is self-shielding: the gadolinium atoms
+in the outer layer of a pellet transmute faster than those
+inside~\cite{gd_enriched_2021}. The early burnout has a cost
+that this campaign did not score: it releases the hold-down before the
+fuel has depleted and produces the reactivity hump analysed in
+Section~\ref{sec:res-c9-gd}. Concentrated pins also depress their
+own power more deeply, which loads their neighbours and raises the
+peaking, in the direction that the 0.006 difference records.
 
 The parallel-coordinates view also shows the vessel-fit coupling
 directly. The long-cycle designs pair narrow pitch with a thick
@@ -1864,14 +1877,17 @@ axes, which is Equation~\eqref{eq:renv} acting as the budget it is.
 \subsection{Variable influence and constraint activity}
 \label{sec:res-c6-influence}
 
+Figure~\ref{fig:c6-influence} shows the influence of each design variable
+on the cycle length over the archive, coloured by the zoned-core peaking
+factor and with the Pareto-front designs ringed. Each panel reports the
+Spearman rank correlation of the variable with both objectives over the
+feasible designs, and Table~\ref{tab:c6-spearman} collects the same
+correlations.
+
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/c6_vars_influence}
-  \caption{Influence of each design variable on the cycle length over
-  the Campaign 6 archive, coloured by the zoned-core peaking factor,
-  with Pareto-front designs ringed. Each panel reports the Spearman
-  rank correlation of the variable with both objectives over the
-  feasible designs.}
+  \caption{Influence of each design variable on the cycle length over the Campaign 6 archive.}
   \label{fig:c6-influence}
 \end{figure}
 
@@ -1907,25 +1923,26 @@ reflector barely move the cycle length while both act on the peaking,
 which matches their role as radial-budget variables under the
 vessel-fit coupling rather than as reactivity variables.
 
-The reflector keeps that role in the final campaign. With the pitch
+The reflector keeps that role in Campaign 8. With the pitch
 fixed and the reflector capped at \SI{5.66}{cm}, the leakage-corrected
 reactivity target moves by only about \SI{200}{pcm} over the whole
 reflector range (Section~\ref{sec:meth-lax}), so in Campaign 8 the
 reflector thickness acts on the radial power shape alone.
 
+Figure~\ref{fig:c6-constraints} shows the reactivity constraint activity
+across the archive.
+
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.92\linewidth]{images/c6_extra_constraints}
-  \caption{Reactivity constraint activity across the Campaign 6
-  archive. The nine long-cycle front designs sit between 1.272 and
-  1.346 against the ceiling of 1.35, and the floor of 1.02 rejects ten
-  genuinely subcritical or barely critical cores.}
+  \caption{Reactivity constraint activity across the Campaign 6 archive.}
   \label{fig:c6-constraints}
 \end{figure}
 
 The constraint activity closes the argument. Of the 26 rejections,
-nine exceed the reactivity ceiling, ten fall below the floor and seven
-fail the peaking limit alone. The long-cycle end of the front rides
+nine exceed the reactivity ceiling, ten fall below the floor of 1.02 as
+genuinely subcritical or barely critical cores, and seven fail the
+peaking limit alone. The long-cycle end of the front rides
 the ceiling, with the nine designs beyond \num{7000} effective full
 power days holding $k_\mathrm{eff}^\mathrm{core}$ between 1.272 and
 1.346. The upper reactivity bound, not the peaking limit and not the
@@ -1944,7 +1961,8 @@ The screen is consequential. Of the 88 feasible designs, 51 satisfy
 it, and the nine long-cycle front designs beyond \num{7677} effective
 full power days all exceed it, at end-of-cycle burnups between 75.9
 and \SI{99.6}{\mega\watt\day\per\kilo\gram}. The screened front
-therefore differs from the unscreened one at the long-cycle end.
+therefore differs from the unscreened one at the long-cycle end, as
+Table~\ref{tab:c6-front-screened} shows.
 
 \begin{table}[htbp]
   \centering
@@ -2030,12 +2048,6 @@ all regulating banks inserted in two and in three dimensions
 is therefore a consequence of the control screen and not of the
 low-enriched-uranium limit.
 
-\openpoint{Merge the LABGENE primary-source bibliography file into
-\texttt{references\_additions.bib}, replacing the placeholder entries
-\texttt{fapesp\_labgene} and \texttt{dados\_abertos\_2026}, and
-cite the enrichment and refuelling sources in
-Section~\ref{sec:res-c8-mission}.}
-
 Five caveats bound the claims of this section.
 
 \begin{enumerate}
@@ -2076,7 +2088,7 @@ Five caveats bound the claims of this section.
         by side. Reporting a single hypervolume number against a
         single reference is, on this evidence, not a sufficient
         convergence statement for a front whose extent is unknown in
-        advance~\cite{zitzler_thiele_1999}.
+        advance~\cite{zitzler_2003_performance}.
 \end{enumerate}
 
 What carries forward from this campaign is its architecture rather
@@ -2149,14 +2161,15 @@ The campaign ran a design of experiments of 42 followed by three infill
 blocks of six. Table~\ref{tab:c7-blocks} records the outcome of each
 block and Figure~\ref{fig:c7-diversity} its diversity, measured as the
 spread of each design variable within the block as a fraction of the
-range spanned by the whole archive.
+range spanned by the whole archive. In the table the hypervolume is the
+frozen-reference value written at each block boundary, and the spread is
+listed for the four non-geometric variables. Infill blocks 1 and 3 vary
+only the pitch and the reflector thickness, and neither returned a
+feasible design.
 
 \begin{table}[htbp]
   \centering
-  \caption{Campaign 7 blocks. The hypervolume is the frozen-reference
-  value written at each block boundary. Spread is the within-block
-  range of each variable as a fraction of the archive range, listed
-  for the four non-geometric variables.}
+  \caption{Campaign 7 blocks.}
   \label{tab:c7-blocks}
   \begin{tabular}{lccll}
     \toprule
@@ -2173,9 +2186,7 @@ range spanned by the whole archive.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/c7_infill_diversity}
-  \caption{Within-block spread of each design variable, as a fraction
-  of the archive range. Infill blocks 1 and 3 vary only the pitch and
-  the reflector thickness, and neither returned a feasible design.}
+  \caption{Within-block spread of each design variable in Campaign 7, as a fraction of the archive range.}
   \label{fig:c7-diversity}
 \end{figure}
 
@@ -2208,17 +2219,17 @@ measurements rather than in the front itself.
 
 Of the 60 designs, 16 are feasible against all six constraints, a
 fraction of \SI{26.7}{\%} against \SI{67}{\%} in the Campaign 6 design
-of experiments. Table~\ref{tab:c7-nesting} gives the constraint census.
+of experiments. Table~\ref{tab:c7-nesting} gives the constraint census,
+and Figure~\ref{fig:c7-screens} shows the two reactivity screens in the
+plane of the unrodded and the rodded core eigenvalues, with the fourteen
+designs rejected only by the derived ceiling marked by open circles.
 No design fails the enrichment or the geometric constraint, two fail
 the peaking limit, nine fall below the reactivity floor, 34 exceed the
 ceiling and 20 fail the controllability screen.
 
 \begin{table}[htbp]
   \centering
-  \caption{Constraint census of Campaign 7 and the joint activity of
-  the two reactivity screens. Every design that fails the
-  controllability screen also fails the derived ceiling, and fourteen
-  designs fail the ceiling while passing the controllability screen.}
+  \caption{Constraint census of Campaign 7 and the joint activity of the two reactivity screens.}
   \label{tab:c7-nesting}
   \begin{tabular}{lc}
     \toprule
@@ -2237,10 +2248,7 @@ ceiling and 20 fail the controllability screen.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.9\linewidth]{images/c7_ctrl_screen}
-  \caption{The two reactivity screens of Campaign 7 in the plane of
-  the unrodded and the all-regulating-banks-in core eigenvalues. The
-  derived ceiling at 1.126 rejects fourteen designs, marked by open
-  circles, that the directly measured control screen accepts.}
+  \caption{The two reactivity screens of Campaign 7 in the plane of the unrodded and the all-regulating-banks-in core eigenvalues.}
   \label{fig:c7-screens}
 \end{figure}
 
@@ -2272,14 +2280,18 @@ rises from 996.5 to 1054.1, a gain of \SI{5.8}{\%}. Three of the six
 designs come from infill block 3, the block that under the ceiling
 contributed nothing. Table~\ref{tab:c7-front} lists both fronts and
 Figure~\ref{fig:c7-pareto} places them in the objective plane.
+Designs 48, 53 and 49 form the front as run, and all six form it when the
+measured control screen alone governs reactivity. The bank worth in the
+table is the difference between the unrodded and the all-banks-in
+eigenvalues. In the figure filled markers are feasible as run and open
+circles are controllable designs rejected only by the derived ceiling.
+The solid front is the one the campaign reported, and the dashed front is
+the one the measured control screen supports.
 
 \begin{table}[htbp]
   \centering
   \small
-  \caption{The Campaign 7 front under the two screening rules. Designs
-  48, 53 and 49 form the front as run. All six form the front when the
-  measured control screen alone governs reactivity. Bank worth is the
-  difference between the unrodded and the all-banks-in eigenvalues.}
+  \caption{The Campaign 7 front under the two screening rules.}
   \label{tab:c7-front}
   \begin{tabular}{ccccccccccc}
     \toprule
@@ -2299,11 +2311,7 @@ Figure~\ref{fig:c7-pareto} places them in the objective plane.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/c7_pareto_60}
-  \caption{Campaign 7 objective space with all rods out. Filled markers
-  are feasible as run, open circles are controllable designs rejected
-  only by the derived ceiling. The solid front is the one the campaign
-  reported and the dashed front is the one the measured control screen
-  supports.}
+  \caption{Campaign 7 objective space with all rods out.}
   \label{fig:c7-pareto}
 \end{figure}
 
@@ -2345,25 +2353,22 @@ solves of every evaluation.
 
 Across the archive the worth ranges from \num{10936} to
 \SI{22699}{pcm} with a median of \SI{16510}{pcm}. Figure~\ref{fig:c7-worth}
-shows its two strongest drivers and Figure~\ref{fig:c7-influence} the
-rank correlations of all six variables with the objectives, the worth
-and the rodded peaking.
+shows its two strongest drivers, with least-squares trends drawn as
+visual guides only, and Figure~\ref{fig:c7-influence} the rank
+correlations of all six variables with the objectives, the worth and the
+rodded peaking, over the whole archive and over the feasible subset.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/c7_rod_worth}
-  \caption{Worth of the sixteen regulating banks against the
-  gadolinium pin count and the pin pitch. The dashed lines are
-  least-squares trends and serve only as visual guides.}
+  \caption{Worth of the sixteen regulating banks against the gadolinium pin count and the pin pitch.}
   \label{fig:c7-worth}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/c7_vars_influence}
-  \caption{Spearman rank correlation of each design variable with the
-  two objectives, the regulating-bank worth and the peaking with the
-  banks inserted, over the whole archive and over the feasible subset.}
+  \caption{Campaign 7: Spearman rank correlation of each design variable with the objectives, the regulating-bank worth and the rodded peaking.}
   \label{fig:c7-influence}
 \end{figure}
 
@@ -2397,15 +2402,13 @@ state.
 The peaking objective is evaluated with all rods out. The same core
 solve that measures $k_\mathrm{RE}$ also yields the radial peaking
 with the sixteen banks inserted, and Figure~\ref{fig:c7-rodded} plots
-the two against each other.
+the two against each other. Every design lies above the screening bound
+of 2.0 in the rodded configuration.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.85\linewidth]{images/c7_rodded_peaking}
-  \caption{Radial peaking with all rods out, the optimised objective,
-  against the same quantity with the sixteen regulating banks inserted.
-  Every design lies above the screening bound of 2.0 in the rodded
-  configuration.}
+  \caption{Campaign 7 radial peaking with all rods out against the same quantity with the sixteen regulating banks inserted.}
   \label{fig:c7-rodded}
 \end{figure}
 
@@ -2436,17 +2439,16 @@ Campaign 8.
 The assembly depletion solves are the only transport runs whose output
 reaches the campaign log, and the log therefore holds the complete
 $k_\infty(B)$ history of every design. Figure~\ref{fig:c7-histories}
-reconstructs all 60 histories with the end-of-cycle crossing marked.
+reconstructs all 60 histories with the end-of-cycle crossing of the
+leakage-corrected target marked in red, feasible designs on the left.
+The gadolinium burnout maximum is visible between \num{7.5} and
+\SI{17.5}{MWd/kgHM}, and no design approaches the \SI{75}{MWd/kgHM}
+screen.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/c7_kinf_histories}
-  \caption{Assembly infinite multiplication factor against burnup for
-  every Campaign 7 design, feasible designs on the left. Red markers
-  are the end-of-cycle crossings of the leakage-corrected target. The
-  gadolinium burnout maximum is visible between \num{7.5} and
-  \SI{17.5}{MWd/kgHM}, and no design approaches the \SI{75}{MWd/kgHM}
-  screen.}
+  \caption{Assembly infinite multiplication factor against burnup for every Campaign 7 design.}
   \label{fig:c7-histories}
 \end{figure}
 
@@ -2513,12 +2515,15 @@ The cycle length follows from the specific power.
         \SI{9.98}{W/gHM}.
 \end{itemize}
 
+Figure~\ref{fig:c7-uncertainty} plots the propagated error against the
+cycle length and against the reactivity slope at end of cycle. The error
+is set by the slope at end of cycle, and the length of the cycle does
+not govern it.
+
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/c7_cycle_uncertainty}
-  \caption{Propagated Monte Carlo error on the cycle length against the
-  cycle length and against the reactivity slope at end of cycle. The
-  error is set by the slope, not by the length of the cycle.}
+  \caption{Propagated Monte Carlo error on the Campaign 7 cycle length.}
   \label{fig:c7-uncertainty}
 \end{figure}
 
@@ -2611,13 +2616,14 @@ fifteen designs with the largest humps.
 
 \begin{table}[htbp]
   \centering
-  \small
-  \setlength{\tabcolsep}{4.0pt}
+  \footnotesize
+  \setlength{\tabcolsep}{3.5pt}
   \caption[Reactivity hump of the Campaign 7 designs]{Gadolinium hump and burnup reactivity swing of the Campaign 7 designs, recovered from the run log.}
   \label{tab:c7-hump}
   \begin{tabular}{@{}r r r r r r r r@{}}
     \toprule
-    ID & $e_\mathrm{in}/e_\mathrm{out}$ [wt\%] & Gd [wt\%] & $k_\mathrm{BOL}$ & $k_\mathrm{peak}$ & $B_\mathrm{peak}$ [MWd/kgHM] & hump [pcm] & $\Delta\rho_\mathrm{peak\to EOC}$ [pcm] \\
+    ID & $e_\mathrm{in}/e_\mathrm{out}$ & Gd & $k_\mathrm{BOL}$ & $k_\mathrm{peak}$ & $B_\mathrm{peak}$ & hump & $\Delta\rho_\mathrm{peak\to EOC}$ \\
+    {[--]} & [wt\%] & [wt\%] & [--] & [--] & [MWd/kgHM] & [pcm] & [pcm] \\
     \midrule
     34 & 4.48/3.14 & 6.59 & 0.8681 & 0.9870 & 17.5 & +13874 & -7158 \\
     4 & 5.38/3.89 & 5.72 & 0.9423 & 1.0228 & 17.5 & +8352 & -3663 \\
@@ -2702,7 +2708,7 @@ elsewhere in this chapter.
         quantities are read from the archive.
 \end{enumerate}
 
-\subsection{Limitations and what carries forward}
+\subsection{Limitations and the settings carried forward}
 \label{sec:res-c7-limits}
 
 Four limitations bound the claims of this section.
@@ -2759,8 +2765,8 @@ states the campaign built on those decisions.
 \section{Campaign 8: the candidate campaign}
 \label{sec:res-c8}
 
-Campaign 8 is the campaign whose front is proposed as the set of
-candidate cores. It fixes what the earlier campaigns established and
+Campaign 8 is the last campaign of the original formulation, and its
+front is the set of candidate cores under that formulation. It fixes what the earlier campaigns established and
 measures what they could not. It ran 60 evaluations on wks720 in
 \SI{21.02}{h}, every one of them completing without error, and every
 cycle length it reports refers for the first time in this work to a
@@ -2788,7 +2794,7 @@ settings that Campaign 7 omitted are restored explicitly.
     \toprule
     Item & Setting \\
     \midrule
-    Design variables & $e$ 3.0 to \SI{13.913}{wt\%}, $w_\mathrm{Gd}$ 0 to \SI{8}{wt\%}, $t_\mathrm{refl}$ 2.0 to \SI{5.66}{cm}, $n_\mathrm{Gd}$ 12 to 40 on the ladder \\
+    Design variables & $e$ 3.0 to \SI{13.913}{wt\%}, the upper bound set by the \SI{16}{wt\%} peripheral cap, $w_\mathrm{Gd}$ 0 to \SI{8}{wt\%}, $t_\mathrm{refl}$ 2.0 to \SI{5.66}{cm}, $n_\mathrm{Gd}$ 12 to 40 on the ladder \\
     Fixed & pitch \SI{1.26}{cm}, active height \SI{120}{cm}, clearance \SI{7.08}{cm}, soluble boron \SI{1000}{ppm}, ring multipliers \num{0.720}, \num{0.893}, \num{1.150} \\
     Objectives & maximise EFPD, minimise $F_{\Delta H}$ with all rods out \\
     Reactivity window & $1.02 \le k_\mathrm{eff}^\mathrm{core} \le 1.166$ on the core basis \\
@@ -2806,20 +2812,23 @@ settings that Campaign 7 omitted are restored explicitly.
 \label{sec:res-c8-blocks}
 
 Table~\ref{tab:c8-blocks} records the five blocks and
-Figure~\ref{fig:c8-diversity} their diversity. Every infill block
+Figure~\ref{fig:c8-diversity} their diversity. The hypervolume is taken
+against the frozen reference of 1760 EFPD and 2.096, and the spread is
+the within-block range of each variable as a fraction of the archive
+range, listed in the order $e$, $w_\mathrm{Gd}$, $t_\mathrm{refl}$,
+$n_\mathrm{Gd}$. Every infill block
 returned feasible designs and every block moved at least three of the
 four variables. Block 1 held the gadolinia concentration fixed at
 \SI{8.0}{wt\%} across its six designs while moving the other three
 variables, a residual of the collapse mode of Campaign 7 in one
 variable only. Figure~\ref{fig:c8-trajectory} shows the two objectives
-in evaluation order.
+in evaluation order, with the blocks separated by vertical lines. The
+infill blocks concentrate on the long-cycle end of the feasible region,
+where the control screen binds.
 
 \begin{table}[htbp]
   \centering
-  \caption{Campaign 8 blocks. Hypervolume against the frozen reference
-  of 1760 EFPD and 2.096. Spread is the within-block range of each
-  variable as a fraction of the archive range, in the order $e$,
-  $w_\mathrm{Gd}$, $t_\mathrm{refl}$, $n_\mathrm{Gd}$.}
+  \caption{Campaign 8 blocks.}
   \label{tab:c8-blocks}
   \begin{tabular}{lcccl}
     \toprule
@@ -2837,18 +2846,14 @@ in evaluation order.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/c8_infill_diversity}
-  \caption{Within-block spread of each design variable. Every infill
-  block moves at least three of the four variables and returns
-  feasible designs, against two collapsed blocks of six in Campaign 7.}
+  \caption{Within-block spread of each design variable in Campaign 8.}
   \label{fig:c8-diversity}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/c8_trajectory}
-  \caption{The two objectives in evaluation order, blocks separated by
-  vertical lines. The infill blocks concentrate on the long-cycle end
-  of the feasible region, where the control screen binds.}
+  \caption{Campaign 8 objectives in evaluation order.}
   \label{fig:c8-trajectory}
 \end{figure}
 
@@ -2862,22 +2867,25 @@ acquisition failures: their designs are diverse and land on the
 constraint boundary where the surrogate expects the front to be
 (Figure~\ref{fig:c8-plane}). The front is therefore reported as
 converged at the resolution the frozen reference can see, with the
-stated caveat.
+stated caveat. In Figure~\ref{fig:c8-plane} the four-bank state on the
+left is the constraint and the two-bank state on the right is recorded
+only. The two-bank reading is subcritical only below an unrodded
+eigenvalue of about 1.07.
 
-\subsection{Feasibility and the constraint that does the work}
+\subsection{Feasibility and the binding constraint}
 \label{sec:res-c8-screens}
 
 Of the 60 designs, 19 are feasible, \SI{31.7}{\%}, with 9 of 36 in the
 design of experiments. Table~\ref{tab:c8-nesting} gives the census and
-Figure~\ref{fig:c8-activity} the activity per block. The control screen
+Figure~\ref{fig:c8-activity} the activity per block. The nesting of
+Campaign 7 is reversed: the ceiling never rejects a design that the
+control screen accepts. The control screen
 rejects 35 designs and is the dominant constraint in every block. No
 design fails the peaking bound, the enrichment cap or the vessel fit.
 
 \begin{table}[htbp]
   \centering
-  \caption{Constraint census of Campaign 8 and the joint activity of
-  the two reactivity screens. The nesting of Campaign 7 is reversed:
-  the ceiling never rejects a design that the control screen accepts.}
+  \caption{Constraint census of Campaign 8 and the joint activity of the two reactivity screens.}
   \label{tab:c8-nesting}
   \begin{tabular}{lc}
     \toprule
@@ -2897,21 +2905,14 @@ design fails the peaking bound, the enrichment cap or the vessel fit.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/c8_constraint_activity}
-  \caption{Constraint violations per block. The control screen
-  dominates in every block, and the infill blocks concentrate their
-  violations on it because the surrogate places the front on that
-  boundary.}
+  \caption{Campaign 8 constraint violations per block.}
   \label{fig:c8-activity}
 \end{figure}
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/c8_ctrl_plane}
-  \caption{The unrodded core eigenvalue against the eigenvalue with
-  four banks inserted (left, the constraint) and with two banks
-  inserted (right, recorded). Every infill design lands on the control
-  boundary. The two-bank reading is subcritical only below an unrodded
-  eigenvalue of about 1.07.}
+  \caption{Campaign 8 unrodded core eigenvalue against the eigenvalue with four banks inserted, left, and with two banks inserted, right.}
   \label{fig:c8-plane}
 \end{figure}
 
@@ -2937,9 +2938,7 @@ concentration adds a weaker $-0.39$.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/c8_worths}
-  \caption{Regulating-bank worth at fixed pitch, four banks and two
-  banks, against the gadolinium pin count and concentration. The two
-  banks are worth half of the sixteen on every design.}
+  \caption{Regulating-bank worth at fixed pitch, four banks and two banks, against the gadolinium pin count and concentration.}
   \label{fig:c8-worths}
 \end{figure}
 
@@ -2976,7 +2975,15 @@ feasible designs.
 The feasible non-dominated set holds eight designs, from 1941 to 5782
 EFPD and from $F_{\Delta H}$ 1.510 to 1.677. Table~\ref{tab:c8-front}
 lists them and Figure~\ref{fig:c8-pareto} places every design in the
-objective plane with its block. Four front designs come from the
+objective plane with its block. In the table the ring enrichments are
+the as-built centre, middle and periphery values, the excess is the
+beginning-of-life reactivity at \SI{1000}{ppm} that the rods must hold,
+and the peaking factor is given with all rods out ($F$), with two banks
+in ($F_2$) and with four banks in ($F_{16}$). In the figure filled
+markers are feasible, purple rings mark the four feasible designs
+controllable with the first two banks alone, and the vertical dotted
+lines are five calendar years at capacity factors of 0.5 and 0.8. Four
+front designs come from the
 design of experiments, three from infill block 2 and one from block 4.
 The discharge screen of \SI{75}{MWd/kgHM} is inactive on the front,
 whose highest end-of-cycle burnup is \SI{57.7}{MWd/kgHM}, and no
@@ -2985,11 +2992,7 @@ design is censored.
 \begin{table}[htbp]
   \centering
   \small
-  \caption[The Campaign 8 front]{The Campaign 8 front. Ring
-  enrichments are the as-built centre, middle and periphery values.
-  Excess is the beginning-of-life reactivity at \SI{1000}{ppm} that
-  the rods must hold. The peaking factor is given with all rods out
-  ($F$), with two banks in ($F_2$) and with four banks in ($F_{16}$).}
+  \caption[The Campaign 8 front]{The Campaign 8 front.}
   \label{tab:c8-front}
   \setlength{\tabcolsep}{3.4pt}
   \begin{tabular}{ccccccccccc}
@@ -3015,11 +3018,7 @@ design is censored.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/c8_pareto}
-  \caption{Campaign 8 objective space with the five blocks
-  distinguished. Filled markers are feasible. The purple rings mark the
-  four feasible designs controllable with the first two banks alone.
-  The vertical dotted lines are five calendar years at capacity
-  factors of 0.5 and 0.8.}
+  \caption{Campaign 8 objective space with the five blocks distinguished.}
   \label{fig:c8-pareto}
 \end{figure}
 
@@ -3064,9 +3063,7 @@ Three features of the front carry into the candidate discussion.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.95\linewidth]{images/c8_front_split}
-  \caption{The front in its three rod configurations. With two banks
-  inserted every front design is at the screening bound, and with all
-  four banks every one exceeds it.}
+  \caption{The Campaign 8 front in its three rod configurations.}
   \label{fig:c8-split}
 \end{figure}
 
@@ -3081,13 +3078,16 @@ Three features of the front carry into the candidate discussion.
 \label{sec:res-c8-cv}
 
 The protocol of Section~\ref{sec:validation-surrogate} is applied to the
-60 archived designs. Table~\ref{tab:c8-cv-loo} reports the leave-one-out
+60 archived designs. Table~\ref{tab:c8-cv-loo} and
+Figure~\ref{fig:c8-cv-loo} report the leave-one-out
 result for the two objectives and for the two eigenvalues that carry the
 controllability screen of Section~\ref{sec:meth-ctrl}. The exercise is a
 post-processing step on the archive and costs no transport time.
 
 \begin{table}[htbp]
   \centering
+  \small
+  \setlength{\tabcolsep}{4.5pt}
   \begin{threeparttable}
   \caption[Leave-one-out validation of the surrogate]{Leave-one-out cross-validation of the Gaussian Process surrogate on the Campaign 8 archive.}
   \label{tab:c8-cv-loo}
@@ -3141,6 +3141,8 @@ Four readings follow directly from the table.
         standardised residual has a standard deviation of 1.63 and 1.81
         on the cycle length, against 1 for a calibrated predictor. The
         two eigenvalues have $s_z$ between 0.98 and 1.11.
+\end{enumerate}
+
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/c8_cv_loo}
@@ -3205,12 +3207,18 @@ under-confident in Figure~\ref{fig:c8-cv-walkforward}, with a coverage
 of 1.00. The two measurements are not in conflict, because they score
 different fits.
 
-\end{enumerate}
-
-%% AUTHOR: one or two sentences on what an over-confident cycle-length
-%% surrogate implies for the acquisition, given that the margin rule of
-%% Section~\ref{sec:meth-acq} adds kappa predictive standard deviations
-%% to the constraint means before ranking.
+An over-confident cycle-length surrogate has no direct effect on the
+feasibility margin of the acquisition, because the margin rule of
+Section~\ref{sec:meth-acq} acts on the constraint surrogates and the
+cycle length is an objective. The constraint eigenvalues
+$k_\mathrm{core}$ and $k_\mathrm{RE}$ are the quantities whose
+predictive standard deviations are multiplied by $\kappa$, and their
+two-sigma coverage in Table~\ref{tab:c8-cv-loo} is 0.97 to 1.00, at or
+above the nominal value, so the margin added during the campaign was
+at least as wide as intended. The under-stated cycle-length
+uncertainty enters only the uncertainty ranking of the candidates,
+where a narrower band on that output gives the objective slightly
+less weight in the choice of the infill batch.
 
 \subsection{Stability of the front}
 \label{sec:res-c8-stability}
@@ -3275,13 +3283,14 @@ Three readings follow directly from the table.
         ordering of the three lowest-peaking designs is not resolved.
 \end{enumerate}
 
+Figure~\ref{fig:c8-stab-chrono} gives the chronology of the set, with the
+block boundaries dotted in panel~(a), and Figure~\ref{fig:c8-stab-robust}
+its robustness.
+
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/c8_stab_chrono}
-  \caption[Chronology of the feasible non-dominated set]{Growth of the
-  feasible front hypervolume and of the front size in evaluation order,
-  and the membership interval of every design that entered the set.
-  Dotted lines in panel (a) are the block boundaries.}
+  \caption[Chronology of the feasible non-dominated set]{Chronology of the Campaign 8 feasible front: hypervolume, front size and membership interval of every design, in evaluation order.}
   \label{fig:c8-stab-chrono}
 \end{figure}
 
@@ -3348,7 +3357,8 @@ gadolinia rod count. The slice is taken at
 $t_\mathrm{refl} = \SI{4.289}{cm}$ and $n_\mathrm{Gd} = 12$, the values
 of design 47, so that the enrichment and the gadolinia weight fraction
 remain as live variables. Table~\ref{tab:valgrid} reports the
-comparison.
+comparison and Figure~\ref{fig:valgrid-objective} places it in the
+objective plane.
 
 \begin{table}[htbp]
   \centering
@@ -3425,7 +3435,8 @@ Figure~\ref{fig:valgrid-objective}.
 
 The acquisition also spent its evaluations better. Of the 35 enumerated
 nodes 17 are feasible, \SI{48.6}{\%}, against 15 of the 20 search
-evaluations, \SI{75.0}{\%}.
+evaluations, \SI{75.0}{\%}. Figure~\ref{fig:valgrid-design} shows the
+same comparison in the design plane.
 
 \begin{figure}[htbp]
   \centering
@@ -3456,13 +3467,13 @@ inside a band that the grid does not sample. It also reaches
 \SI{5.67}{wt\%}, and therefore extends the front to \SI{3070}{EFPD}
 against \SI{2840}{EFPD} for the enumeration.
 
+Figure~\ref{fig:valgrid-surrogate} tests the surrogate on the grid nodes
+it has not seen.
+
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/valgrid_surrogate}
-  \caption[Surrogate prediction at the unseen grid nodes]{Surrogate
-  fitted on the 20 search evaluations and evaluated at all 35 grid
-  nodes, none of which it has seen. Error bars are one predictive
-  standard deviation.}
+  \caption[Surrogate prediction at the unseen grid nodes]{Surrogate prediction at the 35 unseen grid nodes. Error bars are one predictive standard deviation.}
   \label{fig:valgrid-surrogate}
 \end{figure}
 
@@ -3497,7 +3508,8 @@ hypervolume.
 \label{sec:res-c8-split}
 
 Table~\ref{tab:c8-two} lists the four feasible designs that the first
-two banks alone hold subcritical at the margin. They occupy the
+two banks alone hold subcritical at the margin. Design 12 is included
+for completeness and is not a candidate. The four designs occupy the
 narrow reactivity window of Equation~\eqref{eq:two-bank-ceiling}, with
 unrodded eigenvalues between 1.026 and 1.042, and none of them is on
 the front, because the front is defined by cycle length and they carry
@@ -3506,10 +3518,7 @@ a beginning-of-life excess of only \num{2564} to \SI{4068}{pcm}.
 \begin{table}[htbp]
   \centering
   \small
-  \caption[The Campaign 8 two-bank subset]{The feasible designs
-  controllable with the first two banks. Design 12 is included for
-  completeness and is not a candidate. Columns are as in
-  Table~\ref{tab:c8-front}.}
+  \caption[The Campaign 8 two-bank subset]{Feasible Campaign 8 designs controllable with the first two banks. Columns as in Table~\ref{tab:c8-front}.}
   \label{tab:c8-two}
   \setlength{\tabcolsep}{3.8pt}
   \begin{tabular}{cccccccccc}
@@ -3543,26 +3552,25 @@ The comparison with a licensed-class core makes the point
 quantitative. The NuScale-like benchmark on which the fuel design of
 this thesis rests reports, at beginning of life with \SI{1000}{ppm} of
 soluble boron, a fuel temperature of \SI{900}{K} and a coolant
-temperature of \SI{600}{K}, an all-rods-out eigenvalue of
-\num{1.0279}~\cite{fridman_nuscale_benchmark_2023,ez_aldeen_2025}.
+temperature of \SI{600}{K}, a reference all-rods-out eigenvalue of
+$1.02768 \pm 0.00001$~\cite{fridman_nuscale_benchmark_2023}, which an
+OpenMC model with ENDF/B-VII.1 reproduces within 16 to
+\SI{31}{pcm}~\cite{ez_aldeen_2025}.
 Its sixteen control rod assemblies, in four banks of four, are worth
 \num{1965}, \num{2379}, \num{3727} and \SI{3728}{pcm} individually and
 \SI{19231}{pcm} all together. The regulating requirement of that core
 at beginning of life is therefore below \SI{2800}{pcm}, held by one
 bank with margin, and the shutdown banks are reserved.
 Table~\ref{tab:bench-compare} places the two Campaign 8 candidate
-lists against it.
+lists against it. The worth column is for sixteen control rod
+assemblies in every case, namely the four banks of the benchmark
+together and the four regulating banks of this core.
 
 \begin{table}[htbp]
   \centering
   \small
   \caption[Reactivity to be held by the rods, against the
-  benchmark]{Beginning-of-life reactivity to be held by the rods, with
-  \SI{1000}{ppm} of soluble boron in the coolant, for the NuScale-like
-  benchmark and for the two Campaign 8 candidate lists. The worth
-  column is for sixteen control rod assemblies in every case, namely
-  the benchmark's four banks together and the four regulating banks of
-  this core.}
+  benchmark]{Beginning-of-life reactivity to be held by the rods at \SI{1000}{ppm}: NuScale-like benchmark and the two Campaign 8 candidate lists.}
   \label{tab:bench-compare}
   \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X ccc@{}}
     \toprule
@@ -3591,10 +3599,18 @@ and it can only be held with the four regulating banks inserted deep
 at power.
 
 
-%% AUTHOR: the physical reading of why maximising cycle length and
-%% keeping the regulating banks withdrawn at power pull in opposite
-%% directions in this design space, and whether the two-bank criterion
-%% should be promoted to a constraint in any follow-on work.
+The two requirements pull in opposite directions because a longer
+cycle is bought with reactivity that is burned later, and that
+reactivity must be held at the start of life. With the soluble boron
+and the gadolinia already present in every eigenvalue of this work,
+whatever the burnup has not yet consumed is held by the rods, so the
+excess that lengthens the cycle is the same excess that drives the
+regulating banks into the core. The consequence for the formulation is
+drawn in Section~\ref{sec:concl-reform}: the cycle length becomes a
+constraint at the required value and the two-bank eigenvalue an
+objective. That is a stronger use of the two-bank reading than a
+constraint would be, since a constraint would only bound the margin
+whereas an objective maximises it.
 
 
 \subsection{Burnup and composition dependence of the leakage
@@ -3754,8 +3770,9 @@ result. The beginning-of-life residual runs from $+174$ to
         enrichment is $-0.975$, against $-0.234$ for the reflector
         thickness, so the effect is compositional and not geometric.
 
-  \item The linear fit is $r_\mathrm{BOL} = 341 - 62.4\,e$ in pcm,
-        with $e$ the enrichment in per cent by weight, and a
+  \item The linear fit is $r_\mathrm{BOL} = 341 - 62.5\,e$ in pcm,
+        with $e$ the enrichment in per cent by weight, a slope
+        uncertainty of $\pm 5.0$\,pcm per weight per cent and a
         root-mean-square residual of \SI{38}{pcm}, which is inside the
         statistics of a single solve.
 
@@ -3764,6 +3781,18 @@ result. The beginning-of-life residual runs from $+174$ to
         was built, and grows to \SI{-329}{pcm} at the
         \SI{11.03}{\percent} of design 1.
 \end{itemize}
+
+An independent sweep of 48 core solves checks both slopes of the
+target. It gives an enrichment slope of $-64.1 \pm 3.2$\,pcm per weight
+per cent, 0.3 combined standard deviations from the validation value.
+It gives a reflector slope of $-25.1 \pm 4.0$\,pcm per centimetre,
+against the $-47.6 \pm 15.7$\,pcm per centimetre of the target table
+once the uncertainty of its slope is recovered, a separation of 1.39
+standard deviations, and a second determination at the reference
+composition lies 1.47 standard deviations away. The three
+determinations are consistent (Section~\ref{sec:meth-limits-sigma}).
+The same sweep resolves a quadratic term in enrichment, which makes a
+single enrichment slope a secant (Section~\ref{sec:meth-limits-secant}).
 
 The sign is the one a two-group argument predicts. The non-leakage
 probability of a bare core is governed by the product of the geometric
@@ -3827,18 +3856,11 @@ Three limits of the measurement should be stated.
         designs and marginal for the short-cycle ones.
 \end{enumerate}
 
-%% AUTHOR: whether the composition dependence of the leakage factor
-%% should be reported as a limitation of Route B, as done above, or
-%% closed by refitting the table as a function of enrichment as well
-%% as reflector thickness in any follow-on work. The measured slope of
-%% -62.4 pcm per weight per cent is the coefficient such a refit would
-%% need.
-
-%% AUTHOR: whether the conservative direction of the correction on the
-%% six longest-cycle designs is worth carrying into the comparison
-%% with the reported refuelling interval of
-%% Section~\ref{sec:res-c8-mission}, where a lower bound on the cycle
-%% length strengthens rather than weakens the argument.
+The composition dependence is reported here as a limitation of
+Route~B. A refit of the target table as a function of enrichment as
+well as reflector thickness would close it in follow-on work, and the
+measured slope of $-62.5 \pm 5.0$\,pcm per weight per cent is the coefficient
+such a refit would need.
 
 \subsection{Reactivity swing, the hump and the critical boron}
 \label{sec:res-c8-swing}
@@ -3847,35 +3869,36 @@ The single-shot depletions of Section~\ref{sec:res-kt-burnup} carry the
 full $k_\infty(B)$ history of each candidate, so the hump of
 Equation~\eqref{eq:c7-hump} and the burnup reactivity swing can be
 measured on Campaign 8 with no further transport.
-Figure~\ref{fig:c8-swing-khist} shows the ten histories with their
-maxima marked and Table~\ref{tab:c8-swing} reports the quantities.
+Figure~\ref{fig:c8-swing-khist} shows the histories of the eight front
+designs and of designs 53 and 31, with their maxima marked by triangles
+and the leakage-corrected target dotted. Table~\ref{tab:c8-swing}
+reports the quantities for all eleven candidates, including design 13,
+whose history is not drawn in the figure.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.95\linewidth]{images/swing_khist}
-  \caption[Depletion histories of the Campaign 8 candidates]{Assembly
-  infinite multiplication factor against burnup at \SI{1000}{ppm} for
-  the eight front designs and the two two-bank representatives.
-  Triangles mark the operating maximum and the dotted line is the
-  leakage-corrected target.}
+  \caption[Depletion histories of the Campaign 8 candidates]{Assembly infinite multiplication factor against burnup at \SI{1000}{ppm} for the eight front designs and the two two-bank representatives.}
   \label{fig:c8-swing-khist}
 \end{figure}
 
 \begin{table}[htbp]
   \centering
-  \small
-  \setlength{\tabcolsep}{3.6pt}
+  \footnotesize
+  \setlength{\tabcolsep}{3.0pt}
   \begin{threeparttable}
   \caption[Reactivity swing of the Campaign 8 candidates]{Gadolinium hump and burnup reactivity swing of the Campaign 8 candidates.}
   \label{tab:c8-swing}
   \begin{tabular}{@{}r r r r r r r r r r@{}}
     \toprule
-    ID & $e$ [wt\%] & $k_\mathrm{BOL}$ & $k_\mathrm{peak}$ & $B_\mathrm{peak}$ [MWd/kgHM] & hump [pcm] & $\Delta\rho_\mathrm{peak\to EOC}$ [pcm] & $\Delta\rho_\mathrm{Xe\to EOC}$ [pcm] & $c_\mathrm{BOL}$ [ppm] & $c_\mathrm{peak}$ [ppm] \\
+    ID & $e$ & $k_\mathrm{BOL}$ & $k_\mathrm{peak}$ & $B_\mathrm{peak}$ & hump & $\Delta\rho_\mathrm{peak\to EOC}$ & $\Delta\rho_\mathrm{Xe\to EOC}$ & $c_\mathrm{BOL}$ & $c_\mathrm{peak}$ \\
+    {[--]} & [wt\%] & [--] & [--] & [MWd/kgHM] & [pcm] & [pcm] & [pcm] & [ppm] & [ppm] \\
     \midrule
     53 & 3.45 & 1.1138 & 1.1055 & 7.5 & -676 & 1922 & 1196 & 1312 & 1312 \\
     47 & 4.39 & 1.1891 & 1.1670 & 0.5 & -1591 & 6673 & 6673 & 2348 & 2348 \\
     42 & 4.44 & 1.1922 & 1.1701 & 0.5 & -1578 & 6875 & 6875 & 2377 & 2377 \\
     23 & 4.94 & 1.2219 & 1.2019 & 0.5 & -1356 & 9184 & 9184 & 2979 & 2979 \\
+    13 & 5.14 & 1.1302 & 1.1210 & -- & -723 & 3103 & 2106 & 1697 & 1697 \\
     29 & 5.90 & 1.2504 & 1.2961 & 1.5 & +2822 & 15225 & 13102 & 3677 & 4277 \\
     31 & 6.59 & 1.1236 & 1.1846 & 17.5 & +4580 & 7936 & 1971 & 1701 & 2760 \\
     21 & 7.81 & 1.2114 & 1.2307 & 17.5 & +1295 & 11136 & 8914 & 3752 & 4095 \\
@@ -3885,7 +3908,7 @@ maxima marked and Table~\ref{tab:c8-swing} reports the quantities.
     \bottomrule
   \end{tabular}
   \begin{tablenotes}\footnotesize
-    \item Assembly $k_\infty$ at 1000\,ppm from the single-shot depletion of \texttt{validate\_ktarget\_burnup.py} at the campaign fidelity. The hump is $\rho_\mathrm{peak} - \rho_\mathrm{BOL}$, xenon-free BOL. $\Delta\rho$ is measured to $\rho(k_\mathrm{target})$. The boron concentrations are linear extrapolations above 1000\,ppm with the 1000 to 1500\,ppm differential worth of the core and are lower bounds.
+    \item Assembly $k_\infty$ at 1000\,ppm from the single-shot depletion of \nolinkurl{validate_ktarget_burnup.py} at the campaign fidelity. The hump is $\rho_\mathrm{peak} - \rho_\mathrm{BOL}$, xenon-free BOL. $\Delta\rho$ is measured to $\rho(k_\mathrm{target})$. The boron concentrations are linear extrapolations above 1000\,ppm with the 1000 to 1500\,ppm differential worth of the core. They are estimates: for design 47 the root of the measured reactivity curve is 2327\,ppm (Section~\ref{sec:res-c8-mtc}). $B_\mathrm{peak}$ was not recorded for design 13.
   \end{tablenotes}
   \end{threeparttable}
 \end{table}
@@ -3893,14 +3916,14 @@ maxima marked and Table~\ref{tab:c8-swing} reports the quantities.
 Four readings follow.
 
 \begin{enumerate}
-  \item Half of the candidates have no hump. Designs 1, 23, 42, 47 and
-        53 reach their maximum at the first operating point, and their
-        hump is negative, from $-626$ to \SI{-1591}{pcm}. For these
-        designs the beginning-of-life state is the most reactive state
-        of the cycle and the screens of Section~\ref{sec:meth-ctrl}
-        screen the right state.
+  \item Six of the eleven candidates have no hump. Designs 1, 13, 23,
+        42, 47 and 53 reach their maximum at the first operating point,
+        and their hump is negative, from $-626$ to \SI{-1591}{pcm}. For
+        these designs the beginning-of-life state is the most reactive
+        state of the cycle and the screens of
+        Section~\ref{sec:meth-ctrl} screen the right state.
 
-  \item The other half do have one, from $+1150$ to \SI{+4580}{pcm},
+  \item The other five do have one, from $+1150$ to \SI{+4580}{pcm},
         with the maximum between \num{1.5} and
         \SI{21.5}{MWd/kgHM}. Design 31 carries the largest hump of the
         set and design 29 the largest of the front, at
@@ -3916,9 +3939,10 @@ Four readings follow.
         the critical one. The extrapolated critical concentration at
         beginning of life runs from \num{1312} to \SI{4674}{ppm}, and
         at the operating maximum it reaches \SI{4940}{ppm} on design
-        44. Every value is a lower bound, because the extrapolation is
-        linear above \SI{1500}{ppm} and ignores further
-        self-shielding.
+        44. The values are linear extrapolations above \SI{1500}{ppm}
+        and can err in either direction. For design 47 the root of the
+        measured reactivity curve, \SI{2327}{ppm}, lies \SI{21}{ppm}
+        below the linear value (Section~\ref{sec:res-c8-mtc}).
 \end{enumerate}
 
 The last reading is the one that bounds the interpretation of the whole
@@ -3935,7 +3959,7 @@ at beginning of life, so dividing one by the other assumes the worth
 does not change over the cycle, which it does through the spectrum.
 Both concentrations should be read to one significant figure.
 
-%% AUTHOR: the physics of why five candidates show no hump while five
+%% AUTHOR: the physics of why six candidates show no hump while five
 %% do, and whether the critical-boron column changes the reading of the
 %% controllability result of Section~\ref{sec:res-c8-split}.
 
@@ -3943,37 +3967,38 @@ Both concentrations should be read to one significant figure.
 \label{sec:res-c8-closures}
 
 Four commitments were made earlier in this work and deferred to a
-three-dimensional confirmation on the core with hardware. This
+confirmation on the three-dimensional core model. This
 subsection reports what each of them measured. Two are closed, one is
 partly closed and one remains open.
 
 The three-dimensional confirmation closes four commitments made earlier
-in this work. Each is listed with the quantity that closes it.
+in this work. Each is listed with the quantity that closes it, and
+Table~\ref{tab:c8-closures} collects the measured closures.
 
 \begin{enumerate}
   \item The second tier of the fidelity strategy of Section~\ref{sec:meth-fidelity}. Ten front designs were depleted in a single shot at the campaign fidelity with core solves at beginning and end of cycle. The leakage factor drifts by -152 to +149\,pcm between the two, within two standard deviations for 10 of 10 designs, and the implied cycle correction is -14 to +56\,EFPD.
-  \item The axial correction of Section~\ref{sec:meth-lax}. On the core with hardware the unrodded factor is 1.0286 to 1.0311, against the campaign value 1.0289 of the water-slab study, a gap of -25 to +211\,pcm. The two-bank factor is 1.0219 to 1.0252 and the four-bank factor 1.0126 to 1.0177.
-  \item The three departures from the benchmark inputs stated in Section~\ref{sec:reactor-model}. \openpoint{Closure 3a: reflector sensitivity pending. } \openpoint{Closure 3b: absorber-radius sensitivity pending. } The coolant density is not exposed as a sensitivity and remains a stated departure.
+  \item The axial correction of Section~\ref{sec:meth-lax}. On the three-dimensional core model the unrodded factor is 1.0286 to 1.0311, against the campaign value 1.0289 of the water-slab study, a gap of -25 to +211\,pcm. The two-bank factor is 1.0219 to 1.0252 and the four-bank factor 1.0126 to 1.0177.
+  \item The three departures from the benchmark inputs stated in Section~\ref{sec:reactor-model}, tested on C8-21 and C8-47, which bracket the front. Raising the steel fraction of the heavy reflector from 0.90 to the benchmark 0.956 adds 199 and 182\,pcm to the unrodded three-dimensional core, so the adopted fraction is conservative. Narrowing the absorber radius from 0.4331\,cm to the benchmark boron carbide radius of 0.4229\,cm lowers the four-bank worth by 131 to 169\,pcm and the two-bank worth by 93 to 94\,pcm, about 1.5 per cent of the two-bank worth, against margins of 7000\,pcm and more. The coolant density is not exposed as a sensitivity and remains a stated departure.
   \item The rod-stack comparison. The two-dimensional screen with full-height boron carbide is conservative by 1272 to 2047\,pcm for four banks and 2062 to 2671\,pcm for two banks against the benchmark rod on the three-dimensional core. \openpoint{Closure 4: the full-B4C stack run that separates the stack from the leakage is pending.}
 \end{enumerate}
 
 \begin{table}[htbp]
   \centering
-  \small
+  \footnotesize
   \setlength{\tabcolsep}{4.0pt}
   \caption[Closures of the three-dimensional confirmation]{Measured closure of the four commitments carried by the three-dimensional confirmation.}
   \label{tab:c8-closures}
-  \begin{tabular}{@{}l l r l r@{}}
+  \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.6cm} >{\raggedright\arraybackslash}X r >{\raggedright\arraybackslash}X r@{}}
     \toprule
     Closure & Quantity & Value & Quantity & Value \\
     \midrule
     1 Second tier & leakage-factor drift BOL to EOC [pcm] & -152 to +149 & implied cycle correction [EFPD] & -14 to +56 \\
     2 Axial correction & $L_\mathrm{ax,hw}$ unrodded & 1.0286 to 1.0311 & gap to the campaign 1.0289 [pcm] & -25 to +211 \\
-    3a Reflector 0.956 & $\Delta\rho$ unrodded 3D [pcm] & pending &  &  \\
-    3b Absorber 0.4229 & $\Delta$ four-bank margin [pcm] & pending & $\Delta$ two-bank margin [pcm] & pending \\
+    3a Reflector 0.956 & $\Delta\rho$ unrodded 3D [pcm] & +182 to +199 &  &  \\
+    3b Absorber 0.4229 & $\Delta$ four-bank margin [pcm] & -169 to -131 & $\Delta$ two-bank margin [pcm] & -94 to -93 \\
     4 Rod stack & screen conservatism four-bank [pcm] & 1272 to 2047 & stack effect four-bank [pcm] & pending \\
     \bottomrule
-  \end{tabular}
+  \end{tabularx}
 \end{table}
 
 Closure 1 is not an independent measurement. It is the same set of
@@ -3992,7 +4017,7 @@ Table~\ref{tab:c8-post-3d1000}. The short statement is that the rodded
 factors are smaller than the unrodded one, so the rodded
 three-dimensional core is more subcritical than the two-dimensional
 screen assumed, and the screen therefore rejected designs it did not
-need to reject while admitting none that the hardware would refuse.
+need to reject while admitting none that the three-dimensional core model would refuse.
 
 The beginning-of-life margins above are reduced by the gadolinium hump of the operating maximum, -1723 to +4955\,pcm on the core. At the maximum the two-bank set at 1000\,ppm on the three-dimensional core excludes designs 1, 21, 23, 29, 31, 44, 59.
 
@@ -4013,9 +4038,10 @@ the cycle within the Monte Carlo noise.
 \subsection{Cycle length against the reported refuelling interval}
 \label{sec:res-c8-mission}
 
-The open record gives the prototype a refuelling interval of four to
-five years. The cycle length that corresponds to it depends on the
-capacity factor, which no open source states.
+The open record gives the prototype a refuelling interval of five
+years~\cite{dinizcosta_2017}. The cycle
+length that corresponds to it depends on the capacity factor, which
+no open source states.
 
 \begin{equation}
 \mathrm{EFPD}_\mathrm{req} = 365.25\, T_\mathrm{cal}\, \mathrm{CF}
@@ -4028,7 +4054,7 @@ capacity factor, which no open source states.
   \item $\mathrm{EFPD}_\mathrm{req}$ is the cycle length that meets the
         refuelling interval, in effective full power days.
 
-  \item $T_\mathrm{cal}$ is the calendar interval, in years, four to
+  \item $T_\mathrm{cal}$ is the calendar interval, in years, equal to
         five.
 
   \item $\mathrm{CF}$ is the capacity factor, dimensionless, assumed
@@ -4044,18 +4070,26 @@ two-bank subset meets it at 1142 EFPD with ring enrichments of 2.5,
 same axis. The 6 to \SI{8}{wt\%} stated in 2014 corresponds to designs
 31 and 21, at 3381 and 4221 EFPD, and the \SI{19}{wt\%} reported in
 2025 lies above the search box and, on the evidence of the axial study,
-above what the regulating banks of this core can hold.
+above what the regulating banks of this core can hold. The comparison
+is conservative on two counts. Every cycle length is a lower bound
+for a core operated with boron letdown
+(Section~\ref{sec:res-c8-post-limits}), and the burnup dependence of
+the leakage factor corrects the six longest cycles downward
+(Section~\ref{sec:res-kt-burnup}).
 
 The consequence for the design problem is stated as a finding. The
 objective of maximising cycle length pushes every design far beyond
 the reported requirement and, in doing so, onto the control boundary.
 Cycle length is not the binding requirement of this core. The binding
-requirements are controllability and peaking, and a follow-on
-formulation should treat the cycle length as a constraint at the
-required value rather than as an objective.
+requirements are controllability and peaking, and the cycle length
+belongs among the constraints, at the required value. Campaign 9 poses
+the problem that way (Section~\ref{sec:res-c9}).
 
 \subsection{The pre-registered expectations, scored}
 \label{sec:res-c8-hyp}
+
+Table~\ref{tab:c8-hyp-scored} scores the eight expectations written before
+the design of experiments closed against the measurement.
 
 \begin{table}[htbp]
   \centering
@@ -4154,11 +4188,12 @@ answers to different questions.
 \end{enumerate}
 
 The three-dimensional confirmation of
-Section~\ref{sec:res-c8-closures}, with the hardware stack, the core
-barrel and the boron worth, decides between them.
+Section~\ref{sec:res-c8-closures}, with the axial structures of the assembly, the core barrel and the boron worth, decides between them.
 
-%% AUTHOR: the choice of the candidate or candidates to carry into the
-%% conclusions, and the physical argument for that choice.
+The candidate of the Campaign 8 formulation is design 47, for the
+reasons set out in Section~\ref{sec:res-c8-decision} after the
+post-analysis has been reported. Campaign 9 then searches the same
+design space under the reformulated problem (Section~\ref{sec:res-c9}).
 
 
 % ---------------------------------------------------------------------
@@ -4185,12 +4220,10 @@ Section~\ref{sec:meth-ctrl}.
         with one seed (132 solves).
 
   \item A zero-boron hold-down check under the four regulating banks on
-        the two-dimensional core and on the three-dimensional core with
-        the assembly hardware, barrel and vessel, two seeds (44 solves).
+        the two-dimensional core and on the three-dimensional core model with the axial structures of the assemblies, barrel and vessel, two seeds (44 solves).
 
   \item A three-dimensional confirmation at 1000\,ppm in the three rod
-        states, two seeds, for ten of the eleven designs. Design 13 was
-        not run.
+        states, two seeds, for all eleven designs.
 
   \item A parked-rod sensitivity on design 47 with all rods out.
 
@@ -4209,16 +4242,15 @@ are reserved for shutdown and are never inserted in any screen. The
 figures of this section carry the code label ALL-RE for the state
 written $k_\mathrm{RE}$ here, for the reason given in
 Section~\ref{sec:meth-ctrl}.
-Figure~\ref{fig:c8-post-banks} shows the map.
+Figure~\ref{fig:c8-post-banks} shows the map. The same bank assignment
+is used by every screen of Campaign 8, and the enrichment rings coincide
+with the banks: ring C with RE1, ring M with RE2 to RE4 and ring P with
+SH.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{images/c8_post_core_banks_rings}
-  \caption{The 32-assembly map with the bank assignment used by every
-  screen of Campaign 8. (a) The four regulating banks and the shutdown
-  bank. (b) The two-bank state RE1 + RE2. (c) The three enrichment rings
-  with their multipliers. Ring C coincides with RE1, ring M with RE2 to
-  RE4 and ring P with SH.}
+  \caption[The 32-assembly map of Campaign 8]{The 32-assembly map of Campaign 8. (a)~The four regulating banks and the shutdown bank. (b)~The two-bank state RE1 + RE2. (c)~The three enrichment rings with their multipliers.}
   \label{fig:c8-post-banks}
 \end{figure}
 
@@ -4250,9 +4282,6 @@ solve in the post-analysis, the temperature and xenon states that a
 beginning-of-life eigenvalue at hot full power does not span, and the
 reactivity that an operator holds in hand rather than at the point of
 criticality.
-%% AUTHOR: if a licensing basis is adopted for this reserve, cite it
-%% here. Otherwise keep it stated as an engineering choice of this work,
-%% which is what the sentence above does.
 
 Equation~\eqref{eq:g-ctrl-meth} expresses the margin in $\Delta k$, whereas
 the margins reported below are reactivities, so the threshold on those
@@ -4272,11 +4301,20 @@ front. Their own front, after removing design 12, which is dominated by
 53, has three members.
 Table~\ref{tab:c8-post-tiers} lists both tiers and
 Figure~\ref{fig:c8-post-front} places them in the objective plane.
+Tier A is the feasible front and tier B the front of the designs that also
+satisfy $k_\mathrm{RE12} \leq 0.99$. In the table $W_{16}$ and $W_8$ are
+the beginning-of-life worths of the four regulating banks and of
+RE1 + RE2. In the figure blue circles are feasible designs that need the
+four regulating banks at 1000\,ppm, green squares are feasible designs
+controllable with RE1 + RE2, and the two lines are the two fronts. The
+error bars are one seed-to-seed standard deviation of $F_{\Delta H}$ at
+the archive fidelity, about 0.011, and the dotted lines mark four and
+five calendar years at 48\,MWth for an assumed capacity factor of 0.8.
 
 \begin{table}[htbp]
   \centering
   \footnotesize
-  \caption{Campaign 8 candidates in two controllability tiers, archive values at 1000\,ppm. $W_{16}$ and $W_8$ are the beginning-of-life worths of the four regulating banks and of RE1 + RE2. Tier A is the feasible front. Tier B is the front of the designs that also satisfy $k_\mathrm{RE12} \leq 0.99$.}
+  \caption{Campaign 8 candidates in two controllability tiers, archive values at 1000\,ppm.}
   \label{tab:c8-post-tiers}
   \setlength{\tabcolsep}{3pt}\scriptsize
   \begin{tabular}{@{}c l r r r r r r r r r r r@{}}
@@ -4303,13 +4341,7 @@ Figure~\ref{fig:c8-post-front} places them in the objective plane.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.9\textwidth]{images/c8_post_front_two_tier}
-  \caption{The Campaign 8 archive in the objective plane. Blue circles
-  are feasible designs that need the four regulating banks at 1000\,ppm.
-  Green squares are feasible designs controllable with RE1 + RE2. The
-  two lines are the two fronts. Error bars are one seed-to-seed standard
-  deviation of $F_{\Delta H}$ at the archive fidelity, about 0.011. The
-  dotted lines mark four and five calendar years at 48\,MWth for an
-  assumed capacity factor of 0.8.}
+  \caption{The Campaign 8 archive in the objective plane, by controllability tier.}
   \label{fig:c8-post-front}
 \end{figure}
 
@@ -4326,12 +4358,19 @@ The two tiers are defined by the two-dimensional screen of the
 campaign. The three-dimensional confirmation of
 Section~\ref{sec:res-c8-3d} moves the boundary. At 1000\,ppm the
 RE1 + RE2 margin of design 47 is $-1091$\,pcm on the two-dimensional
-core and $+1330$\,pcm on the three-dimensional core with hardware, and
-that of design 42 goes from $-1315$ to $+1052$\,pcm.
+core and $+1330$\,pcm on the three-dimensional core model, and that of design 42 goes from $-1315$ to $+1052$\,pcm.
 Table~\ref{tab:c8-post-3d1000} and Figure~\ref{fig:c8-post-margins1000}
-show the ten confirmed designs. Under the three-dimensional reading the
-two-bank set at 1000\,ppm and beginning of life is 53, 31, 47 and 42,
-design 23 stays out at $-1718$\,pcm, and design 13 is unconfirmed. That
+show the eleven confirmed designs. In the table
+$L_\mathrm{ax} = k_\mathrm{2D}/k_\mathrm{3D}$ for each rod state, the
+margins are $-\rho$ of the rodded core, positive when subcritical,
+$F_{\Delta H}^\mathrm{3D}$ is axially integrated, and the two-bank column
+applies the screen $k_\mathrm{RE12} \leq 0.99$, that is 1010\,pcm. In the
+figure dark bars are the two-dimensional core of the campaign screen and
+light bars the three-dimensional core model with barrel and vessel wall, blue is the four-bank state and green the two-bank state, and the
+dashed line is the screen of Equation~\eqref{eq:g-ctrl-meth}. Under the
+three-dimensional reading
+the two-bank set at 1000\,ppm and beginning of life is 53, 13, 31, 47
+and 42, and design 23 stays out at $-1718$\,pcm. That
 set is not the same as the set at the operating maximum of
 Section~\ref{sec:res-c8-closures}, which is 53, 47 and 42, because the
 gadolinium hump of design 31 removes \SI{4955}{pcm} of its
@@ -4350,7 +4389,7 @@ $F_{\Delta H} \approx 1.64$, where design 31 stands against design 59.
 \begin{table}[htbp]
   \centering
   \footnotesize
-  \caption{Three-dimensional confirmation at 1000\,ppm, two seeds per solve, $150\,000 \times 200$. $L_\mathrm{ax} = k_\mathrm{2D}/k_\mathrm{3D}$ for each rod state. The margins are $-\rho$ of the rodded core, positive when subcritical. $F_{\Delta H}^\mathrm{3D}$ is axially integrated. The two-bank column applies the screen $k_\mathrm{RE12} \leq 0.99$, that is 1010\,pcm. Design 13 was not run at 1000\,ppm.}
+  \caption{Three-dimensional confirmation at 1000\,ppm, two seeds per solve, $150\,000 \times 200$.}
   \label{tab:c8-post-3d1000}
   \setlength{\tabcolsep}{3pt}\scriptsize
   \begin{tabular}{@{}l r r r r r r r r r r r@{}}
@@ -4362,6 +4401,7 @@ $F_{\Delta H} \approx 1.64$, where design 31 stands against design 59.
     47 & 4.39 & 1.0304 & 1.0163 & 1.0245 & 8123 & 9891 & -1091 & 1330 & 1.531 & 1.503 & yes \\
     42 & 4.44 & 1.0302 & 1.0162 & 1.0240 & 7894 & 9638 & -1315 & 1052 & 1.532 & 1.515 & yes \\
     23 & 4.94 & 1.0307 & 1.0161 & 1.0243 & 4759 & 6443 & -4046 & -1718 & 1.525 & 1.522 & no \\
+    13 & 5.14 & 1.0301 & 1.0137 & 1.0230 & 12842 & 14388 & 3562 & 5946 & 1.603 & 1.573 & yes \\
     29 & 5.90 & 1.0303 & 1.0151 & 1.0236 & 1598 & 3136 & -6615 & -4412 & 1.527 & 1.491 & no \\
     31 & 6.59 & 1.0288 & 1.0146 & 1.0228 & 11768 & 13399 & 3491 & 5856 & 1.627 & 1.596 & yes \\
     21 & 7.81 & 1.0291 & 1.0146 & 1.0229 & 2803 & 4307 & -4776 & -2598 & 1.585 & 1.576 & no \\
@@ -4375,13 +4415,7 @@ $F_{\Delta H} \approx 1.64$, where design 31 stands against design 59.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{images/c8_post_margins_1000_2d3d}
-  \caption{Hold-down margins at 1000\,ppm and beginning of life for the
-  ten confirmed designs, two seeds per solve. Dark bars are the
-  two-dimensional core of the campaign screen, light bars are the
-  three-dimensional core with hardware, barrel and vessel wall. Blue is
-  the four-bank state and green the two-bank state. The dashed line is
-  the screen of Equation~\eqref{eq:g-ctrl-meth}, $k \leq 0.99$, which is
-  1010\,pcm on this axis.}
+  \caption{Hold-down margins at 1000\,ppm and beginning of life for the eleven confirmed designs, two seeds per solve.}
   \label{fig:c8-post-margins1000}
 \end{figure}
 
@@ -4443,12 +4477,22 @@ Equation~\eqref{eq:rod-only-margin} to a bank set of $n$ assemblies.
 
 Table~\ref{tab:c8-post-boron} gives the results and
 Figure~\ref{fig:c8-post-margin} shows the margins against
-concentration. Three regularities stand out.
+concentration. In the table $W_B$ is the differential boron worth between
+0 and 1000\,ppm, and $M_{16}$ and $M_8$ are the hold-down margins under
+the four regulating banks and under RE1 + RE2, positive when
+subcritical. $c_8$ and $c_{16}$ are the boron concentrations at which the
+two margins reach the screen value $k \leq 0.99$, that is 1010\,pcm, by
+linear interpolation between the sweep points, and entries marked e are
+extrapolated beyond 1500\,ppm. In the figure the left panel holds the
+four regulating banks and the right panel RE1 + RE2, solid lines are
+front members, dashed lines are the retained two-bank designs, and the
+dashed horizontal line is the screen of Equation~\eqref{eq:g-ctrl-meth}.
+Three regularities stand out.
 
 \begin{table}[htbp]
   \centering
   \footnotesize
-  \caption{Boron sweep of the eleven designs, two-dimensional core, one seed, $150\,000$ particles and 200 batches. $W_B$ is the differential boron worth between 0 and 1000\,ppm. $M_{16}$ and $M_8$ are the hold-down margins under the four regulating banks and under RE1 + RE2, positive when subcritical. $c_8$ and $c_{16}$ are the boron concentrations at which the two margins reach the screen value $k \leq 0.99$, that is 1010\,pcm on this axis, by linear interpolation between the sweep points (e: extrapolated beyond 1500\,ppm).}
+  \caption{Boron sweep of the eleven designs, two-dimensional core, one seed, $150\,000$ particles and 200 batches.}
   \label{tab:c8-post-boron}
   \setlength{\tabcolsep}{2.5pt}\scriptsize
   \begin{tabular}{@{}l l r r r r r r r r r@{}}
@@ -4496,12 +4540,7 @@ concentration. Three regularities stand out.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{images/c8_post_margin_vs_boron}
-  \caption{Beginning-of-life hold-down margin against soluble boron for
-  the eleven designs, two-dimensional core, one seed. Left, the four
-  regulating banks. Right, RE1 + RE2. Solid lines are front members and
-  dashed lines are the retained two-bank designs. The dashed horizontal
-  line is the screen of Equation~\eqref{eq:g-ctrl-meth}, $k \leq 0.99$, which
-  is 1010\,pcm on this axis.}
+  \caption{Beginning-of-life hold-down margin against soluble boron for the eleven designs, two-dimensional core, one seed.}
   \label{fig:c8-post-margin}
 \end{figure}
 
@@ -4527,7 +4566,8 @@ M_8(c) \approx M_{16}(c) - \left(1 - r\right) W_{16}(c)
 Read through the boron concentration, the sweep gives the concentration
 at which each design reaches the screen of Equation~\eqref{eq:g-ctrl-meth}
 with eight rods, by linear interpolation between the sweep points.
-Figure~\ref{fig:c8-post-boron} shows it. The three tier B designs reach
+Figure~\ref{fig:c8-post-boron} shows it, with the values that lie beyond
+the 1500\,ppm sweep point marked as extrapolated. The three tier B designs reach
 it at 415, 472 and 566\,ppm. The twins 47 and 42 reach it at 1316 and
 1352\,ppm, about 35\,\% above the screen value. The remaining front
 members need 1861 to 3302\,ppm, the last four by extrapolation beyond
@@ -4543,12 +4583,7 @@ long-cycle designs could not within any concentration used at power.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{images/c8_post_boron_required_and_worths}
-  \caption{(a) Soluble boron needed at beginning of life for a
-  hold-down margin equal to the screen of Equation~\eqref{eq:g-ctrl-meth}
-  with sixteen and with eight rodded assemblies, eleven designs. Values marked extrap. lie beyond the
-  1500\,ppm sweep point. (b) Four-bank and two-bank worth at 1000\,ppm
-  across the 60 archive designs. (c) Differential boron worth of the
-  eleven designs.}
+  \caption[Soluble boron and bank worths of the Campaign 8 designs]{Soluble boron and bank worths. (a)~Soluble boron needed at beginning of life for the screen margin with sixteen and with eight rodded assemblies, eleven designs. (b)~Four-bank and two-bank worth at 1000\,ppm, 60 archive designs. (c)~Differential boron worth, eleven designs.}
   \label{fig:c8-post-boron}
 \end{figure}
 
@@ -4564,13 +4599,19 @@ Stage D asks whether the four regulating banks alone hold the
 beginning-of-life core subcritical with no soluble boron, on the
 two-dimensional core and on the three-dimensional core with the
 benchmark rod stack. Table~\ref{tab:c8-post-zeroboron} and
-Figure~\ref{fig:c8-post-zero} give the result. The condition tested is
+Figure~\ref{fig:c8-post-zero} give the result. In the table
+$L_\mathrm{ax}$ is $k_\mathrm{2D}/k_\mathrm{3D}$ for the rodded state with
+the benchmark rod stack: bottom 12.04\,cm unrodded, 30.48\,cm Ag-In-Cd and
+77.48\,cm B$_4$C. In the figure grey is the one-seed sweep, blue the
+two-seed two-dimensional solve of stage D and orange the three-dimensional core model with the axial structures of the assemblies, barrel and vessel wall. Green markers meet the screen $k \leq 0.99$, orange markers are
+subcritical below it and red markers are supercritical. The condition
+tested is
 the following.
 
 \begin{table}[htbp]
   \centering
   \footnotesize
-  \caption{Zero-boron hold-down by the four regulating banks alone at beginning of life, stage D, two seeds per solve. $L_\mathrm{ax}$ is $k_\mathrm{2D}/k_\mathrm{3D}$ for the rodded state with the benchmark rod stack (bottom 12.04\,cm unrodded, 30.48\,cm Ag-In-Cd, 77.48\,cm B$_4$C). The reading holds when the margin reaches the screen value $k \leq 0.99$, that is 1010\,pcm. It is the necessary condition for boron-free operation, not its demonstration.}
+  \caption{Zero-boron hold-down by the four regulating banks alone at beginning of life, stage D, two seeds per solve.}
   \label{tab:c8-post-zeroboron}
   \begin{tabular}{@{}l r r r r r r l@{}}
     \toprule
@@ -4613,12 +4654,7 @@ k_\mathrm{RE}^\mathrm{3D}(0) \leq 1 - \Delta k_\mathrm{margin} = 0.99
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{images/c8_post_zero_boron_margin}
-  \caption{Zero-boron hold-down margin under the four regulating banks
-  at beginning of life. Grey, the one-seed sweep. Blue, the two-seed
-  two-dimensional solve of stage D. Orange, the three-dimensional core
-  with the assembly hardware, barrel and vessel wall. Green markers meet
-  the screen $k \leq 0.99$, orange markers are subcritical below it, red
-  markers are supercritical.}
+  \caption{Zero-boron hold-down margin under the four regulating banks at beginning of life.}
   \label{fig:c8-post-zero}
 \end{figure}
 
@@ -4670,16 +4706,15 @@ six fail $k_{\min}$, 23 fail both $k_{\max}$ and the control screen, and
 twelve fail the control screen alone. No design fails $k_{\max}$ alone.
 The three-dimensionally derived ceiling of 1.166 is now a redundant
 outer bound and the control screen is the binding constraint.
-Figure~\ref{fig:c8-post-nesting} shows the structure.
+Figure~\ref{fig:c8-post-nesting} shows the structure. In panel~(a) the
+twelve designs rejected by the control screen alone are circled in red.
+The dashed line is the screen value 0.99, and the dotted lines are
+$k_{\min}$ and $k_{\max}$.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{images/c8_post_constraint_structure}
-  \caption{The rodded eigenvalues against the unrodded core eigenvalue
-  for the 60 archive designs at 1000\,ppm. (a) The four-bank state, with
-  the twelve designs rejected by the control screen alone circled in
-  red. (b) The two-bank state. The dashed line is the screen value
-  0.99, the dotted lines are $k_{\min}$ and $k_{\max}$.}
+  \caption[Rodded against unrodded core eigenvalues of the Campaign 8 archive]{Rodded against unrodded core eigenvalues of the 60 Campaign 8 archive designs at 1000\,ppm. (a)~Four-bank state. (b)~Two-bank state.}
   \label{fig:c8-post-nesting}
 \end{figure}
 
@@ -4707,7 +4742,7 @@ far more peaked.
 \begin{table}[htbp]
   \centering
   \footnotesize
-  \caption{Seed-to-seed standard deviation of the core solves at $150\,000$ particles, 200 batches and 80 inactive batches, pooled over the replicate pairs of the post-analysis. The reported Monte Carlo standard deviation of $k$ is about 22\,pcm per solve.}
+  \caption{Seed-to-seed standard deviation of the post-analysis core solves at $150\,000$ particles, 200 batches and 80 inactive batches.}
   \label{tab:c8-post-sigma}
   \begin{tabular}{@{}l l r r r@{}}
     \toprule
@@ -4742,9 +4777,9 @@ unchanged either way.
 \label{sec:res-c8-3d}
 
 The axial factor of the rodded core differs from that of the unrodded
-core. With all rods out the three-dimensional core with hardware gives
+core. With all rods out the three-dimensional core model gives
 $L_\mathrm{ax} = k_\mathrm{2D} / k_\mathrm{3D}$ between 1.0286 and
-1.0311 at 1000\,ppm over the ten confirmed designs, against the 1.0282
+1.0311 at 1000\,ppm over the eleven confirmed designs, against the 1.0282
 to 1.0298 of the water-slab axial study of Section~\ref{sec:meth-lax}.
 With RE1 + RE2 inserted it is between 1.0219 and 1.0252, and with the
 four regulating banks inserted between 1.0126 and 1.0177. The reason is
@@ -4760,19 +4795,19 @@ inserted. The two-dimensional control screen remains conservative, by
 to \SI{2671}{pcm} for the two-bank state, rather than by the 2900 to
 3100\,pcm that the unrodded axial factor would suggest. Both ranges are
 the differences of the margin columns of
-Table~\ref{tab:c8-post-3d1000} over the ten confirmed designs. The two-dimensional eigenvalues of
-the confirmation reproduce the archive within $-53$ to $+69$\,pcm over
-the thirty comparisons.
+Table~\ref{tab:c8-post-3d1000} over the eleven confirmed designs. The
+two-dimensional eigenvalues of the confirmation reproduce the archive
+within $-53$ to $+69$\,pcm over the thirty-three comparisons.
 
-The unrodded axial factor splits by enrichment. The five designs at or
-below \SI{5.90}{wt\%} give 1.0302 to 1.0311 and the five at or above
+The unrodded axial factor splits by enrichment. The six designs at or
+below \SI{5.90}{wt\%} give 1.0301 to 1.0311 and the five at or above
 \SI{6.59}{wt\%} give 1.0286 to 1.0291. The campaign value 1.0289 is
-therefore right for the long-cycle designs and 130 to 220\,pcm low for
+therefore right for the long-cycle designs and 120 to 220\,pcm low for
 the low-peaking end of the front.
 %% AUTHOR: physics of the split. Two mechanisms are candidates, the
 %% parked-rod plug at the fuel top weighing more where the competing
 %% absorption is lower, and the migration area of the softer spectrum.
-%% Stage E on design 47 isolates the first at 132 pcm, so the second
+%% Stage E on design 47 isolates the first at 129 pcm, so the second
 %% accounts for the remainder of the 130 to 220 pcm. State which you
 %% adopt, or leave the observation as measured.
 
@@ -4780,7 +4815,7 @@ The parked rods matter. With the withdrawn rods removed from the model,
 design 47 gives $L_\mathrm{ax} = 1.0291$, within 20\,pcm of the
 campaign value 1.0289 taken from the water-slab axial study. With the
 rods parked in the benchmark position the factor is 1.0304, a
-difference of 132\,pcm, because the withdrawn rod leaves its steel end
+difference of 129\,pcm, because the withdrawn rod leaves its steel end
 plug in the top 4.86\,cm of the fuel and its Ag-In-Cd tip in the
 plenum above. The parked geometry therefore raises the end-of-cycle
 target by about 130\,pcm, which shortens the reported cycle of design
@@ -4792,14 +4827,16 @@ The downcomer trade is nearly free. Thinning the reflector of designs
 1.26\,cm pitch, changes the unrodded two-dimensional eigenvalue by
 $-5$, $-95$ and $-128$\,pcm and the peaking factor by $+0.003$ to
 $+0.005$, below one seed standard deviation.
-Table~\ref{tab:c8-post-downcomer} gives the values. A downcomer of
+Table~\ref{tab:c8-post-downcomer} gives the values. The native column
+is the archive core solve at $100\,000 \times 170$, and $\Delta\rho$ is
+the reactivity change of the two-dimensional core. A downcomer of
 3.7\,cm can be adopted for every candidate at a cost of at most
 130\,pcm at beginning of life.
 
 \begin{table}[htbp]
   \centering
   \footnotesize
-  \caption{Stage G, reflector thinned to 3.969\,cm so that the downcomer is 3.7\,cm at pitch 1.26\,cm, all rods out, 1000\,ppm, two seeds. The native column is the archive core solve ($100\,000 \times 170$). $\Delta\rho$ is the reactivity change of the two-dimensional core.}
+  \caption{Stage G: reflector thinned to 3.969\,cm for a 3.7\,cm downcomer at pitch 1.26\,cm, all rods out, 1000\,ppm, two seeds.}
   \label{tab:c8-post-downcomer}
   \setlength{\tabcolsep}{3pt}\scriptsize
   \begin{tabular}{@{}l r r r r r r r@{}}
@@ -4824,15 +4861,14 @@ $F_{\Delta H}$ on the four design variables over the 60 designs gives
 $-0.0085$ per centimetre, that is $-0.031$ across the box, and the
 subset below 7\,wt\% gives the opposite sign. The direct test of
 Section~\ref{sec:res-c8-3d} measures at most $+0.005$ for a thinning of
-0.3 to 1.7\,cm. Figure~\ref{fig:c8-post-refl} shows both.
+0.3 to 1.7\,cm. Figure~\ref{fig:c8-post-refl} shows both, with the
+designs coloured by enrichment, circles for the feasible designs and red
+arrows for the stage G solves with the reflector thinned to 3.969\,cm.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{images/c8_post_reflector_leverage}
-  \caption{Peaking factor and unrodded core eigenvalue against
-  reflector thickness for the 60 archive designs, coloured by
-  enrichment. Circles are feasible designs. The red arrows are the
-  stage G solves with the reflector thinned to 3.969\,cm.}
+  \caption{Peaking factor and unrodded core eigenvalue against reflector thickness, 60 Campaign 8 archive designs.}
   \label{fig:c8-post-refl}
 \end{figure}
 
@@ -4853,6 +4889,202 @@ solve noise. Two consequences follow.
         active variables.
 \end{enumerate}
 
+\subsection{Moderator temperature coefficient and the boron ceiling}
+\label{sec:res-c8-mtc}
+
+The boron sweep and the swing table give the critical concentration of
+each candidate, and Section~\ref{sec:meth-mtc} defines the ceiling that
+concentration has to stay below at power. The ceiling was measured on
+C8-47, and Table~\ref{tab:c8-mtc} gives its two-dimensional screen and
+its value on the three-dimensional core model at the two primary
+conditions.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption{C8-47, zoned core: soluble boron ceiling at two primary conditions.}
+  \label{tab:c8-mtc}
+  \begin{tabular}{@{}rcrrrr@{}}
+    \toprule
+    Pressure & Bracket & 2D screen & 3D result & 3D weighted fit & 3D margin on 2327\,ppm \\
+    {[MPa]} & [K] & [ppm] & [ppm] & [ppm] & [ppm] \\
+    \midrule
+    15.5 & 570 to 590 & 2336 & 2997 & $2981 \pm 61$ & $+670$ \\
+    12.8 & 547 to 567 & 2255 & 2763 & $2762 \pm 70$ & $+436$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The ceilings are the two-point values of Section~\ref{sec:meth-mtc}, and
+a weighted linear fit over the scanned concentrations agrees with the
+three-dimensional values within one standard deviation at both
+pressures. The Doppler coefficient is negative and resolved throughout,
+from $-2.15$ to \SI{-1.79}{pcm} per K at \SI{15.5}{MPa} and from
+$-2.08$ to \SI{-1.85}{pcm} per K at \SI{12.8}{MPa}, so the temperature
+interpolation is active. The axial leakage contribution of
+Equation~\eqref{eq:axial-feedback} is $-10.63 \pm 0.55$\,pcm per K, 29
+per cent of the total coefficient of the three-dimensional core at the
+conditions of the scan, and it raises the ceiling by \SI{661}{ppm} at
+\SI{15.5}{MPa} and by \SI{508}{ppm} at \SI{12.8}{MPa}.
+
+Design 47 itself needs \SI{2327}{ppm} at beginning of life, measured
+as the root of its zoned reactivity curve at \SI{570}{K} with the
+state offset of \SI{157}{pcm} between the scan and the campaign
+operating point applied. The linear estimate of
+Table~\ref{tab:c8-swing} is \SI{2348}{ppm}. Its hump is negative, so
+beginning of life is its most reactive state, and it clears the
+three-dimensional ceiling by \SI{670}{ppm} at \SI{15.5}{MPa} and
+\SI{436}{ppm} at \SI{12.8}{MPa}. Under the two-dimensional screen it is
+marginal at \SI{15.5}{MPa}, \SI{9}{ppm} below 2336, and fails at
+\SI{12.8}{MPa}, \SI{72}{ppm} above 2255, a difference that the axial
+term of Section~\ref{sec:meth-mtc-3d} accounts for. The estimates of Table~\ref{tab:c8-swing} place the
+other candidates as follows, with the caution that the ceiling was
+measured on the lattice of design 47 only.
+
+\begin{enumerate}
+  \item Designs 53, 13 and 42 need 1312, 1697 and \SI{2377}{ppm}, all
+        with a negative hump, and lie below both ceilings. A second
+        record of design 13 gives \SI{1701}{ppm}, a difference below
+        the resolution of the estimate.
+
+  \item Design 31 needs \SI{1701}{ppm} at beginning of life and
+        \SI{2760}{ppm} at the maximum of its hump, \SI{3}{ppm} below the
+        three-dimensional ceiling at \SI{12.8}{MPa}.
+
+  \item Design 23 needs \SI{2979}{ppm}, \SI{18}{ppm} below the
+        three-dimensional ceiling at \SI{15.5}{MPa} and above the one at
+        \SI{12.8}{MPa}.
+
+  \item The five long-cycle members of the front, 29, 21, 59, 44 and 1,
+        need 3677 to \SI{4674}{ppm} at beginning of life, above both
+        ceilings.
+\end{enumerate}
+
+Boron control at a non-positive coefficient is therefore available to
+the short-cycle end of the front and to the two-bank subset, and not
+to the long-cycle designs. This is the same division that the
+controllability readings of Sections~\ref{sec:res-c8-tiers}
+and~\ref{sec:res-c8-zeroboron} drew.
+
+\subsection{The proxy gap on the zoned core}
+\label{sec:res-proxy-gap-zoned}
+
+The bridge model of Equation~\eqref{eq:bridge} was fitted in
+Section~\ref{sec:res-corevalidation} on the uniform-loading archive of
+Campaign~3, where it identified the reflector thickness and the pin
+pitch as the variables that set the ratio between the core and the
+assembly peaking factor. From Campaign~6 the evaluator builds the zoned
+core of Section~\ref{sec:meth-zoning}, and every archive from
+Campaign~4 onward stores both peaking factors of each design, the core
+value as the objective and the assembly value as the diagnostic of
+Section~\ref{sec:meth-core-objective}. The fit can therefore be
+repeated on the zoned core without new transport.
+
+Table~\ref{tab:proxy-gap-zoned} compares the four archives. The
+Campaign~3 row is not a sample mean: it is
+Equation~\eqref{eq:bridge-fit} evaluated at the operating point of
+Campaign~8, $p = \SI{1.26}{cm}$ and $t_\mathrm{refl} = \SI{4.0}{cm}$.
+The regression cannot be fitted on the Campaign~8 archive, whose pitch
+is fixed, so only the mean ratio is given for it. The zoned ratios were
+computed from the archived core and assembly peaking factors of the
+Campaign~6, 7 and 8 checkpoints.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption{Uniform and zoned archives: ratio of the core to the assembly peaking factor.}
+  \label{tab:proxy-gap-zoned}
+  \begin{tabular}{@{}llrcrr@{}}
+    \toprule
+    Archive & Loading & $n$ & Pitch & $F_{\Delta H}^\mathrm{core}/F_{\Delta H}^\mathrm{asm}$ & $R^2$ of \\
+     &  &  & [cm] & mean $\pm$ sd & Eq.~\eqref{eq:bridge} \\
+    \midrule
+    Campaign 3 & uniform & 36  & 1.15 to 1.43 & 1.814 (fit) & 0.746 \\
+    Campaign 6 & zoned   & 114 & 1.15 to 1.43 & $1.318 \pm 0.052$ & 0.030 \\
+    Campaign 7 & zoned   & 60  & 1.15 to 1.41 & $1.297 \pm 0.035$ & 0.052 \\
+    Campaign 8 & zoned   & 60  & 1.26 fixed   & $1.313 \pm 0.029$ & -- \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Three readings follow.
+
+\begin{enumerate}
+  \item The ratio is much smaller on the zoned core. The Campaign~3 fit
+        predicts 1.814 at the Campaign~8 operating point, and the
+        Campaign~8 archive gives 1.313. The quotient of the two, 1.38,
+        lies within the peaking reduction measured directly on two
+        Campaign~5 champions in Table~\ref{tab:zoning-confirm}, where
+        zoning lowered $F_{\Delta H}$ from 2.026 to 1.501 and from 2.043
+        to 1.473, factors of 1.35 and 1.39. The archive comparison and
+        the controlled comparison give the same zoning benefit.
+
+  \item The geometric dependence is lost. On the uniform core the two
+        regressors of Equation~\eqref{eq:bridge} explain three quarters
+        of the variance of the ratio. On the Campaign~6 archive, over
+        the same pitch range and with three times as many designs, they
+        explain 3 per cent, and 5 per cent on Campaign~7. Within its
+        scatter, the ratio on the zoned core depends on neither the
+        reflector thickness nor the pitch.
+
+  \item The ratio is stable between campaigns. The three zoned archives
+        give 1.318, 1.297 and 1.313, a spread of 0.021, smaller than
+        the standard deviation within each archive, 0.029 to 0.052,
+        over 234 designs and three different design spaces.
+\end{enumerate}
+
+The zoning was designed to remove this dependence. The assembly
+calculation has reflective boundaries, so it describes an infinite
+lattice of identical assemblies and measures only the pin-to-pin
+structure inside one assembly, 1.14 to 1.15 on the uniform Campaign~3
+finalists of Table~\ref{tab:core-finalists}. The core calculation keeps
+that structure and multiplies it, approximately, by the radial form
+factor, the ratio of the power of the hottest assembly to the core
+mean. On the uniform core the form factor is large and depends on the
+geometry, because the reflector and the pitch set how steeply the power
+falls toward the periphery. The zoned map enriches the periphery and
+derates the centre while the fissile balance of
+Equation~\eqref{eq:zoning-balance} holds the mean multiplier at one,
+and the form factor that results is smaller and insensitive to the two
+geometric variables.
+
+Two consequences follow for the method.
+
+\begin{enumerate}
+  \item The Campaign~4 decision to measure the core peaking inside the
+        loop holds on the zoned core as well. A constant ratio with a
+        relative scatter of 2.2 per cent on Campaign~8 corresponds to
+        about 0.036 in the core peaking factor. That is between two and
+        three times the seed-to-seed standard deviation of the core
+        solve at the archive fidelity, about 0.014
+        (Section~\ref{sec:res-c8-sigma}), and larger than the steps of
+        0.008 to 0.012 between the low-peaking designs of the front. A
+        corrected assembly value would place a design in the right
+        region of the objective plane but could not order the front on
+        the peaking axis, and at 3 per cent of an evaluation the
+        measurement is the cheaper choice.
+
+  \item Outside the loop, for screening, the assembly peaking predicts
+        the core peaking of the zoned core through a single calibrated
+        factor. The leakage-corrected reactivity target of
+        Section~\ref{sec:meth-ktarget} has the same property for the
+        multiplication factor: an assembly calculation carries the core
+        behaviour once a correction that is stable over the design
+        space is applied.
+\end{enumerate}
+
+The archive does not decide between a multiplicative and an additive
+correction. On Campaign~8 the ratio has a relative standard deviation
+of 2.2 per cent and the difference
+$F_{\Delta H}^\mathrm{core} - F_{\Delta H}^\mathrm{asm}$ is
+$+0.386 \pm 0.033$. Expressed in units of the core peaking factor the
+two scatters are of the same size, 0.03 to 0.04, because the archive
+spans a narrow range of peaking factors. The multiplicative form of
+Equation~\eqref{eq:bridge} is kept because the mechanism described
+above is the product of a local and a radial factor, and an additive
+offset fitted on this narrow range would not transfer to a core with a
+different local peaking.
+
 \subsection{Limitations of the post-analysis}
 \label{sec:res-c8-post-limits}
 
@@ -4863,11 +5095,10 @@ solve noise. Two consequences follow.
         hold-down margin over the cycle may then sit at that maximum. The
         depletion histories of the eleven designs are on disk and the
         maximum can be located without new transport.
-        \openpoint{Run c8\_khist\_hump.py on the eleven designs. If the
-        mid-cycle maximum of $k_\infty$ exceeds the xenon-free
-        beginning-of-life value, subtract the difference from every margin
-        of Sections~\ref{sec:res-c8-boron} and~\ref{sec:res-c8-zeroboron}
-        before the candidate decision.}
+        The operating maximum was located from those histories in
+        Section~\ref{sec:res-c8-closures}, where the hump of $-1723$ to
+        $+4955$\,pcm on the core is applied to the margins before the
+        candidate decision.
 
   \item The cycle lengths of the archive are those of a core held at
         1000\,ppm for the whole cycle, because the depleting assembly
@@ -4888,15 +5119,6 @@ solve noise. Two consequences follow.
         the power-shape penalty of operating with regulating banks
         partly inserted through the cycle.
 
-  \item Design 13 carries no three-dimensional confirmation at
-        1000\,ppm. Its two-bank status rests on the two-dimensional
-        screen, which the confirmation of the other ten designs shows to
-        be conservative by \num{2062} to \SI{2671}{pcm} in that state, so
-        the status is expected to hold, but it is not measured.
-        \openpoint{Run confirm3d.py on design 13 in the three rod states
-        with two seeds, twelve solves, about fifty minutes, into
-        confirm3d\_c8.}
-
   \item The boron sweep is a single-seed study. Its eigenvalues are
         confirmed by the two-seed solves of stage D at 0\,ppm and by the
         archive at 1000\,ppm, but its rodded peaking factors carry the
@@ -4913,21 +5135,1378 @@ solve noise. Two consequences follow.
         %% tier A from tier B in the candidate decision.
 \end{enumerate}
 
-%% AUTHOR: candidate decision. The post-analysis supports the following
-%% reading, to be confirmed by the hump check. Design 47 satisfies all
-%% three readings at once: it is the low-peaking floor of the feasible
-%% front (1941 EFPD, F 1.510, 4.39 wt%), it is two-bank controllable at
-%% 1000 ppm on the three-dimensional core (+1330 pcm), and it satisfies
-%% eq:boronfree-necessary (+3069 pcm under the four regulating banks at
-%% 0 ppm), one of only two front members that do, the other being 42 at
-%% +2841 pcm. Its 1941 EFPD are 6.6 calendar
-%% years at a capacity factor of 0.8, above the four-to-five-year
-%% interval reported for the prototype, so the short cycle is a cost
-%% relative to the rest of the front, not a shortfall against the
-%% reference envelope. The long-cycle alternative with boron is design 21
-%% at the knee (4221 EFPD, F 1.592, 7.81 wt%), four-bank only, not
-%% boron-free. The two-bank long-cycle alternative is design 31 (3381
-%% EFPD, F 1.650, 6.59 wt%, at the enrichment reported in 2014), holding
-%% 5856 pcm with two banks in 3D and 8684 pcm boron-free. Write the
-%% choice and the physical argument here and in conclusions.tex.
+\subsection{Candidate decision}
+\label{sec:res-c8-decision}
 
+Design 47 is the candidate carried forward, because it satisfies the
+three readings of the post-analysis at once. It is the low-peaking
+floor of the feasible front, at 1941\,EFPD, $F_{\Delta H} = 1.510$ and
+4.39\,wt\% assembly enrichment. It is controllable with the first two
+regulating banks at 1000\,ppm on the three-dimensional core, with a
+margin of 1330\,pcm that survives the gadolinium hump because its
+beginning of life is its most reactive state
+(Table~\ref{tab:c8-swing}). And it satisfies the necessary condition
+for boron-free operation of Equation~\eqref{eq:boronfree-necessary},
+holding 3069\,pcm under the four regulating banks at 0\,ppm, one of
+only two front members that do, the other being its twin 42 at
+2841\,pcm, whose two-bank status the seed noise does not resolve.
+
+Its cycle length is the shortest on the front, and the short cycle is
+a cost relative to the rest of the front and not a shortfall against
+the reference envelope: 1941\,EFPD is 6.6 calendar years at a capacity
+factor of 0.8, above the five years reported for the
+prototype (Section~\ref{sec:res-c8-mission}). The physical reason the
+same design leads all three readings is the one stated in
+Section~\ref{sec:res-c8-split}. Every reading rewards a small
+beginning-of-life excess, and the design at the low-enrichment end of
+the front carries the smallest excess that still meets the mission.
+
+Two alternatives are recorded for a decision that weighs cycle length
+more heavily. With boron, design 21 at the knee of the front gives
+4221\,EFPD at $F_{\Delta H} = 1.592$ and 7.81\,wt\%, controllable by
+the four banks only and not boron-free. Under two-bank control, design
+31 gives 3381\,EFPD at $F_{\Delta H} = 1.650$ and 6.59\,wt\%, the
+enrichment reported for the prototype in 2014, holding 5856\,pcm with
+two banks on the three-dimensional core at beginning of life and
+8684\,pcm boron-free under four banks, but its hump of 4955\,pcm
+removes the two-bank margin at the operating maximum
+(Section~\ref{sec:res-c8-closures}).
+
+Design 47 is the candidate of the Campaign 8 formulation. Scored on the
+objectives of Campaign 9 it is dominated by members of the Campaign 9
+front, as Section~\ref{sec:res-c9-compare} shows.
+
+\subsection{Retrospective scoring of the reformulated problem}
+\label{sec:res-c8-retro}
+
+Before Campaign 9 was launched, the reformulation of
+Section~\ref{sec:concl-reform} was scored on the archives of
+Campaigns 7 and 8 with no transport, using
+\texttt{c8\_reformulation\_retro.py}, in two parts.
+
+The first part applies the control screen at the operating maximum of
+each depletion history instead of at beginning of life. On the 58
+scored Campaign 7 designs the screen then passes 32 designs against 38
+at beginning of life, and removes designs 11, 48, 49, 53, 54 and 55. On
+Campaign 8 it changes the verdict of design 31 alone.
+
+The second part minimises $F_{\Delta H}$ and the critical boron
+concentration at the operating maximum on the Campaign 8 archive,
+subject to a cycle-length floor and to $F_{\Delta H} \le 1.65$. With
+no measured concentration outside the eleven post-analysis designs, the
+concentration is estimated from a boron-worth law fitted on those
+eleven.
+
+\begin{equation}
+w_\mathrm{B}(e) = 23.292\, e^{-0.8496}
+\label{eq:wb-proxy}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $w_\mathrm{B}$ is the differential boron worth, in pcm per ppm.
+
+  \item $e$ is the assembly enrichment, in wt\%.
+\end{itemize}
+
+The fit has a relative root-mean-square residual of \SI{1.6}{\%}, and
+its largest error on a critical concentration is \SI{138}{ppm}. The
+concentration is scored at the operating maximum, humps below
+\SI{400}{pcm} are set to zero, the measured rodded screen is used
+where a measurement exists, and a design whose score depends on an
+extrapolation of the law is flagged. Table~\ref{tab:c8-retro} gives
+the front at three floors.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption{Campaign 8 archive, reformulated problem: front at three cycle-length floors.}
+  \label{tab:c8-retro}
+  \begin{tabular}{@{}rll@{}}
+    \toprule
+    Floor [EFPD] & Calendar interval & Front (Campaign 8 designs) \\
+    \midrule
+    1826 & five years at a capacity factor of one & 13, 47 \\
+    2557 & seven years & 22, 40, 51 \\
+    2922 & eight years & 19, 22, 36, 43, 51 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The five-year front is the only one whose members all carry a measured
+control margin, a three-dimensional confirmation and a measured
+critical concentration. The longer fronts rest on extrapolations of
+Equation~\eqref{eq:wb-proxy}, flagged for designs 43 and 51. The floor
+of 1826\,EFPD was adopted for Campaign 9, and the boron worth was
+measured on every design there instead of estimated.
+
+
+\section{Campaign 9: the reformulated objective set}
+\label{sec:res-c9}
+
+Campaign 8 closed with a question. The controllability constraint, and
+not the cycle length, decided which designs survived, and the
+retrospective of Section~\ref{sec:res-c8-retro} showed that an objective
+set built around the soluble boron requirement would select a different
+part of the archive. Campaign 9 runs that formulation instead of
+inferring it.
+
+The campaign changes the formulation of Section~\ref{sec:meth-c9} and
+keeps everything else. The design space, the transport fidelity, the
+depletion schedule, the leakage-corrected target and the zoned loading map
+of Section~\ref{sec:meth-zoning} are those of Campaign 8, so a difference
+in outcome is attributable to the reformulation. Design indices from this
+section onward carry the prefix of their campaign: C9-47 and C8-47 are
+different designs that happen to share an archive index.
+
+\subsection{Measurement and cost}
+\label{sec:res-c9-formulation}
+
+The objectives are $F_{\Delta H}$ and the critical boron concentration at
+the operating maximum, Equations~\eqref{eq:c9-problem}
+and~\eqref{eq:c9-cmax}. The control screen is applied at the operating
+maximum through Equation~\eqref{eq:margin-peak}, and the guards that clamp
+the objective at \SI{0}{ppm} and clip it at \SI{6000}{ppm} are those of
+Section~\ref{sec:meth-c9}. The boron worth is measured in every evaluation
+and is not taken from the power law of Equation~\eqref{eq:wb-proxy}.
+
+That measurement also tests the correlation it replaces. The power law was
+fitted on eleven Campaign 8 designs, and Campaign 9 measures the worth of
+sixty, an independent sample more than five times larger than the fit.
+Figure~\ref{fig:c9-wb-proxy} compares the two: the upper panel draws the
+worth against enrichment, and the lower panel the relative residual of the
+law with its root-mean-square band shaded. The relative root-mean-square
+deviation is \SI{3.5}{\%} with a mean bias of \SI{-1.2}{\%}, and the
+agreement is not uniform. Below \SI{5.6}{wt\%}, where every feasible design
+lies, the bias is \SI{-0.3}{\%} and the scatter \SI{2.6}{\%}. Above that
+value the law overestimates the worth by \SI{3.6}{\%} on average. Two
+consequences follow, and they point in opposite directions.
+
+\begin{enumerate}
+  \item Inside the converged region the correlation would have been
+        adequate. A \SI{2.6}{\%} error in the worth is a \SI{2.6}{\%} error
+        in the concentration, about \SI{45}{ppm} at \SI{1700}{ppm}, against
+        a front that spans \SI{502}{ppm}, so the ranking of the front would
+        not have changed.
+
+  \item Outside it the correlation degrades where the archive is most
+        uncertain. The high-enrichment designs whose concentration reaches
+        the clip are the ones the law overestimates, so a
+        correlation-driven campaign would have compounded an extrapolated
+        worth with an extrapolated root. Measuring removes that compounding
+        at a cost of \SI{14.5}{\%} of the campaign.
+\end{enumerate}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.80\textwidth]{c9_wb_proxy}
+  \caption{Campaign 9, 60 designs: measured differential boron worth against the Campaign 8 power law.}
+  \label{fig:c9-wb-proxy}
+\end{figure}
+
+The campaign ran 60 evaluations in \SI{18.65}{h} on the reference
+workstation, and the boron measurement took \SI{2.71}{h} of that,
+\SI{14.5}{\%}, at one or two extra core solves per design. That is five
+times the \SI{3}{\%} increment that moved the peaking objective to core
+level in Campaign 4. Figure~\ref{fig:c9-cost} separates the total: the
+left panel gives the aggregate wall time by component, and the right panel
+the wall time of each evaluation, separated by the number of boron solves,
+with the design of experiments shaded. Depletion at assembly level takes
+\SI{10.47}{h}, \SI{56}{\%} of the campaign, and the three core solves of
+the screens and of the reference concentration take \SI{5.28}{h} together.
+The new measurement is therefore not the expensive part of an evaluation,
+because of the adaptive bracket. Ninety boron solves were needed for sixty
+designs, 1.5 per design, since a single solve at \SI{2000}{ppm} already
+brackets the root whenever the design is near criticality at the reference
+concentration. The designs that needed a second solve are the
+high-enrichment ones that the constraint set rejects in any case, visible
+in the right panel as the group near 30 minutes inside the design of
+experiments.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{c9_cost}
+  \caption{Campaign 9: wall time by component and per evaluation.}
+  \label{fig:c9-cost}
+\end{figure}
+
+\subsection{The feasible set and the Pareto front}
+\label{sec:res-c9-front}
+
+Of the 60 designs evaluated, 22 satisfy every constraint, and 20 of those
+need less boron than the ceiling of C9-47, \SI{2897}{ppm} at
+\SI{12.8}{MPa} in three dimensions (Section~\ref{sec:res-c9-ceiling}).
+That ceiling belongs to one lattice and serves here only as a reference
+line, because Section~\ref{sec:res-c9-ceiling} shows that every design has
+its own. Thirteen of the 22 pass the two-bank screen of Campaign 8, a
+two-dimensional reading at \SI{1000}{ppm}. The Pareto front holds five
+designs, listed in Table~\ref{tab:c9-front}. Every concentration in the
+table is interpolated between measured points, and the last column is the
+two-bank reading at the operating maximum, recorded and not constrained.
+
+\paragraph{Controllability measured where the design operates.}
+The two-bank reading carried through the campaign is evaluated on a
+two-dimensional core at a fixed \SI{1000}{ppm}, which is neither the
+geometry nor the concentration of the operating state. The front was
+therefore re-solved on the three-dimensional core model of Section~\ref{sec:res-c8-3d},
+at each design's own critical boron, in three states: all rods out, all
+rods in, and the first two regulating banks inserted.
+
+At their own critical concentration the five front designs give an
+unrodded multiplication factor of 0.97014 to 0.97111 on the three-dimensional core model.
+With the first two banks inserted the factor falls to 0.90453 to 0.90713,
+a worth of 7263 to \SI{7495}{pcm}, and with all four banks to 0.83819 to
+0.84231, a worth of 15\,746 to \SI{16245}{pcm}. Three readings follow:
+
+\begin{enumerate}
+  \item Every front member is held subcritical by the first two banks alone,
+        with 9228 to \SI{9545}{pcm} of margin against the 0.99 screen of
+        Section~\ref{sec:meth-core-objective}. The two-bank capability of
+        these designs is roughly nine times what the screen demands.
+
+  \item The two-dimensional screen overstates the bank worth by 4 to
+        \SI{7}{\%}. The same two banks are worth 7651 to \SI{7812}{pcm} in
+        two dimensions against 7263 to \SI{7495}{pcm} on the three-dimensional core model,
+        because the axial reflector and the parked rods change the flux shape
+        the banks see. The screen is therefore optimistic, and it remains
+        usable because the margin it screens is an order of magnitude larger
+        than the error.
+
+  \item The spread across the front is small. The two-bank worth varies by
+        \SI{3}{\%} over designs whose gadolinia loading varies by a factor of
+        1.7, so the absorber loading has little influence on the bank worth
+        at the concentrations these designs run at.
+\end{enumerate}
+
+The same measurement on the thirteen two-bank designs at \SI{1000}{ppm}
+gives a four-bank worth of 15\,283 to \SI{16285}{pcm}. In the unrodded
+state it also gives the axial factor, the ratio of the two-dimensional to
+the three-dimensional multiplication factor, of 1.0298 to 1.0312,
+consistent with the 1.0289 of Campaign 6 and with the 1.0304 of the
+parked-rod study of Section~\ref{sec:res-c8-3d}. This factor is measured at
+beginning of life only, because no depletion was run in three dimensions.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Campaign 9 Pareto front in $(F_{\Delta H}, c_\mathrm{max})$, sorted by boron demand.}
+  \label{tab:c9-front}
+  \small
+  \begin{tabular}{@{}lrrrrrrrrc@{}}
+    \toprule
+    Design & $e$ & Gd$_2$O$_3$ & pins & $t_\mathrm{refl}$ & EFPD &
+    $F_{\Delta H}$ & $c_\mathrm{BOL}$ & $c_\mathrm{max}$ & two \\
+     & wt\% & wt\% & & cm & d & & ppm & ppm & banks \\
+    \midrule
+    C9-47 & 4.46 & 4.42 & 20 & 5.66 & 1947 & 1.545 & 1406 & 1406 & yes \\
+    C9-44 & 4.24 & 3.15 & 20 & 5.66 & 1858 & 1.539 & 1334 & 1496 & yes \\
+    C9-34 & 4.26 & 3.32 & 16 & 5.66 & 1841 & 1.496 & 1725 & 1725 & yes \\
+    C9-40 & 4.23 & 2.71 & 16 & 5.66 & 1870 & 1.495 & 1768 & 1768 & yes \\
+    C9-35 & 4.36 & 2.63 & 16 & 5.65 & 1938 & 1.490 & 1908 & 1908 & yes \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Four readings follow.
+
+\begin{enumerate}
+  \item The front is narrow. It spans 0.055 in $F_{\Delta H}$ and
+        \SI{502}{ppm} in $c_\mathrm{max}$, and every member lies between
+        4.23 and \SI{4.46}{wt\%}. The reformulated problem offers a much
+        smaller trade than the cycle-length formulation did.
+
+  \item The reflector is at its upper bound of \SI{5.66}{cm} on every
+        member, and the tightest vessel-fit value in the archive is
+        $g_\mathrm{geom} = \SI{-0.009}{cm}$. The limit is set by the
+        \SI{90}{cm} vessel inner radius, and the front uses every
+        centimetre of reflector the vessel permits.
+
+  \item The whole front is two-bank controllable at the operating maximum
+        on the two-dimensional core. In Campaign 8 three designs of sixty
+        met that reading, 12, 13 and 53 once design 31 had lost its margin
+        to its hump, and none of them was on the front. The reformulation
+        moves the front into the controllable region.
+
+  \item Every front concentration is bracketed by measured points, so no
+        front value depends on an extrapolated boron worth.
+\end{enumerate}
+
+The second reading holds over the whole campaign, not only on the front.
+Figure~\ref{fig:c9-design-space} follows each design variable along the
+evaluation order, with the box bounds dotted, the design of experiments
+shaded and the feasible designs filled. The reflector reaches its bound at
+the first infill iteration and stays there, and the enrichment collapses
+from the full 2.0 to \SI{13.9}{wt\%} box to a band narrower than
+\SI{0.5}{wt\%} around \SI{4.3}{wt\%}. The gadolinia content and the pin
+count stay spread over most of their ranges to the last evaluation, so the
+optimiser found no single best absorber loading and trades it against the
+peaking objective inside an otherwise fixed design.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{c9_design_space}
+  \caption{Campaign 9: the four design variables along the evaluation order.}
+  \label{fig:c9-design-space}
+\end{figure}
+
+Table~\ref{tab:c9-constraints} shows which constraints bind. The mission
+constraint rejects the most designs, 22 of 60, followed by the reactivity
+ceiling and the two control readings.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Campaign 9 archive, 60 evaluations: constraint satisfaction.}
+  \label{tab:c9-constraints}
+  \small
+  \begin{tabular}{@{}lrrr@{}}
+    \toprule
+    Constraint & Satisfied & Minimum & Maximum \\
+    \midrule
+    $g_{k\min}$            & 50/60 & $-0.283$ & $+0.246$ \\
+    $g_{k\max}$            & 46/60 & $-0.392$ & $+0.137$ \\
+    $g_\mathrm{enr}$       & 60/60 & $-13.181$ & $-0.076$ \\
+    $g_\mathrm{peak}$      & 55/60 & $-0.163$ & $+0.210$ \\
+    $g_\mathrm{geom}$      & 60/60 & $-3.546$ & $-0.009$ \\
+    $g_\mathrm{efpd}$      & 38/60 & $-5928.7$ & $+1826.0$ \\
+    $g_\mathrm{ctrl,peak}$ & 47/60 & $-0.358$ & $+0.119$ \\
+    $g_\mathrm{ctrl}$      & 47/60 & $-0.326$ & $+0.132$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Figure~\ref{fig:c9-pareto} places the archive in the objective plane. Open
+circles are the 38 infeasible designs and filled circles the 22 feasible
+ones, coloured by cycle length. The connected line is the five-member
+front, labelled by archive index. The dashed and dotted horizontal lines
+are the three-dimensional ceilings of C9-47, \SI{2897}{ppm} at
+\SI{12.8}{MPa} and \SI{3244}{ppm} at \SI{15.5}{MPa}, drawn as reference
+lines and not as constraints, and the shaded band at the top is the
+\SI{6000}{ppm} clip. Three features stand out before the front itself:
+
+\begin{enumerate}
+  \item The feasible designs form a band. They span 1.490 to 1.647 in
+        $F_{\Delta H}$ and 1406 to \SI{4371}{ppm} in $c_\mathrm{max}$, and
+        the five front members occupy 0.055 of the first range. The boron
+        objective separates these designs while the peaking objective
+        barely does, which is what makes the front narrow.
+
+  \item The designs at the clip are all infeasible. Eight designs sit on
+        the \SI{6000}{ppm} plateau and every one is rejected on the
+        reactivity or the control constraints, so the plateau never
+        competes for a place on the front and the clip never influences the
+        selection.
+
+  \item Two feasible designs lie above both reference lines, C9-10 at
+        \SI{4371}{ppm} and C9-12 at \SI{3003}{ppm}. Feasibility in the
+        optimisation sense and operability are different properties, which
+        is why the ceiling is drawn on the figure and not imposed as a
+        constraint. C9-12 was scanned on its own lattice
+        (Section~\ref{sec:res-c9-ceiling}) and fails its own ceiling by
+        \SI{912}{ppm}, so the reference line understates its problem. No
+        front member comes within \SI{980}{ppm} of the ceiling of C9-47.
+\end{enumerate}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\textwidth]{c9_front}
+  \caption{Campaign 9 archive in the reformulated objective plane.}
+  \label{fig:c9-pareto}
+\end{figure}
+
+\subsection{Convergence and the reliability of the search}
+\label{sec:res-c9-convergence}
+
+The hypervolume history of the campaign is
+\begin{equation*}
+[\,879.1,\; 1244.5,\; 1291.4,\; 1291.6,\; 1318.5,\; 1318.5,\; 1318.5\,],
+\end{equation*}
+the first value being the design of experiments. Figure~\ref{fig:c9-hv}
+draws the absolute hypervolume in the left panel and the gain of each
+iteration against the \SI{1}{\%} threshold of the stopping rule in the
+right. The first infill iteration is worth \SI{41.6}{\%}, the second
+\SI{3.8}{\%} and the fourth \SI{2.1}{\%}, while iterations three, five and
+six contribute \SI{0.02}{\%} or less. The gains are not monotone. A rule
+that stopped at the first iteration below the threshold would have stopped
+at iteration three and missed the \SI{2.1}{\%} of iteration four, which is
+the error the three-iteration window of Section~\ref{sec:meth-loop} guards
+against.
+
+Under that window Campaign 9 is in the same position as Campaign 8
+(Section~\ref{sec:res-c8-limits}). The gain fell below \SI{1}{\%} in the
+last two iterations, so the third consecutive observation is missing and
+the formal rule is not met. The hypervolume was nonetheless identical to
+seven digits over the last three recorded values, and the cross-validation
+and stability tests below find no sign that a further iteration would have
+changed the front, so the front is reported as the best available and
+effectively converged.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{c9_hv}
+  \caption{Campaign 9: hypervolume history and gain per iteration.}
+  \label{fig:c9-hv}
+\end{figure}
+
+The infill is also visible in the objective. Figure~\ref{fig:c9-learning}
+follows the boron requirement along the evaluation order, with the design
+of experiments shaded, the best feasible value so far as a step line and
+the phase means dashed. The mean falls from \SI{3977}{ppm} over the 24
+designs of the Latin hypercube to \SI{1861}{ppm} over the 36 infill
+designs, a factor of 2.1, and the best feasible value improves in seven
+steps from 2615 to \SI{1406}{ppm}. Four of those steps fall in the first
+six infill evaluations and the last at evaluation 47 of 60, consistent with
+the flat tail of the hypervolume.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.86\textwidth]{c9_learning}
+  \caption{Campaign 9: boron requirement along the evaluation order.}
+  \label{fig:c9-learning}
+\end{figure}
+
+Two tests check whether that flat tail is convergence or exhaustion.
+
+\paragraph{Surrogate cross-validation.}
+Table~\ref{tab:c9-cv} gives the leave-one-out performance of the Gaussian
+process on the full archive and on the feasible subset. The coverage is the
+fraction of designs whose measured value falls inside the predicted
+two-standard-deviation interval.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Campaign 9 surrogates: leave-one-out cross-validation.}
+  \label{tab:c9-cv}
+  \small
+  \begin{tabular}{@{}llrrr@{}}
+    \toprule
+    Objective & Set & $R^2$ & RMSE & Coverage \\
+    \midrule
+    $F_{\Delta H}$    & all 60      & $+0.862$ & 0.026 & 0.92 \\
+    $F_{\Delta H}$    & feasible 22 & $+0.276$ & 0.039 & 0.82 \\
+    $c_\mathrm{max}$  & all 60      & $+0.964$ & \SI{342}{ppm} & 0.87 \\
+    $c_\mathrm{max}$  & feasible 22 & $+0.387$ & \SI{530}{ppm} & 0.86 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The coefficient of determination drops on the feasible subset for two
+reasons, and the drop should not be quoted without them.
+
+\begin{enumerate}
+  \item The coefficient measures accuracy relative to the spread of the
+        data. The full archive spans $c_\mathrm{max}$ from \SI{0}{ppm} to
+        the \SI{6000}{ppm} clip, while the feasible subset spans 1406 to
+        \SI{3003}{ppm} once its single long-cycle outlier, C9-10, is set
+        aside. The denominator shrinks by about an order of magnitude and
+        the numerator does not.
+
+  \item The feasible fit has 21 training points for a four-dimensional
+        kernel with automatic relevance determination, clustered inside a
+        \SI{0.3}{wt\%} enrichment band, which leaves the kernel little
+        leverage to identify its length scales.
+\end{enumerate}
+
+For the acquisition the coverage matters more, and it holds at 0.82 and
+0.86 on the feasible subset, close to the nominal 0.954. The Campaign 8
+surrogate reached 0.89 on its feasible subset (Table~\ref{tab:c8-cv-loo}),
+so the Campaign 9 surrogate is somewhat less well calibrated on the
+feasible designs, but not to the point of steering the acquisition. Inside
+the converged region the design-to-design variation of the objectives is
+comparable to the measurement noise, so the surrogate cannot resolve which
+candidate is better and the acquisition cannot propose a new one. The low
+feasible-subset $R^2$ and the flat hypervolume record the same state.
+
+\paragraph{Front stability.}
+Each archived objective was perturbed by a noise of 0.010 in $F_{\Delta H}$
+and \SI{10}{ppm} in $c_\mathrm{max}$, and the feasible non-dominated set
+was recomputed 2000 times. Table~\ref{tab:c9-stability} gives the frequency
+with which each design appears on the front, omitting designs below
+\SI{5}{\%}. The peaking noise was assumed at the time and is compared with
+the measured value in Section~\ref{sec:res-c9-peaking}.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Campaign 9 archive, 2000 noise perturbations: Pareto membership frequency.}
+  \label{tab:c9-stability}
+  \small
+  \begin{tabular}{@{}lrc@{}}
+    \toprule
+    Design & Frequency & On the nominal front \\
+    \midrule
+    C9-47 & 1.00 & yes \\
+    C9-34 & 1.00 & yes \\
+    C9-44 & 0.59 & yes \\
+    C9-40 & 0.54 & yes \\
+    C9-35 & 0.45 & yes \\
+    C9-29 & 0.31 & no \\
+    C9-30 & 0.24 & no \\
+    C9-12 & 0.21 & no \\
+    C9-54 & 0.10 & no \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Figure~\ref{fig:c9-front-stability} draws the same frequencies. Coloured
+bars are members of the nominal front, grey bars are designs that join it
+only under the noise, and the dotted line is a simple majority. The front
+separates into three groups. C9-47 and C9-34 are on it in every resample,
+a robust core of two designs. C9-44, C9-40 and C9-35 sit around the
+majority line, so their membership is decided by the noise, and C9-35
+falls short of a majority. C9-29 and C9-30 are excluded from the nominal
+front by margins smaller than the noise and join it in about a quarter of
+the resamples, so the candidate set carried forward from this campaign is
+the seven designs of these three groups, and not only the five of
+Table~\ref{tab:c9-front}. C9-12 also joins the front in a fifth of the
+resamples, but it fails the ceiling of its own lattice
+(Section~\ref{sec:res-c9-ceiling}).
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.80\textwidth]{c9_front_stability}
+  \caption{Campaign 9 archive, 2000 noise perturbations: Pareto membership frequency.}
+  \label{fig:c9-front-stability}
+\end{figure}
+
+The hypervolume of the perturbed fronts exceeds that of the nominal front
+by a factor of $1.028 \pm 0.024$. The front is a set of extremes: a design
+pushed by the noise toward lower values of both objectives joins it, while
+a design pushed the other way is replaced. The selection is one-sided, as in
+the winner's curse, and the \SI{2.8}{\%} excess measures how much of the
+apparent quality of a front comes from selection.
+
+\subsection{Scoring under the original formulation}
+\label{sec:res-c9-discarded}
+
+The Campaign 9 archive can be scored under the Campaign 8 objectives,
+maximum cycle length and minimum peaking, with the Campaign 8 constraint
+set. Under those rules 35 of the 60 designs are feasible and seven are
+non-dominated, and only one of the seven, C9-35, is also on the Campaign 9
+front. Table~\ref{tab:c9-depth} gives the non-domination depth of each
+Campaign 9 front member under the Campaign 8 objectives, over those 35
+designs. A depth of one means the design would have been selected, and a
+higher depth counts the fronts that would have to be removed first.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Campaign 9 front scored under the Campaign 8 objectives: non-domination depth.}
+  \label{tab:c9-depth}
+  \small
+  \begin{tabular}{@{}lcr@{}}
+    \toprule
+    Design & Depth under the C8 objectives & $c_\mathrm{max}$ [ppm] \\
+    \midrule
+    C9-47 & 3 & 1406 \\
+    C9-44 & 4 & 1496 \\
+    C9-34 & 3 & 1725 \\
+    C9-40 & 2 & 1768 \\
+    C9-35 & 1 & 1908 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Four of the five front members, including C9-47, would have lain two to
+four fronts deep and would never have entered the Campaign 8 candidate
+set. The objective set decided the Campaign 8 outcome, and the search found
+what that set asked for.
+
+Figure~\ref{fig:c9-two-formulations} shows the same fact in the Campaign 8
+objective plane. Crosses are designs the Campaign 8 constraint set rejects,
+grey circles the 35 it accepts and open squares the seven its objectives
+select, circles outlined in colour are the Campaign 9 front coloured by
+boron requirement, and the dashed vertical line is the mission floor. The
+Campaign 9 front members sit in the interior of the plane, short of the
+cycle-length frontier, where a cycle-length objective does not look. The
+inset enlarges their cluster. They occupy \SI{106}{d} of cycle length, 1841
+to \SI{1947}{d}, which the Campaign 8 objectives read as the worst corner of
+the feasible set on the cycle-length axis, while the peaking objective
+barely separates them. Only C9-35 is picked up by both formulations, and it
+has the highest boron requirement of the five, \SI{1908}{ppm}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.92\textwidth]{c9_two_formulations}
+  \caption{Campaign 9 archive in the Campaign 8 objective plane.}
+  \label{fig:c9-two-formulations}
+\end{figure}
+
+The seven designs the Campaign 8 objectives would select span 1813 to
+\SI{4163}{d} and need 1452 to \SI{4371}{ppm}. Three of them, C9-55 at
+\SI{2923}{ppm}, C9-12 at \SI{3003}{ppm} and C9-10 at \SI{4371}{ppm},
+exceed the ceiling of C9-47, \SI{2897}{ppm}, and C9-12 also fails the
+ceiling of its own lattice by \SI{912}{ppm}. An objective set built on cycle
+length
+would again have placed a substantial part of its selection outside the
+operable region, the Campaign 8 outcome reproduced on a different archive.
+
+\subsection{Comparison with the Campaign 8 candidates}
+\label{sec:res-c9-compare}
+
+The two campaigns do not converge on the same designs. C8-47 lies at a
+normalised design-space distance of 0.401 from the nearest Campaign 9 front
+member, and C8-13 at 0.722, both far outside the minimum infill separation
+of 0.14. Much of that distance is the reflector, 4.29 and \SI{3.15}{cm}
+against 5.65 to \SI{5.66}{cm} on the Campaign 9 front. Inside the Campaign 8
+box the reflector is worth only about \SI{52}{pcm} per centimetre through
+the target (Section~\ref{sec:res-c8-refl}). At the mission floor, where
+every design sits near the minimum reactivity the cycle needs, that small
+gain lowers the enrichment required, and the enrichment drives the boron
+demand, which is consistent with a boron objective pushing every front
+member to the reflector bound.
+
+Placed on the Campaign 9 objectives, both Campaign 8 designs that the
+retrospective of Section~\ref{sec:res-c8-retro} selected at the same floor
+are dominated. Both have a negative hump, so their concentration at the
+operating maximum is the beginning-of-life value.
+
+\begin{enumerate}
+  \item C8-47, at $F_{\Delta H} = 1.510$, \SI{2327}{ppm} and 1941\,EFPD, is
+        dominated by C9-35, C9-40 and C9-34, which need 419 to
+        \SI{602}{ppm} less boron at a peaking factor lower by 0.014 to
+        0.020. The peaking differences are within about one and a half seed
+        standard deviations of Campaign 8, so the dominance rests on the
+        boron demand.
+
+  \item C8-13, at $F_{\Delta H} = 1.632$, \SI{1697}{ppm} and 2383\,EFPD, is
+        dominated by C9-47 and C9-44 on both objectives, by 291 and
+        \SI{201}{ppm} and by 0.087 and 0.093 in peaking.
+\end{enumerate}
+
+C8-53 needs \SI{1312}{ppm}, less than any member of the Campaign 9 front,
+but its cycle of 1142\,EFPD does not meet the floor. The comparison is
+indicative, because the Campaign 8 concentrations come from the
+post-analysis, a measured root for C8-47 and a linear estimate for C8-13,
+while the Campaign 9 concentrations come from the probe solves of the
+evaluator.
+
+\subsection{Gadolinia, boron demand and the mid-cycle hump}
+\label{sec:res-c9-gd}
+
+The mechanism behind the front shows in the 16 feasible designs within
+\SI{0.35}{wt\%} of the mean front enrichment of \SI{4.31}{wt\%}. Over that
+band the gadolinia loading spans 0.14 to \SI{5.22}{wt\%} and the boron
+requirement 1406 to \SI{3003}{ppm}, at nearly constant enrichment and with
+the same reflector on all but one design. Table~\ref{tab:c9-gd-corr} gives
+the rank correlations. The Spearman coefficients use average ranks, which
+is necessary because the hump is set to zero below its \SI{400}{pcm} noise
+floor and nine designs are tied there, and the inventory is the product of
+the gadolinia weight fraction and the number of poisoned pins.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Campaign 9 feasible designs at $4.31 \pm \SI{0.35}{wt\%}$: rank correlations with the gadolinia loading.}
+  \label{tab:c9-gd-corr}
+  \small
+  \begin{tabular}{@{}llrrr@{}}
+    \toprule
+    Predictor & Response & Spearman $\rho_S$ & $p$ & Kendall $\tau_b$ \\
+    \midrule
+    Gd weight fraction & $c_\mathrm{max}$ & $-0.932$ & $1.5\times10^{-7}$ & $-0.817$ \\
+    Gd inventory       & $c_\mathrm{max}$ & $-0.953$ & $1.2\times10^{-8}$ & --- \\
+    Gd weight fraction & hump             & $-0.723$ & $0.002$ & $-0.598$ \\
+    Gd inventory       & hump             & $-0.684$ & $0.003$ & --- \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+At fixed enrichment the boron requirement falls by \SI{1597}{ppm} as the
+gadolinia rises. The cycle-length formulation could not reward that
+relation, because gadolinia entered it only as a cost against cycle length.
+
+\paragraph{The two predictors.}
+The weight fraction and the inventory give $-0.932$ and $-0.953$, and the
+archive does not show that the inventory is the better variable. Over the
+band the two predictors have a rank correlation of $+0.988$ with each other,
+because the weight fraction varies by a factor of 37 while the pin count
+varies by a factor of 2.7. A difference of 0.021 between two predictors
+that order the designs almost identically cannot be resolved on 16 samples,
+and the same applies to the hump, where the weight fraction leads by 0.039.
+
+\paragraph{Matched comparisons.}
+Comparing designs matched in one variable and differing in the other
+removes the confounding. Five pairs in the band share a gadolinia weight
+fraction to within \SI{0.25}{wt\%} and differ in pin count. In four of the
+five the design with more poisoned pins needs less boron, by 229 to
+\SI{387}{ppm}, but three of those four involve the same 12-pin design, so
+they amount to two independent observations. The fifth pair reverses, and
+both its members carry almost no gadolinia, 0.14 and \SI{0.33}{wt\%}, so the
+relation does not hold at negligible loading.
+
+The hump allows a sharper test. Two pairs in the band are matched in
+inventory to within \SI{7}{\%} and differ in concentration, and
+Table~\ref{tab:c9-pairs} lists them. Both pairs carry the same reflector of
+\SI{5.66}{cm}.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Campaign 9 feasible designs matched in gadolinia inventory: concentration against hump.}
+  \label{tab:c9-pairs}
+  \small
+  \begin{tabular}{@{}lrrrrrrr@{}}
+    \toprule
+    Design & $e$ & Gd$_2$O$_3$ & pins & inventory & $c_\mathrm{BOL}$ &
+    $c_\mathrm{max}$ & hump \\
+     & wt\% & wt\% & & wt\%\,pins & ppm & ppm & pcm \\
+    \midrule
+    C9-26 & 4.38 & 3.73 & 16 & 59.7 & 1805 & 1805 & 0 \\
+    C9-44 & 4.24 & 3.15 & 20 & 62.9 & 1334 & 1496 & $+1093$ \\
+    \addlinespace
+    C9-32 & 4.42 & 1.88 & 16 & 30.0 & 2121 & 2333 & $+1349$ \\
+    C9-51 & 4.18 & 2.68 & 12 & 32.1 & 2154 & 2154 & 0 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Both pairs point the same way. At matched inventory the design with the
+higher concentration in each poisoned pin shows no resolved hump, while its
+partner shows a hump of 1093 and \SI{1349}{pcm}. The enrichment differs by
+0.14 and \SI{0.24}{wt\%} within the pairs, and in both cases the difference
+acts against the observed effect, since the design without the hump carries
+the higher enrichment, so the effect is if anything understated.
+
+The second pair reverses the ranking. At beginning of life C9-32 needs less
+boron, 2121 against \SI{2154}{ppm}. At the operating maximum C9-51 needs
+less, 2154 against \SI{2333}{ppm}. At matched inventory and identical
+reflector, which of the two needs less boron depends on the state at which
+the question is asked, which is the clearest single demonstration in this
+work that the objective has to be defined at the operating maximum.
+
+\paragraph{Mechanism.}
+The hump of Equation~\eqref{eq:c7-hump} is the difference between the
+reactivity at the mid-cycle maximum and at beginning of life, and the
+gadolinium suppresses both terms. It is governed by a race between
+gadolinium burnout, which raises the multiplication factor, and fuel
+depletion with fission-product build-up, which lowers it.
+
+A dilute gadolinia pin is nearly transparent to thermal neutrons through
+its volume, so it burns out quickly and uniformly, within the first few
+\si{MWd\per kg} of burnup and before appreciable fuel depletion. Almost the
+whole poison worth returns as a rise above the beginning-of-life point, and
+the hump is large. A concentrated pin shields its own interior and burns
+inward from the surface over many \si{MWd\per kg}, by which time fuel
+depletion has removed a comparable amount of reactivity, so the two effects
+cancel and the multiplication factor does not climb above its initial
+value.
+
+The grouped statistic supports the same reading. Of the 16 designs in the
+band, the seven with a resolved hump carry a mean gadolinia weight fraction
+of \SI{1.67}{wt\%}, against \SI{3.52}{wt\%} for the nine without, and a
+one-sided Mann-Whitney test gives $U = 10$ and $p = 0.012$. That test is
+used in preference to the rank correlation because it is insensitive to the
+nine ties at the noise floor.
+
+Figure~\ref{fig:c9-gd-mechanism} shows the mechanism. The left panel draws
+the boron requirement of the 22 feasible designs against gadolinia content,
+coloured by enrichment, where the two effects are mixed. The right panel
+draws the 16 designs of the band, with the beginning-of-life concentration
+as an open circle, the objective as a filled circle, the bar between them
+equal to the hump expressed in ppm, a least-squares fit to $c_\mathrm{max}$
+dashed and the two boron ceilings as horizontal lines.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{c9_gd_trade}
+  \caption{Campaign 9 feasible designs: boron requirement against gadolinia content.}
+  \label{fig:c9-gd-mechanism}
+\end{figure}
+
+Read across the band, three things happen as the gadolinia rises. The
+beginning-of-life concentration falls, because the poison holds down
+reactivity that boron would otherwise have to hold. The bars shorten and
+then vanish, because the hump disappears above roughly \SI{2.5}{wt\%}. And
+the two quantities converge, so that above that loading the objective and
+its beginning-of-life value are the same number. One design of the band
+sits above the ceiling of C9-47, C9-12 at \SI{3003}{ppm}, the most dilute
+of the sixteen at \SI{0.14}{wt\%}. Its beginning-of-life requirement is
+\SI{2482}{ppm}, below that line, so the hump alone carries it above.
+
+The lattice scan of Section~\ref{sec:res-c9-ceiling} makes the case stronger
+than the reference line allows. The ceiling of C9-12 is \SI{2091}{ppm}, not
+\SI{2897}{ppm}, because the same dilution that raises its demand also lowers
+what it can tolerate. Judged against its own lattice the design fails by
+\SI{912}{ppm} instead of \SI{106}{ppm}, and even its beginning-of-life
+requirement is \SI{391}{ppm} too high. An objective evaluated at beginning
+of life would therefore also have rejected this design, but only once its
+own ceiling was known.
+
+Figure~\ref{fig:c9-hump} isolates the hump over the whole feasible set. The
+left panel draws it against gadolinia content, with filled circles for the
+designs inside the band and the \SI{400}{pcm} noise floor marked. The hump
+reaches \SI{3430}{pcm} at negligible loading and falls below the noise floor
+above \SI{2.5}{wt\%}. Only two feasible designs above that loading retain a
+resolved hump, of \SI{1093}{pcm} at \SI{3.15}{wt\%} and \SI{512}{pcm} at
+\SI{4.10}{wt\%}, and both carry their gadolinia on 20 pins instead of 16,
+which is the matched comparison of Table~\ref{tab:c9-pairs} seen from the
+other side.
+
+The right panel draws the penalty the hump carries into the objective
+against the hump itself, and confirms that it enters as
+Equation~\eqref{eq:c9-cmax} prescribes. It is proportional to the hump with
+a slope of \SI{0.153}{ppm} per pcm, an implied boron worth of
+\SI{6.5}{pcm} per ppm, against \SI{6.35}{pcm} per ppm measured as the mean
+over the eight designs that carry a hump. The agreement is a consistency
+check on the implementation, and it is reported because it is the only
+direct verification that the hump term and the measured worth are combined
+correctly.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{c9_hump}
+  \caption{Campaign 9 feasible designs: mid-cycle hump and the boron penalty it carries.}
+  \label{fig:c9-hump}
+\end{figure}
+
+The mechanism is inferred from two matched pairs and a grouped test. A
+designed set of four or five assemblies at fixed gadolinia inventory
+spanning 12 to 40 poisoned pins, one depletion each, about one hour of
+machine time, would settle it, and the multiplication-factor histories of a
+humped and an unhumped front design, already written by
+\texttt{validate\_ktarget\_burnup.py}, would show the burnout timescale
+directly at no additional cost.
+
+\subsection{The peaking objective under fidelity and dimensionality}
+\label{sec:res-c9-peaking}
+
+The five front designs were re-solved with all rods out at
+\num{150000} particles and 200 batches with 80 inactive, two seeds, on the
+two-dimensional core and on the three-dimensional core model of
+Section~\ref{sec:res-c8-3d}. Three quantities can be separated from those
+solves: the seed reproducibility, the effect of raising the transport
+statistics, and the effect of the third dimension.
+
+\paragraph{Seed reproducibility.}
+The ten pairs of seeds differ by 0.0069 on average in $F_{\Delta H}$. For
+two independent samples of a normal variable the expected absolute
+difference is $2\sigma/\sqrt{\pi}$, so the pooled single-solve standard
+deviation is
+
+\begin{equation}
+\sigma_F = \frac{0.0069\,\sqrt{\pi}}{2} = 0.0061
+\label{eq:c9-sigmaF}
+\end{equation}
+
+\noindent where $\sigma_F$ is the standard deviation of a single solve of
+$F_{\Delta H}$ at these statistics, dimensionless. It gives 0.0043 on a
+two-seed mean and 0.0061 on the difference between two such means. The
+Campaign 8 post-analysis measured 0.011 at the same statistics with all
+rods out, pooled over fourteen pairs (Section~\ref{sec:res-c8-sigma}), so
+the Campaign 9 front designs are somewhat less noisy. Scaled to the archive fidelity with the
+same factor used there, the Campaign 9 value is about 0.008, so the 0.010
+assumed in the stability analysis of Section~\ref{sec:res-c9-convergence}
+is conservative for these designs by about a quarter.
+
+\paragraph{Fidelity.}
+Table~\ref{tab:c9-peaking} compares the archived campaign value, a single
+solve at \num{100000} particles and 170 batches with 60 inactive, against
+the two-dimensional confirmation at the higher statistics. The shifts are
+$-0.009$, $-0.014$, $+0.001$, $-0.025$ and $-0.018$, a mean of $-0.013$ with
+a standard error of 0.004. The direction follows from the estimator: the
+hot channel factor is a maximum over mesh bins, the maximum of a set of
+noisy bins is biased upward (Section~\ref{sec:bg-mc}), and raising the
+statistics lowers the estimate. The shift is about a quarter of the width
+of the whole front on that objective.
+
+\paragraph{Dimensionality.}
+The three-dimensional shift is not a constant. Two designs move by $-0.026$
+and $-0.040$, 4.3 and 6.6 times the 0.0061 uncertainty of the comparison,
+while the other three move by $+0.005$, $+0.006$ and $-0.001$, none of which
+is resolved. The mean ratio $F^\mathrm{3D}/F^\mathrm{2D}$ is 0.992 with a
+standard deviation of 0.014 over the five designs. In the table the
+confirmation columns are means of two seeds, and the uncertainty on a
+difference between two confirmation columns is 0.006,
+Equation~\eqref{eq:c9-sigmaF}.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Campaign 9 front, all rods out: hot channel factor as archived, confirmed in 2D and in the 3D core model.}
+  \label{tab:c9-peaking}
+  \small
+  \begin{tabular}{@{}lrrrrrr@{}}
+    \toprule
+    Design & archive & 2D conf. & 3D conf. & fidelity & 3D shift &
+    3D shift \\
+     & $F$ & $F$ & $F$ & shift & & in $\sigma$ \\
+    \midrule
+    C9-35 & 1.490 & 1.481 & 1.487 & $-0.009$ & $+0.006$ & 1.0 \\
+    C9-34 & 1.496 & 1.482 & 1.487 & $-0.014$ & $+0.005$ & 0.8 \\
+    C9-40 & 1.495 & 1.496 & 1.456 & $+0.001$ & $-0.040$ & 6.6 \\
+    C9-44 & 1.539 & 1.514 & 1.513 & $-0.025$ & $-0.001$ & 0.2 \\
+    C9-47 & 1.545 & 1.527 & 1.501 & $-0.018$ & $-0.026$ & 4.3 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\paragraph{Consequence for the front.}
+With the two-dimensional confirmation values the non-dominated set of these
+five designs in $(F_{\Delta H}, c_\mathrm{max})$ is C9-34, C9-35, C9-44 and
+C9-47, since C9-34 then dominates C9-40. With the three-dimensional values
+it becomes C9-34, C9-40 and C9-47. The three changes are of unequal
+standing.
+
+\begin{enumerate}
+  \item C9-40 enters the front because its hot channel factor falls by
+        0.040, a 6.6$\sigma$ effect. This change is measured.
+
+  \item C9-44 leaves the front because C9-47 improves by 0.026 while C9-44
+        does not move, so in three dimensions C9-47 has both the lower
+        peaking, 1.501 against 1.513, and the lower boron requirement, 1406
+        against \SI{1496}{ppm}. This change is measured.
+
+  \item C9-35 leaves the front because it becomes dominated. Against C9-34
+        the dominance is not resolved, because both designs reach a peaking
+        of 1.487 and the boron requirement alone separates them, 1725
+        against \SI{1908}{ppm}. Against C9-40 it is resolved, with a peaking
+        of 1.456 against 1.487 and a boron requirement of 1768 against
+        \SI{1908}{ppm}, so this change stands or falls with the shift of
+        C9-40 in the first item.
+\end{enumerate}
+
+A design-dependent shift of this size is the case in which a
+three-dimensional objective reorders a front instead of translating it, so
+a calibrated correction applied to the two-dimensional value would not
+recover the same answer, as the zoned proxy gap of
+Section~\ref{sec:res-proxy-gap-zoned} found for the assembly value.
+
+One caution applies to this five-design comparison. C9-40, the design
+that drives the front change, has a two-seed spread of 0.017 in the
+two-dimensional solve against 0.001 to 0.004 for the other four, so its
+own convergence is the least well established of the set.
+
+\paragraph{The comparison over the whole archive.}
+The comparison with all rods out was extended to all sixty designs, one
+solve per design in each model with two seeds. The three-dimensional hot
+channel factor is lower than the two-dimensional one for almost every
+design, by 0.023 on average with a standard deviation of 0.017, a ratio of
+0.9851 with a relative spread of \SI{1.10}{\%}. The correction is therefore
+not a constant, and the rank correlation between the two orderings is 0.941,
+with a largest rank shift of 14 places out of 60.
+
+Recomputed over the 22 feasible designs, the non-dominated set is C9-34,
+C9-35, C9-44, C9-47 and C9-58 with the two-dimensional factor, and C9-12,
+C9-34, C9-40 and C9-47 with the three-dimensional one. Three observations
+bound what that change means:
+
+\begin{enumerate}
+  \item C9-47 is on both fronts. It is selected whichever factor is used, so
+        the reordering does not reach the design the campaign selects.
+
+  \item The newcomer is inoperable. C9-12 fails the ceiling of its own
+        lattice by \SI{912}{ppm} (Section~\ref{sec:res-c9-ceiling}), so it
+        cannot be a candidate whatever its peaking.
+
+  \item Part of the change comes from fidelity. The two-dimensional values of
+        this comparison are solved at \num{150000} particles over 200
+        batches, while the archive values are solved at \num{100000} over
+        170. Over the 41 designs common to both, the higher-fidelity value is
+        lower by 0.016 on average with a standard deviation of 0.017,
+        reaching 0.068 on C9-42 and 0.037 on C9-58. A hot channel factor is
+        a maximum over channels, and a maximum over noisier estimates is
+        biased upward (Section~\ref{sec:bg-mc}), so the campaign-fidelity
+        value reads high. C9-58 enters the two-dimensional front of this
+        comparison largely through that shift.
+\end{enumerate}
+
+The quantities that matter are of the same size. The peaking spread across
+the whole front is 0.055, the dimensional shift 0.023, the fidelity shift
+0.016, and the leave-one-out error of the surrogate on the feasible subset
+0.039 (Table~\ref{tab:c9-cv}). A campaign that optimised this objective more
+finely could not resolve differences of this size, which argues against a
+further campaign on the peaking objective more strongly than the front
+change does on its own. The three-dimensional peaking of C9-47 is therefore
+reported as a verified value, 1.501 against 1.527 in two dimensions, both
+well inside the 1.65 constraint.
+
+\subsection{The boron ceiling of each candidate lattice}
+\label{sec:res-c9-ceiling}
+
+Campaign 8 measured one moderator temperature coefficient ceiling, on the
+lattice of C8-47, and Campaign 9 inherited it as a single reference line.
+That inheritance does not hold. The coefficient responds to a change in
+moderator density, and the response depends on the absorber loading of the
+lattice, which is a design variable. Eight lattices were therefore scanned
+on the three-dimensional core model at \SI{12.8}{MPa}: every candidate on either peaking
+front of Section~\ref{sec:res-c9-peaking}, and C9-57 as a diagnostic design.
+
+\paragraph{Method.}
+Each scan solves the core at two moderator temperatures and four boron
+concentrations, two seeds each, sixteen solves per design. The moderator
+states are the following, with densities from the IAPWS-IF97 formulation
+and saturation at \SI{602.8}{K} and \SI{617.9}{K}:
+
+\begin{itemize}
+  \item \SI{547}{K} and \SI{567}{K} at \SI{12.8}{MPa}, with densities of
+        \SI{0.77109}{g/cm^3} and \SI{0.73403}{g/cm^3} and a subcooling of
+        \SI{55.8}{K} and \SI{35.8}{K}.
+
+  \item \SI{570}{K} and \SI{590}{K} at \SI{15.5}{MPa}, used for C9-47 only.
+\end{itemize}
+
+The window at \SI{12.8}{MPa} is the one of Section~\ref{sec:res-c8-swing},
+so the Campaign 8 and Campaign 9 ceilings can be compared directly.
+
+The ceiling is the concentration at which the coefficient changes sign. It
+is obtained by a weighted straight-line fit of the coefficient against
+concentration over the three points nearest the sign change. Its
+uncertainty is propagated from the fit covariance and inflated by
+$\sqrt{\chi^2/\nu}$ where that exceeds unity. Three of the eight scans have
+$\chi^2/\nu$ above two, the signature of a mild curvature of the coefficient
+in boron, and the inflation keeps their error bars honest.
+
+\paragraph{The ceiling of C9-47.}
+The ceiling of C9-47 was measured in two and in three dimensions at both
+pressures:
+
+\begin{itemize}
+  \item \SI{2415}{ppm} at \SI{12.8}{MPa} in two dimensions.
+
+  \item \SI{2897}{ppm} at \SI{12.8}{MPa} in three dimensions, with a refit
+        uncertainty of \SI{99}{ppm}.
+
+  \item \SI{2653}{ppm} at \SI{15.5}{MPa} in two dimensions.
+
+  \item \SI{3244}{ppm} at \SI{15.5}{MPa} in three dimensions.
+\end{itemize}
+
+The move from two to three dimensions raises the ceiling by \SI{482}{ppm} at
+\SI{12.8}{MPa} and by \SI{591}{ppm} at \SI{15.5}{MPa}. On C8-47 the same
+shift was \SI{508}{ppm}, so the axial leakage feedback of
+Section~\ref{sec:res-c8-3d} reproduces on an independent lattice. A ceiling
+computed in two dimensions is conservative by roughly that amount, which is
+useful because the two-dimensional scan costs a quarter of the
+three-dimensional one.
+
+\paragraph{The eight lattices.}
+Table~\ref{tab:c9-ceilings} gives the eight lattices, and
+Figure~\ref{fig:c9-ceiling} draws them against the gadolinia inventory, the
+weight fraction multiplied by the number of gadolinia pins, which is
+proportional to the mass of gadolinia per assembly. In the left panel the
+measured ceiling and the boron demand of each design are joined by a
+vertical bar on a logarithmic inventory axis, with the logarithmic fit
+dashed. The right panel draws the operating margin, the ceiling minus the
+demand, with the two designs that fail their own ceiling in a separate
+colour. The error bars are the refit uncertainty.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Campaign 9 candidate lattices at \SI{12.8}{MPa} in three dimensions: boron ceiling, demand and margin.}
+  \label{tab:c9-ceilings}
+  \small
+  \begin{tabular}{@{}lrrrrrr@{}}
+    \toprule
+    Design & Gd (wt\%) & pins & inventory & ceiling (ppm) & demand (ppm) & margin (ppm) \\
+    \midrule
+    C9-12 & 0.14 & 32 & 4.5 & $2091 \pm 69$ & 3003 & $-912$ \\
+    C9-57 & 0.78 & 20 & 15.6 & $2278 \pm 173$ & 2470 & $-193$ \\
+    C9-58 & 1.31 & 16 & 21.0 & $2483 \pm 53$ & 2363 & $+120$ \\
+    C9-35 & 2.63 & 16 & 42.0 & $2617 \pm 69$ & 1908 & $+710$ \\
+    C9-40 & 2.71 & 16 & 43.4 & $2651 \pm 240$ & 1768 & $+883$ \\
+    C9-34 & 3.32 & 16 & 53.2 & $2752 \pm 97$ & 1725 & $+1027$ \\
+    C9-44 & 3.15 & 20 & 62.9 & $2858 \pm 109$ & 1496 & $+1362$ \\
+    C9-47 & 4.42 & 20 & 88.4 & $2897 \pm 99$ & 1406 & $+1491$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{c9_ceiling_inventory}
+  \caption{Campaign 9, eight lattices at \SI{12.8}{MPa}: boron ceiling and demand against gadolinia inventory.}
+  \label{fig:c9-ceiling}
+\end{figure}
+
+\paragraph{The second pressure.}
+Five of the eight lattices were scanned again at \SI{15.5}{MPa}, and
+Table~\ref{tab:c9-ceilings-p155} reports that set.
+Figure~\ref{fig:c9-ceiling-2p} draws both pressures against the two
+measures of gadolinia loading and the shift between them. The eight
+lattices span inventories from 4.5 for C9-12 to 88.4 for C9-47.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Campaign 9 candidate lattices at \SI{15.5}{MPa} in three dimensions: boron ceiling, demand and margin.}
+  \label{tab:c9-ceilings-p155}
+  \small
+  \begin{tabular}{@{}lrrrrrr@{}}
+    \toprule
+    Design & Gd (wt\%) & pins & inventory & ceiling (ppm) & demand (ppm) & margin (ppm) \\
+    \midrule
+    C9-12 & 0.14 & 32 & 4.5 & $2522 \pm 46$ & 3003 & $-481$ \\
+    C9-58 & 1.31 & 16 & 21.0 & $2739 \pm 89$ & 2363 & $+376$ \\
+    C9-34 & 3.32 & 16 & 53.2 & $3092 \pm 106$ & 1725 & $+1367$ \\
+    C9-44 & 3.15 & 20 & 62.9 & $2931 \pm 80$ & 1496 & $+1435$ \\
+    C9-47 & 4.42 & 20 & 88.4 & $3266 \pm 75$ & 1406 & $+1860$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{images/c9_ceiling_two_pressures}
+  \caption{Boron ceiling at both pressures against the gadolinia loading.}
+  \label{fig:c9-ceiling-2p}
+\end{figure}
+
+The ceiling rises with the gadolinia loading at both pressures, and two
+measures of that loading were tested:
+
+\begin{itemize}
+  \item At \SI{12.8}{MPa} the Spearman coefficient is 1.000 against the
+        inventory and 0.976 against the Gd$_2$O$_3$ weight fraction.
+
+  \item At \SI{15.5}{MPa} it is 0.900 against the inventory and 1.000
+        against the weight fraction.
+
+  \item The number of gadolinia pins alone shows no correlation at
+        either pressure, with coefficients of $-0.07$ and $-0.10$.
+\end{itemize}
+
+The two measures rank every lattice identically except C9-34 and C9-44.
+Their ceilings differ by \SI{106(146)}{ppm} at \SI{12.8}{MPa}, in favour
+of C9-44, and by \SI{161(133)}{ppm} at \SI{15.5}{MPa}, in favour of
+C9-34, so this pair is not ordered by either measurement. The present
+data therefore do not distinguish the inventory from the weight fraction
+as the governing variable.
+
+An unweighted logarithmic fit in the inventory gives the relation below.
+
+\begin{equation}
+  c_\mathrm{MTC}(I) = a \ln I + b
+  \label{eq:mtc-ceiling-fit}
+\end{equation}
+
+\noindent where the symbols have the following meaning:
+
+\begin{itemize}
+  \item $c_\mathrm{MTC}$ is the boron concentration at which the
+        moderator temperature coefficient crosses zero, in ppm.
+
+  \item $I$ is the gadolinia inventory, the Gd$_2$O$_3$ weight fraction
+        in wt\% multiplied by the number of gadolinia pins as built,
+        dimensionless.
+
+  \item $a$ is the slope, \SI{287}{ppm} at \SI{12.8}{MPa} and
+        \SI{226}{ppm} at \SI{15.5}{MPa}.
+
+  \item $b$ is the intercept, \SI{1595}{ppm} at \SI{12.8}{MPa} and
+        \SI{2134}{ppm} at \SI{15.5}{MPa}.
+\end{itemize}
+
+The root mean square residual of this fit is \SI{55}{ppm} at
+\SI{12.8}{MPa} and \SI{96}{ppm} at \SI{15.5}{MPa}. A straight line in
+the weight fraction gives \SI{68}{ppm} and \SI{48}{ppm}. Neither form is
+preferred at both pressures.
+
+The pressure shift is consistent with a single value. Over the five
+lattices measured twice its weighted mean is \SI{322(50)}{ppm}, with
+$\chi^2 = 5.7$ on four degrees of freedom ($p = 0.22$), and no trend
+with inventory is resolved.
+
+The verdicts do not depend on the pressure. C9-12 fails its own ceiling
+by \SI{912}{ppm} at \SI{12.8}{MPa} and by \SI{481}{ppm} at
+\SI{15.5}{MPa}. C9-58 clears by \SI{120}{ppm} and \SI{376}{ppm}, so its
+binding pressure is \SI{12.8}{MPa}. The three front designs measured at
+both pressures clear by 1027 to \SI{1491}{ppm} at \SI{12.8}{MPa} and by
+1367 to \SI{1860}{ppm} at \SI{15.5}{MPa}.
+
+The ceiling and the demand also move in opposite directions with the
+same variable. Across the eight lattices at \SI{12.8}{MPa} the ceiling
+spans \SI{806}{ppm}, while the operating margin spans \SI{2403}{ppm},
+from \SI{-912}{ppm} to \SI{+1491}{ppm}. The demand does most of the work
+and the ceiling reinforces it, so a design is either comfortably
+operable or clearly not, with little middle ground.
+
+\paragraph{The fidelity of the two sides of the comparison.}
+The ceiling is measured on the three-dimensional core model, while the demand is a
+two-dimensional core quantity, so the comparison in this section mixes two
+fidelities. The rodded confirmation of Section~\ref{sec:res-c9-front}
+measures the size of that mismatch. At each design's own critical
+concentration the unrodded factor falls from 1.0000 in two dimensions to
+0.9704 on the three-dimensional core model, a reactivity difference of 3001 to
+\SI{3028}{pcm} across the five front designs, which at their measured boron
+worths is 445 to \SI{459}{ppm}.
+
+The three-dimensional demand is therefore about \SI{450}{ppm} below the value
+in Table~\ref{tab:c9-front}, and the two-dimensional ceiling is about
+\SI{480}{ppm} below the three-dimensional one. Both errors point the same
+way, so every margin quoted here is conservative by roughly \SI{900}{ppm}.
+The direction of the conclusions is unaffected. The comparison is stated as
+it was measured and is not corrected, because a correction would mix a
+measured quantity with an inferred one, and a campaign that relied on this
+comparison would have to measure both sides on the same model.
+
+\paragraph{Verdicts.}
+Of the seven candidates on either peaking front, six clear their own ceiling
+and one does not:
+
+\begin{itemize}
+  \item C9-47, C9-44, C9-34, C9-40 and C9-35 clear it by 710 to
+        \SI{1491}{ppm}, which is 3.7 standard deviations or more. These
+        verdicts are not in question.
+
+  \item C9-58 clears by \SI{120}{ppm}, which is 2.3 standard deviations.
+        Its ceiling combines two scans, a four-point sweep from 0 to
+        \SI{3000}{ppm} and a four-point sweep inside 2200 to
+        \SI{2800}{ppm}, which agree with $\chi^2 = 0.86$ on one degree of
+        freedom and give \SI{2483}{ppm} together. Further sampling will
+        not change the verdict, because the margin itself is the result:
+        this design operates at \SI{95}{\%} of what its lattice
+        tolerates, against \SI{49}{\%} for C9-47. Its operability is
+        therefore not established by this campaign in the sense the other
+        five members are.
+
+  \item C9-12 fails it by \SI{912}{ppm}, 13.2 standard deviations. It is the
+        one design that entered the front only through the
+        three-dimensional peaking of Section~\ref{sec:res-c9-peaking}, and
+        it is inoperable whatever its peaking.
+\end{itemize}
+
+C9-57, the diagnostic design, fails by \SI{193}{ppm} at 1.1 standard
+deviations, and the fidelity mismatch above works in its favour by about
+\SI{450}{ppm}, so it would clear on a consistent three-dimensional
+comparison. Its verdict is undecided on both counts and is reported as
+such. It is not a front candidate and nothing in this chapter depends on
+it, but it marks where the combined effect of demand and ceiling places
+the boundary, at roughly \SI{1}{wt\%} of gadolinia in this design space.
+
+C9-12 is the only verdict the mismatch cannot overturn. It fails by
+\SI{912}{ppm} on the comparison as measured and by roughly \SI{460}{ppm}
+once both sides are put on the three-dimensional core model, which is still more than
+four standard deviations. The eight lattices also confound the inventory with the
+reflector thickness, which is at its bound for seven of the eight, so the
+logarithmic law should not be extrapolated outside the converged region of
+this campaign.
+
+\subsection{Status of the post-analysis}
+\label{sec:res-c9-post}
+
+The post-analysis of Campaign 9 mirrors that of Campaign 8 and is scripted
+in \texttt{run\_c9\_post.sh}. The three-dimensional peaking of the front and
+of the whole archive with all rods out is reported in
+Section~\ref{sec:res-c9-peaking}, the rodded three-dimensional confirmation
+of the front in Section~\ref{sec:res-c9-front}, and the boron ceiling of
+eight candidate lattices in Section~\ref{sec:res-c9-ceiling}.
+
+The burnup dependence of the Route B k-target leakage factor, which relates
+the assembly multiplication factor to the core one and includes the axial
+contribution, was measured on the five front designs with the method of
+Section~\ref{sec:res-kt-burnup}. Table~\ref{tab:c9-kt-burnup} gives the
+result. The two-dimensional to three-dimensional axial factor of
+Section~\ref{sec:res-c9-front} is a different quantity and is measured at
+beginning of life only.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption{Campaign 9 front: burnup dependence of the Route B leakage factor.}
+  \label{tab:c9-kt-burnup}
+  \setlength{\tabcolsep}{4.2pt}
+  \begin{tabular}{cccccccc}
+    \toprule
+    Design & $t_\mathrm{refl}$ & $B_\mathrm{EOC}$ & $\mathrm{LF}_\mathrm{BOL}$ &
+      $\mathrm{LF}_\mathrm{EOC}$ & $r_\mathrm{EOC}$ & drift &
+      $\Delta\mathrm{EFPD}$ \\
+    {[--]} & [cm] & [MWd/kgHM] & [--] & [--] & [pcm] & [pcm] & [d] \\
+    \midrule
+    C9-47 & 5.66 & 19.8 & 1.0823 & 1.0822 & $+15$ & $-17 \pm 194$ & $-2$ \\
+    C9-44 & 5.66 & 18.4 & 1.0840 & 1.0830 & $+92$ & $-94 \pm 105$ & $-13$ \\
+    C9-34 & 5.66 & 17.8 & 1.0843 & 1.0831 & $+98$ & $-118 \pm 105$ & $-17$ \\
+    C9-40 & 5.66 & 18.3 & 1.0823 & 1.0826 & $+51$ & $+23 \pm 109$ & $-6$ \\
+    C9-35 & 5.65 & 19.2 & 1.0832 & 1.0824 & $+39$ & $-70 \pm 137$ & $-4$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The drifts combine by inverse-variance weighting into a mean of
+$-62 \pm 54$\,pcm, with $\chi^2/\nu = 0.26$ over the five designs. The mean is
+consistent with zero at 1.2 standard deviations and with the $-13 \pm 30$\,pcm
+of the Campaign 8 designs, Equation~\eqref{eq:kt-comp}. The leakage factor
+fitted at beginning of life therefore holds to the end of cycle, which is
+what justifies the depletion at assembly level.
+
+The residuals behave differently. All five are positive, from $+15$ to
+$+98$\,pcm with a mean of $+59$\,pcm, so the measured factor lies above the
+tabulated target on every design. Five residuals of the same sign are a
+systematic offset in the k-target table and are stated separately from the
+drift. The offset is small, about one part in two thousand in the factor,
+and it shortens the reported cycle by 2 to 17 days, below one per cent.
+
+C9-34 is the design for which the correction is largest relative to its
+margin. Its cycle length of \SI{1841}{d} becomes \SI{1824}{d} once the
+end-of-cycle leakage factor is applied, that is \SI{2}{d} below the mission
+floor. The correction itself carries an uncertainty of about \SI{15}{d},
+propagated from the \SI{105}{pcm} uncertainty of its drift, so the shortfall
+is \SI{2+-15}{d} and is not resolved. It is also an order of magnitude
+smaller than the \SI{37}{d} uncertainty of the cycle-length proxy at this
+mission. The design is therefore retained on the front, with the same caveat
+that applies to C9-44, that its compliance with the mission is not
+established by this campaign.
+
+Corrections are not applied retroactively to individual designs, because
+the front is the set the constraint evaluation produced. A correction
+applied to one design and not to the other fifty-nine would not correspond
+to any consistent procedure.
+
+The following stages were not complete when this chapter was written:
+
+\begin{enumerate}
+  \item The boron ceiling at \SI{15.5}{MPa} on C9-34 and C9-44.
+
+  \item An independent measurement of the boron worth.
+\end{enumerate}
+
+\subsection{Limitations}
+\label{sec:res-c9-limits}
+
+Six limitations qualify the result of this campaign.
+
+\begin{enumerate}
+  \item The reflector is active at its bound. Every front member carries
+        the largest reflector the vessel admits, and
+        Figure~\ref{fig:c9-design-space} shows that the optimiser reached
+        the bound in the first infill iteration and did not test a design
+        away from it afterwards. The front is a boundary optimum,
+        conditional on the vessel envelope and the clearance of
+        Section~\ref{sec:meth-c8-space}.
+
+  \item The cycle-length margin lies inside the proxy uncertainty. The
+        front members deliver 1841 to \SI{1947}{d} against a floor of
+        \SI{1826}{d}, margins of 15 to 121 days. The core-level validation
+        of Section~\ref{sec:res-corevalidation} places the cycle-length
+        proxy at about the \SI{2}{\%} level, \SI{37}{d} at this floor, so
+        C9-34 and C9-44, at 15 and 32 days, cannot be asserted to meet it.
+
+  \item The boron ceiling is measured at one pressure.
+        Section~\ref{sec:res-c9-ceiling} scans eight lattices at
+        \SI{12.8}{MPa}, and every candidate on either peaking front except
+        C9-12 clears its own ceiling. Only C9-47 is scanned at
+        \SI{15.5}{MPa}, and that scan has three points instead of four, so
+        it carries no refit uncertainty. The ceiling at the higher pressure
+        is therefore known for one design and assumed for the others, and C9-58 clears its own ceiling by only \SI{120}{ppm}, so its
+        operability is not established.
+
+  \item Three of the five front members lie inside the noise. Only C9-47
+        and C9-34 survive every resample of Table~\ref{tab:c9-stability},
+        and the apparent quality of the front is optimistic by \SI{2.8}{\%}
+        in hypervolume through selection alone.
+
+  \item The peaking objective is evaluated in two dimensions and at campaign
+        fidelity, and a front this narrow is sensitive to both. Raising the
+        statistics lowers the hot channel factor by $0.013 \pm 0.004$ on
+        the front designs, the three-dimensional model shifts it further by
+        an amount that depends on the design, and substituting the
+        three-dimensional value changes the non-dominated set in two
+        measured ways (Section~\ref{sec:res-c9-peaking}). The front of
+        Table~\ref{tab:c9-front} is therefore a set of comparable designs
+        and not an ordered ranking.
+
+  \item The depletion runs at a constant \SI{1000}{ppm}, as in every
+        campaign, so every cycle length remains a lower bound for a core
+        operated with boron letdown, and the critical concentration is
+        measured at two states of the cycle only.
+\end{enumerate}
+
+Limitations 3 and 5 were the two that could change a conclusion, and both
+are now measured. Section~\ref{sec:res-c9-ceiling} gives the ceiling of eight
+lattices at \SI{12.8}{MPa} and of C9-47 at both pressures, and
+Section~\ref{sec:res-c9-peaking} compares the two- and three-dimensional
+peaking over all sixty designs. Neither displaces the selected design, and
+the checks that remain are listed in Section~\ref{sec:res-c9-post}.

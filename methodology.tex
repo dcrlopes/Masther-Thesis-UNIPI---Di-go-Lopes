@@ -44,9 +44,10 @@ route operated by Ind\'ustrias Nucleares do Brasil (INB) at the
 F\'abrica de Combust\'ivel Nuclear in Resende, which supplies the fuel of
 Angra~1 and~2 with pellets enriched between 2 and
 5\,wt\%~\cite{inb_montagem_ec,inb_resende}, are adopted without
-modification. The cladding is modelled as Zircaloy-4. The same
-industrial route already fabricates the UO$_2$ pellets of the LABGENE
-fuel~\cite{marinha_inb_labgene_2022}.
+modification. The cladding is modelled as Zircaloy-4. INB also
+fabricated the UO$_2$ pellets of the LABGENE fuel, under a 2021 contract
+with CTMSP, between August and December
+2021~\cite{marinha_inb_labgene_2022}.
 
 The reference core departs from the $16\times16$ lattice of the Angra
 units by adopting the $17\times17$ Westinghouse-type assembly, with 264
@@ -81,30 +82,48 @@ same basis.
 The model is built in OpenMC~0.15.3~\cite{romano_openmc_2015} with
 ENDF/B-VII.1 data, from one parametric design dictionary driving three
 fidelities: pin cell, $17\times17$ assembly, and the 32-assembly core.
-Figure~\ref{fig:model-geometry} defines the geometry. The numerical
+Figure~\ref{fig:model-geometry} defines the geometry. In panel~(a) the
+gadolinia rods are shaded by the value of $n_\mathrm{Gd}$ at which they
+enter the nested ladder. The ranges of the six design variables of
+Campaigns 5 to 7 are tabulated beneath the panels, where $p$ and
+$t_\mathrm{refl}$ appear coupled by $g_\mathrm{geom}$. The numerical
 basis is concentrated in Tables~\ref{tab:model-geometry}
 and~\ref{tab:model-operating}.
+
+The vessel internal radius is the 900\,mm inner radius of the simplified
+vessel model drawn according to CTMSP in~\cite{maruyama_2013},
+Figure~13, as detailed in Figure~\ref{fig:vessel-dimensioned}. The pin
+and guide-tube dimensions follow NuScale-class
+practice~\cite{nuscale_htp2_2017}. The core thermal power is the
+48\,MW of thermal power that the Navy gives for the LABGENE
+reactor~\cite{demartini_nuclep_2022}, within the 48 to 50\,MWth of the
+academic literature~\cite{dinizcosta_2017}. The active height, the
+enrichment zoning, the poisoned-pin pattern, the core map, the
+reflector, the temperatures, the soluble boron concentration and the
+nuclear data are modelling choices of this thesis.
+
+Every depletion is run with the coupled operator of the OpenMC depletion
+module~\cite{romano_2021_depletion} and the
+\texttt{PredictorIntegrator}, the first-order constant-extrapolation
+scheme of Equation~\eqref{eq:dep-ce}. The operator and the integrator
+keep their default settings: reaction rates tallied directly, reaction
+rates normalised to the power through the fission Q values of the
+depletion chain (Equation~\eqref{eq:dep-norm}), and the matrix
+exponential evaluated by CRAM of order 48
+(Equation~\eqref{eq:cram})~\cite{openmc_docs}. The power of the depleted
+model is its fresh heavy-metal mass multiplied by the specific power of
+Table~\ref{tab:model-operating}, held constant through the cycle.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{images/th_model_geometry.pdf}
-  \caption[The reference model and the six-variable design space]{The reference
-    model. (a) The $17\times17$ assembly, with gadolinia rods shaded by the value
-    of $n_\mathrm{Gd}$ at which they enter the nested ladder. (b) The core plan
-    view. Ranges for the six design variables of Campaigns 5 to 7 are tabulated beneath the panels,
-    and $p$ and $t_\mathrm{refl}$ are coupled by $g_\mathrm{geom}$.}
+  \caption[The reference model and the six-variable design space]{The reference model. (a)~The $17\times17$ assembly. (b)~The core plan view.}
   \label{fig:model-geometry}
 \end{figure}
 
 \begin{table}[htbp]
   \centering
-  \caption{Geometry of the reference model. The vessel internal radius
-  is the 900\,mm inner radius of the simplified vessel model drawn
-  according to CTMSP in~\cite{maruyama_2013}, Figure~13, as detailed in
-  Figure~\ref{fig:vessel-dimensioned}. The pin and guide-tube dimensions
-  follow NuScale-class practice~\cite{nuscale_htp2_2017}. The active
-  height, the enrichment zoning, the poisoned-pin pattern, the core map
-  and the reflector are modelling choices of this thesis.}
+  \caption{Geometry of the reference model.}
   \label{tab:model-geometry}
   \begin{tabular}{llc}
     \toprule
@@ -127,12 +146,7 @@ and~\ref{tab:model-operating}.
 
 \begin{table}[htbp]
   \centering
-  \caption{Operating and material basis. The core thermal power is the
-  48\,MW rating of the LABGENE plant stated by
-  CTMSP~\cite{ctmsp_visita_2018}, identified as thermal power by the
-  academic literature~\cite{dinizcosta_2017}. The temperatures, the
-  soluble boron concentration and the nuclear data are modelling
-  choices.}
+  \caption{Operating and material basis of the reference model.}
   \label{tab:model-operating}
   \begin{tabular}{llc}
     \toprule
@@ -151,8 +165,7 @@ Verification at reference conditions reproduces the expected
 multiplication hierarchy of Section~\ref{sec:bg-k}, with pin
 $k_\infty = 1.296$, assembly $k_\infty = 1.288$ and core
 $k_\mathrm{eff} = 1.221$. The assembly-internal peaking at reference
-conditions is $F_{\Delta H} = 1.137$, consistent with open NuScale-like
-benchmarks~\cite{nuscale_like_core_2024,ez_aldeen_2025}.
+conditions is $F_{\Delta H} = 1.137$.
 
 Three quantities of the campaign model depart from the benchmark
 input files, and each is carried as a sensitivity in the
@@ -193,11 +206,7 @@ measured in the presence of the benchmark rod rather than assumed.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{images/th_vessel_dimensioned}
-  \caption{Elevation and plan view of the adopted vessel and core
-    layout, in millimetres. The plan view is drawn for a pin pitch of
-    1.26\,cm and a minimum reflector thickness of 4.0\,cm. The core
-    barrel and the downcomer belong to the three-dimensional study and
-    are not part of the campaign model.}
+  \caption{Elevation and plan view of the adopted vessel and core layout, in millimetres.}
   \label{fig:vessel-dimensioned}
 \end{figure}
 
@@ -216,7 +225,7 @@ sources.
         3095\,mm, were read from the same drawing with the 4700\,mm
         dimension as the scale. They are estimates.
 
-  \item The fuel assembly hardware, namely the nozzles, the end caps,
+  \item The structural components of the fuel assembly, namely the nozzles, the end caps,
         the plenum spring and the spacer grids, is that of the
         NuScale-like benchmark~\cite{ez_aldeen_2025}, kept at the
         benchmark sizes.
@@ -224,14 +233,20 @@ sources.
 
 The active height of 120\,cm is a modelling choice of this thesis. The
 stainless steel reflector annulus is likewise an assumption. No open
-source specifies the reflector or the core barrel of LABGENE.
+source specifies the reflector or the core barrel of LABGENE. The plan
+view of Figure~\ref{fig:vessel-dimensioned} is drawn for a pin pitch of
+1.26\,cm and a minimum reflector thickness of 4.0\,cm. The core barrel
+and the downcomer shown there belong to the three-dimensional study and
+are not part of the campaign model.
+
+Table~\ref{tab:axial-layout} gives the axial layout of the fuel assembly
+adopted for the three-dimensional core model. Elevations are measured
+from the outer bottom of the lower head, with the assembly resting on
+the lower core plate.
 
 \begin{table}[htbp]
   \centering
-  \caption{Axial layout of the fuel assembly adopted for the
-    three-dimensional core model. Elevations in millimetres from the
-    outer bottom of the lower head, with the assembly resting on the
-    lower core plate.}
+  \caption{Axial layout of the fuel assembly in the three-dimensional core model, in millimetres.}
   \label{tab:axial-layout}
   \begin{tabular}{@{}lrrr@{}}
     \toprule
@@ -260,7 +275,7 @@ The assembly is 1635.6\,mm long. Its top nozzle ends 187\,mm above the
 bottom of the coolant nozzle penetration and 53\,mm below the nozzle
 centreline, so the upper core plate lies within the nozzle band.
 
-\subsection{Why the barrel and the downcomer are outside the campaign model}
+\subsection{Treatment of the barrel and the downcomer in the campaign model}
 \label{sec:meth-barrel}
 
 The campaign transport model ends in a vacuum boundary at the outer
@@ -306,12 +321,13 @@ deliberate simplification and it is defended on four grounds.
 
   \item The correction is measured on the candidates, not argued for
         the archive. The three-dimensional confirmation model of the
-        candidate designs carries the assembly hardware, the barrel,
-        the downcomer and the vessel wall explicitly. Its eigenvalue
-        against the two-dimensional solve of the same design gives a
-        leakage factor with the barrel present, $L_\mathrm{ax}^\mathrm{hw}$,
-        and the difference from the campaign value of \num{1.0289} is
-        the barrel and hardware effect. If it is constant across the
+        candidate designs carries the structural components of the
+        assemblies, the barrel, the downcomer and the vessel wall
+        explicitly. Its eigenvalue against the two-dimensional solve of
+        the same design gives a leakage factor with the barrel present,
+        $L_\mathrm{ax}^\mathrm{hw}$, and the difference from the campaign
+        value of \num{1.0289} is the effect of the barrel and the
+        structural components. If it is constant across the
         candidates within its statistical resolution, the defence
         above is complete. If it is not, the candidates are re-ranked
         with the measured values, which the archive permits, because
@@ -335,7 +351,7 @@ k_\mathrm{target}^\mathrm{hw}(\mathbf{x}) = k_\mathrm{target}^\mathrm{3D}(\mathb
 
 \begin{itemize}
   \item $k_\mathrm{target}^\mathrm{hw}$ is the end-of-cycle target with
-        the barrel, the downcomer and the hardware accounted for,
+        the barrel, the downcomer and the structural components accounted for,
         dimensionless.
 
   \item $k_\mathrm{target}^\mathrm{3D}$ is the campaign target of
@@ -343,7 +359,7 @@ k_\mathrm{target}^\mathrm{hw}(\mathbf{x}) = k_\mathrm{target}^\mathrm{3D}(\mathb
 
   \item $L_\mathrm{ax}^\mathrm{hw}$ is the ratio of the two-dimensional
         eigenvalue to the eigenvalue of the finite-height model with
-        hardware and barrel, measured on the candidate, dimensionless.
+        structural components and barrel, measured on the candidate, dimensionless.
 
   \item $L_\mathrm{ax}$ is the campaign axial factor, \num{1.0289}.
 \end{itemize}
@@ -363,7 +379,11 @@ The core design task is posed as a constrained two-objective problem
 over a design space of four to six variables, depending on the
 campaign (Tables~\ref{tab:design-space}, \ref{tab:design-space-c56}
 and~\ref{tab:design-space-c78}). The constraints are summarised in
-Table~\ref{tab:constraints}.
+Table~\ref{tab:constraints}. The evaluation level of $g_\mathrm{peak}$ is
+the central methodological change of Campaign 4, the reactivity window
+moves to the core basis in Campaign 6 (Section~\ref{sec:meth-kbasis}),
+and the measured controllability screen enters in Campaign 7
+(Section~\ref{sec:meth-ctrl}).
 
 The first objective maximises the cycle length.
 
@@ -394,7 +414,7 @@ g_j(\mathbf{x}) \le 0,
         units are listed in Tables~\ref{tab:design-space},
         \ref{tab:design-space-c56} and~\ref{tab:design-space-c78}. It
         has five components in Campaigns 1 to 4, six in Campaigns 5
-        to 7, and four in Campaign 8.
+        to 7, and four in Campaigns 8 and 9.
 
   \item $\mathcal{X}$ is the box-bounded design space defined by those
         same bounds.
@@ -416,10 +436,26 @@ g_j(\mathbf{x}) \le 0,
         Equation~\eqref{eq:cv-norm}.
 
   \item $n_g$ is the number of active inequality constraints,
-        dimensionless. It is five through Campaign 6 and six from
-        Campaign 7, when the controllability screen enters. The
-        two-bank reading $g_\mathrm{ctrl,12}$ is recorded and not
-        constrained, so it does not enter the count.
+        dimensionless, as recorded in the campaign checkpoints:
+
+        \begin{itemize}
+          \item four in Campaign 1, namely $g_{k\min}$, $g_{k\max}$,
+                $g_\mathrm{enr}$ and $g_\mathrm{peak}$;
+
+          \item five in Campaigns 2 to 6, when the analytic vessel-fit
+                constraint $g_\mathrm{geom}$ enters;
+
+          \item six in Campaigns 7 and 8, when the controllability screen
+                $g_\mathrm{ctrl}$ enters;
+
+          \item eight in Campaign 9, which adds the control screen at the
+                operating maximum $g_\mathrm{ctrl,peak}$ and the
+                cycle-length floor of Section~\ref{sec:meth-c9}.
+        \end{itemize}
+
+        The two-bank reading $g_\mathrm{ctrl,12}$ and the boron record
+        $g_\mathrm{boron}$ of Campaign 9 are recorded and not
+        constrained, so they do not enter the count.
 \end{itemize}
 
 The evaluation level of $F_{\Delta H}$ changes between campaigns and is
@@ -484,22 +520,22 @@ under four rules.
         each other, which limits mutual shadowing.
 \end{enumerate}
 
-Campaign 7 keeps the Campaign 6 box unchanged and adds the measured
-controllability screen. Campaign 8 fixes two variables and searches
-four (Section~\ref{sec:meth-c8-space}).
+Campaign 7 adds the measured controllability screen and narrows the
+enrichment box to 3.0 to 10.43\,wt\%. Campaign 8 fixes two variables and searches
+four (Section~\ref{sec:meth-c8-space}). The Campaign 8 reflector bound
+follows from the vessel budget once the barrel and downcomer clearance
+$c_\mathrm{v}$ of that section is reserved at the fixed pitch.
 
 \begin{table}[htbp]
   \centering
-  \caption{Design space of Campaigns 7 and 8. The Campaign 8 reflector
-  bound follows from the vessel budget once the barrel and downcomer
-  clearance $c_\mathrm{v}$ of Section~\ref{sec:meth-c8-space} is
-  reserved at the fixed pitch.}
+  \caption{Design space of Campaigns 7 and 8. Campaign 9 keeps the
+  Campaign 8 space with the lower enrichment bound at 2.0\,wt\%.}
   \label{tab:design-space-c78}
   \begin{tabular}{llcc}
     \toprule
     Variable & Campaign 7 & Campaign 8 & Unit \\
     \midrule
-    $e_\mathrm{in},\,e_\mathrm{out}$ & 2.0 -- 17.174 & collapsed to one, $e$ & wt\% $^{235}$U \\
+    $e_\mathrm{in},\,e_\mathrm{out}$ & 3.0 -- 10.43 & collapsed to one, $e$ & wt\% $^{235}$U \\
     $e$ & --- & 3.0 -- 13.913 & wt\% $^{235}$U \\
     $\mathrm{gd}$ & 0 -- 8.0 & 0 -- 8.0 & wt\% \\
     $p$ & 1.15 -- 1.43 & fixed, 1.26 & cm \\
@@ -512,11 +548,7 @@ four (Section~\ref{sec:meth-c8-space}).
 \begin{table}[htbp]
   \centering
   \small
-  \caption{Constraints. The evaluation level of $g_\mathrm{peak}$ is
-  the central methodological change of Campaign 4, the reactivity
-  window moves to the core basis in Campaign 6
-  (Section~\ref{sec:meth-kbasis}), and the measured controllability
-  screen enters in Campaign 7 (Section~\ref{sec:meth-ctrl}).}
+  \caption{Constraints: definition and evaluation level.}
   \label{tab:constraints}
 \begin{tabularx}{\textwidth}{
     >{\raggedright\arraybackslash}p{0.15\textwidth}
@@ -817,13 +849,13 @@ k_{\max} = (1 - \Delta\rho_\mathrm{op}) + \min_{\mathbf{x} \in \mathcal{S}} \rho
         measured.
 \end{itemize}
 
-Table~\ref{tab:ctrl-bounds} lists the ceilings used and derived.
+Table~\ref{tab:ctrl-bounds} lists the ceilings used and derived. Its
+three-dimensional values come from the axial study of
+Section~\ref{sec:meth-lax}.
 
 \begin{table}[htbp]
   \centering
-  \caption{Reactivity ceilings by campaign and their provenance. The
-  three-dimensional values come from the axial study of
-  Section~\ref{sec:meth-lax}.}
+  \caption{Reactivity ceilings by campaign and their provenance.}
   \label{tab:ctrl-bounds}
   \small
   \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.16\textwidth}c>{\raggedright\arraybackslash}p{0.20\textwidth}>{\raggedright\arraybackslash}X@{}}
@@ -864,8 +896,8 @@ The cycle-length objective of Equation~\eqref{eq:obj_efpd} is computed
 from the end-of-cycle burnup through the general conversion of
 Equation~\eqref{eq:efpd}, with the specific power of
 Table~\ref{tab:model-operating}. What remains to be fixed here is the
-criterion that defines the end of cycle on the depletion workhorse, the
-reflective single assembly.
+criterion that defines the end of cycle on the model used for the
+depletion, the reflective single assembly.
 
 \begin{equation}
 B_\mathrm{EOC} = \min\!\left( B_k,\, B_\mathrm{ATF} \right)
@@ -1073,7 +1105,8 @@ The scales adopted are $s = 1.02$ for the lower reactivity bound,
 $s = k_{\max}$ for the upper reactivity bound, equal to 1.35 in
 Campaign 6 and to the campaign value of
 Table~\ref{tab:ctrl-bounds} thereafter, $s = 19.75$ for the enrichment
-cap, $s = 2.0$ for the peaking limit, $s = 90.0$~cm for the vessel-fit
+cap up to Campaign 6, replaced by the peripheral cap of 12 in
+Campaign 7 and 16 from Campaign 8, $s = 2.0$ for the peaking limit, $s = 90.0$~cm for the vessel-fit
 condition and $s = 0.99$ for the controllability screen. Each
 normalised violation is then the fraction of its own limit.
 
@@ -1111,7 +1144,7 @@ alternative.
 
 The exchange rate only matters where two constraints are active on the
 same design, because a single violation orders the infeasible
-population by itself. In the final campaign that situation does not
+population by itself. In Campaign 8 that situation does not
 arise between the two constraints in question. Of the 41 infeasible
 designs of Campaign 8, 35 fail the controllability screen and 6 fail
 the reactivity floor. The 23 designs that also exceed the reactivity
@@ -1212,13 +1245,13 @@ Table~\ref{tab:lax-study} reports the six Campaign 6 designs studied.
 They span an unrodded eigenvalue from 1.071 to 1.279 and enrichments
 from 3 to \SI{14}{wt\%}, and their two-dimensional regulating-bank
 worths, \num{14839} to \SI{17815}{pcm}, lie within one standard
-deviation of the Campaign 7 archive median.
+deviation of the Campaign 7 archive median. In the rodded columns all
+sixteen regulating banks are inserted, and the subcriticality is
+$(1 - 1/k)$ in pcm, negative when the core is supercritical.
 
 \begin{table}[htbp]
   \centering
-  \caption{Axial leakage study on six Campaign 6 designs. Rodded
-  columns have all sixteen regulating banks inserted. Subcriticality
-  is $(1 - 1/k)$ in pcm, negative when supercritical.}
+  \caption{Axial leakage study on six Campaign 6 designs.}
   \label{tab:lax-study}
   \small
   \begin{tabular}{ccccccc}
@@ -1259,7 +1292,7 @@ Three results carry into the method.
         models. The long-cycle end of the unconstrained design space
         cannot be held down by the regulating system, which is the
         physical reason for the enrichment cap and the control screen
-        of the final campaign.
+        of Campaigns 8 and 9.
 \end{enumerate}
 
 From Campaign 8 the axial factor multiplies the target, so that the
@@ -1330,9 +1363,11 @@ first in this work that refer to a finite-height core.
 \section{Surrogate-assisted active-learning loop}
 \label{sec:meth-loop}
 
-The campaign follows the dual-stage
-pattern~\cite{whyte_parks_2021}, whose four steps
-repeat until the stopping rule is met.
+The campaign follows the surrogate model optimisation pattern, in which
+a model trained on simulator results is optimised and the resulting
+non-dominated designs are re-evaluated with the
+simulator~\cite{whyte_2020}. Here the pattern runs as a loop whose four
+steps repeat until the stopping rule is met.
 
 \begin{enumerate}
   \item A Latin-hypercube design of
@@ -1381,6 +1416,66 @@ the hypervolume and inspected before the rule is trusted.
         whether the surrogate front still contains materially new
         designs.
 \end{enumerate}
+
+\subsection{Surrogate and loop settings}
+\label{sec:meth-loop-settings}
+
+The Gaussian processes of Section~\ref{sec:bg-gp} are set up as follows:
+
+\begin{itemize}
+  \item The inputs are the design variables of the campaign,
+        standardised to zero mean and unit variance so that one
+        dimensionless length-scale per variable is meaningful. The
+        outputs are normalised likewise.
+
+  \item One independent Gaussian process of the form of
+        Equation~\eqref{eq:kernel} is fitted per output: one for each of
+        the two objectives, and a parallel set for the constraints. The
+        surrogate therefore returns predicted objectives, predicted
+        constraint values and a standard deviation for each.
+
+  \item All hyperparameters, the length-scales $\ell_d$, the signal
+        variance $\sigma_f^{2}$ and the noise variance $\sigma_n^{2}$,
+        are refitted at every iteration by maximising the marginal
+        likelihood with four restarts, on the \emph{whole} cumulative
+        archive.
+
+  \item That archive grows with every iteration and holds between 54
+        and 114 designs at the end of the completed campaigns. This is
+        within the range in which Kriging models remain affordable, fewer
+        than 20 variables and 500 samples~\cite{forrester_book_2008}.
+
+  \item The fitted $\ell_d$ are read as a ranking of the influence of
+        each variable. The fitted $\sigma_n$ is compared against the
+        measured seed-to-seed scatter of
+        Section~\ref{sec:meth-fidelity} as a model-misfit diagnostic.
+\end{itemize}
+
+The loop of Section~\ref{sec:bg-al} was run with the following settings:
+
+\begin{itemize}
+  \item In Campaign 3 the design of experiments holds 36 Latin
+        hypercube points, drawn with an acceptance filter on the analytic
+        vessel-fit constraint of Equation~\eqref{eq:renv}, so that no
+        expensive evaluation is spent on a geometry that cannot be built.
+
+  \item Each iteration adds 6 infill evaluations, and iterations are
+        grouped in blocks of three, that is, 18 evaluations per block.
+        This is the granularity visible in the Block-1 and Block-2
+        feasibility counts of Section~\ref{sec:res-c3front}.
+
+  \item Campaign 3 reached its stopping rule after two blocks, for a
+        total budget of $36 + 2 \times 18 = 72$ evaluations. That budget
+        was discovered empirically and was not fixed in advance.
+
+  \item The per-design seeding of Section~\ref{sec:meth-fidelity} keeps
+        the evaluation noise independent across archive members, as the
+        surrogate noise model assumes.
+
+  \item Campaign 4 runs the identical loop with the objective moved to
+        core level at the $\approx3\%$ cost of
+        Equation~\eqref{eq:corecost}.
+\end{itemize}
 
 \subsection{Acquisition function}
 \label{sec:meth-acq}
@@ -1451,7 +1546,8 @@ E_\mathrm{cap} \;=\; \frac{1000\, B_\mathrm{max}}{P_\mathrm{spec}}
 
 On the resulting plateau the first objective is constant, so
 non-dominated sorting ranks the plateau by peaking alone, which is
-exactly how constrained dominance ranks censored truth designs. The cap
+exactly how the constrained-domination principle ranks censored truth
+designs~\cite{deb_nsga2_2002}. The cap
 is derived at launch from the declared ceiling and the model specific
 power, and is recorded in the checkpoint metadata.
 
@@ -1555,8 +1651,11 @@ confident the margin is small, and where it extrapolates the margin is
 large, which is the discrimination the bare criterion lacked. The
 construction is the deterministic counterpart of the probability of
 feasibility weighting of constrained surrogate
-optimisation~\cite{forrester_book_2008}, and setting $\kappa = 0$
-restores the bare criterion exactly.
+optimisation~\cite{forrester_book_2008}, and it applies the rule of
+safe Bayesian optimisation, in which a point is admitted only where the
+confidence bound of every constraint surrogate is
+satisfied~\cite{sui_safeopt_2015}. Setting $\kappa = 0$ restores the
+bare criterion exactly.
 
 \subsection{Search setting on the surrogate}
 \label{sec:meth-nsga-setting}
@@ -1568,15 +1667,15 @@ and only the NSGA-II search was repeated over six settings and eight
 independent seeds per setting, so every setting shares the identical
 surrogate and the study measures the search alone.
 
+Table~\ref{tab:nsga-sens} reports the result. The hypervolume is that of
+the surrogate front against the frozen reference point, the distance is
+the mean normalised nearest-neighbour distance of the selected infill
+batch to the baseline selection at the same seed, and the time is the
+wall-clock cost of one search.
+
 \begin{table}[htbp]
   \centering
-  \caption{Surrogate-search sensitivity on the frozen Campaign 6
-  design-of-experiments archive. Eight seeds per setting. The
-  hypervolume is that of the surrogate front against the frozen
-  reference point, the distance is the mean normalised
-  nearest-neighbour distance of the selected infill batch to the
-  baseline selection at the same seed, and the time is the wall-clock
-  cost of one search.}
+  \caption{Surrogate-search sensitivity on the frozen Campaign 6 design-of-experiments archive.}
   \label{tab:nsga-sens}
   \begin{tabular}{lcccc}
     \toprule
@@ -1608,7 +1707,7 @@ Two observations fix the choice.
 \end{enumerate}
 
 The setting $300\times400$ is therefore adopted for every infill
-block of Campaign 6 and retained in Campaigns 7 and 8. A binary same-design agreement metric was also
+block of Campaign 6 and retained in Campaigns 7, 8 and 9. A binary same-design agreement metric was also
 computed and found uninformative, because on a continuous front a
 larger population samples the same ridge more finely and exact matches
 within a fixed tolerance become structurally unlikely. The
@@ -1871,12 +1970,14 @@ are not resolved and are reported as such.
 \section{Transport fidelity and seeding}
 \label{sec:meth-fidelity}
 
+Table~\ref{tab:fidelity} lists the transport settings of every campaign
+and evaluation stage. The settings are frozen per checkpoint, and only
+the thread count adapts to the host.
+
 \begin{table}[htbp]
   \centering
   \begin{threeparttable}
-  \caption{Transport settings per campaign and per evaluation stage.
-  Settings are frozen per checkpoint, and only the thread count adapts
-  to the host.}
+  \caption{Transport settings per campaign and per evaluation stage.}
   \label{tab:fidelity}
   \small
   \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.17\textwidth}c>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}X@{}}
@@ -1953,7 +2054,30 @@ Section~\ref{sec:bg-gp}.
 \section{ATF discharge-burnup limit}
 \label{sec:meth-atf}
 
-The discharge limit adopted is $B_\mathrm{ATF} = 75$\,MWd/kgHM.
+The discharge limit adopted is $B_\mathrm{ATF} = 75$\,MWd/kgHM. It is a
+screening value of this work, placed between two limits reported in the
+literature:
+
+\begin{itemize}
+  \item Uranium dioxide fuel in zirconium cladding carries an
+        established exposure limit of \SI{62}{MWd/kgHM} rod average and
+        \SI{55}{MWd/kgHM} assembly average~\cite{song_sanchez_2026}. The
+        assembly-average value is the one comparable with
+        $B_\mathrm{ATF}$, because the depletion of this work is computed
+        on the assembly and its burnup is referred to the heavy-metal
+        mass of the whole assembly. The limit follows from cladding
+        oxidation, and accident-tolerant cladding is the route to
+        exceeding it~\cite{alam_2019_hotchannel}.
+
+  \item Studies of advanced fuel for long-cycle marine cores adopt
+        discharge limits of up to
+        \SI{100}{MWd/kgHM}~\cite{alam_partI_2019}.
+\end{itemize}
+
+The value used here is therefore compatible with an accident-tolerant
+fuel that exceeds the present limit, without assuming the performance of
+the most advanced concepts. It is not taken from a qualification
+programme.
 
 Cycle length and burnup are linearly related through the constant
 specific power, Equation~\eqref{eq:efpd}, with $P_\mathrm{spec}$ given
@@ -2051,7 +2175,7 @@ and a direct answer to whether the proxy discarded superior designs.
 
 \paragraph{Bridge model.}
 The multiplicative discrepancy is fitted in the Kennedy--O'Hagan
-spirit~\cite{kennedy_ohagan_2000,forrester_2007}.
+spirit~\cite{kennedy_ohagan_2000,forrester_book_2008}.
 
 \begin{equation}
 \frac{F_{\Delta H}^\mathrm{core}}{F_{\Delta H}^\mathrm{asm}}
@@ -2107,10 +2231,32 @@ At this cost the true quantity is measured \emph{inside the loop}
 rather than corrected. $F_{\Delta H}$ and $g_\mathrm{peak}$ are
 evaluated on the core, the assembly value is retained as a diagnostic,
 and EFPD keeps the validated assembly plus Route-B evaluation. This is
-the deletion of the proxy where deletion is affordable, preferred over
-co-kriging or trust-region model
-management~\cite{alexandrov_2001,poloczek_miso_2017,kandasamy_boca_2017}
-on simplicity grounds.
+the deletion of the proxy where deletion is affordable. On simplicity
+grounds it was preferred over trust-region model
+management~\cite{alexandrov_2001} and over multi-fidelity Bayesian
+optimisation, which draws on cheap and expensive information sources
+within one model~\cite{kandasamy_boca_2017,poloczek_miso_2017}.
+
+Both peaking factors are archived on every evaluation from Campaign~4
+onward, the core value under the objective and the assembly value as a
+diagnostic, so the ratio of Equation~\eqref{eq:bridge} can be
+recomputed on any later archive without further transport.
+Section~\ref{sec:res-proxy-gap-zoned} recomputes it on the zoned
+archives of Campaigns~6 to~8.
+
+One reporting defect of the run logs is recorded here, although it
+affects no result. From Campaign~4 to Campaign~9, until the evaluator
+was corrected after the last of them to print both values,
+the per-case console line printed the assembly peaking factor under the
+label of the core one. The stored quantities were always correct, the
+objective and the constraint always used the core value, and no number,
+figure or table of this work is taken from the console line. A run log
+of these campaigns therefore shows a peaking factor lower than the
+tables of Chapter~\ref{ch:results} by the ratio of
+Equation~\eqref{eq:bridge}: about 1.31 on the zoned archives of
+Campaigns~6 to~9, and the larger, geometry-dependent value of
+Equation~\eqref{eq:bridge-fit} on the uniform loadings of Campaigns~4
+and~5.
 
 \section{Evaluator-level radial zoning and the enrichment search box}
 \label{sec:meth-zoning}
@@ -2208,7 +2354,7 @@ implementation rather than modelling choices made afterwards.
         of the balance imposed in Equation~\eqref{eq:zoning-balance}.
 \end{enumerate}
 
-\subsection{The middle multiplier is derived, not chosen}
+\subsection{Derivation of the middle multiplier}
 \label{sec:meth-zoning-balance}
 
 Only $m_C$ and $m_P$ are free. The middle multiplier is solved at every
@@ -2259,9 +2405,7 @@ reported in Table~\ref{tab:zoning-transfer}.
 \begin{table}[htbp]
   \centering
   \small
-  \caption[Stage T of the zoned-loading study]{Stage T of the
-  zoned-loading study. The 60 designs of the Campaign 5 archive
-  rescored at core level under one nominal zoned map.}
+  \caption[Stage T of the zoned-loading study]{Stage T of the zoned-loading study: Campaign 5 archive rescored at core level under one nominal zoned map.}
   \label{tab:zoning-transfer}
   \begin{tabular}{lcc}
     \toprule
@@ -2305,16 +2449,13 @@ indices 7, 35, 54 and 58, were each re-solved over a grid of 20
 multiplier pairs. The grid spans $m_C \in \{1.000, 0.900, 0.800,
 0.720, 0.650\}$ and $m_P \in \{1.000, 1.050, 1.100, 1.150\}$, with
 $m_M$ balanced at every node. All four champions selected the same
-node, and the result is reported in
+node, $m_C = 0.720$ and $m_P = 1.150$, and the result is reported in
 Table~\ref{tab:zoning-grid}.
 
 \begin{table}[htbp]
   \centering
   \small
-  \caption[Stage 2 of the zoned-loading study]{Stage 2 of the
-  zoned-loading study. Beginning-of-life core peaking of four Campaign
-  5 champions under uniform loading and at the selected map
-  $m_C = 0.720$, $m_P = 1.150$.}
+  \caption[Stage 2 of the zoned-loading study]{Stage 2 of the zoned-loading study: beginning-of-life core peaking of four Campaign 5 champions.}
   \label{tab:zoning-grid}
   \begin{tabular}{ccccc}
     \toprule
@@ -2372,14 +2513,15 @@ Each confirmation runs in three steps.
         target.
 \end{enumerate}
 
+Table~\ref{tab:zoning-confirm} reports both confirmations, with the
+beginning-of-life peaking of Stage 2 at $m_P = 1.150$ repeated for
+comparison. The peaking intervals are half-widths at 95\,\% confidence
+over the eight seeds.
+
 \begin{table}[htbp]
   \centering
   \small
-  \caption[Stage 3 of the zoned-loading study]{Stage 3 of the
-  zoned-loading study. Two Campaign 5 champions confirmed at
-  $m_P = 1.250$, with the beginning-of-life peaking of Stage 2 at
-  $m_P = 1.150$ repeated for comparison. Peaking intervals are
-  half-widths at 95\,\% confidence over eight seeds.}
+  \caption[Stage 3 of the zoned-loading study]{Stage 3 of the zoned-loading study: confirmation of two Campaign 5 champions.}
   \label{tab:zoning-confirm}
   \begin{tabular}{lcc}
     \toprule
@@ -2503,10 +2645,12 @@ screen once zoned. Campaign 6 therefore trades a peaking improvement
 of about 0.06 to 0.09 for the wider box, and the trade is recorded here
 so that a later campaign can reverse it if the box ceases to bind.
 
-Campaign 7 keeps this box. Campaign 8 collapses the two enrichment
-variables to one and raises the as-loaded peripheral cap to
-\SI{16}{wt\%}, so the same construction gives a bound of
-\SI{13.913}{wt\%} (Section~\ref{sec:meth-c8-space}).
+Campaign 7 lowers the as-loaded peripheral cap to \SI{12}{wt\%}, so
+the same construction gives an upper bound of \SI{10.43}{wt\%}, and it
+raises the lower bound to \SI{3.0}{wt\%}. Campaign 8 collapses the two
+enrichment variables to one and raises the peripheral cap to
+\SI{16}{wt\%}, which gives an upper bound of \SI{13.913}{wt\%}
+(Section~\ref{sec:meth-c8-space}).
 
 The centre-suppressed, periphery-enhanced pattern flattens the radial
 power distribution, and it is the physically real driver of the
@@ -2517,8 +2661,10 @@ Section~\ref{sec:res-c6-compare}.
 \section{The Campaign 8 design space}
 \label{sec:meth-c8-space}
 
-The final campaign fixes what the earlier campaigns established and
-searches only what remains open. Four decisions define it.
+Campaign 8 fixes what the earlier campaigns established and searches
+only what remains open. Campaign 9 keeps this design space and only
+returns the lower enrichment bound to \SI{2.0}{wt\%}. Four decisions
+define it.
 
 \begin{enumerate}
   \item The pin pitch is fixed at \SI{1.26}{cm}, the Westinghouse
@@ -2538,8 +2684,12 @@ searches only what remains open. Four decisions define it.
         The core-level enrichment variation comes entirely from the
         C, M, P ring multipliers of Section~\ref{sec:meth-zoning},
         \num{0.720}, \num{0.893} and \num{1.150}, and the cap on the
-        as-built peripheral ring is raised to \SI{16}{wt\%}, so the
-        search box is 3.0 to \SI{13.913}{wt\%}.
+        as-built peripheral ring is raised to \SI{16}{wt\%}. The upper
+        bound of the variable follows from
+        Equation~\eqref{eq:leu-box} with this cap,
+        $16/1.150 = \SI{13.913}{wt\%}$, so no proposed design can
+        violate $g_\mathrm{enr}$. The lower bound is \SI{3.0}{wt\%} in
+        Campaign~8 and \SI{2.0}{wt\%} in Campaign~9.
 
   \item The vessel-fit constraint reserves a clearance for a core
         barrel and a downcomer. The barrel is the \SI{5.08}{cm}
@@ -2594,6 +2744,112 @@ the command line after the Campaign 7 regression. And the design of
 experiments has 36 points for four variables, nine per variable,
 followed by four infill blocks of six, 60 evaluations in all.
 
+\section{The Campaign 9 formulation}
+\label{sec:meth-c9}
+
+Campaigns 1 to 8 maximise the cycle length. Campaign 8 showed that every
+design on its front exceeds the reported refuelling interval by a wide
+margin, and that the excess reactivity bought for the longer cycle
+drives the regulating banks deep into the core
+(Sections~\ref{sec:res-c8-mission} and~\ref{sec:res-c8-split}).
+Campaign 9 keeps the design space and the evaluator of Campaign 8 and
+changes the formulation. The cycle length becomes a constraint at the
+required value, and the second objective becomes the soluble boron
+concentration that the core needs at the most reactive state of its
+cycle.
+
+\begin{equation}
+\begin{aligned}
+\min_{\mathbf{x}}\ &\big(F_{\Delta H}(\mathbf{x}),\ c_\mathrm{max}(\mathbf{x})\big) \\
+\text{subject to}\ &\mathrm{EFPD}(\mathbf{x}) \ge 1826,\quad
+F_{\Delta H}(\mathbf{x}) \le 1.65,\quad g_j(\mathbf{x}) \le 0
+\end{aligned}
+\label{eq:c9-problem}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $F_{\Delta H}$ is the radial peaking factor of the zoned core
+        with all rods out at beginning of life, the objective of
+        Campaign 8, dimensionless.
+
+  \item $c_\mathrm{max}$ is the critical boron concentration at the
+        operating maximum of the reactivity history, in ppm, defined in
+        Equation~\eqref{eq:c9-cmax}.
+
+  \item $\mathrm{EFPD}$ is the cycle length of
+        Section~\ref{sec:objective_functions}, in days. The floor of
+        1826 days is five years at a capacity factor of one, the upper
+        end of the interval of Equation~\eqref{eq:mission-efpd}. The
+        choice is deliberately conservative, because a core that lasts
+        five years at full power also lasts five calendar years at any
+        lower capacity factor of the prototype.
+
+  \item $1.65$ is the peaking screen, tightened from the exploratory
+        value of 2.0 in Table~\ref{tab:constraints} to the Technical
+        Specification limit of 1.65 of a licensed pressurised water
+        reactor~\cite{robinson_gd10}.
+
+  \item $g_j$ are the constraints $g_{k\min}$, $g_{k\max}$,
+        $g_\mathrm{enr}$ and $g_\mathrm{geom}$ of
+        Table~\ref{tab:constraints} with their Campaign 8 values, the
+        control screen $g_\mathrm{ctrl}$ at beginning of life, and the
+        same screen evaluated at the operating maximum,
+        $g_\mathrm{ctrl,peak}$.
+\end{itemize}
+
+The critical concentration is measured inside the evaluator. The core
+solve at \SI{1000}{ppm} is supplemented by unrodded core solves at
+\SI{2000}{ppm} and, where the root is not yet bracketed,
+\SI{3000}{ppm}. The beginning-of-life concentration $c_\mathrm{BOL}$ is
+the root of the measured reactivity $\rho(c)$, interpolated between the
+bracketing solves or extrapolated above the highest one, and the
+differential worth is the local slope of $\rho(c)$ at that root. The
+concentration at the operating maximum then adds the part of the
+gadolinium hump that the boron has to hold.
+
+\begin{equation}
+c_\mathrm{max} = c_\mathrm{BOL} + \frac{\max\!\big(L\,\Delta\rho_\mathrm{hump},\ 0\big)}{w_\mathrm{B}}
+\label{eq:c9-cmax}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $c_\mathrm{BOL}$ is the critical boron concentration at
+        beginning of life, in ppm.
+
+  \item $\Delta\rho_\mathrm{hump}$ is the hump of
+        Equation~\eqref{eq:c7-hump}, taken from the xenon-free assembly
+        depletion history that the evaluator already computes, in pcm.
+        A hump below the noise floor of \SI{400}{pcm} is set to zero.
+
+  \item $L$ is the ratio of the assembly to the core beginning-of-life
+        eigenvalue of the same design, which carries the assembly hump
+        to the core, dimensionless.
+
+  \item $w_\mathrm{B}$ is the differential boron worth at the root, in
+        pcm per ppm.
+\end{itemize}
+
+Two guards bound the objective where the measurement cannot reach. A
+design that cannot be made critical at zero boron returns a negative
+root, which would be the best value in the archive for a minimised
+objective and would steer the surrogate toward a region where no design
+operates, so such designs are clamped to \SI{0}{ppm}, and they are in any
+case infeasible on $g_{k\min}$. A root extrapolated far beyond the
+measured points is clipped at \SI{6000}{ppm}, twice the highest measured
+concentration. Self-shielding makes the true value higher still, so the
+ranking survives, and the plateau prevents a single design at many
+thousand ppm from stretching the surrogate.
+
+The boron ceiling of Section~\ref{sec:meth-mtc}, \SI{2763}{ppm}, is
+recorded on every design as $g_\mathrm{boron}$ and is not a
+constraint, because it was measured on the lattice of a single
+Campaign 8 design. The design of experiments has 24 points, followed by
+six infill iterations of six designs, 60 evaluations in all.
+
 
 \section{Campaign structure: one change per campaign}
 \label{sec:meth-campaigns}
@@ -2605,8 +2861,7 @@ every observed difference is attributable
 \begin{table}[htbp]
   \centering
   \small
-  \caption{Campaign structure. One controlled change separates each
-  campaign from its predecessor.}
+  \caption{Campaign structure.}
   \label{tab:campaigns}
   \begin{tabularx}{\textwidth}{@{}cc>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
     \toprule
@@ -2631,6 +2886,8 @@ every observed difference is attributable
        & Screens nested, derived ceiling discards controllable designs, two acquisition collapses \\
     C8 & 60 & Fixed pitch, single enrichment, axial-corrected target, two-level screen
        & Candidate front for the LABGENE-class core \\
+    C9 & 60 & Objectives $F_{\Delta H}$ and $c_\mathrm{max}$, cycle length as a constraint
+       & Front of five designs at 1406 to \SI{1908}{ppm}, reported as the best available \\
 
     \bottomrule
   \end{tabularx}
@@ -2650,6 +2907,15 @@ campaign. Each of the four infill blocks of Campaign 6 changes exactly
 one element of the acquisition of Section~\ref{sec:meth-acq}, and the
 per-block measurements of Section~\ref{sec:res-c6} are attributable on
 that basis.
+
+Campaign 9 changes the formulation, and four settings change with it:
+the cycle length moves to a constraint, the critical boron
+concentration enters as a measured objective, the control screen is
+applied at the operating maximum as well as at beginning of life, and
+the peaking screen is tightened to 1.65
+(Section~\ref{sec:meth-c9}). The four are made together because each
+follows from the reformulation, and the comparison with Campaign 8 is
+drawn design by design in Section~\ref{sec:res-c9-compare}.
 
 \section{Soluble boron treatment}
 \label{sec:meth-boron}
@@ -2700,10 +2966,12 @@ development. Four considerations support retaining it here.
         effective multiplication factor and a root mean square relative
         difference below \SI{0.11}{\percent} in assembly radial power.
         Equivalent open documentation does not exist for the
-        LABGENE-class naval core that motivates the study, whose design
-        information is provided only to the International Atomic Energy
-        Agency under the special procedures of the Quadripartite
-        Safeguards Agreement~\cite{eu_statement_bog_2025}, and no
+        LABGENE-class naval core that motivates the study. Brazil
+        provides updated design information for the land-based prototype
+        reactor to the International Atomic Energy Agency, while an
+        arrangement under the special procedures of Article~13 of the
+        Quadripartite Safeguards Agreement is still being
+        discussed~\cite{eu_statement_bog_2025}. No
         soluble boron specification for that core is available in the
         public literature.
   \item \textbf{Containment of the design space.} Soluble boron and the
@@ -2724,9 +2992,10 @@ development. Four considerations support retaining it here.
         regulating banks at power conditions lie within the constraint
         set, and only from Campaign 7
         (Section~\ref{sec:meth-ctrl}). The shutdown margin under the
-        single-failure assumption and the coefficient verification
-        remain outside the set defined in
-        Section~\ref{sec:objective_functions}. Treating SBF operation as an
+        single-failure assumption remains outside the set defined in
+        Section~\ref{sec:objective_functions}, and the coefficient is
+        evaluated outside the loop, on one design, through the boron
+        ceiling of Section~\ref{sec:meth-mtc}. Treating SBF operation as an
         assumption without that supporting analysis would weaken rather
         than strengthen the design basis.
   \item \textbf{Known direction of the bias.} As shown in
@@ -2789,10 +3058,12 @@ the competition for thermal neutrons with the gadolinium-bearing pins,
 both of which vary across the design space, and it is therefore
 measured rather than assumed in this work.
 
-\openpoint{Insert the measured integral boron worth, in pcm and in
-$\Delta k$, from the \SI{0}{ppm} re-depletion of the Campaign-5
-finalists, and state the differential worth in pcm per ppm for
-comparison with published PWR values.}
+The measurement was made on the eleven Campaign 8 candidates rather
+than on the Campaign 5 finalists. Between 0 and \SI{1000}{ppm} the
+integral worth is \num{3130} to \SI{8540}{pcm}, a differential worth
+of 3.13 to 8.54\,pcm per ppm that falls with enrichment, and
+6.98\,pcm per ppm for the candidate design 47
+(Section~\ref{sec:res-c8-boron}, Table~\ref{tab:c8-post-boron}).
 
 Two consequences follow, and both are recorded as documented biases
 rather than corrected within the campaigns.
@@ -2829,19 +3100,23 @@ rather than corrected within the campaigns.
         critical boron search is performed at any burnup step, so the
         depletion trajectory represents a reactivity-tracking model and
         not an operating history.
-  \item The Moderator Temperature Coefficient (MTC) is not evaluated in
-        this work. Soluble boron makes the MTC less negative than
-        boron-free operation would, so the present choice is not
-        conservative for that parameter, in contrast to the reactivity
-        and cycle-length effects described in
-        Section~\ref{sec:meth-boron-bias}.
+  \item Soluble boron makes the Moderator Temperature Coefficient (MTC)
+        less negative than boron-free operation would, so the present
+        choice is not conservative for that parameter, in contrast to
+        the reactivity and cycle-length effects described in
+        Section~\ref{sec:meth-boron-bias}. The MTC is not evaluated
+        inside the loop. It is evaluated on one Campaign 8 design as
+        the boron ceiling of Section~\ref{sec:meth-mtc}, against which
+        the critical concentrations of the candidates are compared.
   \item Boron depletion and \isotope[10]{B} burnout are not modelled,
         which is consistent with the constant-concentration assumption.
 \end{enumerate}
 
 Under the one-change rule stated in
 Section~\ref{sec:meth-campaigns} the treatment is held fixed at
-\SI{1000}{ppm} through every campaign of this work. The design basis
+\SI{1000}{ppm} through every campaign of this work. Campaign 9 keeps
+the depletion at that concentration and measures the critical
+concentration as an objective (Section~\ref{sec:meth-c9}). The design basis
 is therefore closed on the benchmark-traceable value, and the
 soluble-boron-free case is recorded as future work. The direct
 measurement that would precede any such change has been performed in
@@ -2947,6 +3222,458 @@ implemented in \texttt{boron\_worth.py} with the same solver path as
 the campaign evaluator, so the values at \SI{1000}{ppm} close on the
 archive to within the Monte Carlo resolution.
 
+\section{Limits of the calibrated and screened quantities}
+\label{sec:meth-limits}
+
+The loop of Section~\ref{sec:meth-loop} owes its throughput to
+substitution. A transport solve that would otherwise be repeated in every
+evaluation is replaced by a quantity measured once and reused: the
+end-of-cycle target of Section~\ref{sec:meth-ktarget}, the axial factor
+of Section~\ref{sec:meth-lax} and the boron worth of
+Section~\ref{sec:meth-boron-worth} are all substitutions of this kind.
+
+Every such quantity carries a qualification that is not part of the
+number. A slope holds over an interval, a screen holds at a state, and an
+estimate has an uncertainty. When the qualification is not stored with
+the value, later use can produce an error that goes unnoticed, because a
+lookup returns a plausible value for every input it is given.
+
+Three instances were found during this work. They are reported in the
+methodology because each is a property of the method and not of a
+particular design, and because the correction in each case is
+procedural.
+
+\subsection{A secant used in place of a local derivative}
+\label{sec:meth-limits-secant}
+
+A quantity tabulated at a few widely spaced nodes gives, on differencing,
+the mean sensitivity over the interval between them.
+
+\begin{equation}
+\bar{S} = \frac{f(x_2) - f(x_1)}{x_2 - x_1}
+\label{eq:secant}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $\bar{S}$ is the secant slope over the tabulated interval, in
+        units of $f$ per unit of $x$.
+  \item $f$ is the calibrated response.
+  \item $x_1$ and $x_2$ are the bracketing node values of the
+        independent variable, in its own unit.
+\end{itemize}
+
+The evaluator needs instead the local derivative at the operating point
+of the design under evaluation.
+
+\begin{equation}
+S(x_0) = \left. \frac{\mathrm{d}f}{\mathrm{d}x} \right|_{x_0}
+\label{eq:local-derivative}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $S(x_0)$ is the local sensitivity at the operating point, in
+        units of $f$ per unit of $x$.
+  \item $x_0$ is the value of the independent variable for the design
+        being evaluated, in its own unit.
+\end{itemize}
+
+Equations~\eqref{eq:secant} and~\eqref{eq:local-derivative} coincide
+only where $f$ is linear over the tabulated interval. Two instances were
+quantified.
+
+\paragraph{Enrichment sensitivity of the end-of-cycle target.}
+A single sensitivity of \SI{-64.1}{pcm} per weight per cent describes the
+target over the enrichment interval. A dedicated sweep over the same
+variable resolves a quadratic term at 6.4 standard deviations from zero,
+so the response is not linear over the interval and the single figure is
+a secant. On the composition of C8-47 the consequence is \SI{9}{pcm},
+and the corresponding uncertainty on the cycle length is 1.3 per cent.
+
+\paragraph{Differential worth of soluble boron.}
+The worth used to convert an excess reactivity into a critical
+concentration was built as the difference between the boron-free state
+and the reference state of Table~\ref{tab:model-operating}, divided by
+that concentration.
+
+\begin{equation}
+\bar{w}_\mathrm{B} = \frac{\rho(0) - \rho(c_\mathrm{ref})}{c_\mathrm{ref}}
+\label{eq:boron-chord}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $\bar{w}_\mathrm{B}$ is the mean differential boron worth over the
+        interval, in pcm per ppm.
+  \item $\rho(0)$ is the core reactivity with no soluble boron, in pcm.
+  \item $\rho(c_\mathrm{ref})$ is the core reactivity at the reference
+        concentration, in pcm.
+  \item $c_\mathrm{ref}$ is the reference soluble boron concentration of
+        Table~\ref{tab:model-operating}, \SI{1000}{ppm}.
+\end{itemize}
+
+Equation~\eqref{eq:boron-chord} is a secant anchored at the
+low-concentration end of the interval, where the boron shields itself
+least and the worth per unit concentration is largest.
+
+Two independent measurements resolve the concentration dependence. The
+sweep of Section~\ref{sec:res-c8-boron} gives, for C8-47, \SI{7.104}{pcm}
+per ppm over 0 to \SI{500}{ppm}, \SI{6.863}{pcm} per ppm over 500 to
+\SI{1000}{ppm} and \SI{6.626}{pcm} per ppm over 1000 to \SI{1500}{ppm}.
+The scan of Section~\ref{sec:meth-mtc} extends the measurement, with
+\SI{6.78}{pcm} per ppm at \SI{1000}{ppm}, \SI{6.64}{pcm} per ppm at
+\SI{2200}{ppm} and \SI{6.12}{pcm} per ppm at \SI{5000}{ppm}. The worth
+decreases monotonically with concentration, as expected of a strong
+thermal absorber that progressively shields itself. The reliable
+procedure is therefore to locate the root of the measured reactivity
+curve instead of inverting a single worth.
+
+\begin{equation}
+\rho(c_\mathrm{BOL}) = 0
+\label{eq:cbol-root}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $\rho(c)$ is the unrodded core reactivity at soluble boron
+        concentration $c$, in pcm, interpolated between measured points.
+  \item $c_\mathrm{BOL}$ is the critical soluble boron concentration at
+        beginning of life, in ppm.
+\end{itemize}
+
+For C8-47 the linear estimate of Table~\ref{tab:c8-swing} is
+\SI{2348}{ppm} and the measured root is \SI{2327}{ppm}, a correction of
+\SI{-21}{ppm}. Self-shielding alone would place the measured root above
+the estimate, because a worth taken where the boron shields itself less
+overstates the worth at the concentration of interest and so understates
+the concentration needed. The measured root lies below the estimate. The
+power law of Equation~\eqref{eq:wb-proxy} underestimates the worth of this
+design by about 2 per cent, against its relative root-mean-square residual
+of 1.6 per cent, and an underestimated worth overstates the concentration.
+The measured correction is the net of the two effects, and it is small.
+Whatever its sign, a worth measured as a chord is not the worth at the
+concentration where it is applied, and the curve has to be measured.
+
+\subsection{A constraint evaluated where it does not bind}
+\label{sec:meth-limits-state}
+
+A constraint screened at a single state is conservative only if that
+state bounds the constrained quantity over the interval of interest.
+With an integral burnable absorber this is not guaranteed, because
+depletion of the absorber can release reactivity faster than the fuel
+consumes it and produce an interior maximum of the multiplication factor,
+the hump of Equation~\eqref{eq:c7-hump}. The control margin that must be
+screened is then the beginning-of-life margin reduced by the core-level
+hump.
+
+\begin{equation}
+m_\mathrm{peak} = m_\mathrm{BOL} - \max\!\left( L\,
+\Delta \rho_\mathrm{hump},\ 0 \right)
+\label{eq:margin-peak}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $m_\mathrm{peak}$ is the control margin at the operating maximum
+        of the cycle, in pcm.
+  \item $m_\mathrm{BOL}$ is the margin at beginning of life from the
+        screen of Equation~\eqref{eq:g-ctrl-meth}, in pcm.
+  \item $L$ is the ratio of the assembly to the core beginning-of-life
+        eigenvalue of the same design, which carries the assembly hump to
+        the core, dimensionless.
+  \item $\Delta \rho_\mathrm{hump}$ is the assembly hump of
+        Equation~\eqref{eq:c7-hump}, in pcm.
+\end{itemize}
+
+A non-positive hump leaves the margin unchanged, and for such a design the
+beginning-of-life screen bounds the whole cycle. The resolution of the
+depletion solve is 150 to \SI{250}{pcm} per state, so amplitudes below
+\SI{400}{pcm} are reported as unresolved and are not corrected for. Two
+instances were quantified.
+
+\paragraph{Controllability screen.}
+Applied retrospectively to the 58 Campaign 7 designs that carry a
+validated depletion history, Equation~\eqref{eq:margin-peak} leaves 32
+designs satisfying the screen of Equation~\eqref{eq:g-ctrl-meth} at their
+own operating maximum, against 38 at beginning of life
+(Section~\ref{sec:res-c8-retro}). Six designs were admitted as feasible by
+the campaign and are not controllable over their own cycle. All six carry
+a thin gadolinia loading spread over 32 to 40 pins per assembly, the
+pattern whose absorber burns out first and so produces the largest hump,
+consistent with the self-shielding behaviour of gadolinia
+rods~\cite{gd_enriched_2021}. Within the eleven Campaign 8 designs of the
+post-analysis one design, C8-31, changes verdict: its two-bank reading
+falls from \SI{5856}{pcm} at beginning of life to \SI{901}{pcm} at its own
+maximum, below the screening threshold of \SI{1010}{pcm}.
+
+\paragraph{Critical boron as a figure of merit.}
+The same error affects any figure of merit built on the critical soluble
+boron concentration evaluated at beginning of life. A design whose
+reactivity is temporarily suppressed by unburned gadolinium reports a low
+concentration, while the operationally binding quantity is the maximum
+over the cycle. That maximum is Equation~\eqref{eq:c9-cmax}, and it needs
+no additional transport, because the depletion history that supplies
+$\Delta \rho_\mathrm{hump}$ is already computed by the evaluator.
+
+\subsection{An uncertainty computed and then discarded}
+\label{sec:meth-limits-sigma}
+
+The third instance is the mildest and the easiest to repeat. The
+end-of-cycle target table of Section~\ref{sec:meth-ktarget} stores the
+fitted reflector sensitivity, the fitted intercept and the reduced
+chi-squared of the fit, and not the uncertainty of the slope, so later
+comparisons treated an estimate as exact. Refitting from the raw
+eigenvalues and their reported standard deviations, which the table does
+store, reproduces the stored slope and the stored reduced chi-squared of
+0.378 and also returns the uncertainty of the slope.
+
+\begin{equation}
+\sigma_S = \sqrt{ \frac{\sum_i w_i}
+{\left( \sum_i w_i \right) \left( \sum_i w_i t_i^{2} \right)
+- \left( \sum_i w_i t_i \right)^{2}} },
+\qquad w_i = \frac{1}{\sigma_{k,i}^{2}}
+\label{eq:slope-sigma}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $\sigma_S$ is the standard deviation of the fitted slope, in pcm
+        per cm.
+  \item $w_i$ is the weight of the $i$-th node, in inverse pcm squared.
+  \item $\sigma_{k,i}$ is the Monte Carlo standard deviation of the
+        eigenvalue at the $i$-th node, in pcm.
+  \item $t_i$ is the reflector thickness at the $i$-th node, in cm.
+\end{itemize}
+
+The result is \SI{-47.6}{pcm} per centimetre with a standard deviation of
+\SI{15.7}{pcm} per centimetre, on the basis normalised by the reference
+leakage factor, a relative uncertainty of one third. That is a property
+of the measurement. Across the seven nodes from 2.00 to \SI{5.66}{cm} the
+reflector is worth about \SI{195}{pcm} in total, while each eigenvalue
+carries a Monte Carlo standard deviation of 47 to \SI{60}{pcm}. The whole
+effect is about four times the noise on a single point, and no linear fit
+through such data can constrain its slope better.
+
+Two independent determinations of the same slope exist, one at the
+reference composition of the table and one across six uniform
+enrichments. With the slope uncertainty included, their separation from
+the table slope is
+
+\begin{equation}
+n = \frac{\left| S_A - S_B \right|}
+{\sqrt{\sigma_A^{2} + \sigma_B^{2}}}
+\label{eq:nsigma}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $n$ is the separation of two determinations, dimensionless.
+  \item $S_A$ and $S_B$ are the two slopes, in pcm per cm.
+  \item $\sigma_A$ and $\sigma_B$ are their standard deviations, in pcm
+        per cm.
+\end{itemize}
+
+\noindent which gives 1.47 against the determination at the reference
+composition and 1.39 against the enrichment sweep, whose slope is
+$-25.1 \pm \SI{4.0}{pcm}$ per centimetre. The three determinations are
+consistent. Without the recovered slope uncertainty the same comparisons
+would have returned 2.8 standard deviations and suggested a defect that
+is not present. The reflector sensitivity is reported in this work as
+$-47.6 \pm \SI{15.7}{pcm}$ per centimetre, and no conclusion is drawn
+from its difference from either independent determination.
+
+\subsection{Consequence for the framework}
+\label{sec:meth-limits-consequence}
+
+The three instances share one origin. A surrogate-assisted framework
+earns its throughput by replacing repeated transport with precomputed
+quantities, and each replacement carries a qualification that cannot be
+recovered from the stored number: the interval over which a response is
+linear, the state at which a bound is attained, the uncertainty of an
+estimate. Three procedural rules follow, all inexpensive.
+
+\begin{enumerate}
+  \item Every tabulated quantity carries the range of the data on which
+        it was fitted, and every consumer emits a warning when it is
+        evaluated outside that range.
+  \item Every constraint screened at a single state is accompanied by an
+        argument, or a measurement, that the state chosen bounds the
+        constraint over the interval of interest.
+  \item Every fitted quantity is stored with its uncertainty, and no two
+        quantities are compared without combining both.
+\end{enumerate}
+
+The correction of Equation~\eqref{eq:margin-peak} implements the second
+rule, and the retrospective count of Section~\ref{sec:meth-limits-state}
+is the measured cost of having omitted it. Section~\ref{sec:meth-limits-sigma}
+illustrates the third, at the lower cost of a false alarm instead of a
+wrong acceptance.
+
+
+\section{Moderator temperature coefficient and the soluble boron ceiling}
+\label{sec:meth-mtc}
+
+The reference concentration of Section~\ref{sec:meth-boron} is fixed at
+\SI{1000}{ppm} throughout the optimisation, so the campaigns do not test
+whether a candidate could be held critical by soluble boron at an
+acceptable concentration. Soluble boron cannot be increased without limit.
+As the concentration rises, the boron expelled from the core by thermal
+expansion of the moderator contributes an increasingly positive
+reactivity, and above some concentration the moderator temperature
+coefficient changes sign. A positive coefficient removes the
+self-stabilising response of the core to a power excursion and is not
+acceptable at power. The concentration at which the coefficient vanishes
+is therefore a ceiling, and it is a property of the lattice.
+
+\subsection{Definition and evaluation}
+\label{sec:meth-mtc-def}
+
+The coefficient is evaluated as a two-point difference at constant
+pressure, with the moderator density taken consistently with the
+temperature from the IAPWS-IF97 formulation~\cite{wagner_iapws_if97_2000}.
+
+\begin{equation}
+\alpha_\mathrm{M}(c) = \frac{\rho\!\left(T + \Delta T,\ c\right)
+- \rho\!\left(T,\ c\right)}{\Delta T}
+\label{eq:mtc}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $\alpha_\mathrm{M}$ is the moderator temperature coefficient, in
+        pcm per K.
+  \item $\rho$ is the core reactivity at the stated moderator temperature
+        and soluble boron concentration, in pcm.
+  \item $T$ is the moderator temperature, in K, with the density set from
+        the steam tables at the operating pressure.
+  \item $\Delta T$ is the temperature perturbation, in K.
+  \item $c$ is the soluble boron concentration, in ppm.
+\end{itemize}
+
+The ceiling is the root of Equation~\eqref{eq:mtc} in concentration,
+found by linear interpolation between the bracketing points of a scan.
+
+\begin{equation}
+\alpha_\mathrm{M}\!\left(c_\mathrm{ceil}\right) = 0
+\label{eq:ceiling}
+\end{equation}
+
+\noindent where $c_\mathrm{ceil}$ is the soluble boron ceiling, in ppm,
+and the remaining symbols are as in Equation~\eqref{eq:mtc}.
+
+A design is acceptable on this criterion when its critical concentration
+of Equation~\eqref{eq:cbol-root}, or its cycle maximum of
+Equation~\eqref{eq:c9-cmax} where a positive hump is resolved, lies below
+the ceiling.
+
+The ceiling is evaluated outside the optimisation loop. It is recorded
+in the archive as $g_\mathrm{boron}$ and is never imposed as a
+constraint. The scan was run with \texttt{mtc\_scan.py} with two seeds
+per point, on C8-47 at $100\,000$ particles and 170 batches on the zoned
+core. It covers the following designs:
+
+\begin{itemize}
+  \item C8-47, the Campaign 8 champion, at \SI{12.8}{MPa} and
+        \SI{15.5}{MPa}.
+
+  \item Eight Campaign 9 lattices at \SI{12.8}{MPa}, of which C9-47,
+        C9-34 and C9-44 are also scanned at \SI{15.5}{MPa}.
+\end{itemize}
+
+The two champions, C8-47 and C9-47, are scanned at each pressure both on
+a two-dimensional core and on the three-dimensional core model of
+Section~\ref{sec:res-c8-3d}, with the withdrawn rods parked, so the
+ceiling and the three-dimensional confirmation rest on the same geometry.
+The pair of scans separates the axial leakage contribution to the ceiling
+from the lattice contribution. The remaining lattices are scanned on the
+three-dimensional core model only, because the leakage contribution is
+measured on the champions and is not the quantity that distinguishes one
+design from another.
+
+Two brackets were scanned: 570 to \SI{590}{K} at \SI{15.5}{MPa}, centred on
+the moderator temperature of \SI{580}{K} of
+Table~\ref{tab:model-operating}, and 547 to \SI{567}{K} at
+\SI{12.8}{MPa}. The ceiling is sensitive to the pressure through the
+moderator density, and no open source gives the primary conditions of
+LABGENE or of any naval propulsion reactor, so the two brackets are
+reference points and carry no claim about the prototype.
+
+\openpoint{Cite the source of the \SI{12.8}{MPa} primary pressure, for
+example the NuScale design certification application, or the open data
+on the KLT-40S at \SI{12.7}{MPa} and the RITM-200 at \SI{15.7}{MPa}, and
+add the entry to the bibliography.}
+
+\subsection{Two verification requirements}
+\label{sec:meth-mtc-checks}
+
+Equation~\eqref{eq:mtc} is a small difference between two large numbers,
+so it is sensitive to any inconsistency between the perturbed and
+unperturbed models. Two checks are applied.
+
+\paragraph{The radial zoning must match the evaluator.}
+The scan must build the core with the radial enrichment map of the
+evaluator, described in Section~\ref{sec:meth-zoning}. A first
+implementation omitted the map and solved a radially uniform core. Its
+eigenvalue differed from the evaluator by about \SI{2470}{pcm}, and a
+further \SI{157}{pcm} came from the difference in moderator density
+between the scan state and the campaign reference state. The coefficient
+itself proved far less sensitive than the eigenvalue, moving only from
+$-26.39 \pm \SI{1.42}{pcm}$ per K to $-24.87 \pm \SI{2.15}{pcm}$ per K,
+so radial zoning changes the multiplication factor substantially and the
+feedback very little. For the method, the ceiling and the critical
+concentration must be computed in the same model: a concentration from
+one model compared against a ceiling from another is not a valid
+comparison, however well the two numbers agree.
+
+\paragraph{The Doppler coefficient must be resolved and negative.}
+The fuel temperature coefficient is evaluated alongside the moderator
+coefficient as a validity check. A null or positive value would indicate
+that the cross-section library carries a single temperature and that the
+temperature interpolation behind Equation~\eqref{eq:mtc} is not active.
+
+\subsection{Dimensionality of the ceiling}
+\label{sec:meth-mtc-3d}
+
+The two-dimensional model cannot represent the axial component of the
+feedback. When the moderator heats and expands, axial leakage increases
+and contributes negative reactivity, so a two-dimensional evaluation of
+Equation~\eqref{eq:mtc} omits a stabilising term and returns a ceiling
+that is too low. The omitted term is measured as the difference between
+the three- and two-dimensional coefficients at the same state.
+
+\begin{equation}
+\alpha_\mathrm{ax} = \alpha_\mathrm{M}^\mathrm{3D}
+- \alpha_\mathrm{M}^\mathrm{2D}
+\label{eq:axial-feedback}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $\alpha_\mathrm{ax}$ is the axial leakage contribution to the
+        moderator temperature coefficient, in pcm per K.
+  \item $\alpha_\mathrm{M}^\mathrm{3D}$ and
+        $\alpha_\mathrm{M}^\mathrm{2D}$ are the coefficients evaluated in
+        three and in two dimensions at the same state, in pcm per K.
+\end{itemize}
+
+The two-dimensional ceiling is reported as a conservative screen and the
+three-dimensional ceiling as the physical result. Every margin quoted in
+this work states its dimensionality, and no margin obtained in one
+dimensionality is compared against a concentration obtained in the other.
+The same discipline applies to the rodded margins of
+Section~\ref{sec:meth-ctrl}, where the two- and three-dimensional readings
+of the same state can differ in sign.
+
 
 \section{Diagnostics, environments, reproducibility}
 \label{sec:meth-diagnostics}
@@ -2955,7 +3682,7 @@ Shannon-entropy source-convergence monitoring is attached to every
 model. The reflective single assembly is source-converged from
 batch~1. The finite core has a real transient, and one core case
 converged only at batch~94, hence the generous 60--120 inactive batches
-of the core solves, with a per-run sentinel recorded in the archive.
+of the core solves, with the convergence batch of each run recorded in the archive.
 
 Campaigns 1 and 2 ran on a cloud instance (AWS EC2 c7a.8xlarge,
 AMD EPYC 9R14, 32 physical cores without simultaneous
@@ -2963,7 +3690,7 @@ multithreading), inside a purpose-built Docker image that pins the
 Conda environment. Campaigns 3 to 5 ran on a 32-core, 64-thread
 workstation without administrative privileges, on the same pinned
 environment. Campaigns 6 and 7 returned to the cloud instance under
-the identical image, and Campaign 8 ran on the workstation, whose
+the identical image, and Campaigns 8 and 9 ran on the workstation, whose
 measured particle rate on 64 threads equals that of the 32 cloud cores
 (Section~\ref{sec:res-c8-cost}). The reproducibility unit is the environment
 definition committed to the repository. OpenMC 0.15.3 and pymoo
@@ -2989,3 +3716,288 @@ did not anticipate the censoring marker inserted after the cycle
 length. The failure was silent. No quantity in this thesis depends on
 its output, since every per-design value is read from the archive, and
 the parser was corrected before Campaign 8.
+
+Each campaign needs a scratch directory of its own. Case directories
+are numbered in evaluation order and not hashed, so a campaign that
+shares the directory of its predecessor finds the depletion results of
+a different design under the same case number. When Campaign 9 was
+first started in the directory of Campaign 8, the depletion restart
+failed on an array-shape mismatch in the results file, and the
+campaign was run in a separate directory. The failure was loud, and no
+result of either campaign was affected.
+
+% ---------------------------------------------------------------------
+% Subsection appended from meth_depletion_level.tex.
+% Measured quantities are traceable to
+%   out_c8/optimization_checkpoint.json    per-phase timers, 60 designs
+%   confirm3d_c8/runs.json                 66 solves per model at
+%                                          150000 x 200 with 80 inactive
+% ---------------------------------------------------------------------
+
+\subsection{Level of the depletion calculation}
+\label{sec:meth-dep-level}
+
+Every cycle length reported in this work comes from a depletion of the
+two-dimensional reflected assembly. No campaign depletes the core. The
+core enters only through the leakage-corrected target of
+Section~\ref{sec:meth-lax}, which is calibrated once per reflector
+thickness and then reused. This subsection states what the alternative
+would have cost, because the choice is the single largest approximation
+in the cost model of Section~\ref{sec:meth-cost} and it is defended here
+with measured timings rather than with an assertion.
+
+\subsubsection{Cost model of one transport solve}
+
+The wall time of a single OpenMC solve on the reference workstation is
+described by a fixed overhead plus a throughput term.
+
+\begin{equation}
+t_\mathrm{solve} = c_0 + \frac{H}{r}
+\label{eq:t-solve}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $t_\mathrm{solve}$ is the wall time of one eigenvalue solve, in
+        seconds.
+
+  \item $c_0$ is the fixed overhead of a solve, that is the
+        cross-section load, the geometry construction and the tally
+        setup, in seconds.
+
+  \item $H$ is the number of active neutron histories, that is the
+        particle count multiplied by the number of active batches,
+        dimensionless.
+
+  \item $r$ is the sustained throughput of the machine, in active
+        histories per second.
+\end{itemize}
+
+The two parameters are obtained from the two solve types the campaign
+already times on every evaluation. The assembly solve runs at
+\num{4000} particles and 60 batches with 20 inactive, that is
+\num{160000} active histories, and costs \SI{11.4}{s} on average over
+the sixty designs. The core solve runs at \num{100000} particles and
+170 batches with 60 inactive, that is \num{11.0}{e6} active histories,
+and costs \SI{106.9}{s}. Solving Equation~\eqref{eq:t-solve} for the
+pair gives
+
+\begin{equation}
+c_0 = \SI{10.0}{s}, \qquad r = \SI{1.135e5}{histories\per\second}
+\label{eq:t-solve-fit}
+\end{equation}
+
+\noindent on the sixty-four-thread workstation of
+Section~\ref{sec:meth-cost}. The overhead is therefore not negligible
+at the campaign fidelity. Of the \SI{11.4}{s} of an assembly solve,
+only \SI{1.4}{s} is transport and \SI{10.0}{s} is setup.
+
+\subsubsection{Cost model of one depletion step}
+
+A depletion step is one transport solve followed by the depletion
+bookkeeping, namely the construction of the coupled operator, the
+reaction-rate tallies, the Bateman solution for every depletable
+material and the results file written to disk.
+
+\begin{equation}
+t_\mathrm{step} = t_\mathrm{solve} + N_g\,\tau_B
+\label{eq:t-step}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $t_\mathrm{step}$ is the wall time of one depletion step, in
+        seconds.
+
+  \item $N_g$ is the number of depletable material groups carried by
+        the model, dimensionless.
+
+  \item $\tau_B$ is the bookkeeping cost per material group per step,
+        in seconds.
+\end{itemize}
+
+The archive gives both terms directly. Averaged over the sixty
+Campaign 8 designs, the depletion costs \SI{925.3}{s} and comprises
+\num{14.6} steps, so one step costs \SI{62.6}{s}. Subtracting the
+\SI{11.4}{s} assembly solve leaves
+
+\begin{equation}
+N_g^\mathrm{asm}\,\tau_B = \SI{51.2}{s}
+\label{eq:bateman-asm}
+\end{equation}
+
+\noindent for the assembly. The consequence is the central fact of this
+subsection. At the campaign fidelity a depletion step is
+\SI{82}{\percent} bookkeeping and \SI{18}{\percent} transport. The cost
+of moving the depletion to the core is therefore governed by the number
+of depletable material groups the core model creates, and not by the
+size of its transport problem.
+
+\subsubsection{Cost of a core-level depletion}
+
+Two quantities change when the depletion moves to the core. The number
+of material groups rises, because the radial enrichment zoning and any
+axial subdivision of the burnup regions multiply the groups the Bateman
+solver must advance. The particle count must rise with the number of
+groups, because each group receives a smaller share of the histories
+and its reaction rates would otherwise lose precision.
+
+\begin{equation}
+t_\mathrm{step}^\mathrm{core} = c_0 + f_p\,\frac{H_\mathrm{core}}{r}
+ + \frac{N_g}{N_g^\mathrm{asm}}\,\left(N_g^\mathrm{asm}\,\tau_B\right)
+\label{eq:t-step-core}
+\end{equation}
+
+\noindent where the symbols have the following meaning.
+
+\begin{itemize}
+  \item $t_\mathrm{step}^\mathrm{core}$ is the wall time of one
+        core-level depletion step, in seconds.
+
+  \item $f_p$ is the factor by which the particle count is raised to
+        preserve the per-group reaction-rate precision, dimensionless.
+
+  \item $H_\mathrm{core}$ is the active history count of the campaign
+        core solve, \num{11.0e6}, dimensionless.
+
+  \item $N_g / N_g^\mathrm{asm}$ is the ratio of core to assembly
+        material groups, dimensionless.
+\end{itemize}
+
+Table~\ref{tab:dep-level-cost} evaluates
+Equation~\eqref{eq:t-step-core} for three grouping choices, each at the
+\num{14.6} steps of the campaign schedule, and compares the result with
+the measured \SI{925.3}{s} of the assembly depletion. The particle
+factor $f_p$ is set equal to the group ratio, which preserves the
+per-group reaction-rate precision, and the ratio to the assembly
+depletion is given in brackets in the last column.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Estimated cost of a core-level depletion per design under three burnup groupings.}
+  \label{tab:dep-level-cost}
+  \small
+  \setlength{\tabcolsep}{5pt}
+  \begin{tabular}{@{}lrrrrr@{}}
+    \toprule
+    Burnup grouping & $N_g / N_g^\mathrm{asm}$ & $f_p$ &
+    Transport & Bateman & Cost \\
+     &  &  & s/step & s/step & per design \\
+    \midrule
+    Radial zones only, groups shared across
+      & 3 & 3 & 107 & 154 & \SI{1.1}{h} \\
+    \quad the assemblies of a ring
+      &   &   &     &     & ($4\times$) \\
+    \addlinespace
+    Radial zones and ten axial layers
+      & 30 & 3 & 301 & 1536 & \SI{7.5}{h} \\
+      &    &    &     &      & ($29\times$) \\
+    \addlinespace
+    Every assembly and ten axial layers
+      & 320 & 32 & 3111 & 16384 & \SI{79}{h} \\
+      &     &    &      &       & ($308\times$) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Three readings follow.
+
+\begin{enumerate}
+  \item The first row is inexpensive and uninformative. With the groups
+        shared across a ring, every assembly of that ring depletes
+        identically, so the calculation returns the assembly answer at
+        four times the cost and adds no spatial burnup information.
+
+  \item The second row is the first grouping that produces a genuine
+        core burnup distribution, and it costs about thirty times the
+        assembly depletion. At \SI{7.5}{h} per design, the sixty
+        evaluations of Campaign 8 would have required nineteen days of
+        continuous machine time against the \SI{20.8}{h} actually
+        spent.
+
+  \item The third row is the grouping a licensing-grade analysis would
+        use. At \SI{79}{h} per design it is outside the scope of any
+        optimisation loop and is reported only to bound the question.
+\end{enumerate}
+
+\subsubsection{The cost of depleting in three dimensions}
+
+The three-dimensional confirmation of Section~\ref{sec:res-c8-3d}
+provides a measured geometric penalty, because it solves the same
+designs in the two-dimensional core and in the model with structural
+components at identical fidelity, \num{150000} particles and 200 batches
+with 80 inactive, sixty-six solves of each. The two-dimensional solve
+costs \SI{216.0}{s} and the solve with structural components
+\SI{269.2}{s}. Removing the
+overhead of Equation~\eqref{eq:t-solve-fit} from both gives a pure
+transport ratio of \num{1.26}. The assembly stack, the spacer grids,
+the control-rod stacks, the barrel, the downcomer and the vessel wall
+together therefore cost a quarter more transport time, not a factor.
+
+Table~\ref{tab:dep-3d-cost} applies that penalty to the second row of
+Table~\ref{tab:dep-level-cost}, which is the only grouping worth
+running. The penalty of the water-slab model is an estimate, since that
+model was never timed at the campaign core fidelity.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Estimated cost of one depletion per design at the radial-zone and ten-axial-layer grouping, for the three core models.}
+  \label{tab:dep-3d-cost}
+  \small
+  \begin{tabular}{@{}lccr@{}}
+    \toprule
+    Core model & Transport penalty & Basis & Cost per design \\
+    \midrule
+    Two-dimensional core                 & 1.00 & reference  & \SI{7.5}{h} \\
+    Three-dimensional water-slab model   & 1.10 & estimated  & \SI{7.6}{h} \\
+    Three-dimensional structural model   & 1.26 & measured   & \SI{7.8}{h} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The three figures lie within \SI{4}{\percent} of one another. Once the
+depletion is performed at core level, the dimensionality and the level
+of structural detail are almost free, because the bookkeeping term of
+Equation~\eqref{eq:t-step-core} dominates and is indifferent to the
+geometry. The practical consequence is that a three-dimensional
+depletion, if one is ever performed, should use the model with
+structural components
+rather than the water-slab model, since the additional fidelity costs
+about \SI{0.2}{h} per design.
+
+\subsubsection{Consequence for the method}
+
+The separation adopted throughout this work follows from the figures
+above. The depletion is performed on the two-dimensional reflected
+assembly, the radial and axial leakage of the finite core enters
+through the calibrated target of Section~\ref{sec:meth-lax}, and the
+three-dimensional information is recovered by confirmation at fixed
+burnup on a small set of candidates rather than inside the loop. That
+separation is what makes a sixty-evaluation campaign fit in one day of
+machine time.
+
+The estimates rest on four stated assumptions.
+
+\begin{enumerate}
+  \item The bookkeeping cost is taken to scale linearly with the number
+        of depletable material groups. This is the expected behaviour
+        of an independent Bateman solution per material, and it has not
+        been measured at core level in this work.
+
+  \item The particle factor is set equal to the group ratio. A looser
+        reaction-rate tolerance than the eigenvalue tolerance would
+        reduce the transport term, but not the bookkeeping term, which
+        dominates in every row of Table~\ref{tab:dep-level-cost}.
+
+  \item The transport penalty of the water-slab model is estimated at
+        \num{1.10} and not measured, since the axial leakage study was
+        run at a different fidelity and its timings were not archived.
+
+  \item All figures are specific to the sixty-four-thread workstation
+        and to the schedule of \num{14.6} steps. Memory, which grows
+        with the number of depletable materials and their nuclide
+        vectors, is not considered and may bind before wall time does
+        in the third row of Table~\ref{tab:dep-level-cost}.
+\end{enumerate}
